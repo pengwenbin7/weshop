@@ -25,6 +25,7 @@ class CreateShopUsersTable extends Migration
             $table->unsignedInteger("subscribe_count")->default(1)->comment("第几次订阅");
             $table->string("rec_code", 32)->comment("推荐码")->unique();
             $table->string("rec_from", 32)->nullable()->comment("推荐来源");
+            $table->unsignedInteger("share_count")->defualt(0)->comment("分享次数");
             $table->unsignedInteger("company_id")->nullable();
             $table->unsignedInteger("admin_id")->nullable();
             $table->softDeletes();
