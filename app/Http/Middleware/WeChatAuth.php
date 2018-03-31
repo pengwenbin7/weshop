@@ -20,9 +20,10 @@ class WeChatAuth
             return $next($request);
         } else {
             $app = EasyWeChat::officialAccount();
-            return $app->oauth
-                ->setRequest($request)
-                ->redirect();
+            $response = $app->oauth
+                      ->setRequest($request)
+                      ->redirect();
+            var_dump($response);exit;
         }
     }
 }
