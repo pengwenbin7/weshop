@@ -1,5 +1,7 @@
 <?php
 
+Route::any('/server', 'WeChat\ServerController@serve');
+
 Route::middleware("auth.wechat")->group(function () {
     Route::get('/', "WeChat\IndexController@index")
         ->name("wechat.index");

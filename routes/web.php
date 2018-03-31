@@ -14,5 +14,3 @@
 Route::get("/", function () {
     return redirect()->route("wechat.index");
 })->name("index");
-    
-Route::any('/wechat/server', 'WeChat/ServerController@serve');
