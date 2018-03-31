@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use EasyWeChat;
-use Illuminate\Support\Facades\Log;
 
 class WeChatAuth
 {
@@ -24,7 +23,6 @@ class WeChatAuth
             $response = $app->oauth
                       ->setRequest($request)
                       ->redirect();
-            Log::debug($response);
             return $response;
         }
     }

@@ -17,6 +17,6 @@ class WeChatAuthController extends Controller
     {
         $app = EasyWeChat::officialAccount();
         $user = $app->oauth->user();
-        return $user;
+        var_dump($user);
     }
 }
