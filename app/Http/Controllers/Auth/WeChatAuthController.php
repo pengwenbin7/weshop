@@ -24,9 +24,7 @@ class WeChatAuthController extends Controller
         } catch (ModelNotFoundException $e) {
             $shopUser = new ShopUser();
             $shopUser->openid = $user->id;
-            $shopUser->subscribe_count = 1;
-            $shopUser->save();
-            $shopUser->rec_code = "U" . $shopUser->id;
+            $shopUser->rec_code = "x"; // 这个值在监听事件中自动修改
             $shopUser->save();
         }
 
