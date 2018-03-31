@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,7 +14,7 @@ class ShopUser extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ["openid", "rec_code"];
 
     /**
      * The attributes that should be hidden for arrays.
