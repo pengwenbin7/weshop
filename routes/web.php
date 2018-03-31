@@ -11,6 +11,4 @@
 |
 */
 
-Route::get("/", function () {
-    return redirect()->route("wechat.index");
-})->name("index");
+Route::get("/", "WeChat\IndexController@index")->name("index");
