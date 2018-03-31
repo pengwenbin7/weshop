@@ -19,11 +19,9 @@ class CreateShopUsersTable extends Migration
             $table->string("name", 32)->nullable();
             $table->string("phone", 32)->unique()->nullable();
             $table->string("password", 100)->nullable();
-            $table->string("ec_salt", 16)->nullable();
-            $table->string("ec_password", 32)->nullable();
-            $table->unsignedTinyInteger("level")->default(0);
+            $table->unsignedInteger("integral")->default(0)->comment("积分");
             $table->boolean("active")->default(true);
-            $table->boolean("if_subscribe")->default(false);
+            $table->boolean("if_subscribe")->default(true);
             $table->unsignedInteger("subscribe_count")->default(0)->comment("第几次订阅");
             $table->string("rec_code", 32)->comment("推荐码");
             $table->string("rec_from", 32)->nullable()->comment("推荐来源");

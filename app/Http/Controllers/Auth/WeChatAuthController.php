@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ShopUser;
 use EasyWeChat;
 use Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class WeChatAuthController extends Controller
 {
@@ -18,6 +19,19 @@ class WeChatAuthController extends Controller
     {
         $app = EasyWeChat::officialAccount();
         $user = $app->oauth->user();
-        var_dump($user);
+        try {
+            $shopUser = ShopUser::where("openid", "=", $user->id)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            $shopUser = new ShopUser();
+            $shopUser->openid = $user->id;
+            $shopUser->subscribe_count = 1;
+            $shopUser->save();
+            $shopUser->rec_code = "U" . $shopUser->id;
+            $shopUser->save();
+        }
+
+        session(["wechat_user" => $user]);
+        Auth::login($shopUser, true);
+        return redirect()->route("wechat.index");
     }
 }
