@@ -12,7 +12,7 @@
 */
 
 Route::get("/", function () {
-    return redirect("wechat.index");
+    return redirect()->route("wechat.index");
 })->name("index");
     
 Route::any('/wechat', 'WeChat/ServerController@serve');
