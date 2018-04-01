@@ -10,7 +10,7 @@ class SearchController extends Controller
 {
     public function search($key)
     {
-        $products = Product::where("name", "like", "%$key%");
+        $products = Product::where("name", "like", "%$key%")->get();
         return $products;
     }
 }
