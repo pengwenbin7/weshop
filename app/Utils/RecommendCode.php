@@ -7,6 +7,6 @@ class RecommendCode
     public static function generate($instance, $id)
     {
         $clsName = get_class($instance);
-        return "{$clsName}+{$id}";
+        return base64_encode("{$clsName}+{$id}");
     }
 }

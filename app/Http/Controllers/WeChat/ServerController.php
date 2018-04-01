@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Log;
 use EasyWeChat;
+use EasyWeChat\Kernel\Messages\News;
+use EasyWeChat\Kernel\Messages\NewsItem;
 
 class ServerController extends Controller
 {
@@ -14,7 +16,22 @@ class ServerController extends Controller
         Log::info('request arrived.');
         $app = EasyWeChat::officialAccount();
         $app->server->push(function($message){
-            return date("h:m:s", time()) . "@欢迎关注@" . json_encode($message);
+            switch ($message->MsgType) {
+            case "text":
+                $items = [
+                    new NewsItem([
+                        'title'       => "测试标题",
+                        'description' => "图文测试http://weshop.mafkj.com/search/" . $message->Content,
+                        'url'         => "http://weshop.mafkj.com/search/" . $message->Content,
+                        'image'       => "",
+                    ]),
+                ];
+                $news = new News($items);
+                break;
+            default:
+                return json_encode($message, JSON_UNESCAPED_UNICODE);
+                break;
+            }
         });
         return $app->server->serve();
     }

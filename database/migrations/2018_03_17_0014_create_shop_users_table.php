@@ -31,6 +31,10 @@ class CreateShopUsersTable extends Migration
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign("admin_id")
+                ->references("id")
+                ->on("admin_users")
+                ->onDelete("set null");
         });
     }
 
