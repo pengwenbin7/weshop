@@ -9,3 +9,5 @@ Route::middleware("auth.wechat")->group(function () {
 
 Route::get("oauth", "Auth\WeChatAuthController@oauth")
     ->name("wechat.oauth");
+
+Route::get("qrcode", "WeChat\QrCodeController@index");

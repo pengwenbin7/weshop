@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\ShopUser;
+use App\Utils\RecommendCode;
 
 class ShopUserObserver
 {
@@ -14,7 +15,8 @@ class ShopUserObserver
      */
     public function created(ShopUser $user)
     {
-        $user->rec_code = "U{$user->id}";
+        $code = RecommendCode::generate($user, $user->id);
+        $user->rec_code = $code;
         $user->save();
     }
 }
