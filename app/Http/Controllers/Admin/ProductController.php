@@ -46,7 +46,7 @@ class ProductController extends Controller
         $product->packing_unit = $request->packing_unit;
         $product->save();
 
-        return redirect("/product");
+        return redirect()->route("admin.product.index");
     }
 
     /**
