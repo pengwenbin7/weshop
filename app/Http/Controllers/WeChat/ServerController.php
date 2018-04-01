@@ -21,8 +21,8 @@ class ServerController extends Controller
                 $items = [
                     new NewsItem([
                         'title'       => "测试标题",
-                        'description' => "图文测试http://weshop.mafkj.com/search/" . $message["Content"],
-                        'url'         => "http://weshop.mafkj.com/search/" . $message["Content"],
+                        'description' => "图文测试http://weshop.mafkj.com/wechat/search/" . $message["Content"],
+                        'url'         => "http://weshop.mafkj.com/wechat/search/" . $message["Content"],
                         'image'       => "",
                     ]),
                 ];
