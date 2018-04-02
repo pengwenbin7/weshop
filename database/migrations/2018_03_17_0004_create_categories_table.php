@@ -18,7 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->string("name", 100)->unique();
             $table->unsignedTinyInteger("locale_id")->default(1);
             $table->string("parent_id")->default(0);
-            $table->smallInteger("sort_order")->default(1000);
+            $table->smallInteger("sort_order")->default(100);
             $table->text("description")->nullable();
             $table->timestamps();
             $table->primary(["id", "locale_id"]);

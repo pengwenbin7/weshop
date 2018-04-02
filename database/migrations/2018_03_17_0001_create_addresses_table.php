@@ -17,11 +17,12 @@ class CreateAddressesTable extends Migration
             $table->increments("id");
             $table->string("contact_name", 32)->comment("联系人");
             $table->string("contact_tel", 16)->nullable()->comment("联系电话");
-            $table->string("country", 100);
+            $table->string("country", 100)->default("中华人民共和国");
             $table->string("province", 100);
             $table->string("city", 100);
-            $table->string("district", 100);
-            $table->string("street", 100);
+            $table->string("district", 100)->nullable();
+            $table->string("street", 100)->nullable();
+            $table->string("center", 100)->nullable()->comment("经纬度");
             $table->timestamps();
         });
     }

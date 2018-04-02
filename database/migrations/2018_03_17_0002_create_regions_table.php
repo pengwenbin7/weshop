@@ -16,10 +16,13 @@ class CreateRegionsTable extends Migration
         Schema::create('regions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger("parent_id");
-            $table->string("code", 6);
+            $table->string("citycode", 15)->nullable();
+            $table->string("adcode", 9);
             $table->string("name", 32);
+            $table->string("center")->nullable();
             $table->enum("level", [
-                "country", "province", "city", "district",
+                "country", "province", "district",
+                "city", "street",
             ]);
             $table->timestamps();
         });

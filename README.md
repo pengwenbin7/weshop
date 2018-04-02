@@ -6,4 +6,6 @@ $ cd /path/to/public
 $ bower install admin-lte
 $ bower install vue
 $ bower install axios
+$ php artisan migrate
+$ php artisan db:seed
 ```

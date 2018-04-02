@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductDetail;
 
 class ProductController extends Controller
 {
@@ -37,16 +38,27 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $product = new Product();
+        $product->locale_id = $request->input("locale_id", 1);
         $product->name = $request->name;
         $product->brand_id = $request->brand_id;
-        $product->storage_id = $request->storage_id;
-        $product->model_id = $request->model_id;
+        $product->model = $request->model;
         $product->content = $request->content;
         $product->measure_unit = $request->measure_unit;
         $product->packing_unit = $request->packing_unit;
-        $product->save();
-
-        return redirect()->route("admin.product.index");
+        $product->ton_sell = $request->input("ton_sell", 1);
+        $product->sort_order = $request->input("sort_order", 1000);
+        $product->md5 = md5("{$product->locale_id}{$product->name}{$product->brand_id}{$product->model}{$product->content}{$product->measure_unit}{$product->packing_unit}");
+        if ($product->save()) {
+            $detail = new ProductDetail();
+            $detail->fill([
+                "product_id" => $product->id,
+                "content" => $request->input("detail", null),
+            ]);
+            $detail->save();
+            return ["store" => $detail->save()];
+        } else {
+            return ["store" => false];
+        }
     }
 
     /**
@@ -57,7 +69,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return $product;
+        return view("admin.product.show", ["product" => $product]);
     }
 
     /**
@@ -68,7 +80,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view("admin.product.edit", ["product" => $product]);
     }
 
     /**
@@ -80,6 +92,17 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        $product->locale_id = $request->input("locale_id", 1);
+        $product->name = $request->name;
+        $product->brand_id = $request->brand_id;
+        $product->model = $request->model;
+        $product->content = $request->content;
+        $product->measure_unit = $request->measure_unit;
+        $product->packing_unit = $request->packing_unit;
+        $product->ton_sell = $request->input("ton_sell", 1);
+        $product->sort_order = $request->input("sort_order", 1000);
+        $product->md5 = md5("{$product->locale_id}{$product->name}{$product->brand_id}{$product->model}{$product->content}{$product->measure_unit}{$product->packing_unit}");
+        return ["update" => $product->save()];
     }
 
     /**
@@ -90,6 +113,6 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
     }
 }

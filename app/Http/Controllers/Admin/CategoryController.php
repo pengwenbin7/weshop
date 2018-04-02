@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return Category::all();
     }
 
     /**
@@ -24,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.category.create");
     }
 
     /**
@@ -35,7 +36,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category();
+        $category->name = $request->name;
+        $category->locale_id = $request->input("locale_id", 1);
+        $category->parent_id = $request->input("parent_id", 0);
+        $category->sort_order = $request->input("sort_order", 100);
+        $category->description = $request->input("description");
+        
+        return ["store" => $category->save()];
     }
 
     /**
@@ -46,7 +54,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return $category->products()->get();
     }
 
     /**
@@ -57,7 +65,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view("admin.category.edit", ["category" => $category]);
     }
 
     /**
@@ -69,7 +77,12 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $category->name = $request->name;
+        $category->locale_id = $request->input("locale_id", 1);
+        $category->parent_id = $request->input("parent_id", 0);
+        $category->sort_order = $request->input("sort_order", 100);
+        $category->description = $request->input("description");
+        return ["update" => $category->save()];
     }
 
     /**
@@ -80,6 +93,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if ($category->products()->isEmpty()) {
+            return ["destroy" => $category->delete()];
+        } else {
+            return ["err" => "The category has products, you can't delete it."];
+        }
     }
 }

@@ -11,19 +11,9 @@ class Product extends Model
 
     protected $dates = ["deleted_at"];
     
-    public function model()
-    {
-        return $this->belongsTo("App\Models\ProductModel");
-    }
-
     public function brand()
     {
         return $this->belongsTo("App\Models\Brand");
-    }
-
-    public function storage()
-    {
-        return $this->belongsTo("App\Models\Storage");
     }
 
     public function locale()
@@ -33,7 +23,7 @@ class Product extends Model
 
     public function categories()
     {
-        return $this->hasMany("App\Models\Category");
+        return $this->belongsToMany("App\Models\Category", "product_category");
     }
 
     public function prices()
@@ -51,25 +41,15 @@ class Product extends Model
         return $this->hasOne("App\Models\ProductDetail");
     }
 
-    public function documents()
-    {
-        return $this->hasMany("App\Models\ProductDocument");
-    }
-
     public function variable()
     {
         return $this->hasOne("App\Models\ProductVariable");
     }
 
-    // 以下4个方法仅在单独使用时调用，使用variable()方法更省资源
+    // 以下5个方法仅在单独使用时调用，使用variable()方法更省资源
     public function stock()
     {
         return $this->variable()->stock;
-    }
-
-    public function view()
-    {
-        return $this->variable()->view;
     }
 
     public function click()
@@ -80,6 +60,16 @@ class Product extends Model
     public function star()
     {
         return $this->variable()->star;
+    }
+
+    public function buy()
+    {
+        return $this->variable()->buy;
+    }
+
+    public function back()
+    {
+        return $this->variable()->back;
     }
 
 }

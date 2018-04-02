@@ -7,6 +7,18 @@ Route::get("/", function () {
 Route::get("/wechat/menu", "WeChat\MenuController@index")->name("admin.wechat.menu.index");
 Route::post("/wechat/menu", "WeChat\MenuController@store")->name("admin.wechat.menu.store");
 
+Route::resource("category", "Admin\CategoryController", [
+    "names" => [
+        "index" => "admin.category.index",
+        "show" => "admin.category.show",
+        "create" => "admin.category.create",
+        "edit" => "admin.category.edit",
+        "store" => "admin.category.store",
+        "update" => "admin.category.update",
+        "destroy" => "admin.category.destroy",
+    ],
+]);
+
 Route::resource("product", "Admin\ProductController", [
     "names" => [
         "index" => "admin.product.index",
@@ -16,20 +28,6 @@ Route::resource("product", "Admin\ProductController", [
         "store" => "admin.product.store",
         "update" => "admin.product.update",
         "destroy" => "admin.product.destroy",
-    ],
-]);
-
-Route::resource("supplier", "Admin\SupplierUserController", [
-    "names" => [
-        "index" => "admin.supplier.index",
-        "create" => "admin.supplier.create",
-        "show" => "admin.supplier.show",
-        "store" => "admin.supplier.store",
-        "update" => "admin.supplier.update",
-        "edit" => "admin.supplier.edit",
-        "destroy" => "admin.supplier.destroy",
-    ], "parameters" => [
-        "supplier" => "supplierUser",
     ],
 ]);
 

@@ -38,14 +38,11 @@ class BrandController extends Controller
     {
         $brand = new Brand();
         $brand->name = $request->name;
-        $brand->supplier_id = $request->supplier_id;
         $brand->logo = $request->input("logo", null);
         $brand->sort_order = $request->input("sort_order", 100);
         $brand->active = $request->input("active", 1);
         $brand->locale_id = $request->input("locale_id", 1);
-        
-        $brand->save();
-        return redirect()->route("admin.brand.index");
+        return ["store" => $brand->save()];
     }
 
     /**
@@ -56,7 +53,7 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        //
+        return view("admin.brand.show", ["brand" => $brand]);
     }
 
     /**
@@ -67,7 +64,7 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
-        //
+        return view("admin.brand.edit", ["brand" => $brand]);
     }
 
     /**
@@ -79,7 +76,12 @@ class BrandController extends Controller
      */
     public function update(Request $request, Brand $brand)
     {
-        //
+        $brand->name = $request->name;
+        $brand->logo = $request->input("logo", null);
+        $brand->sort_order = $request->input("sort_order", 100);
+        $brand->active = $request->input("active", 1);
+        $brand->locale_id = $request->input("locale_id", 1);
+        return ["update" => $brand->save()];        
     }
 
     /**

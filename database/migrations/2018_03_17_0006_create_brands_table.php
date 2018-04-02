@@ -16,7 +16,6 @@ class CreateBrandsTable extends Migration
         Schema::create('brands', function (Blueprint $table) {
             $table->integer('id');
             $table->string("name", 32)->unique();
-            $table->unsignedInteger("supplier_id");
             $table->string("logo", 100)->nullable();
             $table->unsignedInteger("primary_category_id")->nullable();
             $table->smallInteger("sort_order")->unsigned()->default(100);
@@ -24,7 +23,6 @@ class CreateBrandsTable extends Migration
             $table->unsignedTinyInteger("locale_id");
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign("supplier_id")->references("id")->on("supplier_users");
             $table->foreign("primary_category_id")->references("id")->on("categories")->onDelete("cascade");
             $table->foreign("locale_id")->references("id")->on("locales");
             $table->primary(["id", "locale_id"]);
