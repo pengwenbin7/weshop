@@ -9,6 +9,7 @@
   <p>measure_unit:{{ $product->measure_unit }}</p>
   <p>packing_unit:{{ $product->packing_unit }}</p>
   <p>ton_sell:{{ $product->ton_sell }}</p>
+  <p>last_price: {{ $product->price()->ton_price }}</p>
   <p>sort_order:{{ $product->sort_order }}</p>
   <p>detail:{{ $product->detail->content }}</p>
 @endsection

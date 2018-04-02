@@ -16,7 +16,7 @@ class CreateProductCategoryTable extends Migration
         Schema::create('product_category', function (Blueprint $table) {
             $table->unsignedInteger("product_id");
             $table->unsignedInteger("category_id");
-            $table->boolean("if_primary")->default(true);
+            $table->boolean("if_primary")->default(false);
             $table->timestamps();
             $table->primary(["product_id", "category_id"]);
             $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade");

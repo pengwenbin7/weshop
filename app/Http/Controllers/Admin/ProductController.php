@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductPrice;
+use App\Models\ProductVariable;
+use App\Models\ProductCategory;
 use App\Models\ProductDetail;
 
 class ProductController extends Controller
@@ -48,17 +51,46 @@ class ProductController extends Controller
         $product->ton_sell = $request->input("ton_sell", 1);
         $product->sort_order = $request->input("sort_order", 1000);
         $product->md5 = md5("{$product->locale_id}{$product->name}{$product->brand_id}{$product->model}{$product->content}{$product->measure_unit}{$product->packing_unit}");
-        if ($product->save()) {
-            $detail = new ProductDetail();
-            $detail->fill([
-                "product_id" => $product->id,
-                "content" => $request->input("detail", null),
-            ]);
-            $detail->save();
-            return ["store" => $detail->save()];
-        } else {
-            return ["store" => false];
-        }
+        $s0 = $product->save();
+
+        // save product price
+        $price = new ProductPrice();
+        $price->fill([
+            "product_id" => $product->id,
+            "unit_price" => $request->input("unit_price"),
+            "ton_price" => $request->input("ton_price", null),
+        ]);
+        $s1 = $price->save();
+
+        // save product category
+        $category = new ProductCategory();
+        $category->fill([
+            "product_id" => $product->id,
+            "category_id" => $request->input("category_id"),
+            "if_primary" => 1,
+        ]);
+        $s2 = $category->save();
+        
+        // save product variable
+        $variable = new ProductVariable();
+        $variable->fill([
+            "product_id" => $product->id,
+            "stock" => $request->input("stock", 0),
+        ]);
+        $s3 = $variable->save();
+               
+        // save product detail
+        $detail = new ProductDetail();
+        $detail->fill([
+            "product_id" => $product->id,
+            "content" => $request->input("detail", null),
+        ]);
+        $detail->save();
+        $s4 = $detail->save();
+
+        return [
+            "store" => ($s0 & $s1 & $s2 & $s3 & $s4),
+        ];
     }
 
     /**
