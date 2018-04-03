@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Storage extends Model
 {
     protected $fillable = ["name", "brand_id", "address_id", "description"];
-
+    
     public function products()
     {
         return $this->hasMany("App\Models\Product");
@@ -24,10 +24,11 @@ class Storage extends Model
     }
 
     /**
-     * 在已经调用 address() 的情况下，不要再使用此方法
+     * If you have called "address" method,
+     * don't call me. Thks.
      */
     public function center()
     {
-        return $this->address()->center;
+        return $this->address()->city_center;
     }
 }

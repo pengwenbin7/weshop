@@ -19,18 +19,6 @@ Route::resource("category", "Admin\CategoryController", [
     ],
 ]);
 
-Route::resource("product", "Admin\ProductController", [
-    "names" => [
-        "index" => "admin.product.index",
-        "show" => "admin.product.show",
-        "create" => "admin.product.create",
-        "edit" => "admin.product.edit",
-        "store" => "admin.product.store",
-        "update" => "admin.product.update",
-        "destroy" => "admin.product.destroy",
-    ],
-]);
-
 Route::resource("brand", "Admin\BrandController", [
     "names" => [
         "index" => "admin.brand.index",
@@ -40,5 +28,29 @@ Route::resource("brand", "Admin\BrandController", [
         "update" => "admin.brand.update",
         "destroy" => "admin.brand.destroy",
         "show" => "admin.brand.show",
+    ],
+]);
+
+Route::resource("storage", "Admin\StorageController", [
+    "names" => [
+        "index" => "admin.storage.index",
+        "create" => "admin.storage.create",
+        "store" => "admin.storage.store",
+        "edit" => "admin.storage.edit",
+        "update" => "admin.storage.update",
+        "destroy" => "admin.storage.destroy",
+        "show" => "admin.storage.show",
+    ],
+]);
+
+Route::resource("product", "Admin\ProductController", [
+    "names" => [
+        "index" => "admin.product.index",
+        "show" => "admin.product.show",
+        "create" => "admin.product.create",
+        "edit" => "admin.product.edit",
+        "store" => "admin.product.store",
+        "update" => "admin.product.update",
+        "destroy" => "admin.product.destroy",
     ],
 ]);

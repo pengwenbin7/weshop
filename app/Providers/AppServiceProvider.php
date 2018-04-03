@@ -5,7 +5,11 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\Models\ShopUser;
+use App\Models\Product;
+use App\Models\Address;
 use App\Observers\ShopUserObserver;
+use App\Observers\ProductObserver;
+use App\Observers\AddressObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,8 +35,9 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo '$str'; ?>";
         });
         
-        
         ShopUser::observe(ShopUserObserver::class);
+        Product::observe(ProductObserver::class);
+        Address::observe(AddressObserver::class);
     }
 
     /**

@@ -45,12 +45,12 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->brand_id = $request->brand_id;
         $product->model = $request->model;
+        $product->storage_id = $request->storage_id;
         $product->content = $request->content;
         $product->measure_unit = $request->measure_unit;
         $product->packing_unit = $request->packing_unit;
         $product->ton_sell = $request->input("ton_sell", 1);
         $product->sort_order = $request->input("sort_order", 1000);
-        $product->md5 = md5("{$product->locale_id}{$product->name}{$product->brand_id}{$product->model}{$product->content}{$product->measure_unit}{$product->packing_unit}");
         $s0 = $product->save();
 
         // save product price
@@ -128,12 +128,12 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->brand_id = $request->brand_id;
         $product->model = $request->model;
+        $product->storage_id = $request->storage_id;
         $product->content = $request->content;
         $product->measure_unit = $request->measure_unit;
         $product->packing_unit = $request->packing_unit;
         $product->ton_sell = $request->input("ton_sell", 1);
         $product->sort_order = $request->input("sort_order", 1000);
-        $product->md5 = md5("{$product->locale_id}{$product->name}{$product->brand_id}{$product->model}{$product->content}{$product->measure_unit}{$product->packing_unit}");
         return ["update" => $product->save()];
     }
 

@@ -5,6 +5,7 @@
   <p>name:{{ $product->name }}</p>
   <p>brand_id:{{ $product->brand_id }}</p>
   <p>model:{{ $product->model }}</p>
+  <p>storage_id:{{ $product->storage_id }}</p>
   <p>content:{{ $product->content }}</p>
   <p>measure_unit:{{ $product->measure_unit }}</p>
   <p>packing_unit:{{ $product->packing_unit }}</p>

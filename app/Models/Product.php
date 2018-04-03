@@ -5,6 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * NOTICE:
+ * You should always use this model to create/edit product info.
+ * If you have to create/update product info with SQL sentence directly,
+ * remembering to keep unique code correctly.
+ * Seeing \App\Observers\ProductObserver for unique code regulation.
+ */
 class Product extends Model
 {
     use SoftDeletes;
@@ -51,7 +58,11 @@ class Product extends Model
         return $this->hasOne("App\Models\ProductVariable");
     }
 
-    // 以下5个方法仅在单独使用时调用，使用variable()方法更省资源
+    /**
+     * If you have called "variable" method,
+     * or you'll use more than one of following method,
+     * don't use the following method.
+     */
     public function stock()
     {
         return $this->variable()->stock;

@@ -26,8 +26,8 @@ class CreateProductsTable extends Migration
             // 25kg/包 <--> $content $unit / $packing_unit
             $table->boolean("ton_sell")->default(true)->comment("是否可以按吨计价");
             $table->unsignedSmallInteger("sort_order")->default(1000);
-            $table->string("md5", 32)
-                ->comment("md5(locale_id + name + brand_id + model + content + measure_unit + packing_unit)");
+            $table->string("unique_code", 10)->nullable()->unique()
+                ->comment("crc32(locale_id + name + brand_id + storage_id + model + content + measure_unit + packing_unit)");
             $table->softDeletes();
             $table->timestamps();
             $table->foreign("locale_id")->references("id")->on("locales");
