@@ -15,3 +15,8 @@
 Route::get("/", function () {
     return redirect()->route("wechat.index");
 });
+
+/* start: remembering move to wechat.php */
+Route::get("product", "WeChat\ProductController@index");
+Route::get("product/{product}", "WeChat\ProductController@show");
+/* end: remembering move to wechat.php */

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ $title or "admin" }}</title>
+    <title>{{ $title ?? "admin" }}</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <!--[if lt IE 9]>

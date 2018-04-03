@@ -48,7 +48,10 @@ class RegionUpdate extends Command
         $keyword = config("region.query_root");
         $depth = config("region.query_depth");
         $url = config("region.api_url") . "?keywords=$keyword&subdistrict=$depth&key=$key";
+        $i = 0;
         do {
+            $i++;
+            echo "Get response from {$url}: {$i}.\n";
             $request = new Request("GET", $url);
             $res = json_decode($client->send($request)->getBody());
         } while ($res->status != 1);

@@ -17,6 +17,11 @@ class Product extends Model
     use SoftDeletes;
 
     protected $dates = ["deleted_at"];
+
+    public function pack()
+    {
+        return "{$this->content} {$this->measure_unit} / {$this->packing_unit}";
+    }
     
     public function brand()
     {
