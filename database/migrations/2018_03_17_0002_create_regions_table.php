@@ -19,7 +19,7 @@ class CreateRegionsTable extends Migration
             $table->string("citycode", 15)->nullable();
             $table->string("adcode", 9);
             $table->string("name", 32);
-            $table->string("center")->nullable();
+            $table->string("center")->nullable()->comment("经度,维度(longitude, latitude)");
             $table->enum("level", [
                 "country", "province", "district",
                 "city", "street",

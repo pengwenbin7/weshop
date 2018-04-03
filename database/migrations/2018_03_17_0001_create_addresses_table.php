@@ -20,9 +20,9 @@ class CreateAddressesTable extends Migration
             $table->string("country", 100)->default("中华人民共和国");
             $table->string("province", 100);
             $table->string("city", 100);
-            $table->string("district", 100)->nullable();
-            $table->string("street", 100)->nullable();
-            $table->string("center", 100)->nullable()->comment("经纬度");
+            $table->string("detail", 100);
+            $table->string("center", 100)->nullable()
+                ->comment("经度,维度(longitude, latitude)");
             $table->timestamps();
         });
     }

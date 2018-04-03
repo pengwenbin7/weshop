@@ -23,4 +23,9 @@ class Brand extends Model
         return $this->belongsTo("App\Models\Category", "id", "primary_category_id");
     }
 
+    public function storages()
+    {
+        return $this->hasMany("App\Models\Storage");
+    }
+
 }

@@ -4,6 +4,8 @@
   <p><a href="{{ route("wechat.index") }}">link</a></p>
   <p><button id="share">分享到朋友圈</button></p>
   <p><button id="scan">scan qr</button></p>
+  <p><button id="location">get location</button></p>
+  <p id="location_info"></p>
 @endsection
 
 @section("script")
@@ -34,6 +36,19 @@
       success: function (res) {
 	var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
 	alert(result);
+      }
+    });
+  });
+
+  $("#location").click(function () {
+    wx.getLocation({
+      type: 'wgs84',
+      success: function (res) {
+	var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+	var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+	var speed = res.speed; // 速度，以米/每秒计
+	var accuracy = res.accuracy; // 位置精度
+	$("#location_info").text("Lat:" + latitude + "Long:" + longitude);
       }
     });
   });

@@ -18,8 +18,7 @@ class CreateProductsTable extends Migration
             $table->unsignedTinyInteger("locale_id")->default(1);
             $table->string("name", 100);
             $table->unsignedInteger("brand_id");
-            // $table->unsignedInteger("storage_id")->nullable();
-            // $table->unsignedInteger("model_id");
+            $table->unsignedInteger("storage_id");
             $table->string("model", 32);
             $table->unsignedDecimal("content", 10, 2)->comment("含量(eg: 25)")->default(25);
             $table->string("measure_unit", 16)->comment("计量单位(eg: kg)")->default("kg");
@@ -32,6 +31,7 @@ class CreateProductsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
             $table->foreign("locale_id")->references("id")->on("locales");
+            $table->foreign("storage_id")->references("id")->on("storages");
             $table->primary(["id", "locale_id"]);
         });
 

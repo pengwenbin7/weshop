@@ -17,14 +17,14 @@ class CreateStoragesTable extends Migration
             $table->increments('id');
             $table->unsignedTinyInteger("locale_id")->default(1);
             $table->string("name", 100)->unique();
-            $table->unsignedInteger("supplier_id");
+            $table->unsignedInteger("brand_id");
             $table->unsignedInteger("address_id");
             $table->text("description")->nullable();
             $table->boolean("active")->default(true);
             $table->timestamps();
-            $table->foreign("address_id")->references("id")->on("addresses");
             $table->foreign("locale_id")->references("id")->on("locales");
-            $table->foreign("supplier_id")->references("id")->on("supplier_users");
+            $table->foreign("address_id")->references("id")->on("addresses");
+            $table->foreign("brand_id")->references("id")->on("brands");
         });
     }
 

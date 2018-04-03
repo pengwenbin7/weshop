@@ -26,6 +26,11 @@ class Product extends Model
         return $this->belongsToMany("App\Models\Category", "product_category");
     }
 
+    public function storage()
+    {
+        return $this->belongsTo("App\Models\Storage");
+    }
+
     public function prices()
     {
         return $this->hasMany("App\Models\ProductPrice");
