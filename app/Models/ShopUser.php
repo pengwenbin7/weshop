@@ -24,4 +24,19 @@ class ShopUser extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function carts()
+    {
+        return $this->hasMany("App\Models\Cart");
+    }
+    
+    public function prizes()
+    {
+        return $this->hasMany("App\Models\UserPrize");
+    }
+
+    public function shareProducts()
+    {
+        return $this->hasMany("App\Models\UserShareProduct");
+    }
 }

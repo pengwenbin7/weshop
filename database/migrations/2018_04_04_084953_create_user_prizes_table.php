@@ -17,6 +17,7 @@ class CreateUserPrizesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger("user_id");
             $table->unsignedDecimal("amount");
+            $table->string("note", 200)->nullable()->default("推广红包");
             $table->timestamps();
         });
     }

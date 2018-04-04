@@ -14,14 +14,16 @@ class CreateUserShareProductsTable extends Migration
     public function up()
     {
         Schema::create('user_share_products', function (Blueprint $table) {
+            $table->increments("id");
             $table->unsignedInteger("user_id");
             $table->unsignedInteger("product_id");
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign("user_id")->references("id")->on("shop_users");
+            $table->foreign("user_id")->references("id")->on("shop_users")
+                ->onDelete("cascade");
             $table->foreign("product_id")->references("id")
-                ->on("products");
-            $table->primary(["user_id", "product_id"]);
+                ->on("products")->onDelete("set null");
+            $table->unique(["user_id", "product_id"]);
         });
     }
 

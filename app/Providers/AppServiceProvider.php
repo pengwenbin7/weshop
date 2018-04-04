@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Blade;
 use App\Models\ShopUser;
 use App\Models\Product;
 use App\Models\Address;
+use App\Models\Cart;
 use App\Observers\ShopUserObserver;
 use App\Observers\ProductObserver;
 use App\Observers\AddressObserver;
+use App\Observers\CartObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         ShopUser::observe(ShopUserObserver::class);
         Product::observe(ProductObserver::class);
         Address::observe(AddressObserver::class);
+        Cart::observe(CartObserver::class);
     }
 
     /**

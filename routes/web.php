@@ -17,6 +17,14 @@ Route::get("/", function () {
 });
 
 /* start: remembering move to wechat.php */
-Route::get("product", "WeChat\ProductController@index");
-Route::get("product/{product}", "WeChat\ProductController@show");
+Route::get("product", "WeChat\ProductController@index")
+    ->name("wechat.product.index");
+Route::get("product/{product}", "WeChat\ProductController@show")
+    ->name("wechat.product.show");
+Route::get("cart", "WeChat\CartController@index")
+    ->name("wechat.cart.index");
+Route::post("cart", "WeChat\CartController@store")
+    ->name("wechat.cart.store");
+Route::put("cart/{cart}", "WeChat\CartController@update")
+    ->name("wechat.cart.update");
 /* end: remembering move to wechat.php */

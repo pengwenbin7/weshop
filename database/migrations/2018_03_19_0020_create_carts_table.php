@@ -18,16 +18,12 @@ class CreateCartsTable extends Migration
             $table->unsignedInteger("user_id");
             $table->unsignedInteger("product_id")->nullable();
             $table->string("product_name", 100);
-            $table->string("product_model_name", 100);
-            $table->string("category_name", 100);
-            $table->string("brand_name", 100);
-            $table->string("storage_name", 100);
-            $table->string("supplier_name", 100);
-            $table->unsignedDecimal("content", 10, 2)->nullable();
-            $table->string("measure_unit", 16)->nullable();
-            $table->string("packing_unit", 16)->nullable();
+            $table->string("product_model", 100);
+            $table->boolean("ton_sell")->default(true)
+                ->comment("是否按吨购买");
             $table->unsignedInteger("number");
-            $table->boolean("ton_sell")->default(1);
+            $table->unsignedDecimal("init_price");
+            $table->boolean("active")->default(true);
             $table->timestamps();
             $table->foreign("user_id")->references("id")
                 ->on("shop_users")

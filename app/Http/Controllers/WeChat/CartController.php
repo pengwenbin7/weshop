@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\WeChat;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
 use Illuminate\Http\Request;
+use App\Models\Cart;
+use App\Models\Product;
+use Auth;
 
 class CartController extends Controller
 {
@@ -15,54 +17,30 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $cart = $user->carts;
+        return $carts;
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Adding a product to cart.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $cart = new Cart();
+        $cart->user_id = Auth::user()->id;
+        $cart->product_id = $request->product_id;
+        $cart->ton_sell = $request->ton_sell;
+        $cart->number = $request->number;
+        return ["store" => $cart->save()];
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update the cart in storage.
+     * 仅允许修改数量(number)
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Cart  $cart
@@ -70,7 +48,8 @@ class CartController extends Controller
      */
     public function update(Request $request, Cart $cart)
     {
-        //
+        $cart->number = $request->number;
+        return ["update" => $cart->save()];
     }
 
     /**
@@ -81,6 +60,6 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        //
+        return ["delete" => $cart->delete()];
     }
 }
