@@ -18,7 +18,8 @@ class CartController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $cart = $user->carts;
+        $carts = Cart::where("user_id", "=", $user->id)
+               ->with("product")->get();
         return $carts;
     }
 

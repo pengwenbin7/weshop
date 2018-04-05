@@ -14,7 +14,7 @@ class CreateUserPrizesTable extends Migration
     public function up()
     {
         Schema::create('user_prizes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments("id");
             $table->unsignedInteger("user_id");
             $table->unsignedDecimal("amount");
             $table->string("note", 200)->nullable()->default("推广红包");

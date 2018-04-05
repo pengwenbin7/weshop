@@ -14,9 +14,9 @@ class CreatePayChannelsTable extends Migration
     public function up()
     {
         Schema::create('pay_channels', function (Blueprint $table) {
-            $table->tinyIncrements('id');
+            $table->tinyIncrements("id");
             $table->string("name", 100);
-            $table->json("params")->nullable();
+            $table->text("params")->nullable();
             $table->boolean("active")->default(true);
             $table->timestamps();
         });

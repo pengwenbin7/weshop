@@ -35,7 +35,7 @@ class Product extends Model
 
     public function categories()
     {
-        return $this->belongsToMany("App\Models\Category", "product_category");
+        return $this->belongsToMany("App\Models\Category", "product_categories");
     }
 
     public function storage()

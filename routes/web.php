@@ -15,6 +15,9 @@
 Route::get("/", function () {
     return redirect()->route("wechat.index");
 });
+Route::get("/login/{id}", function ($id) {
+    auth()->loginUsingId($id);
+});
 
 /* start: remembering move to wechat.php */
 Route::get("product", "WeChat\ProductController@index")

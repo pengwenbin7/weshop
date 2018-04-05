@@ -54,7 +54,7 @@ class StorageController extends Controller
             "address_id" => $address->id,
             "description" => $request->input("description", null),
         ]);
-        $storage->save();
+        return ["save" => $storage->save()];
     }
 
     /**

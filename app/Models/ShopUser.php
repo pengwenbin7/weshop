@@ -27,7 +27,7 @@ class ShopUser extends Authenticatable
 
     public function carts()
     {
-        return $this->hasMany("App\Models\Cart");
+        return $this->hasMany("App\Models\Cart", "user_id");
     }
     
     public function prizes()

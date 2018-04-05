@@ -24,7 +24,7 @@ class CreateCompaniesTable extends Migration
             $table->unsignedTinyInteger("status")->default(0)
                 ->comment('审核状态:0未提交, 1资料已经提交审核中, 2审核不通过, 3审核通过');
             $table->string("code", 255)->comment("邀请码");
-            $table->unsignedInteger("admin_id")->nullable()->comment('负责人');
+            $table->unsignedInteger("admin_id")->nullable()->comment("负责人");
             $table->unsignedInteger("creator");
             $table->timestamps();
             $table->foreign("admin_id")->references("id")
