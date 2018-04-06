@@ -1,0 +1,81 @@
+#+OPTIONS: ^:{} 
+#+OPTIONS: _:{}
+#+OPTIONS: toc:nil
+#+AUTHOR: [[mailto:pengwenbin7@126.com][pengwenbin7]]
+
+* weshop订单状态分析
+
+** 字段
++ status 订单状态
+#+BEGIN_QUOTE
+0 - 待处理
+
+1 - 处理中
+
+2 - 正常完成
+
+3 - 异常完成
+#+END_QUOTE
+
++ pay_status 付款状态
+#+BEGIN_QUOTE
+0 - 待付款
+
+1 - 部分付款
+
+2 - 完成付款
+
+3 - 退款
+#+END_QUOTE
+
++ ship_status 发货状态
+#+BEGIN_QUOTE
+0 - 待发货
+
+1 - 部分发货
+
+2 - 已发货
+
+3 - 已确认
+#+END_QUOTE
+
++ refund_status 退货状态
+#+BEGIN_QUOTE
+1 - 退货中
+
+2 - 取消退货
+
+3 - 退货完成
+#+END_QUOTE
+
++ active 活动标志
+#+BEGIN_QUOTE
+0 - 可以修改订单
+
+1 - 锁定订单，不可修改
+#+END_QUOTE
+
+** 状态转换
+分期付款和部分发货的功能暂未实现
++ user_op 用户可以进行的下一步操作
++ admin_op 管理员可以进行的下一步操作
++ system_op 系统可以进行的下一步操作
+
+| 已完成的状态 | status | pay_status | ship_status | refund_status       | active | user_op   | admin_op | system_op                 |
+|--------------+--------+------------+-------------+---------------+--------+-----------+----------+---------------------------|
+| 客户下单     |      0 |          0 |           0 |             0 |      1 | 取消/付款 | 修改价格 | 自动取消订单/确定线上付款 |
+| 线上付款     |      1 |          2 |           0 |             0 |      1 | null      | null     | 自动发货                  |
+| 线下付款     |      1 |          0 |           0 |             0 |      1 | null      | 确认收款 | null                      |
+| 已失效       |      3 |          0 |           0 |             0 |      1 | 删除      | null     | null                      |
+| 付款未发货   |      1 |          2 |           0 |             0 |      1 | 催货/退款 | 发货     | 退款/自动发货             |
+| 已退款       |      3 |          2 |           0 |             0 |      0 | null      | null     | null                      |
+| 已发货       |      1 |          2 |           2 |             0 |      1 | 确认收货  | null     | 自动确认收货              |
+| 确认收货     |      1 |          2 |           3 |             0 |      1 | 退货      | null     | 锁定订单                  |
+| 已锁定       |      2 |          2 |           3 |             0 |      0 | null      | null     | null                      |
+| 发起退货     |      1 |          2 |           3 |             1 |      1 | 取消退货  | 确认退货 | 超期自动确认退货/锁定订单     |
+| 取消退货     |      2 |          2 |           3 |             2 |      0 | null      | null     | null                  |
+| 退货完成     |      3 |          2 |           3 |             3 |      0 | null      | null     | 自动生成退货单            |
+
++ 仅在订单未开始处理(status = 0)的情况下用户/系统可以另其作废
++ 仅在订单已付款(pay_status = 2)且未发货(ship_status = 0)的情况下，用户可以退款
++ 仅在订单作废(status = 3)且未付款(pay_status = 0)的情况下，用户可以删除

@@ -1,0 +1,264 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>weshop订单状态分析</title>
+    <link type="text/css" rel="stylesheet" href="assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><h1 id="weshop订单状态分析"><a class="header-link" href="#weshop订单状态分析"></a>weshop订单状态分析</h1>
+<h2 id="字段"><a class="header-link" href="#字段"></a>字段</h2>
+<ul class="list">
+<li>status 订单状态</li>
+</ul>
+<blockquote>
+<p>0 - 待处理</p>
+<p>1 - 处理中</p>
+<p>2 - 正常完成</p>
+<p>3 - 异常完成</p>
+</blockquote>
+<ul class="list">
+<li>pay_status 付款状态</li>
+</ul>
+<blockquote>
+<p>0 - 待付款</p>
+<p>1 - 部分付款</p>
+<p>2 - 完成付款</p>
+<p>3 - 退款</p>
+</blockquote>
+<ul class="list">
+<li>ship_status 发货状态</li>
+</ul>
+<blockquote>
+<p>0 - 待发货</p>
+<p>1 - 部分发货</p>
+<p>2 - 已发货</p>
+<p>3 - 已确认</p>
+</blockquote>
+<ul class="list">
+<li>refund_status 退货状态</li>
+</ul>
+<blockquote>
+<p>1 - 退货中</p>
+<p>2 - 取消退货</p>
+<p>3 - 退货完成</p>
+</blockquote>
+<ul class="list">
+<li>active 活动标志</li>
+</ul>
+<blockquote>
+<p>0 - 可以修改订单</p>
+<p>1 - 锁定订单，不可修改</p>
+</blockquote>
+<h2 id="状态转换"><a class="header-link" href="#状态转换"></a>状态转换</h2>
+<p>分期付款和部分发货的功能暂未实现</p>
+<ul class="list">
+<li>user_op 用户可以进行的下一步操作</li>
+<li>admin_op 管理员可以进行的下一步操作</li>
+<li>system_op 系统可以进行的下一步操作</li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">已完成的状态</th>
+<th scope="col" class="right">status</th>
+<th scope="col" class="right">pay_status</th>
+<th scope="col" class="right">ship_status</th>
+<th scope="col" class="right">refund_status</th>
+<th scope="col" class="right">active</th>
+<th scope="col" class="left">user_op</th>
+<th scope="col" class="left">admin_op</th>
+<th scope="col" class="left">system_op</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td class="left">客户下单</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="left">取消/付款</td>
+<td class="left">修改价格</td>
+<td class="left">自动取消订单/确定线上付款</td>
+</tr>
+
+
+<tr>
+<td class="left">线上付款</td>
+<td class="right">1</td>
+<td class="right">2</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="left">null</td>
+<td class="left">null</td>
+<td class="left">自动发货</td>
+</tr>
+
+
+<tr>
+<td class="left">线下付款</td>
+<td class="right">1</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="left">null</td>
+<td class="left">确认收款</td>
+<td class="left">null</td>
+</tr>
+
+
+<tr>
+<td class="left">已失效</td>
+<td class="right">3</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="left">删除</td>
+<td class="left">null</td>
+<td class="left">null</td>
+</tr>
+
+
+<tr>
+<td class="left">付款未发货</td>
+<td class="right">1</td>
+<td class="right">2</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="left">催货/退款</td>
+<td class="left">发货</td>
+<td class="left">退款/自动发货</td>
+</tr>
+
+
+<tr>
+<td class="left">已退款</td>
+<td class="right">3</td>
+<td class="right">2</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="left">null</td>
+<td class="left">null</td>
+<td class="left">null</td>
+</tr>
+
+
+<tr>
+<td class="left">已发货</td>
+<td class="right">1</td>
+<td class="right">2</td>
+<td class="right">2</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="left">确认收货</td>
+<td class="left">null</td>
+<td class="left">自动确认收货</td>
+</tr>
+
+
+<tr>
+<td class="left">确认收货</td>
+<td class="right">1</td>
+<td class="right">2</td>
+<td class="right">3</td>
+<td class="right">0</td>
+<td class="right">1</td>
+<td class="left">退货</td>
+<td class="left">null</td>
+<td class="left">锁定订单</td>
+</tr>
+
+
+<tr>
+<td class="left">已锁定</td>
+<td class="right">2</td>
+<td class="right">2</td>
+<td class="right">3</td>
+<td class="right">0</td>
+<td class="right">0</td>
+<td class="left">null</td>
+<td class="left">null</td>
+<td class="left">null</td>
+</tr>
+
+
+<tr>
+<td class="left">发起退货</td>
+<td class="right">1</td>
+<td class="right">2</td>
+<td class="right">3</td>
+<td class="right">1</td>
+<td class="right">1</td>
+<td class="left">取消退货</td>
+<td class="left">确认退货</td>
+<td class="left">超期自动确认退货/锁定订单</td>
+</tr>
+
+
+<tr>
+<td class="left">取消退货</td>
+<td class="right">2</td>
+<td class="right">2</td>
+<td class="right">3</td>
+<td class="right">2</td>
+<td class="right">0</td>
+<td class="left">null</td>
+<td class="left">null</td>
+<td class="left">null</td>
+</tr>
+
+
+<tr>
+<td class="left">退货完成</td>
+<td class="right">3</td>
+<td class="right">2</td>
+<td class="right">3</td>
+<td class="right">3</td>
+<td class="right">0</td>
+<td class="left">null</td>
+<td class="left">null</td>
+<td class="left">自动生成退货单</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="list">
+<li>仅在订单未开始处理(status = 0)的情况下用户/系统可以另其作废</li>
+<li>仅在订单已付款(pay_status = 2)且未发货(ship_status = 0)的情况下，用户可以退款</li>
+<li>仅在订单作废(status = 3)且未付款(pay_status = 0)的情况下，用户可以删除</li>
+</ul>
+    </article>
+  </body>
+</html>

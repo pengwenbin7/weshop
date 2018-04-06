@@ -56,4 +56,5 @@ class Order extends Model
     {
         return $this->belgonsTo("App\Models\Tax");
     }
+    
 }

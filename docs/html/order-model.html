@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>weshop数据模型</title>
+    <link type="text/css" rel="stylesheet" href="assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><h1 id="weshop数据模型"><a class="header-link" href="#weshop数据模型"></a>weshop数据模型</h1>
+<h2 id="环境准备"><a class="header-link" href="#环境准备"></a>环境准备</h2>
+<h3 id="测试环境为："><a class="header-link" href="#测试环境为："></a>测试环境为：</h3>
+<ul class="list">
+<li>ubuntu 16.04 x64</li>
+<li>nginx 1.13</li>
+<li>mariadb 10.2</li>
+<li>php 7.2</li>
+<li>redis 4.0</li>
+<li>beanstalkd 1.10</li>
+<li>supervisor 3.2</li>
+<li>laravel 5.6</li>
+</ul>
+<p><a href="https://laravel-china.org/docs/laravel/5.6/installation">安装问题</a></p>
+<h3 id="安装的扩展："><a class="header-link" href="#安装的扩展："></a>安装的扩展：</h3>
+<ul class="list">
+<li>&quot;predis/predis&quot;: &quot;^1.1&quot; (redis 驱动)</li>
+<li>&quot;pda/pheanstalk&quot;: &quot;^3.1&quot; (heanstalkd 驱动)</li>
+<li>&quot;barryvdh/laravel-debugbar&quot;: &quot;^3.1&quot; (debug)</li>
+</ul>
+<blockquote>
+<p>不建议用 redis 作为队列驱动 <a href="https://www.zhihu.com/question/20795043">知乎讨论</a></p>
+</blockquote>
+<h2 id="数据模型"><a class="header-link" href="#数据模型"></a>数据模型</h2>
+<p>所有表主键均为 id，都包含 &#39;created_at&#39; 和 &#39;updated_at&#39; 字段，省略了用户、供应商、产品分类等表</p>
+<pre class="hljs"><code><span class="hljs-symbol">addresses:</span>        <span class="hljs-comment">// 地址表</span>
+        +country      <span class="hljs-comment">// + 表示可选，如果有“多国家”的设计有此字段</span>
+         province     <span class="hljs-comment">// 省</span>
+         city         <span class="hljs-comment">// 市</span>
+        +district     <span class="hljs-comment">// 区</span>
+        +stree        <span class="hljs-comment">// 街道</span>
+         detail       <span class="hljs-comment">// 详细</span>
+        +longitude    <span class="hljs-comment">// 经度，如果需要估算距离有此字段</span>
+        +latitude     <span class="hljs-comment">// 维度，如果需要估算距离有此字段</span>
+<span class="hljs-symbol">
+brands:</span>           <span class="hljs-comment">// 品牌表</span>
+         name         <span class="hljs-comment">// 名字</span>
+        +supplier_id  <span class="hljs-comment">// 如果有“供应商”的设计有此字段，供应商 id</span>
+<span class="hljs-symbol">
+storages:</span>       <span class="hljs-comment">// 仓库表</span>
+         name
+        -address_id <span class="hljs-comment">// - 表示外键，仓库 id</span>
+<span class="hljs-symbol">
+products:</span>       <span class="hljs-comment">// 产品表</span>
+         name
+        -brand_id
+        -storage_id
+         stock      <span class="hljs-comment">// 库存</span>
+         price      <span class="hljs-comment">//单价</span>
+<span class="hljs-symbol">
+carts:</span>              <span class="hljs-comment">// 购物车表</span>
+        -product_id
+         product_name   <span class="hljs-comment">// 产品名副本</span>
+         product_price  <span class="hljs-comment">// 加入购物车时的单价</span>
+         number         <span class="hljs-comment">// 加入的数量</span>
+<span class="hljs-symbol">
+orders:</span>               <span class="hljs-comment">// 订单表</span>
+        -user_id          <span class="hljs-comment">// 下单用户</span>
+        -user_address_id  <span class="hljs-comment">// 收货地址</span>
+        -payment_id       <span class="hljs-comment">// 付款单 id</span>
+        -shipment_id      <span class="hljs-comment">// 物流单 id</span>
+        -refund_id        <span class="hljs-comment">// 退款退货单 id</span>
+        +coupon_id        <span class="hljs-comment">// 优惠券</span>
+        +tax_id           <span class="hljs-comment">// 税</span>
+        +admin_id         <span class="hljs-comment">// 跟进员</span>
+         active           <span class="hljs-comment">// 是否可用</span>
+<span class="hljs-symbol">
+order_item:</span>        <span class="hljs-comment">// 订单条目表</span>
+        -order_id
+         product_name
+         brand_name
+         storage_name
+         number
+         price
+        +product_id    <span class="hljs-comment">// 如果需要在订单页跳转到商品页有此字段</span>
+        -storage_id
+<span class="hljs-symbol">
+payments:</span>        <span class="hljs-comment">// 付款单表</span>
+         status      <span class="hljs-comment">// 付款状态</span>
+         pay_time    <span class="hljs-comment">// 付款时间</span>
+<span class="hljs-symbol">
+shipments:</span>         <span class="hljs-comment">// 物流单表</span>
+         status        <span class="hljs-comment">// 物流状态      </span>
+<span class="hljs-symbol">
+shipment_item:</span>        <span class="hljs-comment">// 物流条目表</span>
+        -shipment_id
+         ship_no          <span class="hljs-comment">// 物流单号</span>
+        -from_address_id
+        -to_address_id
+        +cartage          <span class="hljs-comment">// 运费</span>
+<span class="hljs-symbol">
+pay_refunds:</span>           <span class="hljs-comment">// 退款表</span>
+        -order_item_id
+         type              <span class="hljs-comment">// 退款或退货</span>
+         status
+         user_status       <span class="hljs-comment">// 用户发起或取消</span>
+         shop_status       <span class="hljs-comment">// 商家同意或驳回</span>
+         user_product_time <span class="hljs-comment">// 用户确认退货时间</span>
+         shop_prodcut_time <span class="hljs-comment">// 商家确认退货时间</span>
+         shop_pay_time     <span class="hljs-comment">// 商家确认退款时间</span>
+         user_pay_time     <span class="hljs-comment">// 用户确认退款时间</span></code></pre>    </article>
+  </body>
+</html>

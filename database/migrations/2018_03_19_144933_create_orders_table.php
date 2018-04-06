@@ -23,13 +23,15 @@ class CreateOrdersTable extends Migration
                 ->comment("优惠券");
             $table->unsignedInteger("tax_id")->nullable()
                 ->comment("税");
+            $table->unsignedTinyInteger("status")
+                ->default(0)->comment("订单状态:0-未处理，1-处理中,2-完成,3-异常结束");
             $table->unsignedTinyInteger("payment_status")
                 ->default(0)->comment("付款状态:0-未付款,1-部分付款,2-已付款,3-退款");
             $table->unsignedTinyInteger("shipment_status")
-                ->default(0)->comment("发货状态：0-未发货，1-部分发货，2-发货完成,3-确认收货");
+                ->default(0)->comment("发货状态：0-未发货,1-部分发货,2-发货完成,3-确认收货");
+            $table->unsignedTinyInteger("refund_status")
+                ->default(0)->comment("退货状态:0-未退货,1-申请退货,2-退货中,3-确认退货");
             $table->boolean("active")->default(true);
-            $table->unsignedTinyInteger("status")
-                ->default(0)->comment("订单状态:0-未处理，1-取消，2-处理中,3-完成");
             $table->unsignedInteger("admin_id")->nullable();
             $table->timestamps();
             $table->foreign("user_id")->references("id")->on("shop_users");
