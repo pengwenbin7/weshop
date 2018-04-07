@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    <title>weshop订单状态分析</title>
+    <title>weshop订单状态</title>
     <link type="text/css" rel="stylesheet" href="assets/css/github-markdown.css">
     <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css">
     <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
   </head>
   <body>
-    <article class="markdown-body"><h1 id="weshop订单状态分析"><a class="header-link" href="#weshop订单状态分析"></a>weshop订单状态分析</h1>
+    <article class="markdown-body"><h1 id="weshop订单状态"><a class="header-link" href="#weshop订单状态"></a>weshop订单状态</h1>
 <h2 id="字段"><a class="header-link" href="#字段"></a>字段</h2>
 <ul class="list">
 <li>status 订单状态</li>
@@ -43,7 +43,7 @@
 </ul>
 <blockquote>
 <p>1 - 退货中</p>
-<p>2 - 取消退货</p>
+<p>2 - 等待退货</p>
 <p>3 - 退货完成</p>
 </blockquote>
 <ul class="list">
@@ -222,8 +222,8 @@
 <td class="right">1</td>
 <td class="right">1</td>
 <td class="left">取消退货</td>
-<td class="left">确认退货</td>
-<td class="left">超期自动确认退货/锁定订单</td>
+<td class="left">同意退货</td>
+<td class="left">自动同意退货</td>
 </tr>
 
 
@@ -232,11 +232,24 @@
 <td class="right">2</td>
 <td class="right">2</td>
 <td class="right">3</td>
-<td class="right">2</td>
+<td class="right">0</td>
 <td class="right">0</td>
 <td class="left">null</td>
 <td class="left">null</td>
 <td class="left">null</td>
+</tr>
+
+
+<tr>
+<td class="left">等待退货</td>
+<td class="right">1</td>
+<td class="right">2</td>
+<td class="right">3</td>
+<td class="right">2</td>
+<td class="right">1</td>
+<td class="left">取消退货/生成退货单</td>
+<td class="left">null</td>
+<td class="left">自动取消退货</td>
 </tr>
 
 
@@ -249,7 +262,7 @@
 <td class="right">0</td>
 <td class="left">null</td>
 <td class="left">null</td>
-<td class="left">自动生成退货单</td>
+<td class="left">自动</td>
 </tr>
 </tbody>
 </table>
@@ -258,6 +271,7 @@
 <li>仅在订单未开始处理(status = 0)的情况下用户/系统可以另其作废</li>
 <li>仅在订单已付款(pay_status = 2)且未发货(ship_status = 0)的情况下，用户可以退款</li>
 <li>仅在订单作废(status = 3)且未付款(pay_status = 0)的情况下，用户可以删除</li>
+<li>发起退货后再取消时，订单进入正常结束状态并锁定</li>
 </ul>
     </article>
   </body>

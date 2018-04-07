@@ -1,4 +1,4 @@
-# weshop订单状态分析
+# weshop订单状态
 
 ## 字段
 
@@ -36,7 +36,7 @@
 
 > 1 - 退货中
 > 
-> 2 - 取消退货
+> 2 - 等待退货
 > 
 > 3 - 退货完成
 
@@ -215,8 +215,8 @@
 <td class="right">1</td>
 <td class="right">1</td>
 <td class="left">取消退货</td>
-<td class="left">确认退货</td>
-<td class="left">超期自动确认退货/锁定订单</td>
+<td class="left">同意退货</td>
+<td class="left">自动同意退货</td>
 </tr>
 
 
@@ -225,11 +225,24 @@
 <td class="right">2</td>
 <td class="right">2</td>
 <td class="right">3</td>
-<td class="right">2</td>
+<td class="right">0</td>
 <td class="right">0</td>
 <td class="left">null</td>
 <td class="left">null</td>
 <td class="left">null</td>
+</tr>
+
+
+<tr>
+<td class="left">等待退货</td>
+<td class="right">1</td>
+<td class="right">2</td>
+<td class="right">3</td>
+<td class="right">2</td>
+<td class="right">1</td>
+<td class="left">取消退货/生成退货单</td>
+<td class="left">null</td>
+<td class="left">自动取消退货</td>
 </tr>
 
 
@@ -242,7 +255,7 @@
 <td class="right">0</td>
 <td class="left">null</td>
 <td class="left">null</td>
-<td class="left">自动生成退货单</td>
+<td class="left">自动</td>
 </tr>
 </tbody>
 </table>
@@ -250,3 +263,4 @@
 -   仅在订单未开始处理(status = 0)的情况下用户/系统可以另其作废
 -   仅在订单已付款(pay\_status = 2)且未发货(ship\_status = 0)的情况下，用户可以退款
 -   仅在订单作废(status = 3)且未付款(pay\_status = 0)的情况下，用户可以删除
+-   发起退货后再取消时，订单进入正常结束状态并锁定

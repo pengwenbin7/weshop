@@ -11,7 +11,6 @@
     <p>content:<input name="content" type="number" value="{{ $product->content }}" required></p>
     <p>measure_unit:<input name="measure_unit" type="text" value="{{ $product->measure_unit }}" required></p>
     <p>packing_unit:<input name="packing_unit" type="text" value="{{ $product->packing_unit }}" required></p>
-    <p>ton_sell:<input name="ton_sell" type="number" value="{{ $product->ton_sell }}" required></p>
     <p>sort_order:<input name="sort_order" type="number" value="{{ $product->sort_order }}" required></p>
     @submit
   </form>

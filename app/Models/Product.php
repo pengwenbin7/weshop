@@ -38,6 +38,11 @@ class Product extends Model
         return $this->belongsToMany("App\Models\Category", "product_categories");
     }
 
+    public function category()
+    {
+        return $this->categories()->where("is_primary", "=", 1)->first();
+    }
+
     public function storage()
     {
         return $this->belongsTo("App\Models\Storage");

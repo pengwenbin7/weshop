@@ -25,7 +25,7 @@ class CreatePaymentsTable extends Migration
             $table->timestamp("pay_time")->nullable();
             $table->timestamps();
             $table->foreign("order_id")->references("id")
-                ->on("orders")->onDelete("set null");
+                ->on("orders")->onDelete("cascade");
             $table->foreign("channel_id")->references("id")->on("pay_channels");
         });
     }

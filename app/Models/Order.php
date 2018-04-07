@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    // 订单状态
+    const ORDER_STATUS_WAIT = 0; // 待处理
+    const ORDER_STATUS_DOING = 1; // 处理中
+    const ORDER_STATUS_DONE = 2; // 完成
+    const ORDER_STATUS_IDL = 3; // 无效
     // 付款状态
     const PAY_STATUS_WAIT = 0; // 待付款
     const PAY_STATUS_PART = 1; // 部分付款
@@ -16,12 +21,12 @@ class Order extends Model
     const SHIP_STATUS_PART = 1;  // 部分发货
     const SHIP_STATUS_DONE = 2;  // 发货完成
     const SHIP_STATUS_SURE = 3;  // 确认收货
-    // 订单状态
-    const ORDER_STATUS_WAIT = 0; // 待处理
-    const ORDER_STATUS_CANCLE = 1; // 取消
-    const ORDER_STATUS_DOING = 2; // 处理中
-    const ORDER_STATUS_DONE = 3; // 完成
-
+    // 退货状态
+    const REFUND_STATUS_NULL = 0;  // 未申请
+    const REFUND_STATUS_ASK = 1;  // 申请退货
+    const REFUND_STATUS_DOING = 2; // 等待退货
+    const REFUDN_STATUS_DONE = 3;  // 已退货
+    
     public function orderItems()
     {
         return $this->hasMany("App\Models\OrderItem");

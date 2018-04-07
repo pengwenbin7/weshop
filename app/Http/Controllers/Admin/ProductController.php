@@ -49,16 +49,20 @@ class ProductController extends Controller
         $product->content = $request->content;
         $product->measure_unit = $request->measure_unit;
         $product->packing_unit = $request->packing_unit;
-        $product->ton_sell = $request->input("ton_sell", 1);
         $product->sort_order = $request->input("sort_order", 1000);
         $s0 = $product->save();
 
         // save product price
         $price = new ProductPrice();
+        
+        $ton_price = $product->ton_sell ?
+                   (1000 / $product->content) * $requst->unit_price :
+                   null;
+            
         $price->fill([
             "product_id" => $product->id,
-            "unit_price" => $request->input("unit_price"),
-            "ton_price" => $request->input("ton_price", null),
+            "unit_price" => $request->unit_price,
+            "ton_price" => $ton_price,
         ]);
         $s1 = $price->save();
 
@@ -124,6 +128,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        // update product
         $product->locale_id = $request->input("locale_id", 1);
         $product->name = $request->name;
         $product->brand_id = $request->brand_id;
@@ -132,9 +137,44 @@ class ProductController extends Controller
         $product->content = $request->content;
         $product->measure_unit = $request->measure_unit;
         $product->packing_unit = $request->packing_unit;
-        $product->ton_sell = $request->input("ton_sell", 1);
         $product->sort_order = $request->input("sort_order", 1000);
-        return ["update" => $product->save()];
+        $s0 = $product->save();
+
+        // save product price
+        if ($request->unit_price != $prodcut->price()->unit_price) {
+            $price = new ProductPrice();
+            $ton_price = $product->ton_sell ?
+                       (1000 / $product->content) * $requst->unit_price :
+                       null;
+            $price->fill([
+                "product_id" => $product->id,
+                "unit_price" => $request->unit_price,
+                "ton_price" => $ton_price,
+            ]);
+            $s1 = $price->save();
+            event(new ProductPriceChangedEvent($prodcut));
+        } else {
+            $s1 = true;
+        }
+
+        // 以下过程未做判断，有些是非必须的
+        // save product primary category
+        $category = $product->category();
+        $category->category_id = $request->category_id;
+        $s2 = $category->save();
+        
+        // save product variable
+        $variable = $product->variable;
+        $variable->stock = $request->stock;
+        $s3 = $variable->save();
+               
+        // save product detail
+        $detail = $product->detail;
+        $detail->content = $request->input("detail", null);
+        $detail->save();
+        $s4 = $detail->save();
+
+        return ["update" => $s0 & $s1 & $s2 & $s3 & $s4];
     }
 
     /**
