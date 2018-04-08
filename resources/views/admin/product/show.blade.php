@@ -9,7 +9,7 @@
   <p>content:{{ $product->content }}</p>
   <p>measure_unit:{{ $product->measure_unit }}</p>
   <p>packing_unit:{{ $product->packing_unit }}</p>
-  @if ($product->ton_sell)
+  @if ($product->is_ton)
     <p>last_ton_price: {{ $product->price()->ton_price }}</p>
   @else
     <p>last_unit_price: {{ $product->price()->unit_price }}</p>

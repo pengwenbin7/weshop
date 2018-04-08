@@ -14,11 +14,11 @@ class CreateAdminUsersTable extends Migration
     {
         Schema::create('admin_users', function (Blueprint $table) {
             $table->increments("id");
-            $table->string("name")->unique();
-            $table->string("email")->unique()->nullable();
-            $table->string("wechat_openid")->unique()->nullable();
-            $table->string("wework_openid")->unique()->nullable();
-            $table->string("phone")->unique()->nullable();
+            $table->string("name", 100)->unique();
+            $table->string("email", 100)->unique()->nullable();
+            $table->string("wechat_openid", 100)->unique()->nullable();
+            $table->string("wework_openid", 100)->unique()->nullable();
+            $table->string("phone", 100)->unique()->nullable();
             $table->string("password");
             $table->string("rec_code");
             $table->softDeletes();

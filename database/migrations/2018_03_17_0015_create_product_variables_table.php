@@ -16,6 +16,7 @@ class CreateProductVariablesTable extends Migration
         Schema::create('product_variables', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger("product_id");
+            $table->unsignedDecimal("unit_price")->comment("当前单价");
             $table->unsignedInteger("stock")->default(0)->comment("库存");
             $table->unsignedInteger("click")->default(0)->comment("点击");
             $table->unsignedInteger("star")->default(0)->comment("关注");

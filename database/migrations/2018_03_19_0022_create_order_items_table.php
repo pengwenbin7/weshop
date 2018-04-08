@@ -17,7 +17,7 @@ class CreateOrderItemsTable extends Migration
             $table->increments("id");
             $table->unsignedInteger("order_id");
             $table->unsignedInteger("product_id"); // 这里不使用外键
-            $table->boolean("ton_sell")->default(false);
+            $table->boolean("is_ton")->default(false);
             $table->unsignedInteger("number");
             $table->unsignedDecimal("price", 10, 2);
             // 以下为快照

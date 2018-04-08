@@ -19,7 +19,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return Product::with(["variable", "detail", "prices"])
+            ->get();
     }
 
     /**
@@ -54,15 +55,9 @@ class ProductController extends Controller
 
         // save product price
         $price = new ProductPrice();
-        
-        $ton_price = $product->ton_sell ?
-                   (1000 / $product->content) * $requst->unit_price :
-                   null;
-            
         $price->fill([
             "product_id" => $product->id,
             "unit_price" => $request->unit_price,
-            "ton_price" => $ton_price,
         ]);
         $s1 = $price->save();
 
@@ -71,7 +66,7 @@ class ProductController extends Controller
         $category->fill([
             "product_id" => $product->id,
             "category_id" => $request->input("category_id"),
-            "if_primary" => 1,
+            "is_primary" => 1,
         ]);
         $s2 = $category->save();
         
@@ -79,6 +74,7 @@ class ProductController extends Controller
         $variable = new ProductVariable();
         $variable->fill([
             "product_id" => $product->id,
+            "unit_price" => $request->unit_price,
             "stock" => $request->input("stock", 0),
         ]);
         $s3 = $variable->save();
@@ -91,7 +87,7 @@ class ProductController extends Controller
         ]);
         $detail->save();
         $s4 = $detail->save();
-
+        
         return [
             "store" => ($s0 & $s1 & $s2 & $s3 & $s4),
         ];
@@ -143,13 +139,9 @@ class ProductController extends Controller
         // save product price
         if ($request->unit_price != $prodcut->price()->unit_price) {
             $price = new ProductPrice();
-            $ton_price = $product->ton_sell ?
-                       (1000 / $product->content) * $requst->unit_price :
-                       null;
             $price->fill([
                 "product_id" => $product->id,
                 "unit_price" => $request->unit_price,
-                "ton_price" => $ton_price,
             ]);
             $s1 = $price->save();
             event(new ProductPriceChangedEvent($prodcut));
@@ -166,6 +158,7 @@ class ProductController extends Controller
         // save product variable
         $variable = $product->variable;
         $variable->stock = $request->stock;
+        $variable->unit_price = $request->unit_price;
         $s3 = $variable->save();
                
         // save product detail

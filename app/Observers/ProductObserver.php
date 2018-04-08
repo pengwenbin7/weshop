@@ -9,10 +9,10 @@ class ProductObserver
     public function saving(Product $product)
     {
         if ($product->content <= 0) {
-            throw new \Exception("product content can't less than 0");
+            throw new \Exception("product content must more than 0");
         }
-        $product->ton_sell = ($product->measure_unit == "kg") &&
-                          (1000 % $product->content == 0);
+        $product->is_ton = ($product->measure_unit == "kg") &&
+                        (1000 % $product->content == 0);
         $arr = [
             $product->locale_id,
             $product->name,

@@ -17,7 +17,7 @@ class CreateProductCategoriesTable extends Migration
             $table->increments("id");
             $table->unsignedInteger("product_id");
             $table->unsignedInteger("category_id");
-            $table->boolean("if_primary")->default(false);
+            $table->boolean("is_primary")->default(false);
             $table->timestamps();
             $table->unique(["product_id", "category_id"]);
             $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade");

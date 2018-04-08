@@ -19,7 +19,7 @@ class CreateCartsTable extends Migration
             $table->unsignedInteger("product_id")->nullable();
             $table->string("product_name", 100);
             $table->string("product_model", 100);
-            $table->boolean("ton_sell")->default(false)
+            $table->boolean("is_ton")->default(false)
                 ->comment("是否按吨购买");
             $table->unsignedInteger("number");
             $table->unsignedDecimal("init_price");

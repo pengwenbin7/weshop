@@ -12,7 +12,7 @@ class CartObserver
         $product = Product::find($cart->product_id);
         $cart->product_name = $product->name;
         $cart->product_model = $product->model;
-        $cart->init_price = $cart->ton_sell ?
+        $cart->init_price = $cart->is_ton ?
                          $product->price()->ton_price * $cart->number :
                          $product->price()->unit_price * $cart->number;
     }

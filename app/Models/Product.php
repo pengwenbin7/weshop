@@ -53,11 +53,6 @@ class Product extends Model
         return $this->hasMany("App\Models\ProductPrice");
     }
 
-    public function price()
-    {
-        return $this->prices()->orderBy("created_at", "desc")->first();
-    }
-
     public function detail()
     {
         return $this->hasOne("App\Models\ProductDetail");

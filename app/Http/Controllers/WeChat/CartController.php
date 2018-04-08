@@ -11,7 +11,8 @@ use Auth;
 class CartController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the cart,
+     * and generate order.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,7 +23,7 @@ class CartController extends Controller
                ->with("product")->get();
         return $carts;
     }
-
+    
     /**
      * Adding a product to cart.
      *
@@ -34,9 +35,9 @@ class CartController extends Controller
         $cart = new Cart();
         $cart->user_id = Auth::user()->id;
         $cart->product_id = $request->product_id;
-        $cart->ton_sell = $request->ton_sell;
+        $cart->is_ton = $request->is_ton;
         $cart->number = $request->number;
-        return ["store" => $cart->save()];
+        return redirect()->route("wechat.order.index");
     }
 
     /**

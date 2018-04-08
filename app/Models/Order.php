@@ -61,5 +61,9 @@ class Order extends Model
     {
         return $this->belgonsTo("App\Models\Tax");
     }
-    
+
+    public function canRemove()
+    {
+        return true;
+    }
 }
