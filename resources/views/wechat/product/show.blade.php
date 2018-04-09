@@ -17,10 +17,9 @@
     <p>stock: {{ $product->variable->stock }}</p>
     <p>buy: {{ $product->variable->buy }}</p>
     <div>
-      <input v-model="number" type="number" min="1" value="1" step="1">
-      <button class="add" data-number=" @{{ number }} ">add to cart</button>
-      <input v-model="message">
-      @{{ message }}
+      <input v-model="number" type="number" min="1" step="1">
+      <button v-on:click="addToCart">add to cart</button>
+      <button v-on:click="directlyBuy">direct buy</button>
     </div>
     <p>detail: {{ $product->detail->content }}</p>
     history prices :
@@ -40,7 +39,32 @@
     el: "#app",
     data: {
       number: 1,
-      message: "hello world"
+      is_ton: 0
+    },
+    methods: {
+      addToCart: function () {
+	var params = {
+	  product_id: "{{ $product->id }}",
+	  number: this.number,
+	  is_ton: this.is_ton
+	};
+	axios.post("{{ route("wechat.cart.store") }}", params)
+	  .then(function (res) {
+	    console.log(res.data);
+	  });
+      },
+      directlyBuy: function () {
+	console.log("BUY");
+	var params = {
+	  product_id: "{{ $product->id }}",
+	  number: this.number,
+	  is_ton: this.is_ton
+	};
+	location.assign("{{ route("wechat.order.create") }}" +
+	  "?product_id=" + {{ $product->id }} + 
+	  "&number=" + this.number +
+	  "&is_ton=" + this.is_ton);
+      }
     }
   });
   </script>

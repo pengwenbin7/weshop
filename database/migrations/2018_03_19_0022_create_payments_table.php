@@ -20,12 +20,14 @@ class CreatePaymentsTable extends Migration
             $table->unsignedDecimal("total", 10, 2)->comment("总价");
             $table->unsignedDecimal("tax", 10, 2)->default(0)->comment("税");
             $table->unsignedDecimal("freight", 10, 2)->default(0)->comment("运费");
-            $table->unsignedDecimal("coupon", 10, 2)->default(0)->comment("优惠");
+            $table->unsignedInteger("coupon_id")->nullable()->comment("优惠券");
             $table->unsignedDecimal("pay", 10, 2)->comment("应付价");
             $table->timestamp("pay_time")->nullable();
             $table->timestamps();
             $table->foreign("order_id")->references("id")
                 ->on("orders")->onDelete("cascade");
+            $table->foreign("coupon_id")->references("id")
+                ->on("coupons");
             $table->foreign("channel_id")->references("id")->on("pay_channels");
         });
     }

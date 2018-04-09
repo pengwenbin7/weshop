@@ -37,7 +37,7 @@ class CartController extends Controller
         $cart->product_id = $request->product_id;
         $cart->is_ton = $request->is_ton;
         $cart->number = $request->number;
-        return redirect()->route("wechat.order.index");
+        return ["store" => $cart->save()];
     }
 
     /**

@@ -62,8 +62,19 @@ class Order extends Model
         return $this->belgonsTo("App\Models\Tax");
     }
 
+    public function payment()
+    {
+        return $this->hasOne("App\Models\Payment");
+    }
+
     public function canRemove()
     {
         return true;
+    }
+
+    // 运费计算
+    public function countFreight()
+    {
+        return 0;
     }
 }

@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    //
+    public function coupon()
+    {
+        return $this->belongsTo("App\Models\Coupon");
+    }
+
+    public function order()
+    {
+        return $this->belongsTo("App\Models\Order");
+    }
 }

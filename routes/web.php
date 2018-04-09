@@ -17,6 +17,7 @@ Route::get("/", function () {
 });
 Route::get("/login/{id}", function ($id) {
     auth()->loginUsingId($id);
+    return "user id: " . auth()->user()->id;
 });
 
 /* start: remembering move to wechat.php */
@@ -24,10 +25,28 @@ Route::get("product", "WeChat\ProductController@index")
     ->name("wechat.product.index");
 Route::get("product/{product}", "WeChat\ProductController@show")
     ->name("wechat.product.show");
-Route::get("cart", "WeChat\CartController@index")
-    ->name("wechat.cart.index");
-Route::post("cart", "WeChat\CartController@store")
-    ->name("wechat.cart.store");
-Route::put("cart/{cart}", "WeChat\CartController@update")
-    ->name("wechat.cart.update");
+
+Route::resource("cart", "WeChat\CartController", [
+    "names" => [
+        "index" => "wechat.cart.index",
+        "create" => "wechat.cart.create",
+        "store" => "wechat.cart.store",        
+        "update" => "wechat.cart.update",
+        "destroy" => "wechat.cart.destroy",
+    ],
+    "except" => ["edit", "show"],
+]);
+
+Route::resource("order", "WeChat\OrderController", [
+    "names" => [
+        "index" => "wechat.order.index",
+        "create" => "wechat.order.create",
+        "store" => "wechat.order.store",
+        "edit" => "wechat.order.edit",
+        "update" => "wechat.order.update",
+        "destroy" => "wechat.order.destroy",
+    ],
+    "except" => ["show"],
+]);
+
 /* end: remembering move to wechat.php */
