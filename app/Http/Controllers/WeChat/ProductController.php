@@ -11,7 +11,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $condition = null;
-        $products = Product::with(["brand", "storage"])->paginate(2);
+        $products = Product::with(["brand", "storage", "variable"])->paginate(2);
         return view("wechat.product.index", ["products" => $products]);
     }
 
