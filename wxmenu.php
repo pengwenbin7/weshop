@@ -4,7 +4,7 @@ $buttons = [
     [
         "type" => "view",
         "name" => "home",
-        "url"  => "http://weshop.mafkj.com"
+        "url"  => "http://45.78.22.197"
 
     ],
     [

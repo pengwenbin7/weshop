@@ -15,6 +15,7 @@ class WeChatAuthController extends Controller
     {
         $app = EasyWeChat::officialAccount();
         $user = $app->oauth->user();
+        return "HELLO: {$user->id}";
         // auto register user
         try {
             $shopUser = ShopUser::where("openid", "=", $user->id)->firstOrFail();
@@ -29,7 +30,4 @@ class WeChatAuthController extends Controller
         Auth::login($shopUser, true);
         return redirect()->route("wechat.index");
     }
-
-
-
 }

@@ -1,7 +1,7 @@
 @extends("layouts.wechat")
 
 @section("content")
-  <p><a href="{{ route("wechat.index") }}">link</a></p>
+  <p>user_id: {{ session("wechat_user")->id }}</p>
   <p><button id="share">分享到朋友圈</button></p>
   <p><button id="scan">scan qr</button></p>
   <p><button id="location">get location</button></p>

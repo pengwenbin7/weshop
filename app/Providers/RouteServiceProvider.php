@@ -40,7 +40,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
 
         $this->mapWechatRoutes();
-        $this->mapAdminRoutes();        
+        $this->mapAdminRoutes();
+        $this->mapNoMiddlewareRoutes();
     }
 
     /**
@@ -80,5 +81,11 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware(["admin", "web"])
             ->namespace($this->namespace)
             ->group(base_path('routes/admin.php'));
+    }
+
+    protected function mapNoMiddlewareRoutes()
+    {
+        Route::namespace($this->namespace)
+            ->group(base_path('routes/noMiddleware.php'));
     }
 }
