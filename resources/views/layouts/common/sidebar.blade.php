@@ -3,47 +3,88 @@
   <!-- sidebar: style can be found in sidebar.less -->
   <section class="sidebar">
 
-    <!-- Sidebar user panel (optional) -->
-    <div class="user-panel">
-      <div class="pull-left image">
-	<img src="{{ asset("assets/img/user2-160x160.jpg") }}" class="img-circle" alt="User Image">
-      </div>
-      <div class="pull-left info">
-	<p>Name</p>
-	<!-- Status -->
-	<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-      </div>
-    </div>
-
-    <!-- search form (Optional) -->
-    <form action="#" method="get" class="sidebar-form">
-      <div class="input-group">
-	<input type="text" name="q" class="form-control" placeholder="Search...">
-	<span class="input-group-btn">
-	  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-          </button>
-        </span>
-      </div>
-    </form>
-    <!-- /.search form -->
-
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu" data-widget="tree">
-      <li class="header">HEADER</li>
-      <!-- Optionally, you can add icons to the links -->
-      <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-      <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-      <li class="treeview">
-	<a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-	  <span class="pull-right-container">
-	    <i class="fa fa-angle-left pull-right"></i>
-          </span>
-        </a>
-	<ul class="treeview-menu">
-	  <li><a href="#">Link in level 2</a></li>
-	  <li><a href="#">Link in level 2</a></li>
-        </ul>
+      <li class="header">产品</li>
+      <li>
+	<a href="{{ route("admin.brand.index") }}">
+	  品牌管理
+	</a>
       </li>
+      <li>
+	<a href="{{ route("admin.storage.index") }}">
+	  仓库管理
+	</a>
+      </li>
+      <li>
+	<a href="{{ route("admin.category.index") }}">
+	  分类管理
+	</a>
+      </li>
+      <li>
+	<a href="{{ route("admin.product.index") }}">
+	  产品管理
+	</a>
+      </li>
+
+      <li class="header">订单</li>
+      <li>
+	<a href="{{ route("admin.order.index") }}">
+	  所有订单
+	</a>
+      </li>
+      <li>
+	<a href="#">
+	  未付款订单
+	</a>
+      </li>
+      <li>
+	<a href="#">
+	  待发货订单
+	</a>
+      </li>
+      <li>
+	<a href="#">
+	  已完成订单
+	</a>
+      </li>
+      <li>
+	<a href="#">
+	  退货订单
+	</a>
+      </li>
+
+      <li class="header">用户</li>
+      <li>
+	<a href="#">
+	  商城用户
+	</a>
+      </li>
+      <li>
+	<a href="#">
+	  管理员
+	</a>
+      </li>
+      <li>
+	<a href="#">
+	  供应商
+	</a>
+      </li>
+
+      <li class="header">报表</li>
+      <li><a href="#">用户</a></li>
+      <li><a href="#">销售</a></li>
+      <li><a href="#">产品</a></li>
+      <li><a href="#">品牌</a></li>
+
+      <li class="header">系统设置</li>
+      <li>
+	<a href="#">权限</a>
+      </li>
+      <li>
+	<a href="#">系统参数</a>
+      </li>
+
     </ul>
     <!-- /.sidebar-menu -->
   </section>

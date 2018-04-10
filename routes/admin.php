@@ -54,3 +54,16 @@ Route::resource("product", "Admin\ProductController", [
         "destroy" => "admin.product.destroy",
     ],
 ]);
+
+Route::resource("order", "Admin\OrderController", [
+    "names" => [
+        "index" => "admin.order.index",
+        "show" => "admin.order.show",
+        "create" => "admin.order.create",
+        "edit" => "admin.order.edit",
+        "store" => "admin.order.store",
+        "update" => "admin.order.update",
+        "destroy" => "admin.order.destroy",
+    ],
+]);
+    
