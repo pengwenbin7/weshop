@@ -69,7 +69,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWechatRoutes()
     {
         Route::prefix("wechat")
-            ->middleware(["web"])
+            ->middleware("wechat")
             ->namespace($this->namespace)
             ->group(base_path("routes/wechat.php"));
     }
@@ -82,7 +82,7 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(base_path('routes/admin.php'));
     }
-
+    
     protected function mapNoMiddlewareRoutes()
     {
         Route::namespace($this->namespace)

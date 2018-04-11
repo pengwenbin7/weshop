@@ -1,9 +1,7 @@
 <?php
 
-Route::middleware("auth.wechat")->group(function () {
-    Route::get('/', "WeChat\IndexController@index")
-        ->name("wechat.index");
-});
+Route::get('/', "WeChat\IndexController@index")
+    ->name("wechat.index");
 
 Route::get("qrcode", "WeChat\QrCodeController@index")
     ->name("wechat.qrcode");

@@ -9,7 +9,7 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        $user = session("wechat_user");
+        return ["N" => "nice"];
         
         $interfaces = [
             "onMenuShareTimeline", "onMenuShareAppMessage",

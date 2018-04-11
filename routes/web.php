@@ -11,20 +11,22 @@
 |
 */
 
-//Route::get("/", "WeChat\IndexController@index")->name("index");
-Route::get("/", function () {
-    return redirect()->route("wechat.index");
+Route::get("version", function () {
+    return app()->version();
 });
+
 Route::get("/login/{id}", function ($id) {
     auth()->loginUsingId($id);
     return "user id: " . auth()->user()->id;
 });
 
 /* start: remembering move to wechat.php */
+/*
 Route::get("product", "WeChat\ProductController@index")
     ->name("wechat.product.index");
 Route::get("product/{product}", "WeChat\ProductController@show")
     ->name("wechat.product.show");
+*/
 
 Route::resource("cart", "WeChat\CartController", [
     "names" => [
