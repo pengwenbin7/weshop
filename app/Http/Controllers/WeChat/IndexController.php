@@ -9,8 +9,6 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        return ["N" => "nice"];
-        
         $interfaces = [
             "onMenuShareTimeline", "onMenuShareAppMessage",
             "onMenuShareQQ", "scanQRCode",
@@ -19,7 +17,7 @@ class IndexController extends Controller
             "uploadImage", "downloadImage",
         ];
         return view("wechat.index", [
-            "user" => $user,
+            "user" => auth()->user(),
             "interfaces" => $interfaces,
         ]);
     }

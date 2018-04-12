@@ -4,8 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Cache;
-use EasyWeChat;
-use App\Models\ShopUser;
 
 class WeChatAuth
 {
@@ -18,30 +16,31 @@ class WeChatAuth
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        /**
+         * 因为　Laravel 不能直接缓存　Request,
+         * oauth授权抛弃了　Request 携带的除了 GET 参数以外的信息
+         */
         if (auth($guard)->check()) {
             return $next($request);
         } else {
-            if ($request->has("oauth_token")) {
-                $openid = Cache::get($request->oauth_token);
-                $user = ShopUser::where("openid",
-                                        "=",
-                                        $openid
-                )->first();
-                auth()->login($user);
+            if ($request->has("uid")) {
+                auth()->loginUsingId($request->uid);
                 return $next($request);
             }
-            
-            $token = str_random(10) . time();
-            $data["url"] = $request->url();
-            $data["query"] = $request->query();
-            Cache::put($token, $data, 5);
-            $appid = env("WECHAT_OFFICIAL_ACCOUNT_APPID");
-            $callback = urlencode(
-                env("WECHAT_OFFICIAL_ACCOUNT_OAUTH_CALLBACK") .
-                "?oauth_token={$token}"
-            );
-            $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$callback}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
-            return redirect($url);
+            if ($request->has("oauth_token")) {
+                $user = Cache::get($request->oauth_token);
+                auth()->login($user);
+                return $next($request);
+            } else {
+                $target = $request->fullUrl();
+                $appid = env("WECHAT_OFFICIAL_ACCOUNT_APPID");
+                $callback = urlencode(
+                    env("WECHAT_OFFICIAL_ACCOUNT_OAUTH_CALLBACK") .
+                    "?target={$target}"
+                );
+                $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$callback}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+                return redirect($url);
+            }
         }
     }
 }

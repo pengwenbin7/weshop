@@ -36,7 +36,16 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $address = new Address();
+        $address->fill([
+            "contact_name" => $request->contact_name,
+            "contact_tel" => $request->contact_tel,
+            "province" => $request->province,
+            "city" => $request->city,
+            "detail" => $request->detail,
+            "city_adcode" => $request->city_adcode,
+        ]);
+        return $address->save();
     }
 
     /**

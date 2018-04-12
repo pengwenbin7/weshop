@@ -12,6 +12,9 @@
 */
 
 Route::get("version", function () {
+    if (auth()->check()) {
+        echo auth()->user()->openid;
+    }
     return app()->version();
 });
 

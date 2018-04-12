@@ -24,11 +24,13 @@
     </p>
     <p><button>下载合同</button></p>
     付款方式：
-    <ul>
-    @foreach ($payChannels as $channel)
-      <li>{{ $channel->id }} @@ {{ $channel->name }}</li>
-    @endforeach
-    </ul>
+    <select v-model="channel_id">
+      @foreach ($payChannels as $channel)
+	<option value="{{ $channel->id }}">
+	  {{ $channel->name }}
+	</option>
+      @endforeach
+    </select>
     
     <button v-on:click="pay">pay</button>
   </div>
@@ -39,7 +41,9 @@
   var app = new Vue({
     el: "#app",
     data: {
-      number: {{ $number }}
+      is_ton: {{ $is_ton }},
+      number: {{ $number }},
+      channel_id: 1
     },
     methods: {
       createAddress: function () {
@@ -56,7 +60,10 @@
 	this.number = this.number + 1;
       },
       pay: function () {
-	// call wechat.order.store
+	if (this.is_ton) {
+	  this.number = this.number * 1000 / {{ $product->content }};
+	}
+	alert("number: " + this.number);
       }
     }
   });

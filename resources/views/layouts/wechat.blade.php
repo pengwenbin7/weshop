@@ -11,9 +11,14 @@
     @yield("style")
   </head>
   <body>
-
+    <nav>
+      <a href="{{ route("wechat.index") }}">index</a>
+      <a href="{{ route("wechat.product.index") }}">product</a>
+      <a href="{{ route("wechat.cart.index") }}">cart</a>
+      <a href="{{ route("wechat.home.index") }}">home</a>
+    </nav>
     @yield("content")
-
+    
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>

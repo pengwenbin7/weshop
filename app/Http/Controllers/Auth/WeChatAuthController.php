@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ShopUser;
-use EasyWeChat;
 use Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Cache;
@@ -14,13 +13,14 @@ use Log;
 class WeChatAuthController extends Controller
 {
     public function oauth(Request $request)
-    {                
+    {
         if (Cache::add("oauth_code", $request->code, 5)) {
             $openid = $this->getOpenid($request->code);
         } else {
             $openid = Cache::get("openid");
         }
-        
+
+        // 自动注册
         try {
             $shopUser = ShopUser::where("openid", "=", $openid)->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -30,15 +30,12 @@ class WeChatAuthController extends Controller
             $shopUser->save();
         }
 
-        $data = Cache::get($request->oauth_token);
-        /**
-         * 调用 Cache::forget() 后 $data["target"] 为 null,
-         * 不知道什么鬼
-         */
-        $token = str_random(40);
-        $query = array_merge(["oauth_token" => $token], $data["query"]);
-        Cache::put($token, $openid, 2);
-        $url = $data["url"] . "?" . http_build_query($query);
+        $token = str_random(40);        
+        Cache::put($token, $shopUser, 2);
+        $url = $request->target;
+        $url = str_contains($url, "?") ?
+             "{$url}&oauth_token={$token}":
+             "{$url}?oauth_token={$token}";
         return redirect($url);
     }
 

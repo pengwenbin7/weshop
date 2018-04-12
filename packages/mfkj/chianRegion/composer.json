@@ -1,0 +1,27 @@
+{
+    "name": "mfkj/chianRegion",
+    "description": "Chinese regions",
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": ">=7.0",
+        "illuminate/support": "5.*"
+    },
+    "author": {
+        "name": "pengwenbin7 ",
+        "email": "pengwenbin7@126.com"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mfkj\\ChianRegion\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mfkj\\ChianRegion\\ChianRegionServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}

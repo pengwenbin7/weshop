@@ -16,7 +16,6 @@ class CreateRegionsTable extends Migration
         Schema::create('regions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger("parent_id");
-            $table->string("citycode", 15)->nullable();
             $table->string("adcode", 9);
             $table->string("name", 32);
             $table->string("center")->nullable()->comment("经度,维度(longitude, latitude)");
