@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\ShopUser;
+use App\Models\User;
 use Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Cache;
@@ -12,6 +12,11 @@ use Log;
 
 class WeChatAuthController extends Controller
 {
+    public function login(Request $request)
+    {
+        
+    }
+    
     public function oauth(Request $request)
     {
         if (Cache::add("oauth_code", $request->code, 5)) {
@@ -22,9 +27,9 @@ class WeChatAuthController extends Controller
 
         // 自动注册
         try {
-            $shopUser = ShopUser::where("openid", "=", $openid)->firstOrFail();
+            $shopUser = User::where("openid", "=", $openid)->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            $shopUser = new ShopUser();
+            $shopUser = new User();
             $shopUser->openid = $openid;
             $shopUser->rec_code = "x"; // 这个值在监听事件中自动修改
             $shopUser->save();

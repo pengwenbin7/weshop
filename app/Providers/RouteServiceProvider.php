@@ -69,7 +69,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWechatRoutes()
     {
         Route::prefix("wechat")
-            ->middleware("wechat")
+            ->middleware(["web", "auth"])
             ->namespace($this->namespace)
             ->group(base_path("routes/wechat.php"));
     }

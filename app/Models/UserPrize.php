@@ -8,6 +8,6 @@ class UserPrize extends Model
 {
     public function user()
     {
-        return $this->belongsTo("App\Models\ShopUser");
+        return $this->belongsTo("App\Models\User");
     }
 }

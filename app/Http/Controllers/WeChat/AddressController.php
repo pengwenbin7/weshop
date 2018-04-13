@@ -4,7 +4,7 @@ namespace App\Http\Controllers\WeChat;
 
 use App\Models\Address;
 use App\Models\Region;
-use App\Models\ShopUserAddress as UserAddress;
+use App\Models\UserAddress as UserAddress;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

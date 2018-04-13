@@ -26,7 +26,7 @@ class CreateCartsTable extends Migration
             $table->boolean("active")->default(true);
             $table->timestamps();
             $table->foreign("user_id")->references("id")
-                ->on("shop_users")
+                ->on("users")
                 ->onDelete("cascade");
             $table->foreign("product_id")->references("id")
                 ->on("products")

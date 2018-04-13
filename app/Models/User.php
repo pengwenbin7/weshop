@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class ShopUser extends Authenticatable
+class User extends Authenticatable
 {
     use Notifiable;
 
@@ -44,7 +44,7 @@ class ShopUser extends Authenticatable
     {
         return $this->hasManyThrough(
             "App\Models\Address",
-            "App\Models\ShopUserAddress"
+            "App\Models\UserAddress"
         );
     }
 }

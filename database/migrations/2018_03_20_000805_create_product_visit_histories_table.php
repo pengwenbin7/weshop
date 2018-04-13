@@ -19,7 +19,7 @@ class CreateProductVisitHistoriesTable extends Migration
             $table->unsignedInteger("product_id");
             $table->enum("platform", ["pc", "phone", "tablet", "android-app", "ios-app", "unknow"])->default("unknow");
             $table->timestamps();
-            $table->foreign("user_id")->references("id")->on("shop_users")
+            $table->foreign("user_id")->references("id")->on("users")
                 ->onDelete("cascade");
             $table->foreign("product_id")->references("id")->on("products")
                 ->onDelete("cascade");

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateShopUsersTable extends Migration
+class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateShopUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('shop_users', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->increments("id");
             $table->string("openid", 100)->unique();
             $table->string("name", 32)->nullable();
@@ -46,6 +46,6 @@ class CreateShopUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_users');
+        Schema::dropIfExists('users');
     }
 }

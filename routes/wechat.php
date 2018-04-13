@@ -26,3 +26,26 @@ Route::resource("address", "WeChat\AddressController", [
         "destroy" => "wechat.address.destroy",
     ],
 ]);
+
+Route::resource("cart", "WeChat\CartController", [
+    "names" => [
+        "index" => "wechat.cart.index",
+        "create" => "wechat.cart.create",
+        "store" => "wechat.cart.store",        
+        "update" => "wechat.cart.update",
+        "destroy" => "wechat.cart.destroy",
+    ],
+    "except" => ["edit", "show"],
+]);
+
+Route::resource("order", "WeChat\OrderController", [
+    "names" => [
+        "index" => "wechat.order.index",
+        "create" => "wechat.order.create",
+        "store" => "wechat.order.store",
+        "edit" => "wechat.order.edit",
+        "update" => "wechat.order.update",
+        "destroy" => "wechat.order.destroy",
+    ],
+    "except" => ["show"],
+]);

@@ -35,7 +35,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp("expire")->nullable();
             $table->unsignedInteger("admin_id")->nullable();
             $table->timestamps();
-            $table->foreign("user_id")->references("id")->on("shop_users");
+            $table->foreign("user_id")->references("id")->on("users");
             $table->foreign("address_id")->references("id")
                 ->on("addresses")->onDelete("set null");
             $table->foreign("coupon_id")->references("id")

@@ -29,10 +29,10 @@ class CreateCompaniesTable extends Migration
             $table->timestamps();
             $table->foreign("admin_id")->references("id")
                 ->on("admin_users")->onDelete("set null");
-            $table->foreign("creator")->references("id")->on("shop_users");
+            $table->foreign("creator")->references("id")->on("users");
         });
         
-        Schema::table("shop_users", function (Blueprint $table) {
+        Schema::table("users", function (Blueprint $table) {
             $table->foreign("company_id")->references("id")->on("companies");
         });
     }

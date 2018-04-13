@@ -17,7 +17,7 @@ class CreateBrandStarsTable extends Migration
             $table->unsignedInteger("user_id");
             $table->unsignedInteger("brand_id");
             $table->timestamps();
-            $table->foreign("user_id")->references("id")->on("shop_users")
+            $table->foreign("user_id")->references("id")->on("users")
                 ->onDelete("cascade");
             $table->foreign("brand_id")->references("id")->on("brands")
                 ->onDelete("cascade");

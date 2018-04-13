@@ -18,7 +18,7 @@ class CreateProductStarsTable extends Migration
             $table->unsignedInteger("product_id");
             $table->timestamps();
             $table->primary(["user_id", "product_id"]);
-            $table->foreign("user_id")->references("id")->on("shop_users")
+            $table->foreign("user_id")->references("id")->on("users")
                 ->onDelete("cascade");
             $table->foreign("product_id")->references("id")->on("products")
                 ->onDelete("cascade");

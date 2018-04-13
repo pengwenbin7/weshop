@@ -18,7 +18,7 @@ class CreateUserShareProductsTable extends Migration
             $table->unsignedInteger("user_id");
             $table->unsignedInteger("product_id")->nullable();
             $table->timestamps();
-            $table->foreign("user_id")->references("id")->on("shop_users")
+            $table->foreign("user_id")->references("id")->on("users")
                 ->onDelete("cascade");
             $table->foreign("product_id")->references("id")->on("products")
                 ->onDelete("set null");

@@ -20,7 +20,7 @@ class CreateSearchHistoriesTable extends Migration
             $table->unsignedInteger("user_id")->nullable();
             $table->string("keyword", 100)->nullable();
             $table->timestamps();
-            $table->foreign("user_id")->references("id")->on("shop_users")
+            $table->foreign("user_id")->references("id")->on("users")
                 ->onDelete("cascade");
         });
     }
