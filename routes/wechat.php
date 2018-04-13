@@ -15,3 +15,14 @@ Route::get("product/{product}", "WeChat\ProductController@show")
 
 Route::get("search/{key}", "WeChat\SearchController@search")
     ->name("wechat.search");
+
+Route::resource("address", "WeChat\AddressController", [
+    "names" => [
+        "index" => "wechat.address.index",
+        "create" => "wechat.address.create",
+        "edit" => "wechat.address.edit",
+        "store" => "wechat.address.store",
+        "update" => "wechat.address.update",
+        "destroy" => "wechat.address.destroy",
+    ],
+]);

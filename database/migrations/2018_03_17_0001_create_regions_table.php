@@ -13,16 +13,21 @@ class CreateRegionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('regions', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create("regions", function (Blueprint $table) {
+            $table->unsignedInteger("id");
             $table->unsignedInteger("parent_id");
-            $table->string("adcode", 9);
-            $table->string("name", 32);
-            $table->string("center")->nullable()->comment("经度,维度(longitude, latitude)");
-            $table->enum("level", [
-                "country", "province", "district",
-                "city", "street",
-            ]);
+            $table->string("name", 32)->nullable();
+            $table->string("fullname", 32);
+            $table->unsignedDecimal("lat", 9, 6);
+            $table->unsignedDecimal("lng", 9, 6);
+            $table->unsignedTinyInteger("level");
+            $table->timestamps();
+            $table->primary("id");
+        });
+
+        Schema::create("region_versions", function (Blueprint $table) {
+            $table->increments("id");
+            $table->string("version", 8);
             $table->timestamps();
         });
     }
@@ -34,6 +39,7 @@ class CreateRegionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('regions');
+        Schema::dropIfExists("regions");
+        Schema::dropIfExists("region_versions");
     }
 }

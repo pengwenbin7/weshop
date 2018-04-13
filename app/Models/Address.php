@@ -8,7 +8,7 @@ class Address extends Model
 {
     protected $fillable = [
         "contact_name", "contact_tel", "country",
-        "province", "city", "detail", "city_adcode",
-        "city_center",
+        "province", "city", "district",
+        "detail", "code",
     ];
 }

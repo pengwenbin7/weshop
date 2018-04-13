@@ -39,4 +39,12 @@ class ShopUser extends Authenticatable
     {
         return $this->hasMany("App\Models\UserShareProduct");
     }
+
+    public function addresses()
+    {
+        return $this->hasManyThrough(
+            "App\Models\Address",
+            "App\Models\ShopUserAddress"
+        );
+    }
 }

@@ -16,7 +16,7 @@ class StorageController extends Controller
      */
     public function index()
     {
-        return Storage::all();
+        return Storage::with(["address", "brand"])->get();
     }
 
     /**
@@ -40,11 +40,12 @@ class StorageController extends Controller
         $storage = new Storage();
         $address = new Address();
         $address->fill([
-            "contact_name" => $request->input("contact_name"),
-            "contact_tel" => $request->input("contact_tel"),
+            "contact_name" => $request->input("contact_name", null),
+            "contact_tel" => $request->input("contact_tel", null),
             "province" => $request->province,
             "city" => $request->city,
-            "city_adcode" => $request->city_adcode,
+            "district" => $request->district,
+            "code" => $request->code,
             "detail" => $request->detail,
         ]);
         $address->save();
@@ -94,20 +95,22 @@ class StorageController extends Controller
     public function update(Request $request, Storage $storage)
     {
         // update storage's address
-        $address = $storage->address();
-        $address->contact_name = $request->input("contact_name");
-        $address->contact_tel = $request->input("contact_tel");
+        $address = $storage->address;
+        $address->contact_name = $request->input("contact_name", null);
+        $address->contact_tel = $request->input("contact_tel", null);
         $address->province = $request->province;
         $address->city = $request->city;
-        $address->city_adcode = $request->city_adcode;
+        $address->district = $request->district;
+        $address->code = $request->code;
         $address->detail = $request->detail;
-        $address->save();
+        $res = $address->save();
         
         $storage->name = $request->name;
         $storage->brand_id = $request->brand_id;
-        $storage->active = $request->input("active", 1);
+        $storage->active = $request->input("active", true);
         $storage->description = $request->input("description", null);
-        $storage->save();
+        $res = $res && $storage->save();
+        return ["update" => $res];
     }
 
     /**

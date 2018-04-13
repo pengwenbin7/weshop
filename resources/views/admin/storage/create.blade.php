@@ -9,8 +9,8 @@
     contact_name: <input name="contact_name" type="text" value="sb"><br>
     contact_tel: <input name="contact_tel" type="text" value="12111111111"><br>
     province: <input name="province" type="text" value="北京市" required><br>
-    city: <input name="city" type="text" value="北京城区" required><br>
-    city_adcode: <input name="city_adcode" type="text" value="110100" required><br>
+    city: <input name="city" type="text" value="东城区" required><br>
+    code: <input name="code" type="number" value="110101" required><br>
     address-detail: <input name="detail" type="text" value="地址描述"><br>
     @submit
   </form>

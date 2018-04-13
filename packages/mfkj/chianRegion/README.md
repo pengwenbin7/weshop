@@ -1,3 +1,0 @@
-# mfkj/chianRegion
-
-Chinese regions

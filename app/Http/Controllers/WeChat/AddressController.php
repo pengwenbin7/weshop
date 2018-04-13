@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\WeChat;
 
 use App\Models\Address;
+use App\Models\Region;
+use App\Models\ShopUserAddress as UserAddress;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,7 +18,7 @@ class AddressController extends Controller
      */
     public function index()
     {
-        
+        return auth()->user()->addresses;
     }
 
     /**
@@ -25,7 +28,7 @@ class AddressController extends Controller
      */
     public function create()
     {
-        //
+        return view("wechat.address.create");
     }
 
     /**
@@ -42,10 +45,17 @@ class AddressController extends Controller
             "contact_tel" => $request->contact_tel,
             "province" => $request->province,
             "city" => $request->city,
+            "district" => $request->input("district"),
+            "code" => $request->code,
             "detail" => $request->detail,
-            "city_adcode" => $request->city_adcode,
         ]);
-        return $address->save();
+        $res = $address->save();
+        $userAddress = UserAddress::create([
+            "user_id" => auth()->user()->id,
+            "address_id" => $address->id,
+        ]);
+        $res = $res && $userAddress->save();
+        return ["store" => $res];
     }
 
     /**
