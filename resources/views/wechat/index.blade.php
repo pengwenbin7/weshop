@@ -3,7 +3,6 @@
 @section("content")
   <div id="app">
     <p>user_id: {{ auth()->user()->id }}</p>
-    <p><button v-on:click="share">分享到朋友圈</button></p>
     <p><button v-on:click="scan">scan qr</button></p>
     <p><button v-on:click="getLocation">get location</button></p>
     <p>@{{ info }}</p>
@@ -13,26 +12,13 @@
 
 @section("script")
   <script>
+  
   var app = new Vue({
     el: "#app",
     data: {
       info: ""
     },
     methods: {
-      share: function () {
-	alert("share called");
-	wx.onMenuShareTimeline({
-	  title: 'share-title', // 分享标题
-	  link: 'http://weshop.mafkj.com/1919191919', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-	  imgUrl: '', // 分享图标
-	  success: function () {
-	    alert("分享成功");
-	  },
-	  cancel: function () {
-	    alert("取消了");
-	  }
-	});
-      },
       scan: function () {
 	wx.scanQRCode({
 	  needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
@@ -59,7 +45,7 @@
       }
     },
     mounted: function () {
-      this.share();
+      // todo
     }
   });
 

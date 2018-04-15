@@ -14,7 +14,9 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ["openid", "rec_code"];
+    protected $fillable = [
+        "openid", "name", "phone", "password", "rec_code",
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -40,11 +42,25 @@ class User extends Authenticatable
         return $this->hasMany("App\Models\UserShareProduct");
     }
 
+    public function userAddresses() {
+        return $this->hasMany("App\Models\UserAddress");
+    }
+
+    public function primaryUserAddress() {
+        $primary = $this->userAddresses()
+                 ->where("is_primary", "=", 1)
+                 ->orderBy("updated_at", "desc")
+                 ->first();
+        return $primary;
+    }
+    
     public function addresses()
     {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             "App\Models\Address",
-            "App\Models\UserAddress"
+            "user_addresses",
+            "user_id",
+            "address_id"
         );
     }
 }

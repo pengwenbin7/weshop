@@ -9,9 +9,6 @@
 @endsection
 
 @section("content")
-  @if (auth()->check())
-    <pre>openid: {{ auth()->user()->openid }}</pre>
-  @endif
   
   <div id="app">
     @foreach ($categories as $category)

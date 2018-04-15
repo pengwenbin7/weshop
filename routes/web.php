@@ -16,7 +16,7 @@ Route::get("version", function () {
         echo auth()->user()->openid;
     }
     return app()->version();
-});
+})->middleware("wechat");
 
 // remember to delete me /////////////////////////
 Route::get("/login/{id}", function ($id) {      //

@@ -9,7 +9,6 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        var_dump(auth()->check());
         $interfaces = [
             "onMenuShareTimeline", "onMenuShareAppMessage",
             "onMenuShareQQ", "scanQRCode",

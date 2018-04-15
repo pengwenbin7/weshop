@@ -37,13 +37,6 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
-        "wechat" => [
-            \App\Http\Middleware\WeChatAuth::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-        ],
-
         'api' => [
             'throttle:60,1',
             'bindings',
@@ -65,6 +58,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         "admin" => \App\Http\Middleware\Admin::class,
-        "weauth" => \App\Http\Middleware\WeChatAuth::class,
+        'wechat.auth' => \App\Http\Middleware\WeChatAuth::class,
     ];
 }

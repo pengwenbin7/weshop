@@ -4,6 +4,8 @@ Route::get('/', "WeChat\IndexController@index")
     ->name("wechat.index");
 Route::get("home", "WeChat\HomeController@index")
     ->name("wechat.home.index");
+Route::get("logout", "Auth\WeChatAuthController@logout")
+    ->name("wechat.logout");
 
 Route::get("qrcode", "WeChat\QrCodeController@index")
     ->name("wechat.qrcode");

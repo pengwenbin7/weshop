@@ -3,8 +3,12 @@
 @section("content")
   <div id="app">
     <p>
-      @if ($user->address)
-	TODO: 选择地址
+      @if ($user->addresses)
+	<select v-model="address_id">
+	  @foreach ($user->addresses as $addr)
+	    <option value="{{ $addr->id }}">{{ $addr->contact_name }}</option>
+	  @endforeach
+	</select>
       @else
 	<button v-on:click="createAddress">create address</button>	
       @endif
@@ -43,6 +47,7 @@
     data: {
       is_ton: {{ $is_ton }},
       number: {{ $number }},
+      address_id: {{ auth()->user()->primaryUserAddress()->address_id ?? null }},
       channel_id: 1
     },
     methods: {
