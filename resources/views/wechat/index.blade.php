@@ -5,6 +5,7 @@
     <p>user_id: {{ auth()->user()->id }}</p>
     <p><button v-on:click="scan">scan qr</button></p>
     <p><button v-on:click="getLocation">get location</button></p>
+    <p><button v-on:click="getAddress">get Address</button></p>
     <p>@{{ info }}</p>
   </div>
 @endsection
@@ -38,6 +39,22 @@
 	    var speed = res.speed; // 速度，以米/每秒计
 	    var accuracy = res.accuracy; // 位置精度
 	    _this.info = "Lat:" + latitude + "Long:" + longitude;
+	  }
+	});
+      },
+
+      getAddress: function () {
+	wx.openAddress({
+	  success: function (res) {
+	    axios.post(
+	      "{{ route("wechat.address.store") }}",
+	      res
+	    ).then( function (res) {
+	      alert(res.data);
+	    });
+	  },
+	  cancel: function () {
+	    alert("取消");
 	  }
 	});
       }

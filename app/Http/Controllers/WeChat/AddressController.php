@@ -12,26 +12,6 @@ use App\Http\Controllers\Controller;
 class AddressController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return auth()->user()->addresses;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view("wechat.address.create");
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -41,55 +21,20 @@ class AddressController extends Controller
     {
         $address = new Address();
         $address->fill([
-            "contact_name" => $request->contact_name,
-            "contact_tel" => $request->contact_tel,
-            "province" => $request->province,
-            "city" => $request->city,
-            "district" => $request->input("district"),
-            "code" => $request->code,
-            "detail" => $request->detail,
+            "contact_name" => $request->userName,
+            "contact_tel" => $request->telNumber,
+            "province" => $request->provinceName,
+            "city" => $request->cityName,
+            "district" => $request->countryName,
+            "code" => $request->nationalCode,
+            "detail" => $request->detailInfo,
         ]);
         $res = $address->save();
-        $userAddress = UserAddress::create([
-            "user_id" => auth()->user()->id,
-            "address_id" => $address->id,
-        ]);
-        $res = $res && $userAddress->save();
-        return ["store" => $res];
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Address  $address
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Address $address)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Address  $address
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Address $address)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Address  $address
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Address $address)
-    {
-        //
+        if ($res) {
+            return ["address_id" => $address->id];
+        } else {
+            return ["err" => "保存地址失败"];
+        }
     }
 
     /**
@@ -100,6 +45,6 @@ class AddressController extends Controller
      */
     public function destroy(Address $address)
     {
-        //
+        $address->delete();
     }
 }

@@ -37,30 +37,4 @@ class User extends Authenticatable
         return $this->hasMany("App\Models\UserPrize");
     }
 
-    public function shareProducts()
-    {
-        return $this->hasMany("App\Models\UserShareProduct");
-    }
-
-    public function userAddresses() {
-        return $this->hasMany("App\Models\UserAddress");
-    }
-
-    public function primaryUserAddress() {
-        $primary = $this->userAddresses()
-                 ->where("is_primary", "=", 1)
-                 ->orderBy("updated_at", "desc")
-                 ->first();
-        return $primary;
-    }
-    
-    public function addresses()
-    {
-        return $this->belongsToMany(
-            "App\Models\Address",
-            "user_addresses",
-            "user_id",
-            "address_id"
-        );
-    }
 }

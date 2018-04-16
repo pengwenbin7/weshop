@@ -113,6 +113,8 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        return ["destroy" => $order->delete()];
+        $res = $order->address->delete();
+        $res = $res & $order->delete();
+        return ["destroy" => $res];
     }
 }

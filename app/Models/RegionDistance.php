@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserAddress extends Model
+class RegionDistance extends Model
 {
     protected $fillable = [
-        "user_id", "address_id",
+        "from", "to", "distance",
     ];
 }

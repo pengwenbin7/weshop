@@ -5,10 +5,12 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\Models\User;
+use App\Models\AdminUser;
 use App\Models\Product;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Observers\UserObserver;
+use App\Observers\AdminObserver;
 use App\Observers\ProductObserver;
 use App\Observers\CartObserver;
 
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         });
         
         User::observe(UserObserver::class);
+        AdminUser::observe(AdminObserver::class);
         Product::observe(ProductObserver::class);
         Cart::observe(CartObserver::class);
     }

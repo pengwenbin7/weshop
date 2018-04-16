@@ -32,6 +32,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedTinyInteger("refund_status")
                 ->default(0)->comment("退货状态:0-未退货,1-申请退货,2-等待退货,3-已退货");
             $table->boolean("active")->default(true);
+            $table->boolean("shared")->default(false);
             $table->timestamp("expire")->nullable();
             $table->unsignedInteger("admin_id")->nullable();
             $table->timestamps();
