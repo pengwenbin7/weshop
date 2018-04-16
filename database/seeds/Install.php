@@ -16,12 +16,11 @@ class Install extends Seeder
     public function run()
     {
         $now = Carbon::now();
-        $admin = new AdminUser();
-        $admin->id = 1;
-        $admin->name = "admin";
-        $admin->password = bcrypt("admin");
-        $admin->rec_code = "x";
-        $admin->save();
+        $admin = AdminUser::create([
+            "name" => "admin",
+            "password" => bcrypt("admin"),
+            "rec_code" => "x",
+        ]);
         
         DB::table("locales")->insert([
             "id" => 1,
