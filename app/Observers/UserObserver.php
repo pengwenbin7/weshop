@@ -15,7 +15,7 @@ class UserObserver
      */
     public function created(User $user)
     {
-        $code = RecommendCode::generate($user, $user->id);
+        $code = dechex(sprintf("%u", crc32($user->id)));
         $user->rec_code = $code;
         $user->save();
     }

@@ -23,8 +23,8 @@ class CreateUsersTable extends Migration
             $table->boolean("active")->default(true);
             $table->boolean("is_subscribe")->default(true);
             $table->unsignedInteger("subscribe_count")->default(1)->comment("第几次订阅");
-            $table->string("rec_code", 100)->comment("推荐码")->unique();
-            $table->string("rec_from", 100)->nullable()->comment("推荐来源");
+            $table->string("rec_code", 8)->comment("推荐码")->unique();
+            $table->string("rec_from", 8)->nullable()->comment("推荐来源");
             $table->unsignedInteger("share_count")->default(0)->comment("分享次数");
             $table->unsignedInteger("reg_count")->default(0)->comment("推广注册数");
             $table->unsignedInteger("company_id")->nullable();

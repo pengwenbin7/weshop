@@ -6,13 +6,11 @@
     <p><button v-on:click="scan">scan qr</button></p>
     <p><button v-on:click="getLocation">get location</button></p>
     <p>@{{ info }}</p>
-    <p><a href="{{ route("wechat.product.index") }}">products</a></p>
   </div>
 @endsection
 
 @section("script")
   <script>
-  
   var app = new Vue({
     el: "#app",
     data: {

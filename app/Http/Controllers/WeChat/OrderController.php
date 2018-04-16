@@ -85,14 +85,7 @@ class OrderController extends Controller
             $item->is_ton = $p->is_ton;
             $item->number = $p->number;
             $item->price = $product->variable->unit_price;
-            // count total price
-            if ($item->iston) {
-                $payment->total += $p->number * 1000 /
-                                $product->content *
-                                $item->price;
-            } else {
-                $payment->total += $p->number * $item->price;
-            }
+            $payment->total += $p->number * $item->price;
             $item->product_name = $product->name;
             $item->model = $prodcut->model;
             $item->brand_name = $product->brand->name;

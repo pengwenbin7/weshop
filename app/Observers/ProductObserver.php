@@ -23,6 +23,6 @@ class ProductObserver
             $product->measure_unit,
             $product->packing_unit,
         ];
-        $product->unique_code = crc32(implode("", $arr));
+        $product->unique_code = dechex(sprintf("%u", crc32(implode("", $arr))));
     }
 }
