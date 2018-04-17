@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Utils\Count;
 
 class Order extends Model
 {
@@ -72,9 +73,34 @@ class Order extends Model
         return true;
     }
 
-    // 运费计算
+    /**
+     * 运费计算
+     * 当包含计量单位不为 kg 的物品时，返回 -1
+     */
     public function countFreight()
     {
-        return 0;
+        $items = $this->orderItems();
+        $storages = [];
+        $total = 0;
+        //　按仓库分组
+        foreach ($items as $item) {
+            $product = $item->product;
+            if ($product->measure_unit != "kg") {
+                return -1;
+            }
+            if (in_array($product->storage->id, $storages)) {
+                $storages[$product->storage->id] += $product->count * $item->number;
+            } else {
+                $storages[$product->storage->id] = $product->count * $item->number;
+            }
+        }
+        
+        // 分组计算运费
+        foreach ($storages as $storage_id => $weight) {
+            $distance = Count::distance($address->code, $storage->address->code);
+            $total += Count::freight($storage_id, $weight, $distance);
+        }
+        
+        return $total;
     }
 }

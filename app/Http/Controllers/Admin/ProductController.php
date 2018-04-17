@@ -52,6 +52,9 @@ class ProductController extends Controller
         $product->packing_unit = $request->packing_unit;
         $product->sort_order = $request->input("sort_order", 1000);
         $s0 = $product->save();
+        if (!$s0) {
+            return ["err" => "save product error"];
+        }
 
         // save product price
         $price = new ProductPrice();
@@ -60,6 +63,10 @@ class ProductController extends Controller
             "unit_price" => $request->unit_price,
         ]);
         $s1 = $price->save();
+        if (!$s1) {
+            $product->delete();
+            return ["err" => "save price error"];
+        }
 
         // save product category
         $category = new ProductCategory();
@@ -69,6 +76,11 @@ class ProductController extends Controller
             "is_primary" => 1,
         ]);
         $s2 = $category->save();
+        if (!$s2) {
+            $price->delete();
+            $product->delete();
+            return ["err" => "save category error"];
+        }
         
         // save product variable
         $variable = new ProductVariable();
@@ -78,6 +90,12 @@ class ProductController extends Controller
             "stock" => $request->input("stock", 0),
         ]);
         $s3 = $variable->save();
+        if (!$s3) {
+            $category->delete();
+            $price->delete();
+            $product->delete();
+            return ["err" => "save variable error"];
+        }
                
         // save product detail
         $detail = new ProductDetail();
@@ -85,11 +103,17 @@ class ProductController extends Controller
             "product_id" => $product->id,
             "content" => $request->input("detail", null),
         ]);
-        $detail->save();
         $s4 = $detail->save();
+        if (!$s4) {
+            $variable->delete();
+            $category->delete();
+            $price->delete();
+            $product->delete();
+            return ["err" => "save detail error"];
+        }
         
         return [
-            "store" => ($s0 & $s1 & $s2 & $s3 & $s4),
+            "store" => $product->id,
         ];
     }
 

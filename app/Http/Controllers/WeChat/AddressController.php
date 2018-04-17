@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WeChat;
 use App\Models\Address;
 use App\Models\Region;
 use App\Models\UserAddress as UserAddress;
+use Log;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -31,6 +32,7 @@ class AddressController extends Controller
         ]);
         $res = $address->save();
         if ($res) {
+            Log::info("store address: {$address->id}");
             return ["address_id" => $address->id];
         } else {
             return ["err" => "保存地址失败"];

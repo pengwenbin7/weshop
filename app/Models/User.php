@@ -31,10 +31,14 @@ class User extends Authenticatable
     {
         return $this->hasMany("App\Models\Cart", "user_id");
     }
-    
+
     public function prizes()
     {
         return $this->hasMany("App\Models\UserPrize");
     }
 
+    public function actions()
+    {
+        return $this->hasMany("App\Models\UserAction");
+    }
 }

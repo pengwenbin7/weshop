@@ -4,12 +4,13 @@ namespace App\Utils;
 
 use App\Models\Region;
 use App\Models\RegionDistance;
+use App\Models\Storage;
 
 class Count
 {
     /**
      *
-     * count freight
+     * count distance
      * @param $fromCode 起点地区码
      * @param $toCode 终点地区码
      */
@@ -52,5 +53,23 @@ class Count
             
             return $distance;
         }
+    }
+
+    /**
+     * count freight
+     * @param int $storage_id
+     * @param int $weight - kg
+     * @param int $distance - m
+     */
+    public static function freight($storage_id, $weight, $distance)
+    {
+        $storage = Storage::find($storage_id);
+        $func = json_decode($storage->func);
+        foreach ($func->area as $a) {
+            if ($a->low  <= $weight && $weight < $a->up) {
+                return $distance * $a->factor + $a->const;
+            }
+        }
+        return $distance * $func->other->factor + $func->other->const;
     }
 }

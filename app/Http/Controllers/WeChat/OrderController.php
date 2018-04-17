@@ -10,6 +10,9 @@ use App\Models\OrderItem;
 use App\Models\PayChannel;
 use App\Models\Payment;
 use App\Models\Coupon;
+use App\Models\Address;
+use App\Utils\Count;
+use Log;
 
 class OrderController extends Controller
 {
@@ -55,7 +58,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         // create order
-        $user = auth()->user;
+        $user = auth()->user();
         $order = new Order();
         $order->user_id = $user->id;
         $order->address_id = $request->address_id;
@@ -77,21 +80,22 @@ class OrderController extends Controller
         
         // fetch product
         foreach ($request->products as $p) {
+            Log::debug($p["number"]);
             // create order items
             $item = new OrderItem();
-            $product = Product::find($p->id);
+            $product = Product::find($p["id"]);
             $item->order_id = $order->id;
             $item->product_id = $product->id;
-            $item->is_ton = $p->is_ton;
-            $item->number = $p->number;
+            $item->is_ton = $p["is_ton"];
+            $item->number = $p["number"];
             $item->price = $product->variable->unit_price;
-            $payment->total += $p->number * $item->price;
+            $payment->total += $p["number"] * $item->price;
             $item->product_name = $product->name;
-            $item->model = $prodcut->model;
+            $item->model = $product->model;
             $item->brand_name = $product->brand->name;
             $res = $res & $item->save();
         }
-        if ($coupon->valid($user, $payment)) {
+        if ($coupon && $coupon->valid($user, $payment)) {
             $payment->coupon_id = $coupon->id;
             $discount = $coupon->discount;
         } else {
@@ -101,8 +105,11 @@ class OrderController extends Controller
         $payment->pay = $payment->total + $payment->freight -
                      $discount;
         $res = $res & $payment->save();
-        
-        return ["store" => $res];
+        if ($res) {
+            return ["store" => $order->id];
+        } else {
+            return ["err" => "failed to create order"];
+        }
     }
     
     /**
@@ -116,5 +123,41 @@ class OrderController extends Controller
         $res = $order->address->delete();
         $res = $res & $order->delete();
         return ["destroy" => $res];
+    }
+
+    /**
+     * count freight
+     * 此计算结果仅仅用于前端展示
+     * request format:
+     *     int address_id
+     *     array products:
+     *               int id (product_id)
+     *               int number (product number)
+     */
+    public function countFreight(Request $request)
+    {
+        $address = Address::find($request->address_id);
+        // 按发货仓库分组
+        $ss = [];
+        foreach ($request->products as $p) {
+            $product = Product::with("storage")->find($p->id);
+            if ($product->measure_unit != "kg") {
+                return -1;
+            }
+            if (array_key_exists($product->storage->id, $ss)) {
+                $ss[$p->storage->id] += $product->content * $p->number;
+            } else {
+                $ss[$product->storage->id] = $product->content * $p->number;
+            }
+        }
+
+        // 分组计算运费
+        $total = 0;
+        foreach ($ss as $storage_id => $weight) {
+            $distance = Count::distance($address->code, $storage->address->code);
+            $total += Count::freight($storage_id, $weight, $distance);
+        }
+
+        return $total;
     }
 }

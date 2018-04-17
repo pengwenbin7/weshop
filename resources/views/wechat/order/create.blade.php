@@ -3,40 +3,41 @@
 @section("content")
   <div id="app">
     <p>
-      @if ($user->addresses)
-	<select v-model="address_id">
-	  @foreach ($user->addresses as $addr)
-	    <option value="{{ $addr->id }}">{{ $addr->contact_name }}</option>
-	  @endforeach
-	</select>
-      @else
-	<button v-on:click="createAddress">create address</button>	
-      @endif
+      <p>addr_id: @{{ address_id }}</p>
+      <button v-on:click="selectAddress">select address</button>
     </p>
     <p>product_id: {{ $product->id }}</p>
     <p>product_name: {{ $product->name }}</p>
-    <p>is_ton: {{ $is_ton }}</p>
-    <p>
-      <button v-on:click="decNumber">-</button>
-      number: <input v-model="number" min="1" step="1" type="number">
-      @if ($is_ton)
-	吨
-      @else
-	{{ $product->packing_unit }}
-      @endif
-      <button v-on:click="incNumber">+</button>
-    </p>
-    <p><button>下载合同</button></p>
-    付款方式：
-    <select v-model="channel_id">
-      @foreach ($payChannels as $channel)
-	<option value="{{ $channel->id }}">
-	  {{ $channel->name }}
-	</option>
-      @endforeach
-    </select>
-    
-    <button v-on:click="pay">pay</button>
+    <p>is_ton:<input v-model="is_ton" type="number">
+      <p>
+	number: <input v-model="see_number" min="1" step="1" type="number">
+	<div v-if="is_ton">
+	  <p>number: @{{ see_number * factor }}</p>
+	</div>
+	<div v-else>
+	  <p>number: @{{ see_number }}</p>
+	</div>
+	@if ($product->is_ton)
+	  吨
+	@else
+	  {{ $product->packing_unit }}
+	@endif
+      </p>
+      <p><button>下载合同</button></p>
+      付款方式：
+      <select v-model="channel_id">
+	@foreach ($payChannels as $channel)
+	  <option value="{{ $channel->id }}">
+	    {{ $channel->name }}
+	  </option>
+	@endforeach
+      </select>
+      <div v-if="address_id">
+	<button v-on:click="pay">pay</button>
+      </div>
+      <div v-else>
+	<button disabled>pay</button>
+      </div>
   </div>
 @endsection
 
@@ -45,32 +46,54 @@
   var app = new Vue({
     el: "#app",
     data: {
-      is_ton: {{ $is_ton }},
-      number: {{ $number }},
-      address_id: {{ auth()->user()->primaryUserAddress()->address_id ?? null }},
+      is_ton: {{ $product->is_ton }},
+      see_number: {{ $number }},
+      number: 0,
+      address_id: null,
+      factor: {{ 1000 / $product->content }},
       channel_id: 1
     },
     methods: {
-      createAddress: function () {
-	alert("TODO: create address");
-      },
-      decNumber: function () {
-	if (this.number > 2) {
-	  this.number = this.number - 1;
-	} else {
-	  alert("Stop!");
-	}
-      },
-      incNumber: function () {
-	this.number = this.number + 1;
+      selectAddress: function () {
+	var $this = this;
+	wx.openAddress({
+	  success: function (res) {
+	    axios.post(
+	      "{{ route("wechat.address.store") }}",
+	      res
+	    ).then(function (res) {
+	      $this.address_id = res.data.address_id;
+	    });
+	  },
+	  cancel: function () {
+	    alert("取消");
+	  }
+	});
       },
       pay: function () {
-	if (this.is_ton) {
-	  this.number = this.number * 1000 / {{ $product->content }};
-	}
-	alert("number: " + this.number);
+	var data = {
+	  address_id: this.address_id,
+	  channel_id: this.channel_id,
+	  products: [
+	    {
+	      number: this.number,
+	      is_ton: this.is_ton,
+	      id: {{ $product->id }}
+	    }
+	  ]
+	};
+	axios.post("{{ route("wechat.order.store") }}", data)
+	  .then(function (res) {
+	    alert(res.data.store);
+	  });
       }
+    },
+    mounted: function () {
+      this.number = this.is_ton ?
+	this.see_number * this.factor :
+	this.see_number;
     }
+      
   });
   </script>
 @endsection
