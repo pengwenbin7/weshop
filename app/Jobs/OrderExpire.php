@@ -7,19 +7,21 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Models\Order;
 
 class OrderExpire implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $order;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Order $order)
     {
-        //
+        $this->order = $order;
     }
 
     /**
@@ -29,6 +31,7 @@ class OrderExpire implements ShouldQueue
      */
     public function handle()
     {
-        //
+        $this->order->status = Order::ORDER_STATUS_IDL;
+        $this->order->save();
     }
 }

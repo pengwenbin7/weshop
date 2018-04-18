@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Utils\Count;
+use App\Models\Storage;
 
 class Order extends Model
 {
@@ -27,6 +28,8 @@ class Order extends Model
     const REFUND_STATUS_ASK = 1;  // 申请退货
     const REFUND_STATUS_DOING = 2; // 等待退货
     const REFUDN_STATUS_DONE = 3;  // 已退货
+    // 未付款过期时间(s)
+    const ORDER_EXPIRE_IDL = 20;
     
     public function orderItems()
     {
@@ -79,7 +82,7 @@ class Order extends Model
      */
     public function countFreight()
     {
-        $items = $this->orderItems();
+        $items = $this->orderItems;
         $storages = [];
         $total = 0;
         //　按仓库分组
@@ -97,7 +100,8 @@ class Order extends Model
         
         // 分组计算运费
         foreach ($storages as $storage_id => $weight) {
-            $distance = Count::distance($address->code, $storage->address->code);
+            $storage = Storage::with("address")->find($storage_id);
+            $distance = Count::distance($this->address->code, $storage->address->code);
             $total += Count::freight($storage_id, $weight, $distance);
         }
         

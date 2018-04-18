@@ -24,6 +24,10 @@
 	@endif
       </p>
       <p><button>下载合同</button></p>
+      <p v-if="address_id">
+	<button v-on:click="countFreight">count freight</button>
+	<b>freight: @{{ freight }}</b>
+      </p>
       付款方式：
       <select v-model="channel_id">
 	@foreach ($payChannels as $channel)
@@ -51,7 +55,8 @@
       number: 0,
       address_id: null,
       factor: {{ 1000 / $product->content }},
-      channel_id: 1
+      channel_id: 1,
+      ofreight: 0
     },
     methods: {
       selectAddress: function () {
@@ -70,6 +75,7 @@
 	  }
 	});
       },
+      
       pay: function () {
 	var data = {
 	  address_id: this.address_id,
@@ -86,8 +92,23 @@
 	  .then(function (res) {
 	    alert(res.data.store);
 	  });
+      },
+      
+      countFreight: function () {
+	var $this = this;
+	var data = {
+	  address_id: this.address_id,
+	  products: [
+	    {id: {{ $product->id }}, number: this.number}
+	  ]
+	};
+	axios.post("{{ route("wechat.order.count-freight") }}",
+	  data).then(function (res) {
+	    $this.freight = res.data;
+	  });
       }
     },
+    
     mounted: function () {
       this.number = this.is_ton ?
 	this.see_number * this.factor :

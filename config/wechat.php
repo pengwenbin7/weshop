@@ -104,7 +104,7 @@ return [
     /*
      * 微信支付
      */
-    // 'payment' => [
+    //  'payment' => [
     //     'default' => [
     //         'sandbox'            => env('WECHAT_PAYMENT_SANDBOX', false),
     //         'app_id'             => env('WECHAT_PAYMENT_APPID', ''),
@@ -120,12 +120,13 @@ return [
     /*
      * 企业微信
      */
-    // 'work' => [
-    //     'default' => [
-    //         'corp_id' => 'xxxxxxxxxxxxxxxxx',
-    ///        'agent_id' => 100020,
-    //         'secret'   => env('WECHAT_WORK_AGENT_CONTACTS_SECRET', ''),
-    //          //...
-    //      ],
-    // ],
+    'work' => [
+        'default' => [
+            'corp_id' => env("WECHAT_WORK_CORP_ID", ""),
+            'agent_id' => env("WECHAT_WORK_AGENT_ID", ""),
+            'secret'   => env('WECHAT_WORK_AGENT_SECRET', ''),
+            "token" => env("WECHAT_WORK_AGENT_TOKEN", ""),
+            "aes_key" => env("WECHAT_WORK_AGENT_AES_KEY", ""),
+         ],
+    ],
 ];

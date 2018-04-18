@@ -14,5 +14,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         "/wechat/server",
         "/wechat/oauth",
+        "/wework/server",
     ];
 }

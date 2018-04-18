@@ -9,10 +9,12 @@ use App\Models\AdminUser;
 use App\Models\Product;
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\Order;
 use App\Observers\UserObserver;
 use App\Observers\AdminObserver;
 use App\Observers\ProductObserver;
 use App\Observers\CartObserver;
+use App\Observers\OrderObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         AdminUser::observe(AdminObserver::class);
         Product::observe(ProductObserver::class);
         Cart::observe(CartObserver::class);
+        Order::observe(OrderObserver::class);
     }
 
     /**

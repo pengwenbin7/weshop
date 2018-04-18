@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        echo auth()->user()->openid;
-        return view("wechat.home");
+        $user = auth()->user();
+        return view("wechat.home", ["user" => $user]);
     }
 }

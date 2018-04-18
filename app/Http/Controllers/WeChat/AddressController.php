@@ -32,7 +32,6 @@ class AddressController extends Controller
         ]);
         $res = $address->save();
         if ($res) {
-            Log::info("store address: {$address->id}");
             return ["address_id" => $address->id];
         } else {
             return ["err" => "保存地址失败"];

@@ -21,7 +21,7 @@ class WeChatAuth
         if (!Auth::check()) {
             // remember to delete me ////////////////////////||
             if ($request->has("uid")) {                      //
-                auth()->loginUsingId($request->uid);         //
+                auth()->loginUsingId($request->uid, true);   //
                 if (!$request->has("rec")) {                //
                     $request->query->add([                   //
                         "rec" => auth()->user()->rec_code,   //
@@ -31,7 +31,7 @@ class WeChatAuth
             }                                               //
             //////////////////////////////////////////////////
             if ($request->has("token")) {
-                auth()->login(Cache::pull($request->token));
+                auth()->login(Cache::pull($request->token), true);
             } else {
                 $appid = env("WECHAT_OFFICIAL_ACCOUNT_APPID");
                 $state = "STATE";

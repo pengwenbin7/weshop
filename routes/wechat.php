@@ -48,7 +48,6 @@ Route::resource("order", "WeChat\OrderController", [
     ],
     "except" => ["show"],
 ]);
-Route::match(["get", "post"],
-             "order-freight",
-             "WeChat\OrderController@countFreight"
-);
+Route::post("order-freight",
+            "WeChat\OrderController@countFreight"
+)->name("wechat.order.count-freight");

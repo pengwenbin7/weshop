@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string("name", 32)->nullable();
             $table->string("phone", 32)->unique()->nullable();
             $table->string("password", 100)->nullable();
+            $table->boolean("is_vip")->default(false);
             $table->unsignedInteger("integral")->default(0)->comment("积分");
             $table->boolean("active")->default(true);
             $table->boolean("is_subscribe")->default(true);

@@ -11,6 +11,7 @@ use App\Models\PayChannel;
 use App\Models\Payment;
 use App\Models\Coupon;
 use App\Models\Address;
+use App\Models\Storage;
 use App\Utils\Count;
 use Log;
 
@@ -80,7 +81,6 @@ class OrderController extends Controller
         
         // fetch product
         foreach ($request->products as $p) {
-            Log::debug($p["number"]);
             // create order items
             $item = new OrderItem();
             $product = Product::find($p["id"]);
@@ -140,24 +140,24 @@ class OrderController extends Controller
         // 按发货仓库分组
         $ss = [];
         foreach ($request->products as $p) {
-            $product = Product::with("storage")->find($p->id);
+            $product = Product::with("storage")->find($p["id"]);
             if ($product->measure_unit != "kg") {
                 return -1;
             }
             if (array_key_exists($product->storage->id, $ss)) {
-                $ss[$p->storage->id] += $product->content * $p->number;
+                $ss[$p->storage->id] += $product->content * $p["number"];
             } else {
-                $ss[$product->storage->id] = $product->content * $p->number;
+                $ss[$product->storage->id] = $product->content * $p["number"];
             }
         }
 
         // 分组计算运费
         $total = 0;
         foreach ($ss as $storage_id => $weight) {
+            $storage = Storage::with("address")->find($storage_id);
             $distance = Count::distance($address->code, $storage->address->code);
             $total += Count::freight($storage_id, $weight, $distance);
         }
-
         return $total;
     }
 }

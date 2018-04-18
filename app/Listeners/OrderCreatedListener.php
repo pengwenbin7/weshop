@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\OrderCreatedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Order;
 use App\Jobs\OrderExpire;
 
 class OrderCreatedListener
@@ -28,7 +29,7 @@ class OrderCreatedListener
     public function handle(OrderCreatedEvent $event)
     {
         $order = $event->order;
-        OrderExpire::dispatch(new OrderExpire($order))
-            ->delay(now()->addSeconds(10));
+        dispatch(new OrderExpire($order))
+            ->delay(now()->addSeconds(Order::ORDER_EXPIRE_IDL));
     }
 }

@@ -2,8 +2,10 @@
 
 @section("content")
   <div id="app">
-    <a href="{{ route("wechat.address.create") }}">
-      create_address
-    </a>
+    <ul>
+      @foreach ($user->orders as $order)
+	<li>{{ $order->no }}</li>
+      @endforeach
+    </ul>
   </div>
 @endsection
