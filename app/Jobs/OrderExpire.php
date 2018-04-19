@@ -31,7 +31,9 @@ class OrderExpire implements ShouldQueue
      */
     public function handle()
     {
-        $this->order->status = Order::ORDER_STATUS_IDL;
-        $this->order->save();
+        if ($this->order->status == Order::ORDER_STATUS_WAIT) {
+            $this->order->status = Order::ORDER_STATUS_IDL;
+            $this->order->save();
+        }
     }
 }

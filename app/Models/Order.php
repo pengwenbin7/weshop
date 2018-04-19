@@ -16,8 +16,9 @@ class Order extends Model
     // 付款状态
     const PAY_STATUS_WAIT = 0; // 待付款
     const PAY_STATUS_PART = 1; // 部分付款
-    const PAY_STATUS_DONE = 2; // 完成
+    const PAY_STATUS_DONE = 2; // 完成    
     const PAY_STATUS_REFUND = 3; // 退款
+    const PAY_STATUS_AFTER = 4;  // 到付
     // 发货状态
     const SHIP_STATUS_WAIT = 0;  // 待发货
     const SHIP_STATUS_PART = 1;  // 部分发货
