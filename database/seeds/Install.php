@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Utils\RecommendCode;
 use App\Models\AdminUser;
+use Spatie\Permission\Models\Permission;
 
 class Install extends Seeder
 {
@@ -16,10 +17,22 @@ class Install extends Seeder
     public function run()
     {
         $now = Carbon::now();
+        
+        Permission::create(["name" => "user"]);
+        Permission::create(["name" => "order"]);
+        Permission::create(["name" => "pay"]);
+        Permission::create(["name" => "ship"]);
+        Permission::create(["name" => "system"]);
+        
         $admin = AdminUser::create([
             "name" => "admin",
             "password" => bcrypt("admin"),
             "rec_code" => "x",
+        ]);
+
+        $admin->givePermissionTo([
+            "user", "order", "pay",
+            "ship", "system",
         ]);
         
         DB::table("locales")->insert([
@@ -72,7 +85,7 @@ class Install extends Seeder
 
         DB::table("pay_channels")->insert([
 	    "name" => "wechat",
-        ]);
+        ]);       
         
     }
 }
