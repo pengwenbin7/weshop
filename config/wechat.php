@@ -104,19 +104,21 @@ return [
     /*
      * 微信支付
      */
-    //  'payment' => [
-    //     'default' => [
-    //         'sandbox'            => env('WECHAT_PAYMENT_SANDBOX', false),
-    //         'app_id'             => env('WECHAT_PAYMENT_APPID', ''),
-    //         'mch_id'             => env('WECHAT_PAYMENT_MCH_ID', 'your-mch-id'),
-    //         'key'                => env('WECHAT_PAYMENT_KEY', 'key-for-signature'),
-    //         'cert_path'          => env('WECHAT_PAYMENT_CERT_PATH', 'path/to/cert/apiclient_cert.pem'),    // XXX: 绝对路径！！！！
-    //         'key_path'           => env('WECHAT_PAYMENT_KEY_PATH', 'path/to/cert/apiclient_key.pem'),      // XXX: 绝对路径！！！！
-    //         'notify_url'         => 'http://example.com/payments/wechat-notify',                           // 默认支付结果通知地址
-    //     ],
-    //     // ...
-    // ],
-
+    'payment' => [
+        'default' => [
+            'sandbox'            => env('WECHAT_PAYMENT_SANDBOX', false),
+            'app_id'             => env('WECHAT_PAYMENT_APPID', 'wx04095822064c1821'),
+            'mch_id'             => env('WECHAT_PAYMENT_MCH_ID', '1410224602'),
+            'key'                => env('WECHAT_PAYMENT_KEY', 'muh0jEGWGkQnPYA48V5zl7a8FUCpDTNa'),
+            // XXX: 绝对路径！！！！
+            'cert_path'          => env('WECHAT_PAYMENT_CERT_PATH', storage_path('cert/apiclient_cert.pem')),
+            // XXX: 绝对路径！！！！
+            'key_path'           => env('WECHAT_PAYMENT_KEY_PATH', storage_path('cert/apiclient_key.pem')),
+            // 默认支付结果通知地址
+            'notify_url'         => 'http://weshop.mafkj.com/wechat/pay/callback',
+        ],
+    ],
+        
     /*
      * 企业微信
      */

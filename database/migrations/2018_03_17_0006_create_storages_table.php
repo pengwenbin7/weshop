@@ -28,7 +28,7 @@ class CreateStoragesTable extends Migration
             $table->string("name", 100)->unique();
             $table->unsignedInteger("brand_id");
             $table->unsignedInteger("address_id");
-            $table->text("func")->default(json_encode($func));
+            $table->string("func", 1024)->default(json_encode($func));
             $table->text("description")->nullable();
             $table->boolean("active")->default(true);
             $table->timestamps();

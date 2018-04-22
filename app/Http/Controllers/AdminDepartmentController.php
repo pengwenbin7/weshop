@@ -1,24 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
+use App\Model\AdminDepartment;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Order;
 
-class OrderController extends Controller
+class AdminDepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $condition = null;
-        return Order::with(["orderItems", "payment", "shipments"])
-            ->orderBy("updated_at", "desc")
-            ->get();
+        //
     }
 
     /**
@@ -45,10 +41,10 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Model\AdminDepartment  $adminDepartment
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show(AdminDepartment $adminDepartment)
     {
         //
     }
@@ -56,10 +52,10 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Model\AdminDepartment  $adminDepartment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit(AdminDepartment $adminDepartment)
     {
         //
     }
@@ -68,10 +64,10 @@ class OrderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
+     * @param  \App\Model\AdminDepartment  $adminDepartment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, AdminDepartment $adminDepartment)
     {
         //
     }
@@ -79,10 +75,10 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Model\AdminDepartment  $adminDepartment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(AdminDepartment $adminDepartment)
     {
         //
     }

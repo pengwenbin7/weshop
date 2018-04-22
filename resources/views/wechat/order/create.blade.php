@@ -3,19 +3,19 @@
 @section("content")
   <div id="app">
     <p>
-      <p>addr_id: @{{ address_id }}</p>
+      <p>addr_id <input type="number" v-model="address_id">
       <button v-on:click="selectAddress">select address</button>
     </p>
     <p>product_id: {{ $product->id }}</p>
     <p>product_name: {{ $product->name }}</p>
     <p>is_ton:<input v-model="is_ton" type="number">
       <p>
-	number: <input v-model="see_number" min="1" step="1" type="number">
+	number: <input v-model="show_number" min="1" step="1" type="number">
 	<div v-if="is_ton">
-	  <p>number: @{{ see_number * factor }}</p>
+	  <p>number: @{{ show_number * factor }}</p>
 	</div>
 	<div v-else>
-	  <p>number: @{{ see_number }}</p>
+	  <p>number: @{{ show_number }}</p>
 	</div>
 	@if ($product->is_ton)
 	  吨
@@ -51,12 +51,12 @@
     el: "#app",
     data: {
       is_ton: {{ $product->is_ton }},
-      see_number: {{ $number }},
+      show_number: {{ $number }},
       number: 0,
       address_id: null,
       factor: {{ 1000 / $product->content }},
       channel_id: 1,
-      ofreight: 0
+      freight: 0
     },
     methods: {
       selectAddress: function () {
@@ -90,7 +90,8 @@
 	};
 	axios.post("{{ route("wechat.order.store") }}", data)
 	  .then(function (res) {
-	    alert(res.data.store);
+	    location.assign("{{ route("wechat.pay") }}" +
+	      "?order_id=" + res.data.store);
 	  });
       },
       
@@ -111,8 +112,8 @@
     
     mounted: function () {
       this.number = this.is_ton ?
-	this.see_number * this.factor :
-	this.see_number;
+	this.show_number * this.factor :
+	this.show_number;
     }
       
   });

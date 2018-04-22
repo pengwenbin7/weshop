@@ -18,18 +18,19 @@ class Install extends Seeder
     {
         $now = Carbon::now();
         
-        Permission::create(["name" => "user"]);
-        Permission::create(["name" => "order"]);
-        Permission::create(["name" => "pay"]);
-        Permission::create(["name" => "ship"]);
-        Permission::create(["name" => "system"]);
+        Permission::create(["name" => "user", "guard_name" => "admin"]);
+        Permission::create(["name" => "order", "guard_name" => "admin"]);
+        Permission::create(["name" => "pay", "guard_name" => "admin"]);
+        Permission::create(["name" => "ship", "guard_name" => "admin"]);
+        Permission::create(["name" => "system", "guard_name" => "admin"]);
         
-        $admin = AdminUser::create([
+        AdminUser::create([
             "name" => "admin",
             "password" => bcrypt("admin"),
             "rec_code" => "x",
         ]);
 
+        $admin = AdminUser::find(1);
         $admin->givePermissionTo([
             "user", "order", "pay",
             "ship", "system",

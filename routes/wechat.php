@@ -51,3 +51,6 @@ Route::resource("order", "WeChat\OrderController", [
 Route::post("order-freight",
             "WeChat\OrderController@countFreight"
 )->name("wechat.order.count-freight");
+
+Route::get("pay", "WeChat\PaymentController@pay")
+    ->name("wechat.pay");
