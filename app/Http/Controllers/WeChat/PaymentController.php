@@ -31,8 +31,10 @@ class PaymentController extends Controller
 
     public function callback(Request $request)
     {
-        Log::info("callback");
-        Log::info($request);
+        Log::info("callback-content");
+        Log::info($request->getContent());
+        Log::info("callback-all");
+        Log::info($request->all());
     }
     
     /**
