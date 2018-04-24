@@ -18,6 +18,7 @@ class CreateAdminUsersTable extends Migration
             $table->string("email", 100)->unique()->nullable();
             $table->string("wechat_openid", 100)->unique()->nullable();
             $table->string("wework_openid", 100)->unique()->nullable();
+            $table->string("wework_userid", 100)->unique();
             $table->string("phone", 32)->unique()->nullable();
             $table->string("password", 100);
             $table->string("rec_code", 9);

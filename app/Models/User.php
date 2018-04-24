@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->hasMany("App\Models\UserAction");
     }
+
+    public function admin()
+    {
+        return $this->belongsTo("App\Models\AdminUser");
+    }
 }

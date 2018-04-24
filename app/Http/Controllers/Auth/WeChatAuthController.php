@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\AdminUser as Admin;
 use Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Cache;

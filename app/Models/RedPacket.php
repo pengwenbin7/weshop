@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * 红包类. 讲道理红包是 "red envelope",
+ * don't care it.
+ */
 class RedPacket extends Model
 {
     protected $fillable = [

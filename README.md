@@ -1,5 +1,7 @@
 # INSTALL
 ```shell
-$ composer install
-$ php artisan install
+composer install
+php artisan migrate
+php artisan db:seed
+php artisan region:update
 ```

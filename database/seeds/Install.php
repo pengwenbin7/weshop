@@ -27,6 +27,7 @@ class Install extends Seeder
         AdminUser::create([
             "name" => "admin",
             "password" => bcrypt("admin"),
+            "wework_userid" => "PengWenBin",
             "rec_code" => "x",
         ]);
 

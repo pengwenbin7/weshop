@@ -5,10 +5,6 @@ namespace App\Utils;
 use EasyWeChat;
 use App\Models\RedPacket as Packet;
 
-/**
- * 红包类. 讲道理红包是 "red envelope",
- * don't care it.
- */
 class RedPacket
 {
     public static function send()
