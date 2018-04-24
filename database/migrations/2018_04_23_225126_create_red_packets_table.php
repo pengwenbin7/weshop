@@ -15,6 +15,15 @@ class CreateRedPacketsTable extends Migration
     {
         Schema::create('red_packets', function (Blueprint $table) {
             $table->increments('id');
+            $table->string("mch_billno", 28);
+            $table->string("mch_id", 32);
+            $table->string("wxappid", 32);
+            $table->string("send_name", 32);
+            $table->string("re_openid", 32);
+            $table->unsignedInteger("total_amount");
+            $table->unsignedInteger("total_num")->default(1);
+            $table->string("wishing", 128);
+            
             $table->timestamps();
         });
     }

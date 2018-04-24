@@ -115,7 +115,7 @@ return [
             // XXX: 绝对路径！！！！
             'key_path'           => env('WECHAT_PAYMENT_KEY_PATH', storage_path('cert/apiclient_key.pem')),
             // 默认支付结果通知地址
-            'notify_url'         => 'http://weshop.mafkj.com/wechat/pay/callback',
+            'notify_url'         => env("WECHAT_PAYMENT_CALLBACK", ""),
         ],
     ],
         
