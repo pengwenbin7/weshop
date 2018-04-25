@@ -16,8 +16,8 @@ class ServerController extends Controller
             Log::info($message);
             $app->messenger
                 ->ofAgent(env("WECHAT_WORK_AGENT_ID"))
-                ->message("是你的二维码")
-                ->toUser($message["FromUserName"])
+                ->message(json_encode($message, JSON_UNESCAPED_UNICODE))
+                ->toUser("PengWenBin")
                 ->send();
         });
         return $app->server->serve();
