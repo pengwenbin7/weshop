@@ -5,5 +5,5 @@ default:
 	php artisan region:update
 	php artisan adminuser:init
 	echo "没有输出就是最好的输出"
-reset:
+clean:
 	php artisan migrate:fresh

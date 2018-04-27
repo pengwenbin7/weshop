@@ -8,6 +8,7 @@ Route::match(["get", "post"], "/wechat/pay/callback", "WeChat\PaymentController@
     ->name("wechat.pay.callback");
 
 Route::any("/wework/server", "WeWork\ServerController@server");
+Route::any("/wework/contact", "WeWork\ServerController@contact");
 Route::any("/wework/menu", "WeWork\ServerController@menu");
 Route::get("/wework/", function () {
     return "Hello wework!";

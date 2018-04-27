@@ -14,4 +14,14 @@ class AdminDepartment extends Model
     protected $fillable = [
         "admin_id", "department_id",
     ];
+
+    public function adminUsers()
+    {
+        return $this->hasMany("App\Models\AdminUser", "id", "admin_id");
+    }
+
+    public function departments()
+    {
+        return $this->hasMany("App\Models\Department", "id", "department_id");
+    }
 }

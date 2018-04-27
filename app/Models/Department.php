@@ -19,4 +19,9 @@ class Department extends Authenticatable
     ];
 
     protected $guard_name = "admin";
+
+    public function adminUsers()
+    {
+        return $this->belongsToMany("App\Models\AdminUser", "admin_departments", "department_id", "admin_id");
+    }
 }

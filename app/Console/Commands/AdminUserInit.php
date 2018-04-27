@@ -54,6 +54,7 @@ class AdminUserInit extends Command
         DB::table('admin_users')->truncate();
         DB::table("admin_departments")->truncate();
         DB::table("model_has_permissions")->truncate();
+        DB::table("model_has_roles")->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // 创建权限
@@ -66,7 +67,7 @@ class AdminUserInit extends Command
         }
         $all = array_unique($all);
         foreach ($all as $i) {
-            Permission::create(["name" => $i, "guard_name" => "admin"]);
+            Permission::firstOrCreate(["name" => $i, "guard_name" => "admin"]);
         }
 
         // 获取部门
@@ -97,26 +98,21 @@ class AdminUserInit extends Command
                     "email" => $a["email"],
                     "status" => $a["status"],
                     "enable" => $a["enable"],
+                    "position" => $a["position"],
                     "isleader" => $a["isleader"],
                     "gender" => $a["gender"],
                     "avatar" => $a["avatar"],
                 ]);
-
-                // 持久化人员所在部门
+                
+                /**
+                 * 持久化人员所在部门
+                 * 在此操作之后，应该在监视器里面更新人员权限
+                 */
                 foreach ($a["department"] as $k => $v) {
-                    AdminDepartment::firstOrCreate([
+                    $ad = AdminDepartment::firstOrCreate([
                         "admin_id" => $admin->id,
                         "department_id" => $d->id,
                     ]);
-                }
-
-                /**
-                 * 为每一个部门的成员赋予和部门相同的权限
-                 * 为什么我不直接使用 role 呢？
-                 * 因为名字看起来不直观
-                 */
-                foreach ($ps as $p) {
-                    $admin->givePermissionTo($p); 
                 }
             }
         }

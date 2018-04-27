@@ -19,7 +19,7 @@ class AdminUser extends Authenticatable
         "userid", "mobile", "name", "email",
         "status", "enable", "isleader",
         "gender", "avatar", "rec_code",
-        "openid",
+        "openid", "position",
     ];
 
     protected $hidden = [
@@ -27,4 +27,9 @@ class AdminUser extends Authenticatable
     ];
 
     protected $guard_name = "admin";
+
+    public function departments()
+    {
+        return $this->belongsToMany("App\Models\Department", "admin_departments", "admin_id", "department_id");
+    }
 }
