@@ -14,15 +14,19 @@ class CreateAdminUsersTable extends Migration
     {
         Schema::create('admin_users', function (Blueprint $table) {
             $table->increments("id");
-            $table->string("name", 100)->unique();
+            $table->string("userid", 32)->unique();
+            $table->string("openid", 100)->unique();
+            $table->string("mobile", 32)->unique();
+            $table->string("name", 32);
+            $table->string("englishname", 32)->nullable();
             $table->string("email", 100)->unique()->nullable();
-            $table->string("wechat_openid", 100)->unique()->nullable();
-            $table->string("wework_openid", 100)->unique()->nullable();
-            $table->string("wework_userid", 100)->unique();
-            $table->string("phone", 32)->unique()->nullable();
-            $table->string("password", 100);
-            $table->string("rec_code", 9);
-            $table->softDeletes();
+            $table->boolean("status");
+            $table->boolean("enable");
+            $table->string("position", 64)->nullable();
+            $table->boolean("isleader");
+            $table->boolean("gender")->default(0);
+            $table->string("avatar")->nullable();
+            $table->string("rec_code", 9)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

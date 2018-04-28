@@ -16,5 +16,6 @@ class VerifyCsrfToken extends Middleware
         "/wechat/oauth",
         "/wechat/pay/callback",
         "/wework/server",
+        "/wework/contact",
     ];
 }
