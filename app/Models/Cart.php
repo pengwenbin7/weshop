@@ -10,8 +10,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Cart extends Model
 {
-    public function product()
+    protected $fillable = [
+        "user_id", "address_id",
+    ];
+
+    public function address()
     {
-        return $this->belongsTo("App\Models\Product");
+        return $this->belongsOne("App\Models\Address");
+    }
+    
+    public function cartItems()
+    {
+        return $this->hasMany("App\Models\CartItem");
     }
 }

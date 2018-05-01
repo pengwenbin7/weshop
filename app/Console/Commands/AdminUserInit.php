@@ -95,13 +95,16 @@ class AdminUserInit extends Command
                     "openid" => $openid["openid"],
                     "mobile" => $a["mobile"],
                     "name" => $a["name"],
-                    "email" => $a["email"],
+                    "english_name" => $a["english_name"] ?? null,
+                    "email" => $a["email"] ?? null,
+                    "enable" => $a["enable"] ?? 1,
                     "status" => $a["status"],
-                    "enable" => $a["enable"],
-                    "position" => $a["position"],
+                    "position" => $a["position"] ?? null,
                     "isleader" => $a["isleader"],
                     "gender" => $a["gender"],
-                    "avatar" => $a["avatar"],
+                    "avatar" => $a["avatar"] ?? null,
+                    "hide_mobile" => $a["hide_mobile"] ?? null,
+                    "qr_code" => $a["qr_code"] ?? null,
                 ]);
                 
                 /**

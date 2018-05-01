@@ -16,10 +16,11 @@ class AdminUser extends Authenticatable
     use HasPermissions;
     
     protected $fillable = [
-        "userid", "mobile", "name", "email",
-        "status", "enable", "isleader",
-        "gender", "avatar", "rec_code",
-        "openid", "position",
+        "userid", "openid", "mobile",
+        "name", "english_name", "email",
+        "enable", "status", "position",
+        "isleader", "gender", "avatar",
+        "hide_mobile", "rec_code", "qr_code",
     ];
 
     protected $hidden = [

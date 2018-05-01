@@ -15,6 +15,12 @@ class ContactEvent extends Event
         $this->app = EasyWeChat::work();
     }
 
+    /**
+     * 通讯录修改
+     * 因为 Create 用户时，微信也会发一条 Update 信息，
+     * 而 Create 用户未完成时无法执行 Update 操作，
+     * 所以把 Create 操作也放到 Update 里执行
+     */
     public function handle()
     {
         $type = $this->msg["ChangeType"];

@@ -31,11 +31,12 @@ Route::resource("cart", "WeChat\CartController", [
         "index" => "wechat.cart.index",
         "create" => "wechat.cart.create",
         "store" => "wechat.cart.store",        
-        "update" => "wechat.cart.update",
         "destroy" => "wechat.cart.destroy",
     ],
-    "except" => ["edit", "show"],
+    "except" => ["edit", "show", "update"],
 ]);
+Route::post("cart_update", "WeChat\CartController@updateItem");
+Route::post("cart_add", "WeChat\CartController@addProduct");
 
 Route::resource("order", "WeChat\OrderController", [
     "names" => [

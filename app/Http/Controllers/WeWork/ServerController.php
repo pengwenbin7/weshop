@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\WeChat\Work\Events\ContactEvent;
 use EasyWeChat;
+use Log;
 
 class ServerController extends Controller
 {

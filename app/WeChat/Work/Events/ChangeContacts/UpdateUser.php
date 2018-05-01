@@ -16,55 +16,41 @@ class UpdateUser extends ContactEvent
 
     /**
      * 根据回调信息修改 admin_user
+     * 因为新建和修改都在此完成，总是获取完整信息进行操作
      * @param void
      * @return void
      */
     public function handle()
     {
-        $msg = $this->msg;
-        $app = $this->app;
-
-        // 去除无关信息
-        $arr = array_except($msg, [
-            'ToUserName', 'FromUserName',
-            'CreateTime', 'MsgType', 'Event',
-            'ChangeType',
+        /*
+         * 根据 UserID 或 NewUerID 获取　AdminUser 对象
+         * 及其信息
+         */
+        $userid = $this->msg["NewUserID"] ?? $this->msg["UserID"];
+        $arr = $this->app->user->get($userid);
+        if ($arr["errcode"]) {
+            Log::error($arr["errmsg"]);
+            return "success";
+        }
+        $res = $this->app->user->userIdToOpenid($userid);
+        $openid = $res["openid"];
+        $fetch = Admin::where("openid", "=", $openid)->get();
+        $admin = $fetch->isEmpty()?
+               new Admin():
+               $fetch->first();
+        $fill = array_except($arr, [
+            "department", "extattr", "order",
         ]);
-
-        // 根据 UserID 或 NewUerID 获取　AdminUser
-        if (array_key_exists("NewUserId", $arr)) {
-            $openid = $app->user->userIdToOpenid($arr["NewUserID"]);
-            $admin = Admin::where("openid", "=", $openid)->first();
-        } else {
-            $admin = Admin::where("userid", "=", $arr["UserID"])->first();
-        }
-
-        // 判断是否进行部门修改操作
-        if (array_key_exists("Department", $arr)) {
-            $ds = explode(",", $arr["Department"]);
-            AdminDepartment::where("admin_id", "=", $admin->id)
-                ->delete();
-            foreach ($ds as $d) {
-                AdminDepartment::create([
-                    "admin_id" => $admin->id,
-                    "department_id" => $d,
-                ]);
-            }
-        }
-
-        // 修改字段
-        $attrs = $admin->attributesToArray();
-        foreach ($arr as $k => $v) {
-            $key = strtolower($k);
-            if (array_key_exists($key, $attrs)) {
-                $admin->$key = $v;
-            }
-        }
+        $fill["openid"] = $openid;
+        $admin->fill($fill)->save();
         
-        if (!$admin->save()) {
-            Log::error("通讯录更新回调出错");
-            Log::info($msg);
-            Log::info($admin);
+        AdminDepartment::where("admin_id", "=", $admin->id)
+            ->delete();
+        foreach ($arr["department"] as $d) {
+            AdminDepartment::create([
+                "admin_id" => $admin->id,
+                "department_id" => $d,
+            ]);
         }
     }
 }

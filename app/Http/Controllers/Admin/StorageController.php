@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Storage;
 use App\Models\Address;
+use App\Models\Config;
 use Illuminate\Http\Request;
 
 class StorageController extends Controller
@@ -37,9 +38,10 @@ class StorageController extends Controller
      */
     public function store(Request $request)
     {
-        $storage = new Storage();
-        $address = new Address();
-        $address->fill([
+        $func = $request->func ??
+              Config::where("key", "=", "storage.func")->first()->value;
+        
+        $address = Address::create([
             "contact_name" => $request->input("contact_name", null),
             "contact_tel" => $request->input("contact_tel", null),
             "province" => $request->province,
@@ -48,11 +50,11 @@ class StorageController extends Controller
             "code" => $request->code,
             "detail" => $request->detail,
         ]);
-        $address->save();
-        $storage->fill([
+        $storage = Storage::create([
             "name" => $request->name,
             "brand_id" => $request->brand_id,
             "address_id" => $address->id,
+            "func" => $func,
             "description" => $request->input("description", null),
         ]);
         return ["save" => $storage->save()];

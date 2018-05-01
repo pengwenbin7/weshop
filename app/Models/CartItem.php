@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Config extends Model
+class CartItem extends Model
 {
     protected $fillable = [
-        "key", "value", "note",
+        "cart_id", "product_id", "number",
     ];
 }

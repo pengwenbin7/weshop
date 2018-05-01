@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WeChat;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use Auth;
 
@@ -18,26 +19,48 @@ class CartController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $carts = Cart::where("user_id", "=", $user->id)
-               ->with("product")->get();
+        $carts = auth()->user->carts;
         return $carts;
     }
     
     /**
-     * Adding a product to cart.
-     *
+     * store a new cart
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $cart = new Cart();
-        $cart->user_id = Auth::user()->id;
-        $cart->product_id = $request->product_id;
-        $cart->is_ton = $request->is_ton;
-        $cart->number = $request->number;
-        return ["store" => $cart->save()];
+        $cart = Cart::create([
+            "user_id" => auth()->user()->id,
+            "address_id" => $request->address_id,
+        ]);
+        
+        return ["store" => $cart->id];
+    }
+
+    /**
+     * Add a product to a cart
+     */
+    public function addProduct(Request $request) {
+        $cart = Cart::find($request->cart_id);
+        
+        // 重复添加的行为，会改变数量
+        $item = $cart->cartItems()
+              ->where("product_id", "=", $request->product_id)
+              ->get();
+        if ($item->isEmpty()) {
+            $item = CartItem::create([
+                "cart_id" => $cart->id,
+                "product_id" => $request->product_id,
+                "number" => $request->number,
+            ]);
+        } else {
+            $item = $item->first();
+            $item->number += $request->number;
+            $item->save();
+        }
+        
+        return ["add" => $item->id];
     }
 
     /**
@@ -48,10 +71,11 @@ class CartController extends Controller
      * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cart $cart)
+    public function updateItem(Request $request)
     {
-        $cart->number = $request->number;
-        return ["update" => $cart->save()];
+        $cartItem = CartItem::find($request->cart_item_id);
+        $cartItem->number = $request->number;
+        return ["update" => $cartItem->save()];
     }
 
     /**
@@ -62,6 +86,7 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
+        $cart->cartItems()->delete();
         return ["delete" => $cart->delete()];
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Storage extends Model
 {
-    protected $fillable = ["name", "brand_id", "address_id", "description"];
+    protected $fillable = ["name", "brand_id", "address_id", "description", "func"];
     
     public function products()
     {

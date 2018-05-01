@@ -17,6 +17,12 @@
     <p>stock: {{ $product->variable->stock }}</p>
     <p>buy: {{ $product->variable->buy }}</p>
     <div>
+      <select id="" name="cart_id">
+	@foreach (auth()->user()->with("address")->carts as $cart)
+	  <option value="{{ $cart->id }}">{{ $cart->address->id }}</option>
+	@endforeach
+      </select>
+      
       <input v-model="number" type="number" min="1" step="1">
       <button v-on:click="addToCart">add to cart</button>
       <button v-on:click="directlyBuy">direct buy</button>
@@ -39,14 +45,14 @@
     el: "#app",
     data: {
       number: 1,
-      is_ton: 0
+      cart_id: null
     },
     methods: {
       addToCart: function () {
 	var params = {
+	  cart_id: this.cart_id,
 	  product_id: "{{ $product->id }}",
-	  number: this.number,
-	  is_ton: this.is_ton
+	  number: this.number
 	};
 	axios.post("{{ route("wechat.cart.store") }}", params)
 	  .then(function (res) {
@@ -54,7 +60,6 @@
 	  });
       },
       directlyBuy: function () {
-	console.log("BUY");
 	var params = {
 	  product_id: "{{ $product->id }}",
 	  number: this.number,
