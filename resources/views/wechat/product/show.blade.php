@@ -16,14 +16,19 @@
     <p>unit price: {{ $product->variable->unit_price }}</p>
     <p>stock: {{ $product->variable->stock }}</p>
     <p>buy: {{ $product->variable->buy }}</p>
+
     <div>
-      <select id="" name="cart_id">
-	@foreach (auth()->user()->with("address")->carts as $cart)
-	  <option value="{{ $cart->id }}">{{ $cart->address->id }}</option>
-	@endforeach
-      </select>
-      
-      <input v-model="number" type="number" min="1" step="1">
+      @if (auth()->user()->carts->isEmpty())
+	新建采购单:
+	<button v-on:click="createCart">createCart</button>
+      @else
+	<select name="cart_id">
+	  @foreach (auth()->user()->carts as $cart)
+	    <option value="{{ $cart->id }}">{{ $cart->address->id }}</option>
+	  @endforeach
+	</select>
+      @endif
+
       <button v-on:click="addToCart">add to cart</button>
       <button v-on:click="directlyBuy">direct buy</button>
     </div>
@@ -45,9 +50,33 @@
     el: "#app",
     data: {
       number: 1,
-      cart_id: null
+      cart_id: null,
+      cart_addr: null,
     },
     methods: {
+      createCart: function () {
+	var $this = this;
+	wx.openAddress({
+	  success: function (res) {
+	    axios.post(
+	      "{{ route("wechat.address.store") }}",
+	      res
+	    ).then(function (res) {
+	      var url = "{{ route("wechat.cart.store") }}";
+	      var d = new FormData();
+	      d.set("address_id", res.data.address_id);
+	      d.set("_token", "{{ csrf_token() }}");
+	      axios.post(url, d).
+		then(function (res) {
+		  location.reload();
+		});
+	    });
+	  },
+	  cancel: function () {
+	    //
+	  }
+	});
+      },
       addToCart: function () {
 	var params = {
 	  cart_id: this.cart_id,
@@ -66,7 +95,7 @@
 	  is_ton: this.is_ton
 	};
 	location.assign("{{ route("wechat.order.create") }}" +
-	  "?product_id=" + {{ $product->id }} + 
+	  "?product_id=" + {{ $product->id }} +
 	  "&number=" + this.number +
 	  "&is_ton=" + this.is_ton);
       }

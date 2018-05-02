@@ -2,8 +2,8 @@
 
 namespace App\Utils;
 
-use App\Models\Region;
-use App\Models\RegionDistance;
+use App\Models\Address;
+use App\Models\AddressDistance;
 use App\Models\Storage;
 
 class Count
@@ -11,21 +11,28 @@ class Count
     /**
      *
      * count distance
-     * @param $fromCode 起点地区码
-     * @param $toCode 终点地区码
+     * @param $from 起始 address id
+     * @param $to 终点 address id
+     * @return int distance
+     * 如果返回值为 -1 则说明至少存在一个信息不正确的地址
      */
-    public static function distance($fromCode, $toCode)
+    public static function distance($from, $to)
     {
         // 检查本地缓存
-        $local = RegionDistance::where("from", "=", $fromCode)
-               ->where("to", "=", $toCode)
+        $local = AddressDistance::where("from", "=", $from)
+               ->where("to", "=", $to)
                ->get();
-        if (!$local->isEmpty()) {
+        if ($local->isNotEmpty()) {
             return $local->first()->distance;
         }
+
+        $from = Address::find($from);
+        $to = Address::find($to);
+        // 存在至少一个地址没有正确的经纬度信息，不可计算
+        if (!$from->countable || !$to->countable) {
+            return -1;
+        }
         
-        $from = Region::find($fromCode);
-        $to = Region::find($toCode);
         $origin = "{$from->lng},{$from->lat}";
         $destination = "{$to->lng},{$to->lat}";
         $url = "http://restapi.amap.com/v4/direction/truck?parameters" .
@@ -38,16 +45,16 @@ class Count
             return -1;
         } else {
             //　这里不需要很精确，取第一个即可
-            $distance = ($res->data->route->paths)[0]->distance;
+            $distance = ceil(($res->data->route->paths)[0]->distance);
             // 写入本地缓存
-            $rd = RegionDistance::create([
-                "from" => $fromCode,
-                "to" => $toCode,
+            AddressDistance::create([
+                "from" => $from->id,
+                "to" => $to->id,
                 "distance" => $distance,
             ]);
-            $rd = RegionDistance::create([
-                "from" => $toCode,
-                "to" => $fromCode,
+            AddressDistance::create([
+                "from" => $to->id,
+                "to" => $from->id,
                 "distance" => $distance,
             ]);
             

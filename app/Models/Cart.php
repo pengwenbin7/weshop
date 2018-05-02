@@ -16,7 +16,7 @@ class Cart extends Model
 
     public function address()
     {
-        return $this->belongsOne("App\Models\Address");
+        return $this->belongsTo("App\Models\Address");
     }
     
     public function cartItems()

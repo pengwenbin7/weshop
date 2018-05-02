@@ -23,6 +23,9 @@ class CreateAddressesTable extends Migration
             $table->string("district", 32)->nullable();
             $table->string("detail", 100);
             $table->unsignedInteger("code");
+            $table->unsignedDecimal("lat", 9, 6)->nullable();
+            $table->unsignedDecimal("lng", 9, 6)->nullable();
+            $table->boolean("countable")->default(true);
             $table->timestamps();
         });
     }

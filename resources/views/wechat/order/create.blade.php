@@ -3,9 +3,10 @@
 @section("content")
   <div id="app">
     <p>
-      <p>addr_id <input type="number" v-model="address_id">
-      <button v-on:click="selectAddress">select address</button>
-    </p>
+      <p>
+	addr_id: <input type="number" v-model="address_id">
+	<button v-on:click="selectAddress">select address</button>
+      </p>
     <p>product_id: {{ $product->id }}</p>
     <p>product_name: {{ $product->name }}</p>
     <p>is_ton:<input v-model="is_ton" type="number">

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRegionDistancesTable extends Migration
+class CreateAddressDistancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,11 @@ class CreateRegionDistancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('region_distances', function (Blueprint $table) {
+        /**
+         * 考虑到可能会清理地址，而在from, to 唯一的情况下，不需要清理距离缓存
+         * 这里的 from, to 是 addresses 表的 id， 但不使用外键约束
+         */
+        Schema::create('address_distances', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger("from");
             $table->unsignedInteger("to");
@@ -30,6 +34,6 @@ class CreateRegionDistancesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('region_distances');
+        Schema::dropIfExists('address_distances');
     }
 }

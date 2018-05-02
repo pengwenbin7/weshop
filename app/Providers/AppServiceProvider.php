@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Department;
+use App\Observers\AddressObserver;
 use App\Observers\UserObserver;
 use App\Observers\AdminObserver;
 use App\Observers\ProductObserver;
@@ -41,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
         });
         
         User::observe(UserObserver::class);
+        Address::observe(AddressObserver::class);
         AdminUser::observe(AdminObserver::class);
         Product::observe(ProductObserver::class);
         Order::observe(OrderObserver::class);
