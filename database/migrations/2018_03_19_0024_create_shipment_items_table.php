@@ -21,7 +21,6 @@ class CreateShipmentItemsTable extends Migration
             $table->string("brand_name", 100);
             $table->unsignedInteger("number");
             $table->string("packing_unit", 16)->nullable();
-            $table->boolean("is_ton")->default(true);
             $table->timestamps();
             $table->foreign("shipment_id")->references("id")
                 ->on("shipments");

@@ -35,14 +35,28 @@ class OrderController extends Controller
     /**
      * Create order from product
      * Except request:
-     * product_id, number, is_ton
+     * products:
+     *     [{id: id, number: number},
+     *      {id: id, number: number}]
      */
     public function create(Request $request)
     {
         $data["user"] = auth()->user();
-        $data["product"] = Product::find($request->product_id);
-        $data["number"] = $request->number;
-        $data["is_ton"] = $request->is_ton;
+        
+        $data["products"] = [];
+        $ps = $request->products;
+        foreach ($ps as $p) {
+            $product = Product::with([
+                "brand", "category", "storage",
+                "detail", "variable",
+            ])->find($p["id"]);
+            $num = $p["number"];
+            $data["products"][] = [
+                "product" => $product,
+                "number" => $num,
+            ];
+        }
+        
         $data["payChannels"] = PayChannel::get();
         return view("wechat.order.create", $data);
     }
@@ -52,7 +66,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * Except request format:
      * address_id, coupon_id, tax_id, products => [
-     *   {product_id, is_ton, number}, {product_id, is_ton, number}
+     *   {product_id, number}, {product_id, number}
      * ]
      * @return \Illuminate\Http\Response
      */
@@ -86,7 +100,6 @@ class OrderController extends Controller
             $product = Product::find($p["id"]);
             $item->order_id = $order->id;
             $item->product_id = $product->id;
-            $item->is_ton = $p["is_ton"];
             $item->number = $p["number"];
             $item->price = $product->variable->unit_price;
             $payment->total += $p["number"] * $item->price;

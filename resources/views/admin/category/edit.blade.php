@@ -2,8 +2,8 @@
 
 @section("content")
   <form action="{{ route("admin.category.update", $category->id) }}" method="POST">
-    @csrf
-    @method("PUT")
+    {{ csrf_field() }}
+    <input name="_method" type="hidden" value="PUT"/>
     名字:
     <input name="name" type="text" value="{{ $category->name }}" required>
     
@@ -12,7 +12,7 @@
 
     描述:
     <input name="description" type="text" value="{{ $category->description }}" placeholder="可以为空">
-    @submit
+    <input name="" type="submit" value="submit"/>
   </form>
   
 @endsection

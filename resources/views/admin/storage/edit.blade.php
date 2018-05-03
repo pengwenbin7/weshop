@@ -2,8 +2,8 @@
 
 @section("content")
   <form action="{{ route("admin.storage.update", $storage->id) }}" method="POST">
-    @csrf
-    @method("PUT")
+    {{ csrf_field() }}
+    <input name="_method" type="hidden" value="PUT">
     name: <input name="name" type="text" value="{{ $storage->name }}" required/><br>
     brand_id: <input name="brand_id" type="number" value="{{ $storage->brand_id }}" required><br>
     func: <textarea name="func">{{ $storage->func }}</textarea>
@@ -15,6 +15,6 @@
     district: <input name="district" type="text" value="{{ $storage->address->district }}"><br>
     code: <input name="code" type="number" value="{{ $storage->address->code }}" required><br>
     address-detail: <input name="detail" type="text" value="{{ $storage->address->detail }}"><br>
-    @submit
+    <input type="submit" value="go">
   </form>
 @endsection

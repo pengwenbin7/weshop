@@ -18,9 +18,12 @@ class Address extends Model
     /**
      * 地址文本化
      */
-    public function __toString()
+    public function getText($showCountry = false)
     {
-        return $this->province . $this->city .
+        $country = $showCountry?
+                 $this->country:
+                 null;
+        return $country . $this->province . $this->city .
                               $this->district . $this->detail;
     }
 }

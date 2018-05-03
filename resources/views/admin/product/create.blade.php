@@ -2,7 +2,7 @@
 
 @section("content")
   <form action="{{ route("admin.product.store") }}" method="POST">
-    @csrf
+    {{ csrf_field() }}
     <p>name:<input name="name" type="text" value="p00" required></p>
     <p>category_id:<input name="category_id" type="number" value="1" required></p>
     <p>brand_id:<input name="brand_id" type="number" value="1" required></p>
@@ -15,6 +15,6 @@
     <p>stock:<input name="stock" type="number" value="1000" required min="0" step="1"></p>
     <p>sort_order:<input name="sort_order" type="number" value="1000" required></p>
     <p>detail:<input name="detail" type="text" value="详细" placeholder="详细信息，可以为空"></p>
-    @submit
+    <input type="submit" value="submit"/>
   </form>
 @endsection

@@ -2,7 +2,7 @@
 
 @section("content")
   <form action="{{ route("admin.storage.store") }}" method="POST">
-    @csrf
+    {{ csrf_field() }}
     name: <input name="name" type="text" value="测试仓库" required/><br>
     brand_id: <input name="brand_id" type="number" value="1" required><br>
     func: <textarea name="func"></textarea>
@@ -13,6 +13,6 @@
     city: <input name="city" type="text" value="东城区" required><br>
     code: <input name="code" type="number" value="110101" required><br>
     address-detail: <input name="detail" type="text" value="地址描述"><br>
-    @submit
+    <input type="submit" value="submit"/>
   </form>
 @endsection

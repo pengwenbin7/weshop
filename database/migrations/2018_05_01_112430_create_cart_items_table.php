@@ -16,10 +16,16 @@ class CreateCartItemsTable extends Migration
         Schema::create('cart_items', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger("cart_id");
-            $table->unsignedInteger("product_id");
+            $table->unsignedInteger("product_id")->nullable();
             $table->unsignedInteger("number");
-            $table->foreign("cart_id")->references("id")->on("carts");
-            $table->foreign("product_id")->references("id")->on("products");
+            $table->foreign("cart_id")
+                ->references("id")
+                ->on("carts")
+                ->onDelete("cascade");
+            $table->foreign("product_id")
+                ->references("id")
+                ->on("products")
+                ->onDelete("set null");
             $table->timestamps();
         });
     }

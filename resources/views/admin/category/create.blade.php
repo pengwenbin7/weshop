@@ -2,7 +2,7 @@
 
 @section("content")
   <form action="{{ route("admin.category.store") }}" method="POST">
-    @csrf
+    {{ csrf_field() }}
     名字:
     <input name="name" type="text" value="" required>
     
@@ -11,6 +11,6 @@
 
     描述:
     <input name="description" type="text" value="" placeholder="可以为空">
-    @submit
+    <input type="submit" value="submit"/>
   </form>
 @endsection

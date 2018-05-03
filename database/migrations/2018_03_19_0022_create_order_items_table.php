@@ -16,8 +16,7 @@ class CreateOrderItemsTable extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("order_id");
-            $table->unsignedInteger("product_id"); // 这里不使用外键
-            $table->boolean("is_ton")->default(false);
+            $table->unsignedInteger("product_id")->nullable();
             $table->unsignedInteger("number");
             $table->unsignedDecimal("price", 10, 2);
             // 以下为快照
@@ -27,6 +26,10 @@ class CreateOrderItemsTable extends Migration
             $table->timestamps();
             $table->foreign("order_id")->references("id")
                 ->on("orders")->onDelete("cascade");
+            $table->foreign("product_id")
+                ->references("id")
+                ->on("products")
+                ->onDelete("cascade");
         });
     }
 

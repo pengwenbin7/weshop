@@ -19,7 +19,11 @@ class CartController extends Controller
      */
     public function index()
     {
-        $carts = auth()->user->carts;
+        $user = auth()->user();
+        $carts = Cart::with(["address", "cartItems"])
+               ->where("user_id", "=", $user->id)
+               ->orderBy("id", "desc")
+               ->get();
         return $carts;
     }
     
@@ -61,21 +65,6 @@ class CartController extends Controller
         }
         
         return ["add" => $item->id];
-    }
-
-    /**
-     * Update the cart in storage.
-     * 仅允许修改数量(number)
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function updateItem(Request $request)
-    {
-        $cartItem = CartItem::find($request->cart_item_id);
-        $cartItem->number = $request->number;
-        return ["update" => $cartItem->save()];
     }
 
     /**

@@ -16,17 +16,16 @@
     <p>unit price: {{ $product->variable->unit_price }}</p>
     <p>stock: {{ $product->variable->stock }}</p>
     <p>buy: {{ $product->variable->buy }}</p>
-
+    
     <div>
-      @if (auth()->user()->carts->isEmpty())
-	新建采购单:
-	<button v-on:click="createCart">createCart</button>
-      @else
-	<select name="cart_id">
+	@if (auth()->user()->carts->isNotEmpty())
+	<select v-model="cart_id">
 	  @foreach (auth()->user()->carts as $cart)
-	    <option value="{{ $cart->id }}">{{ $cart->address->id }}</option>
+	    <option value="{{ $cart->id }}">{{ $cart->address->getText() }}</option>
 	  @endforeach
 	</select>
+	新建采购单:
+	<button v-on:click="createCart">createCart</button>
       @endif
 
       <button v-on:click="addToCart">add to cart</button>
@@ -63,9 +62,9 @@
 	      res
 	    ).then(function (res) {
 	      var url = "{{ route("wechat.cart.store") }}";
-	      var d = new FormData();
-	      d.set("address_id", res.data.address_id);
-	      d.set("_token", "{{ csrf_token() }}");
+	      var d = {
+		address_id: res.data.address_id
+	      };
 	      axios.post(url, d).
 		then(function (res) {
 		  location.reload();
@@ -81,11 +80,11 @@
 	var params = {
 	  cart_id: this.cart_id,
 	  product_id: "{{ $product->id }}",
-	  number: this.number
+	  number: this.number,
 	};
-	axios.post("{{ route("wechat.cart.store") }}", params)
+	axios.post("{{ route("wechat.cart.add_product") }}", params)
 	  .then(function (res) {
-	    console.log(res.data);
+	    alert(res.data.add);
 	  });
       },
       directlyBuy: function () {

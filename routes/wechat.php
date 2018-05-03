@@ -35,8 +35,16 @@ Route::resource("cart", "WeChat\CartController", [
     ],
     "except" => ["edit", "show", "update"],
 ]);
-Route::post("cart_update", "WeChat\CartController@updateItem");
-Route::post("cart_add", "WeChat\CartController@addProduct");
+Route::post("cart_add", "WeChat\CartController@addProduct")
+    ->name("wechat.cart.add_product");
+
+Route::resource("cart_item", "WeChat\CartItemController", [
+    "names" => [
+        "update" => "wechat.cart_item.update",
+        "destroy" => "wechat.cart_item.destroy",
+    ],
+    "except" => ["store", "index", "create", "edit", "show"],
+]);
 
 Route::resource("order", "WeChat\OrderController", [
     "names" => [
