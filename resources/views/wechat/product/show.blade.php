@@ -29,7 +29,7 @@
       @endif
 
       <button v-on:click="addToCart">add to cart</button>
-      <button v-on:click="directlyBuy">direct buy</button>
+      <button v-on:click="buyMe">buy me</button>
     </div>
     <p>detail: {{ $product->detail->content }}</p>
     history prices :
@@ -48,7 +48,6 @@
   var app = new Vue({
     el: "#app",
     data: {
-      number: 1,
       cart_id: null,
       cart_addr: null,
     },
@@ -79,24 +78,17 @@
       addToCart: function () {
 	var params = {
 	  cart_id: this.cart_id,
-	  product_id: "{{ $product->id }}",
-	  number: this.number,
+	  product_id: "{{ $product->id }}"
 	};
 	axios.post("{{ route("wechat.cart.add_product") }}", params)
 	  .then(function (res) {
 	    alert(res.data.add);
 	  });
       },
-      directlyBuy: function () {
-	var params = {
-	  product_id: "{{ $product->id }}",
-	  number: this.number,
-	  is_ton: this.is_ton
-	};
-	location.assign("{{ route("wechat.order.create") }}" +
-	  "?product_id=" + {{ $product->id }} +
-	  "&number=" + this.number +
-	  "&is_ton=" + this.is_ton);
+      buyMe: function () {
+	location.assign("{{ route("wechat.product.buyme") }}" + 
+	  "?product_id={{ $product->id }}"
+	);
       }
     }
   });

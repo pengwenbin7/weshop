@@ -43,38 +43,44 @@ class Install extends Seeder
 
         Config::create([
             "key" => "order.pay.online",
-            "value" => "" . (24 * 60 * 60),
-            "note" => "线上付款订单自动失效时间",
+            "value" => 24 * 60 * 60,
+            "note" => "线上付款订单自动失效时间(秒)",
         ]);
 
         Config::create([
             "key" => "order.pay.offline",
-            "value" => "" . (2 * 24 * 60 * 60),
-            "note" => "线下付款订单自动失效时间",
+            "value" => 2 * 24 * 60 * 60,
+            "note" => "线下付款订单自动失效时间(秒)",
         ]);
         
         Config::create([
             "key" => "order.ship.doing",
-            "value" => "" . (12 * 60 * 60),
-            "note" => "付款订单自动发货时间",
+            "value" => 12 * 60 * 60,
+            "note" => "付款订单自动发货时间(秒)",
         ]);
 
         Config::create([
             "key" => "order.ship.done",
-            "value" => "" . (7 * 24 * 60 * 60),
-            "note" => "发货后自动确认收货时间",
+            "value" => 7 * 24 * 60 * 60,
+            "note" => "发货后自动确认收货时间(秒)",
+        ]);
+
+        Config::create([
+            "key" => "order.share.discount",
+            "value" => 0.005,
+            "note" => "订单分享折扣率",
         ]);
         
         Config::create([
             "key" => "order.refund.allow",
-            "value" => "" . (12 * 60 * 60),
-            "note" => "申请退货自动同意时间",
+            "value" => 12 * 60 * 60,
+            "note" => "申请退货自动同意时间(秒)",
         ]);
 
             Config::create([
             "key" => "order.refund.done",
-            "value" => "" . (7 * 24 * 60 * 60),
-            "note" => "退货后自动确认时间",
+            "value" => 7 * 24 * 60 * 60,
+            "note" => "退货后自动确认时间(秒)",
         ]);
 
         DB::table("pay_channels")->insert([

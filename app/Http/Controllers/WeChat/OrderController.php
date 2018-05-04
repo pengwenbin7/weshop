@@ -52,7 +52,7 @@ class OrderController extends Controller
             ])->find($p["id"]);
             $num = $p["number"];
             $data["products"][] = [
-                "product" => $product,
+                "id" => $product,
                 "number" => $num,
             ];
         }
@@ -168,7 +168,7 @@ class OrderController extends Controller
         $total = 0;
         foreach ($ss as $storage_id => $weight) {
             $storage = Storage::with("address")->find($storage_id);
-            $distance = Count::distance($address->code, $storage->address->code);
+            $distance = Count::distance($address->id, $storage->address->id);
             $total += Count::freight($storage_id, $weight, $distance);
         }
         return $total;

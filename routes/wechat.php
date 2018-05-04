@@ -14,6 +14,8 @@ Route::get("product", "WeChat\ProductController@index")
     ->name("wechat.product.index");
 Route::get("product/{product}", "WeChat\ProductController@show")
     ->name("wechat.product.show");
+Route::get("product_buyme", "WeChat\ProductController@buyMe")
+    ->name("wechat.product.buyme");
 
 Route::get("search/{key}", "WeChat\SearchController@search")
     ->name("wechat.search");
