@@ -109,10 +109,10 @@ class AdminUserInit extends Command
                 
                 /**
                  * 持久化人员所在部门
-                 * 在此操作之后，应该在监视器里面更新人员权限
+                 * 在此操作之后，在监视器里面更新人员权限
                  */
                 foreach ($a["department"] as $k => $v) {
-                    $ad = AdminDepartment::firstOrCreate([
+                    AdminDepartment::firstOrCreate([
                         "admin_id" => $admin->id,
                         "department_id" => $d->id,
                     ]);

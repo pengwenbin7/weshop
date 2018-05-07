@@ -16,9 +16,11 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $condition = null;
-        return Order::with(["orderItems", "payment", "shipments"])
+        $orders = Order::with(["orderItems", "payment", "shipments"])
             ->orderBy("updated_at", "desc")
             ->get();
+        dd($orders);
+        return view("admin.order.index", ["orders" => $orders]);
     }
 
     /**
@@ -50,7 +52,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return $order;
     }
 
     /**

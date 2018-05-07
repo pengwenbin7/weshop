@@ -102,6 +102,7 @@ class OrderController extends Controller
             $item->product_id = $product->id;
             $item->number = $p["number"];
             $item->price = $product->variable->unit_price;
+            $item->storage_id = $product->storage_id;
             $payment->total += $p["number"] * $item->price;
             $item->product_name = $product->name;
             $item->model = $product->model;

@@ -9,8 +9,9 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\Models\Order;
 
-class OrderPayedEvent
+class OrderPaidEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,9 +20,10 @@ class OrderPayedEvent
      *
      * @return void
      */
-    public function __construct()
+    public $order;
+    public function __construct(Order $order)
     {
-        //
+        $this->order = $order;
     }
 
     /**

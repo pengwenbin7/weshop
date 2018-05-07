@@ -19,6 +19,7 @@ class Order extends Model
     const PAY_STATUS_DONE = 2; // 完成    
     const PAY_STATUS_REFUND = 3; // 退款
     const PAY_STATUS_AFTER = 4;  // 到付
+    const PAY_STATUS_ERROR = 5; // 错误
     // 发货状态
     const SHIP_STATUS_WAIT = 0;  // 待发货
     const SHIP_STATUS_PART = 1;  // 部分发货
@@ -49,7 +50,7 @@ class Order extends Model
 
     public function adminUser()
     {
-        return $this->belongsTo("App\Models\AdminUser");
+        return $this->belongsTo("App\Models\AdminUser", "admin_id");
     }
 
     public function address()
@@ -83,13 +84,13 @@ class Order extends Model
      */
     public function countFreight()
     {
+        $total = 0;
+        // item 按仓库分组，对于计量单位不为"kg"的产品，返回 -1
         $items = $this->orderItems;
         $storages = [];
-        $total = 0;
-        //　按仓库分组
         foreach ($items as $item) {
             $product = $item->product;
-            if ($product->measure_unit != "kg") {
+            if (strtolower($product->measure_unit) != "kg") {
                 return -1;
             }
             if (in_array($product->storage->id, $storages)) {
@@ -102,10 +103,23 @@ class Order extends Model
         // 分组计算运费
         foreach ($storages as $storage_id => $weight) {
             $storage = Storage::with("address")->find($storage_id);
-            $distance = Count::distance($this->address->code, $storage->address->code);
+            $distance = Count::distance($this->address->id, $storage->address->id);
             $total += Count::freight($storage_id, $weight, $distance);
         }
         
         return $total;
     }
+
+    // 生成发货单
+    public function createShipments()
+    {
+        $items = $this->orderItems();
+        // items 按仓库分组,这里和运费计算的分组意义不同
+        $storages = [];
+        foreach ($items as $item) {
+            $storages[$item->storage_id][] = $item;
+        }
+        return $storages;
+    }
+
 }

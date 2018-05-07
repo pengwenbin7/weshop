@@ -19,6 +19,8 @@ class CreateOrderItemsTable extends Migration
             $table->unsignedInteger("product_id")->nullable();
             $table->unsignedInteger("number");
             $table->unsignedDecimal("price", 10, 2);
+            // storage_id 不使用外键，程序可以保证不会出错
+            $table->unsignedInteger("storage_id")->nullable();
             // 以下为快照
             $table->string("product_name", 100);
             $table->string("model", 100);

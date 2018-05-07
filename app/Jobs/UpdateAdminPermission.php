@@ -25,8 +25,7 @@ class UpdateAdminPermission implements ShouldQueue
     }
 
     /**
-     * Execute the job.
-     *
+     * 该操作存在重复的步骤，非高频且为队列任务，不需要考虑效率
      * @return void
      */
     public function handle()

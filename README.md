@@ -1,4 +1,8 @@
 # INSTALL
+require:
++ mysql > 5.7.7
++ php > 7.2.0
+
 ```shell
 composer install
 php artisan migrate

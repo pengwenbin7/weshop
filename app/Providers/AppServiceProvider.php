@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 use App\Models\User;
 use App\Models\AdminUser;
 use App\Models\Product;
@@ -31,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
         Product::observe(ProductObserver::class);
         Order::observe(OrderObserver::class);
         Department::observe(DepartmentObserver::class);
+
+        // adjust morphs to long for mariadb 10.1
+        Schema::defaultStringLength(100);
     }
 
     /**

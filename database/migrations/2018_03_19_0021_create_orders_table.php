@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedTinyInteger("status")
                 ->default(0)->comment("订单状态:0-未处理，1-处理中,2-完成,3-异常结束");
             $table->unsignedTinyInteger("payment_status")
-                ->default(0)->comment("付款状态:0-未付款,1-部分付款,2-已付款,3-退款");
+                ->default(0)->comment("付款状态:0-未付款,1-部分付款,2-已付款,3-退款,4-到付,5-错误");
             $table->unsignedTinyInteger("shipment_status")
                 ->default(0)->comment("发货状态：0-未发货,1-部分发货,2-发货完成,3-确认收货");
             $table->unsignedTinyInteger("refund_status")

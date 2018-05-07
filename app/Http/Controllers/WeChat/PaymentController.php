@@ -7,22 +7,27 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use EasyWeChat;
+use App\Events\OrderPaidEvent;
 use Log;
 
 class PaymentController extends Controller
 {
+    protected $payment;
+    public function __construct()
+    {
+        $this->payment = EasyWeChat::payment();
+    }
     public function pay(Request $request)
     {
         $order = Order::find($request->order_id);
-        $payment = EasyWeChat::payment();
-        $result = $payment->order->unify([
+        $result = $this->payment->order->unify([
             'body' => '微信支付测试订单',
             'out_trade_no' => $order->no,
             'total_fee' => 1,
             'trade_type' => 'JSAPI',
             'openid' => 'obOoJwQa8TO57HLd8WHtuXP91CE8',
         ]);
-        $jssdk = $payment->jssdk;
+        $jssdk = $this->payment->jssdk;
         $json = $jssdk->bridgeConfig($result["prepay_id"]);
         return view("wechat.pay.wait", [
             "json" => $json,
@@ -31,10 +36,53 @@ class PaymentController extends Controller
 
     public function callback(Request $request)
     {
-        Log::info("callback-content");
-        Log::info($request->getContent());
-        Log::info("callback-all");
-        Log::info($request->all());
+        // Log::info($request->getContent());
+        $response = $this->payment->handlePaidNotify(function($message, $fail){
+            /**
+             * 如果订单不存在 或者订单已经支付过了
+             * 告诉微信，我已经处理完了，订单没找到，别再通知我了
+             */
+            $order = Order::where("no", "=", $message["out_trade_no"])
+                   ->get();
+            if ($order->isEmpty()) {
+                return true;
+            }
+
+            $order = $order->first();
+            if ($order->payment_status == Order::PAY_STATUS_DONE) {
+                return true;
+            }
+            
+            // return_code 表示通信状态，不代表支付状态
+            if ($message['return_code'] === 'SUCCESS') {
+                // 调用微信的【订单查询】接口查一下该笔订单的情况,确认是已经支付
+                do {
+                    $query = $this->payment
+                           ->order
+                           ->queryByOutTradeNumber($message["out_trade_no"]);
+                } while ("SUCCESS" != $query["return_code"]);
+                $order->payment->paid = $query["total_fee"] / 100;
+                if ($order->payment->pay == $order->payment->paid) {
+                    $order->payment_status = Order::PAY_STATUS_DONE;
+                } elseif ($order->payment->pay < $order->payment->paid) {
+                    $order->payment_status = Order::PAY_STATUS_ERROR;
+                } else {
+                    $order->payment_status = Order::PAY_STATUS_PART;
+                }
+                
+                // 20180507115726
+                $order->payment->pay_time = $query["time_end"];
+                $order->payment->save();
+                $order->save(); // 保存订单
+                event(new OrderPaidEvent($order)); // 触发监听事件
+            } else {
+                return $fail("Notice error, call me later.");
+            }
+            
+            return true; // 返回处理完成
+        });
+        
+        return $response;
     }
     
     /**

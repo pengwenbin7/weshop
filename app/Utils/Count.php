@@ -28,6 +28,7 @@ class Count
 
         $from = Address::find($from);
         $to = Address::find($to);
+        
         // 存在至少一个地址没有正确的经纬度信息，不可计算
         if (!$from->countable || !$to->countable) {
             return -1;

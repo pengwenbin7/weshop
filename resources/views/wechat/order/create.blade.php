@@ -88,7 +88,6 @@
 	  products: [
 	    {
 	      number: this.number,
-	      is_ton: this.is_ton,
 	      id: {{ $product->id }}
 	    }
 	  ]
