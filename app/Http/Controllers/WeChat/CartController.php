@@ -24,7 +24,7 @@ class CartController extends Controller
                ->where("user_id", "=", $user->id)
                ->orderBy("id", "desc")
                ->get();
-        return $carts;
+        return view(["user" => $user, "carts" => $carts]);
     }
     
     /**
@@ -56,6 +56,11 @@ class CartController extends Controller
         return ["add" => $item->id];
     }
 
+    public function show(Cart $cart)
+    {
+        return view("wechat.cart.show", ["cart" => $cart]);
+    }
+    
     /**
      * Remove the specified resource from storage.
      *
