@@ -68,11 +68,9 @@ class StorageController extends Controller
      */
     public function show(Storage $storage)
     {
-        $data["storage"] = $storage;
-        $data["address"] = $storage->address;
-        $data["brand"] = $storage->brand;
-        $data["products"] = $storage->products;
-        return $data;
+        $s = Storage::with(["brand", "products", "address"])
+           ->find($storage->id);
+        return $s;
     }
 
     /**

@@ -46,7 +46,7 @@ class Count
             return -1;
         } else {
             //　这里不需要很精确，取第一个即可
-            $distance = ceil(($res->data->route->paths)[0]->distance);
+            $distance = intval(($res->data->route->paths)[0]->distance);
             // 写入本地缓存
             AddressDistance::create([
                 "from" => $from->id,
@@ -75,9 +75,9 @@ class Count
         $func = json_decode($storage->func);
         foreach ($func->area as $a) {
             if ($a->low  <= $weight && $weight < $a->up) {
-                return $distance * $a->factor + $a->const;
+                return intval($distance * $a->factor + $a->const);
             }
         }
-        return $distance * $func->other->factor + $func->other->const;
+        return intval($distance * $func->other->factor + $func->other->const);
     }
 }

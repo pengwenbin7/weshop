@@ -13,13 +13,8 @@
 	<p>product_name: {{ $product->name }}</p>
 	<p>is_ton:<input v-model="is_ton" type="number">
 	  <p>
-	    number: <input v-model="show_number" min="1" step="1" type="number">
-	    <div v-if="is_ton">
-	      <p>number: @{{ show_number * factor }}</p>
-	    </div>
-	    <div v-else>
-	      <p>number: @{{ show_number }}</p>
-	    </div>
+	    show_number: <input v-model="show_number" min="1" step="1" type="number">
+	    <p>number: @{{ number }}</p>
 	    @if ($product->is_ton)
 	      吨
 	    @else
@@ -57,13 +52,25 @@
     data: {
       is_ton: {{ $product->is_ton }},
       show_number: 1,
-      number: 1,
       address_id: null,
-      factor: {{ 1000 / $product->content }},
       channel_id: 1,
       freight: 0
     },
+
+    computed: {
+      number: function () {
+	return 0 == this.is_ton?
+	  this.show_number:
+	  this.show_number * 1000 / {{ $product->content }};
+      }
+    },
+    
     methods: {
+      // storage default freight function
+      storageFunc: function () {
+	var func = JSON.parse('{!! $product->storage->func !!}');
+      },
+      
       selectAddress: function () {
 	var $this = this;
 	wx.openAddress({
@@ -104,7 +111,7 @@
 	var data = {
 	  address_id: this.address_id,
 	  products: [
-	    {id: {{ $product->id }}, number: this.number}
+	    {id: {{ $product->id }}, number: $this.number}
 	  ]
 	};
 	axios.post("{{ route("wechat.order.count-freight") }}",
@@ -115,9 +122,6 @@
     },
 
     mounted: function () {
-      this.number = this.is_ton ?
-	this.show_number * this.factor :
-	this.show_number;
     }
 
   });

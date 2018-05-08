@@ -6,6 +6,7 @@ use App\Events\OrderCreatedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Order;
+use App\Models\Config;
 use App\Jobs\OrderExpire;
 
 class OrderCreatedListener
@@ -30,6 +31,8 @@ class OrderCreatedListener
     {
         $order = $event->order;
         dispatch(new OrderExpire($order))
-            ->delay(now()->addSeconds(Order::ORDER_EXPIRE_IDL));
+            ->delay(now()->addSeconds(
+                Config::get("order.pay.expire")
+            ));
     }
 }

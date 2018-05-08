@@ -30,8 +30,6 @@ class Order extends Model
     const REFUND_STATUS_ASK = 1;  // 申请退货
     const REFUND_STATUS_DOING = 2; // 等待退货
     const REFUDN_STATUS_DONE = 3;  // 已退货
-    // 未付款过期时间(s)
-    const ORDER_EXPIRE_IDL = 20;
     
     public function orderItems()
     {

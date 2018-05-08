@@ -16,14 +16,17 @@
     <p>unit price: {{ $product->variable->unit_price }}</p>
     <p>stock: {{ $product->variable->stock }}</p>
     <p>buy: {{ $product->variable->buy }}</p>
-    
+
     <div>
-	@if (auth()->user()->carts->isNotEmpty())
+      @if (auth()->user()->carts->isNotEmpty())
 	<select v-model="cart_id">
 	  @foreach (auth()->user()->carts as $cart)
 	    <option value="{{ $cart->id }}">{{ $cart->address->getText() }}</option>
 	  @endforeach
 	</select>
+	新建采购单:
+	<button v-on:click="createCart">createCart</button>
+      @else
 	新建采购单:
 	<button v-on:click="createCart">createCart</button>
       @endif
@@ -86,7 +89,7 @@
 	  });
       },
       buyMe: function () {
-	location.assign("{{ route("wechat.product.buyme") }}" + 
+	location.assign("{{ route("wechat.product.buyme") }}" +
 	  "?product_id={{ $product->id }}"
 	);
       }

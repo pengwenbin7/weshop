@@ -48,21 +48,10 @@ class CartController extends Controller
     public function addProduct(Request $request) {
         $cart = Cart::find($request->cart_id);
         
-        // 重复添加的行为，会改变数量
-        $item = $cart->cartItems()
-              ->where("product_id", "=", $request->product_id)
-              ->get();
-        if ($item->isEmpty()) {
-            $item = CartItem::create([
+        $item = CartItem::firstOrCreate([
                 "cart_id" => $cart->id,
                 "product_id" => $request->product_id,
-                "number" => $request->number,
-            ]);
-        } else {
-            $item = $item->first();
-            $item->number += $request->number;
-            $item->save();
-        }
+        ]);
         
         return ["add" => $item->id];
     }

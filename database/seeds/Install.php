@@ -28,7 +28,7 @@ class Install extends Seeder
 
         $func = [
             "area" => [
-                ["low" => 0, "up" => 5000, "factor" => 0, "const" => 245,],
+                ["low" => 0, "up" => 5000, "factor" => 0.45 / 1000, "const" => 200,],
                 ["low" => 5000, "up" => 30000, "factor" => 0.4 / 1000, "const" => 0,],
             ],
             "other" => [
@@ -42,15 +42,9 @@ class Install extends Seeder
         ]);
 
         Config::create([
-            "key" => "order.pay.online",
-            "value" => 24 * 60 * 60,
-            "note" => "线上付款订单自动失效时间(秒)",
-        ]);
-
-        Config::create([
-            "key" => "order.pay.offline",
-            "value" => 2 * 24 * 60 * 60,
-            "note" => "线下付款订单自动失效时间(秒)",
+            "key" => "order.pay.expire",
+            "value" => 60,
+            "note" => "订单支付失效时间(秒)",
         ]);
         
         Config::create([
