@@ -29,7 +29,7 @@ class Order extends Model
     const REFUND_STATUS_NULL = 0;  // 未申请
     const REFUND_STATUS_ASK = 1;  // 申请退货
     const REFUND_STATUS_DOING = 2; // 等待退货
-    const REFUDN_STATUS_DONE = 3;  // 已退货
+    const REFUND_STATUS_DONE = 3;  // 已退货
     
     public function orderItems()
     {
@@ -106,18 +106,6 @@ class Order extends Model
         }
         
         return $total;
-    }
-
-    // 生成发货单
-    public function createShipments()
-    {
-        $items = $this->orderItems();
-        // items 按仓库分组,这里和运费计算的分组意义不同
-        $storages = [];
-        foreach ($items as $item) {
-            $storages[$item->storage_id][] = $item;
-        }
-        return $storages;
     }
 
 }
