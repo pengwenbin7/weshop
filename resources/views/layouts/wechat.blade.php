@@ -27,18 +27,18 @@
       </div>
       <div class="item">
         <a href="category.html"><span class="icons">
-            <i class="iconfont icon-fenlei"></i>
-          </span><br>分类</a>
+          <i class="iconfont icon-fenlei"></i>
+        </span><br>分类</a>
       </div>
       <div class="item on">
         <a href="cart.html"><span class="icons">
-            <i class="iconfont icon-caigoudan-on"></i>
-          </span><br>采购单</a>
+          <i class="iconfont icon-caigoudan-on"></i>
+        </span><br>采购单</a>
       </div>
       <div class="item">
         <a href="user.html"><span class="icons">
-            <i class="iconfont icon-user"></i>
-          </span><br><span>我的</span></a>
+          <i class="iconfont icon-user"></i>
+        </span><br><span>我的</span></a>
       </div>
     </div>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
