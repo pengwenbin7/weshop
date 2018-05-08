@@ -18,7 +18,29 @@
       <a href="{{ route("wechat.logout") }}">logout</a>
     </nav>
     @yield("content")
-
+    <div class="footer">
+      <div class="item">
+        <a href="index.html">
+          <span class="icons">
+            <i class="iconfont icon-home"></i>
+          </span><br>首页</a>
+      </div>
+      <div class="item">
+        <a href="category.html"><span class="icons">
+            <i class="iconfont icon-fenlei"></i>
+          </span><br>分类</a>
+      </div>
+      <div class="item on">
+        <a href="cart.html"><span class="icons">
+            <i class="iconfont icon-caigoudan-on"></i>
+          </span><br>采购单</a>
+      </div>
+      <div class="item">
+        <a href="user.html"><span class="icons">
+            <i class="iconfont icon-user"></i>
+          </span><br><span>我的</span></a>
+      </div>
+    </div>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
