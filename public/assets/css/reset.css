@@ -1,0 +1,166 @@
+@charset "utf-8";
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/*//禁止文本缩放 字体设置  取消touch高亮效果*/
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  -webkit-text-size-adjust: 100%;
+  font-family: -apple-system,"stxihei", "PingFang SC", "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font-size: 62.5%;
+  background: transparent;
+  color: #444;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+hr,
+button,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+sumary {
+  margin: 0;
+  padding: 0;
+}
+
+/*//清除输入框内阴影*/
+input,
+select,
+textarea {
+  border: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+/*//禁用长按页面时的弹出菜单(iOS下有效) ,img和a标签都要加*/
+img,
+a {
+  -webkit-touch-callout: none;
+  color: #444;
+}
+
+a,
+a:active,
+a:hover {
+  text-decoration: none;
+}
+
+/*//去掉点击链接和文本框对象时默认的灰色半透明覆盖层(iOS)或者虚框(Android)*/
+a,
+button,
+input,
+textarea {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  outline: none;
+  font-size: .34rem;
+}
+i{
+  font-style: normal;
+}
+.clearfix:after {
+   content:""; 
+   display: block; 
+   clear:both; 
+}
+.icon .iconfont{
+  font-size: .5rem;
+}
+
+.icon-fapiao{
+  color: #ffb034;
+}
+.icon-youhuiquan{
+  color: #ff576f;
+}
+.icon-tuihuanhuo{
+  color: #3bb6ff;
+}
+.icon-wodeshoucang,.icon-kefu{
+  color: #739bff;
+}
+.icon-del{
+  color: #dddddd;
+}
+.hide{
+  display: none;
+}
+
+.icon-weixinzhifu{
+  color: #3db858;
+}
+.y{
+  color: #ff782f;
+}
+.gray,.icon-jinru{
+  color: #888;
+}
+.green{
+  color: #00B945;
+}
+.purple,.icon-zhuanyuan{
+  color: #c273ff;
+}
+.a{
+  color: #739bff;
+}
+.black{
+  color: #444;
+}
+.icon .iconfont.icon-tianjia{
+  font-size: .6rem;
+}
+.right{
+  float: right;
+}
+.tr{
+  text-align: right;
+}

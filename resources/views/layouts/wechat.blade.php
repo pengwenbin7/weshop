@@ -3,24 +3,38 @@
   <head>
     <meta charset="UTF-8">
     <title>{{ $title ?? "weshop" }}</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" href="{{ asset("assets/css/reset.css") }}">
+    <link rel="stylesheet" href="{{ asset("assets/css/style.css") }}">
+    <link rel="stylesheet" href="{{ asset("assets/font/iconfont.css") }}">
+    <script type="text/javascript">
+      (function(doc, win) {
+        var docEl = doc.documentElement,
+          resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+          recalc = function() {
+            var clientWidth = docEl.clientWidth;
+            if(!clientWidth) return;
+            docEl.style.fontSize = (clientWidth / 7.5) + 'px';
+          };
+        if(!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
     @yield("style")
   </head>
   <body>
-    <nav>
+    <!-- <nav>
       <a href="{{ route("wechat.index") }}">index</a>
       <a href="{{ route("wechat.product.index") }}">product</a>
-      <a href="{{ route("wechat.cart.index") }}">cart</a>
-      <a href="{{ route("wechat.home.index") }}">home</a>
+      <a href="">cart</a>
+      <a href="">home</a>
       <a href="{{ route("wechat.logout") }}">logout</a>
-    </nav>
+    </nav> -->
     @yield("content")
     <div class="footer">
       <div class="item">
-        <a href="index.html">
+        <a href="{{ route("wechat.index") }}">
           <span class="icons">
             <i class="iconfont icon-home"></i>
           </span><br>首页</a>
@@ -31,9 +45,9 @@
         </span><br>分类</a>
       </div>
       <div class="item on">
-        <a href="cart.html"><span class="icons">
-          <i class="iconfont icon-caigoudan-on"></i>
-        </span><br>采购单</a>
+        <a href="{{ route("wechat.cart.index") }}"><span class="icons">
+            <i class="iconfont icon-caigoudan-on"></i>
+          </span><br>采购单</a>
       </div>
       <div class="item">
         <a href="user.html"><span class="icons">
