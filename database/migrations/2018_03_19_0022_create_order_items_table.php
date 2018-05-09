@@ -25,6 +25,7 @@ class CreateOrderItemsTable extends Migration
             $table->string("product_name", 100);
             $table->string("model", 100);
             $table->string("brand_name", 100);
+            $table->string("packing_unit", 100);
             $table->timestamps();
             $table->foreign("order_id")->references("id")
                 ->on("orders")->onDelete("cascade");

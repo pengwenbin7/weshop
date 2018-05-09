@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class ShipmentItem extends Model
 {
-    //
+    protected $fillable = [
+        "shipment_id", "product_name",
+        "product_model", "brand_name",
+        "number", "packing_unit",
+    ];
+
+    public function shipment()
+    {
+        return $this->belongsTo("App\Models\Shipment");
+    }
 }

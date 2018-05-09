@@ -19,7 +19,6 @@ class OrderController extends Controller
         $orders = Order::with(["orderItems", "payment", "shipments"])
             ->orderBy("updated_at", "desc")
             ->get();
-        dd($orders);
         return view("admin.order.index", ["orders" => $orders]);
     }
 

@@ -19,14 +19,14 @@ class CreateShipmentsTable extends Migration
             $table->unsignedDecimal("freight", 10, 2)
                 ->default(0)->comment("商户运费");
             $table->boolean("status")->default(0)
-                ->comment("0-未到达，1-已到达");
+                ->comment("0-未发出，1-已发出,2-已到达");
             $table->string("from_address")->comment("发货地");
             $table->string("to_address")->comment("收货地");
-            $table->string("ship_no")->comment("物流单号");
+            $table->string("ship_no")->nullable()->comment("物流单号");
             $table->string("contact_name", 100)->nullable();
             $table->string("contact_phone", 100)->nullable();
-            $table->date("expect_arrive_date")->nullable();
-            $table->date("arrive_date")->nullable();
+            $table->date("expect_arrive")->nullable();
+            $table->date("arrive")->nullable();
             $table->foreign("order_id")->references("id")
                 ->on("orders");
             $table->timestamps();

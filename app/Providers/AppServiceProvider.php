@@ -9,12 +9,14 @@ use App\Models\AdminUser;
 use App\Models\Product;
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Department;
 use App\Observers\AddressObserver;
 use App\Observers\UserObserver;
 use App\Observers\AdminObserver;
 use App\Observers\ProductObserver;
 use App\Observers\OrderObserver;
+use App\Observers\PaymentObserver;
 use App\Observers\DepartmentObserver;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         AdminUser::observe(AdminObserver::class);
         Product::observe(ProductObserver::class);
         Order::observe(OrderObserver::class);
+        Payment::observe(PaymentObserver::class);
         Department::observe(DepartmentObserver::class);
 
         // adjust morphs to long for mariadb 10.1

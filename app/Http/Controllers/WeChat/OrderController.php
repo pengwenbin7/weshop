@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\PayChannel;
-use App\Models\Payment;
 use App\Models\Coupon;
 use App\Models\Address;
 use App\Models\Storage;
@@ -85,45 +84,42 @@ class OrderController extends Controller
         $order->refund_status = Order::REFUND_STATUS_NULL;
         $order->admin_id = $user->admin_id;
         $res = $order->save();
-
+        
+        // fetch product
+        $totalPrice = 0;
+        foreach ($request->products as $p) {
+            // create order items            
+            $product = Product::find($p["id"]);
+            $item = OrderItem::create([
+                "order_id" => $order->id,
+                "product_id" => $product->id,
+                "number" => $p["number"],
+                "price" => $product->variable->unit_price,
+                "storage_id" => $product->storage_id,
+                "product_name" => $product->name,
+                "model" => $product->model,
+                "brand_name" => $product->brand->name,
+                "packing_unit" => $product->packing_unit,
+            ]);
+            $totalPrice += $item->price * $item->number;
+        }
+        
         // create payment
         $payment = new Payment();
         $payment->order_id = $order->id;
         $payment->channel_id = $request->channel_id;
-        $payment->total = 0;
-        $coupon = Coupon::find($request->coupon_id);
-        
-        // fetch product
-        foreach ($request->products as $p) {
-            // create order items
-            $item = new OrderItem();
-            $product = Product::find($p["id"]);
-            $item->order_id = $order->id;
-            $item->product_id = $product->id;
-            $item->number = $p["number"];
-            $item->price = $product->variable->unit_price;
-            $item->storage_id = $product->storage_id;
-            $payment->total += $p["number"] * $item->price;
-            $item->product_name = $product->name;
-            $item->model = $product->model;
-            $item->brand_name = $product->brand->name;
-            $res = $res & $item->save();
-        }
-        if ($coupon && $coupon->valid($user, $payment)) {
-            $payment->coupon_id = $coupon->id;
-            $discount = $coupon->discount;
-        } else {
-            $discount = 0;
+        $payment->total = $totalPrice;
+        if ($request->input("coupon_id", false)) {
+            $coupon = Coupon::find($request->coupon_id);
+            if ($coupon && $coupon->valid($user, $payment)) {
+                $payment->coupon_id = $coupon->id;
+                $payment->discount = $coupon->discount;
+            } 
         }
         $payment->freight = $order->countFreight();
-        $payment->pay = $payment->total + $payment->freight -
-                     $discount;
-        $res = $res & $payment->save();
-        if ($res) {
-            return ["store" => $order->id];
-        } else {
-            return ["err" => "failed to create order"];
-        }
+        $payment->save();
+        
+        return ["store" => $order->id];
     }
     
     /**

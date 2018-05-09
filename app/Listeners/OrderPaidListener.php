@@ -5,8 +5,8 @@ namespace App\Listeners;
 use App\Events\OrderPaidEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Models\Order;
 use App\Jobs\OrderPaid;
+use App\Models\Order;
     
 class OrderPaidListener
 {
@@ -29,11 +29,13 @@ class OrderPaidListener
     public function handle(OrderPaidEvent $event)
     {
         $order = $event->order;
-        $order->status = Order::ORDER_STATUS_DOING;
+        $order->status = Order::ORDER_STATUS_DOING;        
         $order->save();
-        dispatch(new OrderPaid($order));
-        if ($order->payment_status == Order::PAY_STATUS_DONE) {
+        $canShip = [Order::PAY_STATUS_DONE, Order::PAY_STATUS_AFTER,
+                    Order::PAY_STATUS_PART];
+        if (in_array($order->payment_status, $canShip)) {
             $order->createShipments();
         }
+        dispatch(new OrderPaid($order));
     }
 }

@@ -23,7 +23,7 @@ class CreatePaymentsTable extends Migration
             $table->unsignedDecimal("coupon_discount", 10, 2)->default(0)->comment("优惠券减免");
             $table->unsignedDecimal("share_discount", 10, 2)->default(0)->comment("分享减免");
             $table->unsignedDecimal("pay_discount", 10, 2)->default(0)->comment("支付方式减免");
-            $table->unsignedDecimal("pay", 10, 2)->comment("应付价");
+            $table->unsignedDecimal("pay", 10, 2)->nullable()->comment("应付价");
             $table->unsignedDecimal("paid", 10, 2)->default(0)->comment("已支付");
             $table->bigInteger("pay_time", false, true)->nullable();
             $table->timestamps();
