@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Utils\Count;
 use App\Models\Storage;
+use App\Models\Shipment;
+use App\Models\Payment;
+use App\Models\ShipmentItem;
+use Log;
 
 class Order extends Model
 {
@@ -106,6 +110,35 @@ class Order extends Model
         }
         
         return $total;
+    }
+
+    /**
+     * 生成该订单的未发货的发货单
+     * 考虑到一次购买多个的情况不常见，使用 N + 1 查询
+     */
+    public function createShipments()
+    {
+        // 按仓库分组
+        $items = [];
+        foreach ($this->orderItems as $item) {
+            $items[$item->storage_id][] = $item;
+        }
+        foreach ($items as $storage_id => $item) {
+            $shipment = Shipment::firstOrCreate([
+                "order_id" => $this->id,
+                "status" => 0,
+                "from_address" => Address::find($storage_id)->getText(),
+                "to_address" => $this->address->getText(),
+            ]);
+            ShipmentItem::create([
+                "shipment_id" => $shipment->id,
+                "product_name" => $item->product_name,
+                "product_model" => $item->model,
+                "brand_name" => $item->brand_name,
+                "number" => $item->number,
+                "packing_unit" => $item->packing_unit,
+            ]);
+        }
     }
 
 }

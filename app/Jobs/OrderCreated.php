@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Order;
 
-class OrderExpire implements ShouldQueue
+class OrderCreated implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,15 +31,18 @@ class OrderExpire implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->order->status == Order::ORDER_STATUS_WAIT) {
-            $this->order->status = Order::ORDER_STATUS_IDL;
-            $this->order->save();
-            // 恢复库存
-            $this->order->orderItems->each(function ($item) {
-                $variable = $item->product->variable;
-                $variable->stock = $variable->stock + $item->number;
-                $variable->save();
-            });
-        }
+        // 下单计数
+        $this->order->orderItems->each(function ($item) {
+            $variable = $item->product->variable;
+            $variable->stock = $variable->stock - $item->number;
+            $variable->save();
+        });
+        $url = route("admin.order.show", ["id" => $this->order->id]);
+        $msg = sprintf(
+            "你的客户【%s】创建了一个新订单【%s】",
+            $this->order->user->name ?? "匿名",
+            '<a href="'. $url . '">查看</a>'
+        );
+        $this->order->adminUser->sendMessage($msg);
     }
 }

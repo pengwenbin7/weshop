@@ -21,8 +21,9 @@
 		</select>
 		条
 	      </label>
-	      <label>搜索
+	      <label>
 		<input class="form-control input-sm" type="search">
+		<button>搜索</button>
 	      </label>
 	    </div>
 	  </div>
@@ -31,15 +32,26 @@
 	  <div class="col-sm-12">
 	    <table class="table table-bordered table-striped dataTable" role="grid">
 	      <thead>
+		<tr>
+		  <th>order_id</th>
+		  <th>payment_id</th>
+		  <th>shipment_id</th>
+		  <th>user_id</th>
+		  <th>admin_id</th>
+		  <th>操作</th>
+		</tr>
 	      </thead>
 	      <tbody>
-		<tr role="row" class="odd">
-		  <td class="sorting_1">Gecko</td>
-		  <td>Firefox 1.0</td>
-		  <td>Win 98+ / OSX.2+</td>
-		  <td>1.7</td>
-		  <td>A</td>
-		</tr>
+		@foreach ($orders as $order)
+		  <tr role="row">
+		    <td>{{ $order->id }}</td>
+		    <td>{{ $order->payment->id ?? "" }}</td>
+		    <td>{{ $order->shipment->id ?? "" }}</td>
+		    <td>{{ $order->user_id ?? "" }}</td>
+		    <td>{{ $order->admin_id ?? "" }}</td>
+		    <td><a href="{{ route("admin.order.show", ["id" => $order->id]) }}">详细</a></td>
+		  </tr>
+		@endforeach
 	      </tbody>
 	    </table>
 	  </div>

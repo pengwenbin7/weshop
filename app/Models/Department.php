@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasPermissions;
+use EasyWeChat;
 
 /**
  * 部门类，不要在应用逻辑中直接操作此类，
@@ -23,5 +24,16 @@ class Department extends Authenticatable
     public function adminUsers()
     {
         return $this->belongsToMany("App\Models\AdminUser", "admin_departments", "department_id", "admin_id");
+    }
+
+    // 调用企业微信发送消息
+    public function sendMessage($message)
+    {
+        $work = EasyWeChat::work();
+        $work->messenger
+            ->ofAgent(env("WECHAT_WORK_AGENT_ID"))
+            ->message($message)
+            ->toPart($this->userid)
+            ->send();
     }
 }
