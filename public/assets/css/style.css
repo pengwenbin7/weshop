@@ -3,6 +3,7 @@
 }
 .header{
   padding: 0 .4rem;
+  background-color: #fff;
 
 }
 .header .title{
@@ -115,6 +116,7 @@
 }
 .category .container{
   border-top: 1px solid #ddd;
+  background-color: #fff;
 }
 .container .cat-nav{
   width: 2rem;
@@ -778,6 +780,9 @@ text-align: center;
   display: -webkit-flex;
   font-size: .34rem;
   background-color: #fff;
+}
+.order .address p{
+  line-height: 1.2rem;
 }
 .order .address .a-info{
   flex: 1;

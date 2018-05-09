@@ -1,13 +1,64 @@
 @extends("layouts.wechat")
 
 @section("content")
-  <div id="app">
-    <p>user_id: {{ auth()->user()->id }}</p>
-    <p><button v-on:click="scan">scan qr</button></p>
-    <p><button v-on:click="getLocation">get location</button></p>
-    <p><button v-on:click="getAddress">get Address</button></p>
-    <p>@{{ info }}</p>
-  </div>
+	<div class="index" id="app">
+		<div class="header">
+			<div class="logo">
+				<img src="http://www.taihaomai.com/themes/default/images/logo2.png" />
+			</div>
+			<div class="title">
+				<h2>直接搜货</h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="search">
+				<div class="i-search">
+					<form action="" method="post">
+						<input type="text" name="keyword" id="keyword" value="" placeholder="输入关键词快速查找商品" />
+						<input class="btn-submit" type="submit" value="找货"/>
+					</form>
+				</div>
+				<div class="hot-search">
+					<div class="title">
+						<span>热门搜索</span>
+					</div>
+					<div class="h-list">
+						<a href="">钛白粉</a>
+						<a href="">炭黑</a>
+						<a href="">三项方</a>
+						<a href="">杜邦</a>
+						<a href="">PVC</a>
+						<a href="">钛白粉</a>
+						<a href="">炭黑</a>
+						<a href="">三项方</a>
+						<a href="">杜邦</a>
+						<a href="">PVC</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="products" id="product" >
+				<div class="title">
+							<span>热卖商品</span>
+				</div>
+				<div class="product" v-for="item in items">
+					<a href="{{ route("wechat.product.show", 1) }}">
+					<div class="title">
+							<span class="p-bname">@{{ item.brand }}</span>
+							<span class="p-name">@{{ item.name }} </span>
+							<span class="p-model">@{{ item.model }}</span>
+						</div>
+						<div class="pirce">
+							<span><i>￥</i>@{{ item.price }}元/吨</span>
+						</div>
+						</a>
+				</div>
+				
+				
+			</div>
+		</div>
+		
+	</div>
 @endsection
 
 @section("script")
@@ -15,8 +66,37 @@
   var app = new Vue({
     el: "#app",
     data: {
-      info: ""
-    },
+          items: [{
+              brand: '恒和化工',
+              name: '真石漆质感漆乳液 ',
+              model: 'LR-9611',
+              price: '79999'
+          },
+          {
+              brand: '振洲涂料',
+              name: '丙烯酸改性乳液',
+              model: 'A-98',
+              price: '8600'
+          },
+          {
+              brand: '紫石化工',
+              name: '木器底漆乳液',
+              model: 'ZS-6808A',
+              price: '10800'
+          },{
+              brand: '佰利联2',
+              name: '氧化铁',
+              model: 'BLT-0011011',
+              price: '79999'
+          },{
+              brand: '佰利联2',
+              name: '氧化铁',
+              model: 'BLT-0011011',
+              price: '79999'
+            }
+
+          ]
+        },
     methods: {
       scan: function () {
 	wx.scanQRCode({

@@ -1,33 +1,138 @@
-@extends("layouts.wechat")
+@extends("layouts.wechat2")
 
 @section("content")
-  <div id="app">
+<div class="order" id="app">
+      <div class="container">
+        <div class="address">
+          <div class="a-info">
+					<p class="green" v-on:click="selectAddress">请选择收货地址</p>
+            <!-- <div class="name">
+              <span class="user-name">王先生</span>
+              <span>18949100000</span>
+            </div>
+            <div class="a-dist">
+              <p>上海市嘉定区江桥镇嘉怡路279弄147号999</p>
+            </div> -->
+          </div>
+          <div class="right-arrow">
+            <i class="iconfont icon-jinru"></i>
+          </div>
+        </div>
+        <div class="products">
+				@foreach ($products as $product)
+          <div class="product">
+            <div class="p-info">
+              <div class="title">
+                <span class="p-bname">  {{ $product->brand->name }}</span>
+                <span class="p-name"> {{ $product->name }} </span>
+                <span class="p-model"> {{ $product->model }} </span>
+              </div>
+              <div class="num clearfix">
+                <span>数量：<i class="black">@{{ number }}包</i><i class="black">25KG</i></span>
+                
+              </div>
+              <div class="pirce">
+                <span>价格：<i class="black">￥{{ $product->variable->unit_price*25 }}</i></span>
+              </div>
+            </div>
+					</div>
+					@endforeach
+        </div>
+       <div class="grid">
+         <div class="item" @click="show('curpon')">
+           <span> 优惠券</span>
+           <span class="value y">-￥300 <i class="iconfont icon-zhankai"></i></span>
+         </div>
+         <div class="item">
+           <span> 实付款</span>
+           <span class="value">￥300</span>
+         </div>
+         <div class="item" @click="show('paymode')">
+           <span> 支付方式</span>
+           <span class="value"><i class="iconfont icon-weixinzhifu"></i>微信支付<i class="iconfont icon-zhankai"></i></span>
+         </div>
+       </div>
+      </div>
+      <div class="footer">
+        <div class="item"  v-on:click="pay">
+          <span>提交订单</span>
+        </div>
+      </div>
+      
+      <div class="flexbox" v-if="paymode">
+        <div class="mask" @click="hideBox()"></div>
+        <div class="paymode">
+          <div class="tit">选择支付方式</div>
+          <div class="pay-list">
+            <div class="item">
+              <span>微信支付</span>
+              <span class="icon"><i class="iconfont icon-weixinzhifu"></i></span>
+            </div>
+             <div class="item">
+              <span>线下付款</span>
+              <span class="icon"><i class="iconfont icon-xianxiazhifu"></i></span>
+            </div>
+             <div class="item">
+              <span>银行汇票</span>
+              <span class="icon"><i class="iconfont icon-huipiao"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flexbox" v-if="curpon">
+        <div class="mask" @click="hideBox()"></div>
+        <div class="coupon-list">
+          <div class="tit">优惠券<small>(1张可用)</small></div>
+          <div class="coupons">
+            <div class="item">
+              <div class="c-h">
+                <div class="ch-price">
+                  <span>￥200</span>
+                </div>
+                <div class="ch-info">
+                  <p class="title">新人专属红包礼券</p>
+                  <p>有效期至：2018-05-01</p>
+                </div>
+              </div>
+              <div class="c-f">
+                 <div class="circle"></div>
+                <div class="circle-r"></div>
+                <div class="cf-desc">
+                  <p>满10000元可用</p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="c-h">
+                <div class="ch-price">
+                  <span>￥200</span>
+                </div>
+                <div class="ch-info">
+                  <p class="title">新人专属红包礼券</p>
+                  <p>有效期至：2018-05-01</p>
+                </div>
+              </div>
+              <div class="c-f">
+                <div class="circle"></div>
+                <div class="circle-r"></div>
+                <div class="cf-desc">
+                  <p>满10000元可用</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="no-use" @click="hideBox()">
+            <span>不使用优惠券</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- <div id="app">
     <p>
-      <p>
+       <p>
 	addr_id: <input type="number" v-model="address_id">
 	<button v-on:click="selectAddress">select address</button>
-      </p>
-      
-      @foreach ($products as $product)
-	<p>product_id: {{ $product->id }}</p>
-	<p>product_name: {{ $product->name }}</p>
-	<p>is_ton:<input v-model="is_ton" type="number">
-	  <p>
-	    show_number: <input v-model="show_number" min="1" step="1" type="number">
-	    <p>number: @{{ number }}</p>
-	    @if ($product->is_ton)
-	      吨
-	    @else
-	      {{ $product->packing_unit }}
-	    @endif
-	  </p>
-      @endforeach
-      
-      <p><button>下载合同</button></p>
-      <p v-if="address_id">
-	<button v-on:click="countFreight">count freight</button>
-	<b>freight: @{{ freight }}</b>
-      </p>
+      </p> 
       付款方式：
       <select v-model="channel_id">
 	@foreach ($payChannels as $channel)
@@ -42,7 +147,7 @@
       <div v-else>
 	<button disabled>pay</button>
       </div>
-  </div>
+  </div> -->
 @endsection
 
 @section("script")
@@ -54,7 +159,9 @@
       show_number: 1,
       address_id: null,
       channel_id: 1,
-      freight: 0
+      freight: 0,
+			paymode:false,
+      curpon:false
     },
 
     computed: {
@@ -66,6 +173,17 @@
     },
     
     methods: {
+			show:function(mode){
+            if(mode == 'paymode'){
+              this.paymode = true;
+            }else{
+              this.curpon = true
+            }
+          },
+					hideBox:function(){
+            this.paymode=false;
+            this.curpon = false;
+          },
       // storage default freight function
       storageFunc: function () {
 	var func = JSON.parse('{!! $product->storage->func !!}');
