@@ -24,7 +24,7 @@ class CartController extends Controller
                ->where("user_id", "=", $user->id)
                ->orderBy("id", "desc")
                ->get();
-        return view(["user" => $user, "carts" => $carts]);
+        return view("wechat.cart.index", ["user" => $user, "carts" => $carts]);
     }
     
     /**
@@ -45,7 +45,8 @@ class CartController extends Controller
     /**
      * Add a product to a cart
      */
-    public function addProduct(Request $request) {
+    public function addProduct(Request $request)
+    {
         $cart = Cart::find($request->cart_id);
         
         $item = CartItem::firstOrCreate([
@@ -58,7 +59,13 @@ class CartController extends Controller
 
     public function show(Cart $cart)
     {
-        return view("wechat.cart.show", ["cart" => $cart]);
+        $items = CartItem::where("cart_id", "=", $cart->id)
+               ->with("product")->get();
+        
+        return view("wechat.cart.show", [
+            "cart" => $cart,
+            "items" => $items,
+        ]);
     }
     
     /**

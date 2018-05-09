@@ -41,18 +41,24 @@
       </div>
       <div class="item">
         <a href="category.html"><span class="icons">
-            <i class="iconfont icon-fenlei"></i>
-          </span><br>分类</a>
+          <i class="iconfont icon-fenlei"></i>
+        </span><br>分类</a>
       </div>
       <div class="item on">
+<<<<<<< HEAD
         <a href="{{ route("wechat.cart.index") }}"><span class="icons">
             <i class="iconfont icon-caigoudan-on"></i>
           </span><br>采购单</a>
+=======
+        <a href="cart.html"><span class="icons">
+          <i class="iconfont icon-caigoudan-on"></i>
+        </span><br>采购单</a>
+>>>>>>> 58cba28e5f24a836be7101600c3f46a8754bbf4c
       </div>
       <div class="item">
         <a href="user.html"><span class="icons">
-            <i class="iconfont icon-user"></i>
-          </span><br><span>我的</span></a>
+          <i class="iconfont icon-user"></i>
+        </span><br><span>我的</span></a>
       </div>
     </div>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
