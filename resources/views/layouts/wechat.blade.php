@@ -45,15 +45,9 @@
         </span><br>分类</a>
       </div>
       <div class="item on">
-<<<<<<< HEAD
         <a href="{{ route("wechat.cart.index") }}"><span class="icons">
             <i class="iconfont icon-caigoudan-on"></i>
           </span><br>采购单</a>
-=======
-        <a href="cart.html"><span class="icons">
-          <i class="iconfont icon-caigoudan-on"></i>
-        </span><br>采购单</a>
->>>>>>> 58cba28e5f24a836be7101600c3f46a8754bbf4c
       </div>
       <div class="item">
         <a href="user.html"><span class="icons">
