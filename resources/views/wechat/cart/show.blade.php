@@ -12,11 +12,11 @@
             <i class="iconfont icon-del"></i>
           </div>
         </div>
-        <div class="products">
-          <div class="product" v-for="(item,index) in products">
+        <div class="products" v-for="(pitem,i) in products">
+          <div class="product" v-for="(item,index) in pitem">
             <div class="p-check">
-              <input type="checkbox" v-bind:id="'check'+index" name="goods_checked[]" v-on:change="check(index)" v-bind:checked="item.checked">
-              <label v-bind:for="'check'+index"></label>
+              <input type="checkbox" v-bind:id="'check'+i+index" name="goods_checked[]" v-on:change="check(i,index)" v-bind:checked="item.checked">
+              <label v-bind:for="'check'+i+index"></label>
             </div>
             <div class="p-info">
               <div class="title">
@@ -25,22 +25,22 @@
                 <span class="p-model">@{{ item.product.model }}</span>
               </div>
               <div class="pirce">
-                <span><i>￥</i>元/吨</span>
+                <span><i>￥@{{ item.unit_price*1000 }}</i>元/吨</span>
               </div>
             </div>
             <div class="p-edit">
               <div class="p-del">
-                <span class="icons" v-on:click="del(index)">
+                <span class="icons" v-on:click="del(i,index)">
                    <i class="iconfont icon-del"></i>
                 </span>
               </div>
               <div class="quantity">
                 <p class="btn-minus">
-                  <a class="minus" v-on:click="reduceCartNubmer(index)"></a>
+                  <a class="minus" v-on:click="reduceCartNubmer(i,index)"></a>
                 </p>
-                <p class="btn-input"><input type="tel" name="" id="cart_num_2578" ref="xxx" v-bind:value="item.number" v-on:blur="textCartNumber(index)"></p>
+                <p class="btn-input"><input type="tel" name="" id="cart_num_2578" ref="xxx" v-bind:value="item.number" v-on:blur="textCartNumber(i,index)"></p>
                 <p class="btn-plus">
-                  <a class="plus" v-on:click="addCartNumber(index)"></a>
+                  <a class="plus" v-on:click="addCartNumber(i,index)"></a>
                 </p>
               </div>
             </div>
@@ -54,7 +54,7 @@
             </div>
           </div>
           <div class="goods-price">
-            <span><i class="font-co">¥</i><i class="font-co" ref="totalprice" >111</i></span>
+            <span><i class="font-co">¥</i><i class="font-co" ref="totalprice" >@{{ totalprice }}</i></span>
           </div>
           <div class="btn-submit"><a href="order_confirm.html">结算</a>
             
@@ -68,60 +68,78 @@
   new Vue({
         el: '#app',
         data: {
-          products: {!! $items !!},
+          products: {!! $products !!},
           ckall: false, //全选状态
           totalprice: "0",
         },
         //总价
         beforeMount: function() { //加载页面前计算价格
+
+          // var const = {"area":[{"low":0,"up":5000,"factor":0.00045,"const":200},{"low":5000,"up":30000,"factor":0.0004,"const":0}],"other":{"factor":0,"const":0}}
+          // ...
+          var pro = this.products;
+          for(var p in pro){
+            // 获取每个数组
+            //计算每个数组的价格
+            var weight = 0;
+            for(var g in pro[p]){
+              weight += pro[p][g].number * pro[p][g].product.content;
+            }
+            // console.log(weight)
+
+          }
+
           this.totalprice = getTotalPrice(this.products);
           console.log(this.totalprice);
           checkall(this);
 
         },
         methods: {
-          reduceCartNubmer: function(a) {
+          reduceCartNubmer: function(i,a) {
             var _this = this;
-            if(_this.products[a].active <= 1) {
+            console.log(_this.products[i][a].number)
+            if(_this.products[i][a].number <= 1) {
               return
             } else {
               // Vue.http.get('./a.json').then(successCallback); //点击减少，发送请求，成功后数量减一
               function successCallback(date) {
                 if(date.body.code) {
                   console.log("请求成功")
-                  _this.products[a].active--;
+                  _this.products[i][a].number--;
                   _this.totalprice = getTotalPrice(_this.products)
                 }
               }
-              _this.products[a].active--;
-                  _this.totalprice = getTotalPrice(_this.products)
+              _this.products[i][a].number--;
+              _this.totalprice = getTotalPrice(_this.products)
             }
           },
-          addCartNumber: function(a) {
+          addCartNumber: function(i,a) {
 
-            this.products[a].active++;
+            this.products[i][a].number++;
             this.totalprice = getTotalPrice(this.products)
           },
-          textCartNumber: function(a) {
+          textCartNumber: function(i,a) {
             console.log(this.$refs.xxx)
-            this.products[a].active = Number(this.$refs.xxx[a].value)
+            this.products[i][a].number = Number(this.$refs.xxx[a].value)
           },
-          check: function(a) {
-            this.products[a].checked = !this.products[a].checked;
+          check: function(i,a) {
+            this.products[i][a].checked = !this.products[i][a].checked;
             checkall(this);
             this.totalprice = getTotalPrice(this.products)
           },
           checkAll: function() {
             var status = this.ckall;
             console.log(status)
-            for(var k in this.products) {
-              this.products[k].checked = !status;
+            for(var m in this.products) {
+              for(var n in this.products[m] ){
+                this.products[m][n].checked = !status;
+              }
             }
             checkall(this);
             this.totalprice = getTotalPrice(this.products)
           },
-          del: function(a) {
-            this.products.splice(a, 1);
+          del: function(i,a) {
+            this.products[i].splice(a, 1);
             this.totalprice = getTotalPrice(this.products)
           }
         }
@@ -130,8 +148,10 @@
       function getTotalPrice(arr) {
         var totalPrice = 0;
         for(var i in arr) {
-          if(arr[i].checked) {
-            totalPrice += arr[i].active * arr[i].price;
+          for(var j in arr[i]){
+            if(arr[i][j].checked) {
+              totalPrice += arr[i][j].number * arr[i][j].product.content * arr[i][j].unit_price;
+            }
           }
 
         }
@@ -145,13 +165,16 @@
       function checkall(_this) {
         var _this = _this;
         var products = _this.products;
-        for(var j in products) {
-          if(!products[j].checked) {
-            _this.ckall = false;
-            return;
-          } else {
-            _this.ckall = true;
+        for(var k in products) {
+          for(var l in products[k]){
+            if(!products[k][l].checked) {
+              _this.ckall = false;
+              return;
+            } else {
+              _this.ckall = true;
+            }
           }
+          
         }
       }
   </script>

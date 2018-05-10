@@ -28,7 +28,13 @@ class OrderController extends Controller
                 ->where("user_id", "=", $user->id)
                 ->orderBy("created_at", "desc")
                 ->get();
-        return $orders;
+        return view("wechat.order.index",["orders"=>$orders]);
+    }
+
+    public function show(Order $order){
+        
+
+        return view("wechat.order.show",["order" => $order]);
     }
 
     /**

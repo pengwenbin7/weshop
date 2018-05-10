@@ -18,7 +18,7 @@ Route::get("product_buyme", "WeChat\ProductController@buyMe")
     ->name("wechat.product.buyme");
 
 Route::get("search/{key}", "WeChat\SearchController@search")
-    ->name("wechat.search");
+    ->name("wechat.search");   
 
 Route::resource("address", "WeChat\AddressController", [
     "only" => ["store", "destory",],
@@ -52,13 +52,13 @@ Route::resource("cart_item", "WeChat\CartItemController", [
 Route::resource("order", "WeChat\OrderController", [
     "names" => [
         "index" => "wechat.order.index",
+        "show" => "wechat.order.show",
         "create" => "wechat.order.create",
         "store" => "wechat.order.store",
         "edit" => "wechat.order.edit",
         "update" => "wechat.order.update",
         "destroy" => "wechat.order.destroy",
     ],
-    "except" => ["show"],
 ]);
 Route::post("order-freight",
             "WeChat\OrderController@countFreight"
