@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Events\OrderCreatedEvent;
 use App\Models\Payment;
 
-class OrderObserver
+class PaymentObserver
 {
     public function saved(Payment $payment)
     {
