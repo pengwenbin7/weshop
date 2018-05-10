@@ -16,7 +16,7 @@ class ProductController extends Controller
         $condition = null;
         $categories = Category::all();
         $brands = Brand::all();
-        $products = Product::with(["brand", "storage", "variable"])->paginate(2);
+        $products = Product::with(["brand", "storage", "variable"])->paginate(10);
         return view("wechat.product.index", [
             "products" => $products,
             "categories" => $categories,

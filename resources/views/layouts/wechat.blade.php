@@ -47,7 +47,7 @@
           </span><br>采购单</a>
       </div>
       <div class="item">
-        <a href="user.html"><span class="icons">
+        <a href="{{ route("wechat.home.index") }}"><span class="icons">
           <i class="iconfont icon-user"></i>
         </span><br><span>我的</span></a>
       </div>

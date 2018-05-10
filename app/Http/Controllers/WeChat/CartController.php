@@ -61,10 +61,21 @@ class CartController extends Controller
     {
         $items = CartItem::where("cart_id", "=", $cart->id)
                ->with("product")->get();
-           
+        $products = [];
+        foreach ($items as $item)
+        {
+            $products[$item->product->storage_id][] = $item;
+            $item->brand_name = $item->product->brand->name;
+            $item->stock = $item->product->variable->stock;
+            $item->unit_price = $item->product->variable->unit_price;
+            $item->func = $item->product->storage->func;
+            $item->checked = false;
+        }       
+
         return view("wechat.cart.show", [
             "cart" => $cart,
             "items" => json_encode($items),
+            "products" => json_encode($products),
         ]);
     }
     
