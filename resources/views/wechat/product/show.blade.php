@@ -43,12 +43,20 @@
 				<p>具有高白度、质软易分散悬浮于水中，良好的可塑性 和高的粘结性、优良的电绝缘性能以及良好的抗酸溶 液、很低的阳离子交换容量。
 				</p>
 			</div>
-			<div class="footer" v-on:click="showBox()">
-        <span>选购</span>
+			<div class="footer" >
+				<div class="flex gb-footer">
+				<div class="buy-commit"  v-on:click="buyMe">
+					<span class="green">立即购买</span>
+				</div>
+				<div class="addtocart" v-on:click="showBox">
+              <span>加入采购单</span>
+            </div>
+				</div>
+				
       </div>
 
-
-			<div class="gobuy" v-bind:class='{hide:active=="0"}'>
+			
+			<div class="gobuy" v-if="buy_box">
         <div class="mask" v-on:click="hideBox()">
         </div>
         <div class="gb-box">
@@ -111,10 +119,10 @@
             </div>
           </div>
           <div class="gb-footer">
-            <div class="buy-commit"  v-on:click="buyMe">
-              <span class="green">立即购买</span>
-            </div>
-            <div class="addtocart" v-on:click="addToCart">
+						<div class="buy-commit"  v-on:click="buyMe">
+							<span class="green">立即购买</span>
+						</div>
+            <div class="addtocart" v-on:click="choseAddr">
               <span>加入采购单</span>
             </div>
           </div>
@@ -122,38 +130,45 @@
       </div>
 	</div>
 
-    <!-- <p>product id: {{ $product->id }}</p>
-    <p>name:</p>
-    <p>brand name:</p>
-    <p>brand id: {{ $product->brand->id }}</p>
-    <p>storage name: {{ $product->storage->name }}</p>
-    <p>is ton: {{ $product->is_ton }}</p>
-    <p>unique code: {{ $product->unique_code }}</p>
-    <p>pack: {{ $product->pack() }}</p>
-    <p>unit price: {{ $product->variable->unit_price }}</p>
-    <p>stock: {{ $product->variable->stock }}</p>
-    <p>buy: {{ $product->variable->buy }}</p> -->
+		<div class="cart" v-if="addr_box">
+      <div class="container" id="app">
+        <div class="create" v-on:click="createCart">
+          <div class="txt">
+            <span class="black">新建选购单<small>(已创建1个采购单)</small></span>
+          </div>
+          <div class="icon">
+            <i class="iconfont icon-tianjia"></i>
+          </div>
+        </div>
+        <div class="cart-list">
+				@foreach (auth()->user()->carts as $cart)
+          <div class="item" v-on:click="addToCart( {{ $cart->id }} )" >
+            <div class="cart-header">
+              <div class="title">
+                <a >采购单1 <small>(已添加2件商品)</small> </a>
+              </div>
+               <div class="cart-del">
+                <span></span>
+              </div>
+            </div>
+            <div class="cart-addr">
+              <a >
+              <div class="cart-user-info">
+                <span>收货人：</span>
+                <span class="tel"></span>
+              </div>
+              <div class="cart-desc">
+                <p>收货地址: {{ $cart->address->getText() }}</p>
+              </div>
+              </a>
+            </div>
+          </div>
+        @endforeach
+        </div>
+      </div>
+	</div>
+	</div>
 
-   
-      @if (auth()->user()->carts->isNotEmpty())
-	<select v-model="cart_id">
-	  @foreach (auth()->user()->carts as $cart)
-	    <option value="{{ $cart->id }}">{{ $cart->address->getText() }}</option>
-	  @endforeach
-	</select>
-	 
-	新建采购单:
-	<button v-on:click="createCart">createCart</button>
-      @else
-	新建采购单:
-	<button v-on:click="createCart">createCart</button>
-      @endif
-<!-- <div>
-      <button v-on:click="addToCart">add to cart</button>
-      <button v-on:click="buyMe">buy me</button>
-    </div> -->
-   
-  </div>
 @endsection
 
 @section("script")
@@ -163,9 +178,10 @@
     data: {
       cart_id: null,
       cart_addr: null,
-			active: "0",
+			buy_box: false,
 			num: "2",
-			tonTap: "1"
+			tonTap: "1",
+			addr_box:false
     },
     methods: {
       createCart: function () {
@@ -191,14 +207,22 @@
 	  }
 	});
       },
-      addToCart: function () {
+			choseAddr:function(){
+				this.addr_box = true;
+			}
+			,
+      addToCart: function (id) {
+				var _this = this
+				var id = id;
 				var params = {
-					cart_id: this.cart_id,
+					cart_id: id,
 					product_id: "{{ $product->id }}"
 				};
 				axios.post("{{ route("wechat.cart.add_product") }}", params)
 					.then(function (res) {
-						alert(res.data.add);
+						alert("添加成功");
+						_this.addr_box = false;
+						_this.buy_box = false;
 					});
 						},
 						buyMe: function () {
@@ -207,10 +231,10 @@
 				);
       },
 			showBox: function() {
-				this.active = "1";
+				this.buy_box = true;
 			},
 			hideBox: function() {
-				this.active = "0";
+				this.buy_box = false;
 			},
 			goBuy: function() {
 				console.log(1)
