@@ -17,8 +17,18 @@ class OrderController extends Controller
     {
         $condition = null;
         $orders = Order::with(["orderItems", "payment", "shipments"])
-            ->orderBy("updated_at", "desc")
-            ->get();
+                ->orderBy("updated_at", "desc")
+                ->get();
+        return view("admin.order.index", ["orders" => $orders]);
+    }
+
+    public function mine(Request $request)
+    {
+        $condition = null;
+        $orders = Order::with(["orderItems", "payment", "shipments"])
+                ->where("admin_id", "=", auth("admin")->user()->id)
+                ->orderBy("updated_at", "desc")
+                ->get();
         return view("admin.order.index", ["orders" => $orders]);
     }
 

@@ -8,28 +8,30 @@ return [
         ],
         // 系统管理
         2 => [
-            "user", "order", "pay",
-            "ship", "system",
+            "system",
         ],
-        // 用户管理
+        // 大管理
         3 => [
-            "user",
+            "user", "order",
+            "supplier", "report",
+            "ship", "pay",
         ],
-        // 订单管理
+        // 小管理
         4 => [
-            "order",
+            "order", "user",
+            "supplier", "report",
         ],
         // 财务
         5 => [
-            "pay",
+            "user", "order", "pay",
         ],
         // 物流
         6 => [
-            "ship",
+            "user", "order", "ship",
         ],
-        //　业务
+        //　供应商
         7 => [
-            // none
+            "supplier",
         ],
     ],
 ];

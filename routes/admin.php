@@ -58,6 +58,8 @@ Route::resource("product", "Admin\ProductController", [
     ],
 ]);
 
+Route::get("order/mine", "Admin\OrderController@mine")
+    ->name("admin.order.mine");
 Route::resource("order", "Admin\OrderController", [
     "names" => [
         "index" => "admin.order.index",
@@ -69,4 +71,3 @@ Route::resource("order", "Admin\OrderController", [
         "destroy" => "admin.order.destroy",
     ],
 ]);
-    

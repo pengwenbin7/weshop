@@ -129,6 +129,10 @@ return [
             'secret'   => env('WECHAT_WORK_AGENT_SECRET', ''),
             "token" => env("WECHAT_WORK_AGENT_TOKEN", ""),
             "aes_key" => env("WECHAT_WORK_AGENT_AES_KEY", ""),
+            'oauth' => [
+                "scopes"   => "snsapi_userinfo",
+                "callback" => env("WECHAT_WORK_AUTH_CALLBACK", ""),
+            ],
         ],
     ],
 ];
