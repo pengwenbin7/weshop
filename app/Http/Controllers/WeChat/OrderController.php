@@ -28,13 +28,13 @@ class OrderController extends Controller
                 ->where("user_id", "=", $user->id)
                 ->orderBy("created_at", "desc")
                 ->get();
-        return view("wechat.order.index",["orders"=>$orders]);
+        return view("wechat.order.index",["orders"=>$orders, "title" => "我的订单"]);
     }
 
     public function show(Order $order){
         
 
-        return view("wechat.order.show",["order" => $order]);
+        return view("wechat.order.show",["order" => $order, "title" => "订单详情"]);
     }
 
     /**
@@ -63,7 +63,7 @@ class OrderController extends Controller
         }
         
         $data["payChannels"] = PayChannel::get();
-        return view("wechat.order.create", $data);
+        return view("wechat.order.create", ["date" => $data, "title" => "提交订单"]);
     }
 
     /**

@@ -19,6 +19,7 @@ class IndexController extends Controller
         return view("wechat.index", [
             "user" => auth()->user(),
             "interfaces" => $interfaces,
+            "title" => "首页",
         ]);
     }
 }

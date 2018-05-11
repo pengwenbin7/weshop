@@ -62,7 +62,7 @@
 	      </div>
 	      <div class="grid">
           <div class="item">
-            <a href="collect.html">
+            <a href="{{ route("wechat.home.product_star") }}">
             <div class="icon">
               <i class="iconfont icon-wodeshoucang"></i>
             </div>
@@ -73,7 +73,7 @@
             </a>
           </div>
            <div class="item">
-            <a href="contact.html">
+            <a href="{{ route("wechat.home.waiter") }}">
             <div class="icon">
               <i class="iconfont icon-kefu"></i>
             </div>

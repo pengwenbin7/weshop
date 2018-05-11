@@ -4,6 +4,11 @@ Route::get('/', "WeChat\IndexController@index")
     ->name("wechat.index");
 Route::get("home", "WeChat\HomeController@index")
     ->name("wechat.home.index");
+Route::get("waiter", "WeChat\HomeController@waiter")
+    ->name("wechat.home.waiter");
+Route::get("product_star", "WeChat\HomeController@productStar")
+    ->name("wechat.home.product_star");  
+    
 Route::get("logout", "Auth\WeChatAuthController@logout")
     ->name("wechat.logout");
 
@@ -17,7 +22,7 @@ Route::get("product/{product}", "WeChat\ProductController@show")
 Route::get("product_buyme", "WeChat\ProductController@buyMe")
     ->name("wechat.product.buyme");
 
-Route::get("search/{key}", "WeChat\SearchController@search")
+Route::get("search", "WeChat\SearchController@search")
     ->name("wechat.search");   
 
 Route::resource("address", "WeChat\AddressController", [
