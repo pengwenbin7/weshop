@@ -157,15 +157,28 @@
             //计算每个数组的价格
             var weight = 0;
             for(var g in pro[p]){
+              if(pro[p][g].checked){
                 weight += pro[p][g].number * pro[p][g].product.content;
+              }
               
             }
+            console.log(weight)
             //计算   费用 = 初始值 + 重量*距离*系数 == 初始值/重量+距离*系数
+            if(weight){
               pro[p][0].freight = freight(func,weight,distance)/weight;
+            }else{
+              pro[p][0].freight = 0;
+            }
+            
+            console.log(pro[p])
           }
           for(var x in pro){
             for(var z in pro[x]){
+              if(pro[x][z].checked){
                 pro[x][z].price = Number(pro[x][z].unit_price)+Number(pro[x][0].freight);
+              }else{
+                pro[x][z].price = Number(pro[x][z].unit_price);
+              }
             }
           }
       }
