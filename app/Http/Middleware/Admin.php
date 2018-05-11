@@ -18,11 +18,17 @@ class Admin
     {
         $agent = new Agent();
         $browser = $agent->browser();
-        
-        if (!in_array(strtolower($browser), ["firefox", "chrome", "opera", "safari"])) {
-            return "不支持当前浏览器,请使用 Firefox, Chrome, Opera, Safari";
-        } else {
+
+        if ($agent->isRobot()) {
+            return "success";
+        }
+        if (in_array(strtolower($browser), ["ie"])) {
+            return "不支持 IE 浏览器";
+        }
+        if (auth("admin")->check()) {
             return $next($request);
+        } else {
+            return redirect()->route("admin.auth.login");
         }
     }
 }

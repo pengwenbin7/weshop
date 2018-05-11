@@ -115,6 +115,7 @@
     <script src="https://cdn.bootcss.com/admin-lte/2.4.3/js/adminlte.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     @yield("script")
   </body>
 </html>

@@ -16,3 +16,8 @@ Route::get("/wework/", function () {
 Route::get("wework/msg", "WeWork\MessageController@send");
 
 Route::any("once/{token}", "OnceController@index");
+
+Route::get("admin/auth/login", "Auth\AdminAuthController@showLoginForm")
+    ->name("admin.auth.login");
+Route::post("admin/auth/callback", "Auth\AdminAuthController@callback")
+    ->name("admin.auth.callback");
