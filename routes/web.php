@@ -11,18 +11,8 @@
 |
 */
 
-Route::get("version", function () {
-    if (auth()->check()) {
-        echo auth()->user()->openid;
-    }
-    return app()->version();
-})->middleware("wechat");
-
-// remember to delete me /////////////////////////
-Route::get("/login/{id}", function ($id) {      //
-    auth()->loginUsingId($id, true);            //
-    return "user id: " . auth()->user()->id;    //
-});                                            //
-/////////////////////////////////////////////////
-
-Route::get("login", "Auth\WeChatAuthController@login")->name("login");
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/login', 'AdminAuth\LoginController@showLoginForm')->name("login");
+    Route::post('/login', 'AdminAuth\LoginController@login');
+    Route::post('/logout', 'AdminAuth\LoginController@logout')->name('logout');
+});

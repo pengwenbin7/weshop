@@ -15,12 +15,15 @@ class CreateCouponsTable extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger("user_id");
             $table->unsignedDecimal("discount", 10, 2);
             $table->unsignedDecimal("amount", 10, 2);
             $table->timestamp("expire")->nullable();
             $table->unsignedInteger("from_admin")->nullable();
             $table->string("description", 255)->nullable();
             $table->timestamps();
+            $table->foreign("user_id")->references("id")
+                ->on("users")->onDelete("cascade");
             $table->foreign("from_admin")->references("id")->on("admin_users")
                 ->onDelete("set null");
         });

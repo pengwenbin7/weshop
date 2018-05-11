@@ -19,7 +19,12 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 	  <h1>
-	    {{ $page_title ?? "Page Title" }}
+	    {{ $page_title ?? "" }}
+	    @if (auth("admin")->check())
+	      {{ auth("admin")->user()->name }}
+	    @else
+	      未登录
+	    @endif
 	    <small>{{ $page_description or null }}</small>
 	  </h1>
 	  <ol class="breadcrumb">

@@ -130,7 +130,7 @@ return [
             "token" => env("WECHAT_WORK_AGENT_TOKEN", ""),
             "aes_key" => env("WECHAT_WORK_AGENT_AES_KEY", ""),
             'oauth' => [
-                "scopes"   => "snsapi_userinfo",
+                "scopes"   => "snsapi_base",
                 "callback" => env("WECHAT_WORK_AUTH_CALLBACK", ""),
             ],
         ],
