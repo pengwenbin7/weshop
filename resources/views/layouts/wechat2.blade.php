@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8">
-    <title>{{ $title ?? "weshop1" }}</title>
+    <title>{{ $title ?? "weshop" }}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <link rel="stylesheet" href="{{ asset("assets/css/reset.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/css/style.css") }}">
@@ -23,7 +23,7 @@
     </script>
     @yield("style")
   </head>
-  <body style="background-color:#f2f2f2">
+  <body>
     <!-- <nav>
       
       <a href="{{ route("wechat.logout") }}">logout</a>

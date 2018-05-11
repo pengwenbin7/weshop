@@ -24,7 +24,7 @@ class CartController extends Controller
                ->where("user_id", "=", $user->id)
                ->orderBy("id", "desc")
                ->get();
-        return view("wechat.cart.index", ["user" => $user, "carts" => $carts]);
+        return view("wechat.cart.index", ["user" => $user, "carts" => $carts, "title" => "采购单"]);
     }
     
     /**
@@ -76,6 +76,7 @@ class CartController extends Controller
             "cart" => $cart,
             "items" => json_encode($items),
             "products" => json_encode($products),
+            "title" => "采购单",
         ]);
     }
     

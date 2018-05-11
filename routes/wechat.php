@@ -22,7 +22,7 @@ Route::get("product/{product}", "WeChat\ProductController@show")
 Route::get("product_buyme", "WeChat\ProductController@buyMe")
     ->name("wechat.product.buyme");
 
-Route::get("search/{key}", "WeChat\SearchController@search")
+Route::get("search", "WeChat\SearchController@search")
     ->name("wechat.search");   
 
 Route::resource("address", "WeChat\AddressController", [

@@ -13,7 +13,7 @@
 		<div class="container">
 			<div class="search">
 				<div class="i-search">
-					<form action="" method="post">
+					<form action="{{ route("wechat.search") }}" method="get">
 						<input type="text" name="keyword" id="keyword" value="" placeholder="输入关键词快速查找商品" />
 						<input class="btn-submit" type="submit" value="找货"/>
 					</form>
