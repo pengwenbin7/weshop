@@ -4,6 +4,11 @@ Route::get('/', "WeChat\IndexController@index")
     ->name("wechat.index");
 Route::get("home", "WeChat\HomeController@index")
     ->name("wechat.home.index");
+Route::get("waiter", "WeChat\HomeController@waiter")
+    ->name("wechat.home.waiter");
+Route::get("product_star", "WeChat\HomeController@productStar")
+    ->name("wechat.home.product_star");  
+    
 Route::get("logout", "Auth\WeChatAuthController@logout")
     ->name("wechat.logout");
 
