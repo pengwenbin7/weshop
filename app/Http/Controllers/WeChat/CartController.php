@@ -68,6 +68,7 @@ class CartController extends Controller
             $item->brand_name = $item->product->brand->name;
             $item->stock = $item->product->variable->stock;
             $item->unit_price = $item->product->variable->unit_price;
+            $item->price = $item->product->variable->unit_price;
             $item->func = $item->product->storage->func;
             $item->checked = false;
         }       

@@ -25,7 +25,7 @@
                 <span class="p-model">@{{ item.product.model }}</span>
               </div>
               <div class="pirce">
-                <span><i>￥@{{ item.unit_price*1000 }}</i>元/吨</span>
+                <span><i>￥@{{ Number(item.price)*Number(item.number)* Number(item.product.content) }}</i>元</span>
               </div>
             </div>
             <div class="p-edit">
@@ -71,26 +71,12 @@
           products: {!! $products !!},
           ckall: false, //全选状态
           totalprice: "0",
+          distance:1000,
         },
         //总价
         beforeMount: function() { //加载页面前计算价格
-
-          // var const = {"area":[{"low":0,"up":5000,"factor":0.00045,"const":200},{"low":5000,"up":30000,"factor":0.0004,"const":0}],"other":{"factor":0,"const":0}}
-          // ...
-          var pro = this.products;
-          for(var p in pro){
-            // 获取每个数组
-            //计算每个数组的价格
-            var weight = 0;
-            for(var g in pro[p]){
-              weight += pro[p][g].number * pro[p][g].product.content;
-            }
-            // console.log(weight)
-
-          }
-
-          this.totalprice = getTotalPrice(this.products);
-          console.log(this.totalprice);
+        console.log({!! $products !!})
+          this.totalprice = getTotalPrice(this);
           checkall(this);
 
         },
@@ -106,17 +92,17 @@
                 if(date.body.code) {
                   console.log("请求成功")
                   _this.products[i][a].number--;
-                  _this.totalprice = getTotalPrice(_this.products)
+                  _this.totalprice = getTotalPrice(_this)
                 }
               }
               _this.products[i][a].number--;
-              _this.totalprice = getTotalPrice(_this.products)
+              _this.totalprice = getTotalPrice(_this)
             }
           },
           addCartNumber: function(i,a) {
 
             this.products[i][a].number++;
-            this.totalprice = getTotalPrice(this.products)
+            this.totalprice = getTotalPrice(this)
           },
           textCartNumber: function(i,a) {
             console.log(this.$refs.xxx)
@@ -125,7 +111,7 @@
           check: function(i,a) {
             this.products[i][a].checked = !this.products[i][a].checked;
             checkall(this);
-            this.totalprice = getTotalPrice(this.products)
+            this.totalprice = getTotalPrice(this)
           },
           checkAll: function() {
             var status = this.ckall;
@@ -136,28 +122,64 @@
               }
             }
             checkall(this);
-            this.totalprice = getTotalPrice(this.products)
+            this.totalprice = getTotalPrice(this)
           },
           del: function(i,a) {
             this.products[i].splice(a, 1);
-            this.totalprice = getTotalPrice(this.products)
+            this.totalprice = getTotalPrice(this)
           }
         }
       })
 
-      function getTotalPrice(arr) {
+      function getTotalPrice(_this) {
+        var _this = _this;
+        var arr = _this.products;
+        var distance = _this.distance;
+        resetPrice(_this)
         var totalPrice = 0;
         for(var i in arr) {
           for(var j in arr[i]){
             if(arr[i][j].checked) {
-              totalPrice += arr[i][j].number * arr[i][j].product.content * arr[i][j].unit_price;
+              totalPrice += arr[i][j].number * arr[i][j].product.content * arr[i][j].price;
             }
           }
 
         }
         return totalPrice;
       }
-
+      function resetPrice(_this){
+        var _this = _this;
+        var pro =_this.products;
+        var distance = _this.distance;
+        for(var p in pro){
+            var func = JSON.parse(pro[p][0].func);
+            // 获取每个数组
+            //计算每个数组的价格
+            var weight = 0;
+            for(var g in pro[p]){
+                weight += pro[p][g].number * pro[p][g].product.content;
+              
+            }
+            //计算   费用 = 初始值 + 重量*距离*系数 == 初始值/重量+距离*系数
+              pro[p][0].freight = freight(func,weight,distance)/weight;
+          }
+          for(var x in pro){
+            for(var z in pro[x]){
+                pro[x][z].price = Number(pro[x][z].unit_price)+Number(pro[x][0].freight);
+            }
+          }
+      }
+      function freight(func,weight,distance){
+          var freight = 0;
+          func.area.forEach(function (e, index, array) {
+            if(e.low<=weight&&weight<e.up){
+              freight =e.factor * distance + e.const;
+              return 
+            }
+          });
+          return freight?freight:func.other.factor * distance + func.other.const;
+         
+      }
       function getDate(name) {
         console.log("ajax获取" + name + "的数据")
       }
