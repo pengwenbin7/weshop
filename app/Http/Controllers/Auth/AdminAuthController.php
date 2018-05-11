@@ -11,26 +11,27 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Cache;
 use Log;
 use EasyWeChat;
-
+ 
 class AdminAuthController extends Controller
-{
+{    
     public function showLoginForm(Request $request)
     {
-        $app = EasyWeChat::work();
-        $config = $app->jssdk->buildConfig(["scanQRCode"], false);
-        $target = $app->oauth->redirect()->getTargetUrl();
-        $agent = $app->agent->get(1000005);
-        dd($agent);
-        
-        return view("admin.auth.login", [
-            "config" => $config,
-            "target" => $target,
-        ]);
+        return view("admin.auth.login");
     }
 
+    public function login(Request $request)
+    {
+        $credentials = $request->only("mobile", "password");
+        if (Auth::guard("admin")->attempt($credentials)) {
+            return redirect()->route("admin.index");
+        } else {
+            return "Error";
+        }
+    }
+    
     public function callback(Request $request)
     {
-        return $request->getContent();
+        
     }
     
     public function logout()

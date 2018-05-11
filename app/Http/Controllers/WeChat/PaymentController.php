@@ -25,7 +25,7 @@ class PaymentController extends Controller
             'out_trade_no' => $order->no,
             'total_fee' => 1,
             'trade_type' => 'JSAPI',
-            'openid' => 'obOoJwQa8TO57HLd8WHtuXP91CE8',
+            'openid' => auth()->user()->openid,
         ]);
         $jssdk = $this->payment->jssdk;
         $json = $jssdk->bridgeConfig($result["prepay_id"]);

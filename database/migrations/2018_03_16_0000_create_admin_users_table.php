@@ -18,6 +18,7 @@ class CreateAdminUsersTable extends Migration
             $table->string("openid", 100)->unique();
             $table->string("mobile", 32)->unique();
             $table->string("name", 32);
+            $table->string("password", 100)->nullable();
             $table->string("english_name", 32)->nullable();
             $table->string("email", 100)->unique()->nullable();
             $table->boolean("enable")->default(true);
