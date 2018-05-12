@@ -5,7 +5,7 @@
   <div class="container">
     <div class="tel-list">
       <div class="private-tel">
-        <a href="tel:18234514213">
+        <a href="tel:{{ $user->admin->mobile }}">
           <div class="icon">
             <i class="iconfont icon-zhuanyuan"></i>
           </div>

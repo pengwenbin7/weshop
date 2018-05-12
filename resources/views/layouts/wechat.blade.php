@@ -8,25 +8,24 @@
     <link rel="stylesheet" href="{{ asset("assets/css/style.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/font/iconfont.css") }}">
     <script type="text/javascript">
-      (function(doc, win) {
-        var docEl = doc.documentElement,
-          resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-          recalc = function() {
-            var clientWidth = docEl.clientWidth;
-            if(!clientWidth) return;
-            docEl.style.fontSize = (clientWidth / 7.5) + 'px';
-          };
-        if(!doc.addEventListener) return;
-        win.addEventListener(resizeEvt, recalc, false);
-        doc.addEventListener('DOMContentLoaded', recalc, false);
-      })(document, window);
+    (function(doc, win) {
+      var docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function() {
+          var clientWidth = docEl.clientWidth;
+          if(!clientWidth) return;
+          docEl.style.fontSize = (clientWidth / 7.5) + 'px';
+        };
+      if(!doc.addEventListener) return;
+      win.addEventListener(resizeEvt, recalc, false);
+      doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
     </script>
     @yield("style")
   </head>
   <body >
     <!-- <nav>
-      
-      <a href="{{ route("wechat.logout") }}">logout</a>
+    <a href="{{ route("wechat.logout") }}">logout</a>
     </nav> -->
     @yield("content")
     <div class="footer">
@@ -43,8 +42,8 @@
       </div>
       <div class="item  {{ url()->current() == route("wechat.cart.index")? "on":"" }}">
         <a href="{{ route("wechat.cart.index") }}"><span class="icons">
-            <i class="iconfont icon-caigoudan-on"></i>
-          </span><br>采购单</a>
+          <i class="iconfont icon-caigoudan-on"></i>
+        </span><br>采购单</a>
       </div>
       <div class="item  {{ url()->current() == route("wechat.home.index")? "on":"" }}">
         <a href="{{ route("wechat.home.index") }}"><span class="icons">
@@ -56,7 +55,7 @@
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
     <script>
-    wx.config({!! app("wechat.official_account")->jssdk->buildConfig($interfaces ?? [], true) !!});
+    wx.config({!! app("wechat.official_account")->jssdk->buildConfig($interfaces ?? [], false) !!});
     wx.ready(function () {
       wx.onMenuShareTimeline({
 	title: "{{ $page_title ?? "分享title" }}",

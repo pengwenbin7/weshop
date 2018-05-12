@@ -25,15 +25,14 @@
   </head>
   <body>
     <!-- <nav>
-      
-      <a href="{{ route("wechat.logout") }}">logout</a>
+    <a href="{{ route("wechat.logout") }}">logout</a>
     </nav> -->
     @yield("content")
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
     <script>
-    wx.config({!! app("wechat.official_account")->jssdk->buildConfig($interfaces ?? [], true) !!});
+    wx.config({!! app("wechat.official_account")->jssdk->buildConfig($interfaces ?? [], false) !!});
     wx.ready(function () {
       wx.onMenuShareTimeline({
 	title: "{{ $page_title ?? "分享title" }}",
