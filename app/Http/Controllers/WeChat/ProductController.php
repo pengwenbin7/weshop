@@ -26,6 +26,9 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
+        $v = $product->variable;
+        $v->click += 1;
+        $v->save();
         return view("wechat.product.show", ["product" => $product]);
     }
 

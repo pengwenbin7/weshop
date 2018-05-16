@@ -9,6 +9,8 @@ use App\Models\AdminUser as Admin;
 use Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Cache;
+use EasyWeChat;
+use Carbon\Carbon;
 use Log;
 
 class WeChatAuthController extends Controller
@@ -19,16 +21,25 @@ class WeChatAuthController extends Controller
             $openid = $this->getOpenid($request->code);
         } while (!$openid);
 
+        $app = EasyWeChat::officialAccount();
+        $weInfo = $app->user->get($openid);
+
         // 自动注册
         try {
             $user = User::where("openid", "=", $openid)->firstOrFail();
         } catch (ModelNotFoundException $e) {
             $user = new User();
             $user->openid = $openid;
+            $user->name = $weInfo["nickname"];
             $user->rec_code = "xyz"; // 这个值在监听事件中自动修改
             $user->rec_from = $request->input("state", null);
-            $user->save();
+            $user->subscribe_time = $weInfo["subscribe_time"];
+
         }
+        $user->name = $weInfo["nickname"];
+        $user->headimgurl = $weInfo["headimgurl"];
+        $user->save();
+        
         $token = time() . str_random(20);
         Cache::put($token, $user, 2);
         $target = str_contains($request->target, "?") ?
@@ -36,7 +47,7 @@ class WeChatAuthController extends Controller
                 "{$request->target}?token={$token}";
         return redirect($target);
     }
-
+    
     public function logout()
     {
         auth()->logout();

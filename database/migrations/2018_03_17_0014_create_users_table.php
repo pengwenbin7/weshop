@@ -28,6 +28,8 @@ class CreateUsersTable extends Migration
             $table->string("rec_from", 8)->nullable()->comment("推荐来源");
             $table->unsignedInteger("share_count")->default(0)->comment("分享次数");
             $table->unsignedInteger("reg_count")->default(0)->comment("推广注册数");
+            $table->string("headimgurl", 255)->nullable();
+            $table->string("subscribe_time")->nullable();
             $table->unsignedInteger("company_id")->nullable();
             $table->unsignedInteger("admin_id")->nullable();
             $table->softDeletes();
