@@ -1,8 +1,9 @@
 @extends("layouts.wechat2")
 
 @section("content")
-<div class="order-detail" id="app" >
       <div class="container">
+<div class="order-detail" id="app" >
+      
         <div class="order-header">
           <div class="order-number">
             <span>订单 {{ $order->no }}</span>

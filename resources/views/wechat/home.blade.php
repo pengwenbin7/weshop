@@ -1,26 +1,10 @@
 @extends("layouts.wechat")
 
 @section("content")
-<div class="user">
-	    <!--<div class="header">
-	      <div class="title">
-	        <h2>用户中心</h2>
-	      </div>
-	      <div class="u-photo">
-	        <div class="photo">
-	          <img src="imgs/u_photo.png"/>
-	        </div>
-	        <div class="name">
-	          <span>王小妹</span>
-	        </div>
-	        <div class="admin-msg">
-	          <span class="icons">
-	            <i class="iconfont icon-xiaoxitixing"></i>
-	          </span>
-	        </div>
-	      </div>
-	    </div>-->
-	    <div class="container">
+	   
+    <div class="container">
+      <div class="user">
+        
 	      <div class="grid">
 	        <div class="item ord">
 	          <a href="{{ route("wechat.order.index") }}">

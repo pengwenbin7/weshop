@@ -19,7 +19,6 @@ class IndexController extends Controller
             "uploadImage", "downloadImage",
         ];
         $products = ProductVariable::with("product")->orderBy("buy","desc")->limit(10)->get();
-        return $products;
         return view("wechat.index", [
             "user" => auth()->user(),
             "interfaces" => $interfaces,

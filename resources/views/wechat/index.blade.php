@@ -4,14 +4,6 @@
 	
 		<div class="container">
 		<div class="index" id="app">
-		<div class="header">
-			<div class="logo">
-				<img src="http://www.taihaomai.com/themes/default/images/logo2.png" />
-			</div>
-			<div class="title">
-				<h2>直接搜货</h2>
-			</div>
-		</div>
 			<div class="search">
 				<div class="i-search">
 					<form action="{{ route("wechat.search") }}" method="get">
@@ -44,30 +36,27 @@
 				</div>
 				@foreach($products as $product)
 				<div class="product">
-					<a href="{{ route("wechat.product.show", 1) }}">
+					<a href="{{ route("wechat.product.show", $product->id) }}">
 						<div class="prop">
-							<p class="black"><span class="p-name">{{ $product->product->name }}</span>
-								<span class="p-model"></span></p>
-							<p class="gray"><span class="p-bname"></span></p>
-						</div>
-						<p class="pirce">
-							<span class="y"><i>￥</i>12222元/吨</span>
+							<p class="black">
+								<span class="p-name">{{ $product->product->name }}</span>
+								<span class="p-model">{{ $product->product->model }}</span>
+							</p>
+							<p class="gray">
+								<span class="p-bname">{{ $product->product->brand->name }}</span>
+							</p>
+							<p class="pirce">
+							@if($product->product->is_ton)
+							<span class="y"><i>￥</i>{{ $product->product->variable->unit_price*1000/$product->product->content }}/吨</span>
+							@else
+							<span class="y"><i>￥</i>{{ $product->product->variable->unit_price }}/{{ $product->product->packing_unit }}</span>
+							@endif
 						</p>
+						</div>
 					</a>
 				</div>
 				@endforeach
-				<div class="product">
-					<a href="{{ route("wechat.product.show", 1) }}">
-						<div class="prop">
-							<p class="black"><span class="p-name">真石漆质感漆乳液 </span>
-								<span class="p-model">LR-9611</span></p>
-							<p class="gray"><span class="p-bname">恒和化工</span></p>
-						</div>
-						<p class="pirce">
-							<span class="y"><i>￥</i>12222元/吨</span>
-						</p>
-					</a>
-				</div>
+				
 				
 			</div>
 		</div>

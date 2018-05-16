@@ -12,7 +12,7 @@
     </script>
     @yield("style")
   </head>
-  <body >
+  <body style="background:#f0f1f0;">
     <!-- <nav>
     <a href="{{ route("wechat.logout") }}">logout</a>
     </nav> -->

@@ -1,9 +1,9 @@
 @extends("layouts.wechat")
 
 @section("content")
-<div class="cart">
-
-      <div class="container" id="app">
+    <div class="container" id="app">
+      <div class="cart">
+        
         <div class="create">
           <div class="txt">
             <span class="black">新建选购单<small>(已创建1个采购单)</small></span>
@@ -39,6 +39,7 @@
           </div>
         @endforeach
         </div>
+      </div>
       </div>
   
 @endsection
