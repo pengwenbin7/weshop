@@ -1,7 +1,9 @@
 @extends("layouts.wechat")
 
 @section("content")
-	<div class="index" id="app">
+	
+		<div class="container">
+		<div class="index" id="app">
 		<div class="header">
 			<div class="logo">
 				<img src="http://www.taihaomai.com/themes/default/images/logo2.png" />
@@ -10,7 +12,6 @@
 				<h2>直接搜货</h2>
 			</div>
 		</div>
-		<div class="container">
 			<div class="search">
 				<div class="i-search">
 					<form action="{{ route("wechat.search") }}" method="get">
@@ -41,19 +42,32 @@
 				<div class="title">
 							<span>热卖商品</span>
 				</div>
-				<div class="product" v-for="item in items">
+				@foreach($products as $product)
+				<div class="product">
 					<a href="{{ route("wechat.product.show", 1) }}">
-					<div class="title">
-							<span class="p-bname">@{{ item.brand }}</span>
-							<span class="p-name">@{{ item.name }} </span>
-							<span class="p-model">@{{ item.model }}</span>
+						<div class="prop">
+							<p class="black"><span class="p-name">{{ $product->product->name }}</span>
+								<span class="p-model"></span></p>
+							<p class="gray"><span class="p-bname"></span></p>
 						</div>
-						<div class="pirce">
-							<span><i>￥</i>@{{ item.price }}元/吨</span>
-						</div>
-						</a>
+						<p class="pirce">
+							<span class="y"><i>￥</i>12222元/吨</span>
+						</p>
+					</a>
 				</div>
-				
+				@endforeach
+				<div class="product">
+					<a href="{{ route("wechat.product.show", 1) }}">
+						<div class="prop">
+							<p class="black"><span class="p-name">真石漆质感漆乳液 </span>
+								<span class="p-model">LR-9611</span></p>
+							<p class="gray"><span class="p-bname">恒和化工</span></p>
+						</div>
+						<p class="pirce">
+							<span class="y"><i>￥</i>12222元/吨</span>
+						</p>
+					</a>
+				</div>
 				
 			</div>
 		</div>
