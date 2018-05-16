@@ -8,18 +8,7 @@
     <link rel="stylesheet" href="{{ asset("assets/css/style.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/font/iconfont.css") }}">
     <script type="text/javascript">
-    (function(doc, win) {
-      var docEl = doc.documentElement,
-        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-        recalc = function() {
-          var clientWidth = docEl.clientWidth;
-          if(!clientWidth) return;
-          docEl.style.fontSize = (clientWidth / 7.5) + 'px';
-        };
-      if(!doc.addEventListener) return;
-      win.addEventListener(resizeEvt, recalc, false);
-      doc.addEventListener('DOMContentLoaded', recalc, false);
-    })(document, window);
+    var fSize=(document.documentElement.clientWidth/7.5)>100?100:(document.documentElement.clientWidth/7.5);document.documentElement.style.fontSize = fSize + "px";window.addEventListener("orientationchange", function() { location.reload(); }, false);
     </script>
     @yield("style")
   </head>
@@ -32,22 +21,22 @@
       <div class="item  {{ url()->current() == route("wechat.index")? "on":"" }}">
         <a href="{{ route("wechat.index") }}">
           <span class="icons">
-            <i class="iconfont icon-home"></i>
+            <i class="iconfont icon-home{{ url()->current() == route("wechat.index")? "-on":"" }}"></i>
           </span><br>首页</a>
       </div>
       <div class="item {{ url()->current() == route("wechat.product.index")? "on":"" }}" >
         <a href="{{ route("wechat.product.index") }}"><span class="icons">
-          <i class="iconfont icon-fenlei"></i>
+          <i class="iconfont icon-fenleichazhao{{ url()->current() == route("wechat.product.index")? "-on":"" }}"></i>
         </span><br>分类</a>
       </div>
       <div class="item  {{ url()->current() == route("wechat.cart.index")? "on":"" }}">
         <a href="{{ route("wechat.cart.index") }}"><span class="icons">
-          <i class="iconfont icon-caigoudan-on"></i>
+          <i class="iconfont icon-caigoudan{{ url()->current() == route("wechat.cart.index")? "-on":"" }}"></i>
         </span><br>采购单</a>
       </div>
       <div class="item  {{ url()->current() == route("wechat.home.index")? "on":"" }}">
         <a href="{{ route("wechat.home.index") }}"><span class="icons">
-          <i class="iconfont icon-user"></i>
+          <i class="iconfont icon-user{{ url()->current() == route("wechat.home.index")? "-on":"" }}"></i>
         </span><br><span>我的</span></a>
       </div>
     </div>
