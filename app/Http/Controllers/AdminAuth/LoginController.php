@@ -24,14 +24,7 @@ class LoginController extends Controller
     use AuthenticatesUsers, LogsoutGuard {
         LogsoutGuard::logout insteadof AuthenticatesUsers;
     }
-
-    /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    public $redirectTo = '/admin';
-
+    
     /**
      * Create a new controller instance.
      *
@@ -39,9 +32,8 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin.guest', ['except' => 'logout']);
     }
-
+    
     /**
      * Show the application's login form.
      *
@@ -49,7 +41,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('admin.auth.login');
+        return view('admin.auth.login', ["error" => ""]);
     }
 
     /**
@@ -68,7 +60,7 @@ class LoginController extends Controller
         if (Auth::guard("admin")->attempt($credentials)) {
             return redirect()->route("admin.index");
         } else {
-            return "Error";
+            return view('admin.auth.login', ["error" => "账号密码错误"]);
         }
     }
 }

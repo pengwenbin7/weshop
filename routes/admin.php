@@ -1,8 +1,8 @@
 <?php
 
 Route::get("/", function () {
-    //return view("admin.index");
-    return auth("admin")->user();
+    return view("admin.index");
+    //return auth("admin")->user();
 })->name("admin.index");
 Route::get("todo", function () {
     return "TODO LIST";
@@ -72,3 +72,5 @@ Route::resource("order", "Admin\OrderController", [
         "destroy" => "admin.order.destroy",
     ],
 ]);
+
+Route::post('/logout', 'AdminAuth\LoginController@logout')->name("admin.logout");
