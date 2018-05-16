@@ -161,14 +161,14 @@ class ProductController extends Controller
         $s0 = $product->save();
 
         // save product price
-        if ($request->unit_price != $prodcut->price()->unit_price) {
+        if ($request->unit_price != $product->price()->unit_price) {
             $price = new ProductPrice();
             $price->fill([
                 "product_id" => $product->id,
                 "unit_price" => $request->unit_price,
             ]);
             $s1 = $price->save();
-            event(new ProductPriceChangedEvent($prodcut));
+            event(new ProductPriceChangedEvent($product));
         } else {
             $s1 = true;
         }

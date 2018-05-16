@@ -10,6 +10,6 @@ class ProductVariable extends Model
 
     public function product()
     {
-        return $this->belongsTo("App\Models\Prodcut");
+        return $this->belongsTo("App\Models\Product");
     }
 }

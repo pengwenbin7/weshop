@@ -102,7 +102,7 @@
 	         user_status       // 用户发起或取消
 	         shop_status       // 商家同意或驳回
 		 user_product_time // 用户确认退货时间
-		 shop_prodcut_time // 商家确认退货时间
+		 shop_product_time // 商家确认退货时间
 	         shop_pay_time     // 商家确认退款时间
 		 user_pay_time     // 用户确认退款时间	 
 #+END_SRC	

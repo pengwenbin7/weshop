@@ -26,7 +26,7 @@ class ProductPriceChangedListener
     public function handle(ProductPriceChangedEvent $event)
     {
         /* do something
-        $prodcut = $event->product;
+        $product = $event->product;
         $prices = $product->prices->orderBy("created_at", "desc")->get();
         */
     }
