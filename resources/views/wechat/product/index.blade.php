@@ -1,26 +1,22 @@
 @extends("layouts.wechat")
 @section("content")
-<div class="category" id="app">
+
+<div class="container clearfix" id="category">
+  <div class="category"  id="app">
   <div class="header" ref = "header">
-    <div class="title">
-      <h2>分类找货</h2>
-    </div>
     <div class="search">
       <a class="search-box" href="{{ route("wechat.index") }}">
           <i class="iconfont icon-sousuo"></i><span>快速搜索</span>
       </a>
     </div>
   </div>
-  <div class="container clearfix">
     <div class="cat-nav" ref = "left">
       <ul id="cat_nav">
-      @foreach ($categories as $category)
-      <li  >
-          <div class="on">
-            <span class="sign">&nbsp;</span><span class="c-name">{{ $category->name }}</span>
+      <li  v-for="(item,index) in items" @click="show(index)" v-bind:class='{on:active==index}'>
+          <div  :class="index == 0 ? 'item on':'item'">
+            <span class="c-name">@{{ item.cateName }}</span>
           </div>
         </li>
-      @endforeach
         
       </ul>
     </div>
@@ -46,20 +42,24 @@
       @foreach ($products as $product)
         <div class="product">
           <a href="{{ route("wechat.product.show", $product->id) }}">
-          <div class="title">
-            <span class="p-bname">{{ $product->storage->name }}</span>
-            <span class="p-name">{{ $product->name }} </span>
-            <span class="p-model">{{ $product->model }} </span>
-          </div>
-          <div class="pirce">
-            <span><i class="y">￥
-            @if ($product->is_ton)
-            {{ $product->variable->unit_price * 1000 / $product->content }}
-            @else
-            {{ $product->variable->unit_price }}
-            @endif
-           </i></span>
-          </div>
+          <div class="prop">
+							<p class="black">
+								<span class="p-name">{{ $product->name }}</span>
+								<span class="p-model">{{ $product->model }}</span>
+							</p>
+							<p class="gray">
+								<span class="p-bname">{{ $product->brand->name }}</span>
+							</p>
+							<p class="pirce">
+							@if($product->is_ton)
+							<span class="y"><i>￥</i>{{ $product->variable->unit_price*1000/$product->content }}/吨</span>
+							@else
+							<span class="y"><i>￥</i>{{ $product->variable->unit_price }}/{{ $product->packing_unit }}</span>
+							@endif
+						</p>
+						</div>
+          
+          
           </a>
         </div>
         @endforeach
@@ -68,31 +68,7 @@
       </div>
     </div>
   </div>
-  <div class="footer" ref = "footer">
-    <div class="item">
-      <a href="index.html">
-        <span class="icons">
-          <i class="iconfont icon-home"></i>
-        </span><br>首页</a>
-    </div>
-    <div class="item on">
-      <a href="category.html"><span class="icons">
-          <i class="iconfont icon-fenlei-on"></i>
-        </span><br>分类</a>
-    </div>
-    <div class="item">
-      <a href="cart.html"><span class="icons">
-          <i class="iconfont icon-caigoudan"></i>
-        </span><br>采购单</a>
-    </div>
-    <div class="item">
-      <a href="user.html"><span class="icons">
-          <i class="iconfont icon-user"></i>
-        </span><br><span>我的</span></a>
-    </div>
-  </div>
 </div>
-  
 @endsection
 @section("script")
    <script type="text/javascript">
@@ -137,21 +113,21 @@
           //获得主体部分高度
           var _height =  document.body.clientHeight 
           var fontsize = document.documentElement.clientWidth / 7.5;
-          var _h = 30*(fontsize/12)+1;
-          var _h2 = 45*(fontsize/12)+1;
+          var _h = 33*(fontsize/12)+1;
+          var _h2 = 48*(fontsize/12)+1;
           this.$refs.left.style.height = _height-_h+"px";
           this.$refs.right.style.height = _height-_h2+"px";
         }
         ,
         methods: {
-          // show: function(index) {
-          //   var catName = this.items[index].cateName;
-          //   this.active = index;
-          //   console.log(this.active, index)
-          //   getDate(catName);
-          // }
+          show: function(index) {
+            var catName = this.items[index].cateName;
+            this.active = index;
+            console.log(this.active, index)
+            getDate(catName);
+          }
         },
-        beforeRouteLeave:function(){
+        beforeRouteLeave: function() {
           console.log(1)
         }
       })

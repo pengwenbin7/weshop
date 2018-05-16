@@ -1,16 +1,10 @@
 @extends("layouts.wechat2")
 
 @section("content")
-<div class="collect" id="app">
-  <div class="header">
-    <div class="logo">
-      <img src="http://www.taihaomai.com/themes/default/images/logo2.png" />
-    </div>
-    <div class="title">
-      <h2>直接搜货</h2>
-    </div>
-  </div>
+ 
   <div class="container">
+<div class="collect" id="app">
+  
     <div class="products" id="product" >
       <div class="product" v-for="(item,index) in items">
         <div class="p-info">
