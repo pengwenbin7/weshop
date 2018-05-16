@@ -1,9 +1,10 @@
 @extends("layouts.wechat2")
 
 @section("content")
-<div class="cart-info">
 
       <div class="container" id="app">
+<div class="cart-info">
+      
         <div class="cart-info-header">
           <div class="txt">
             <span>采购单1<small>(已创建3个采购单)</small></span>
