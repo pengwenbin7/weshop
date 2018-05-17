@@ -14,7 +14,6 @@ class ServerController extends Controller
 {
     public function serve()
     {
-        Log::info("request arrived.");
         $app = EasyWeChat::officialAccount();
         $app->server->push(function($message){
             switch ($message["MsgType"]) {

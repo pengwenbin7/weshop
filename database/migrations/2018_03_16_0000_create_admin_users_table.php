@@ -30,6 +30,7 @@ class CreateAdminUsersTable extends Migration
             $table->string("hide_mobile", 32)->nullable();
             $table->string("rec_code", 9)->nullable();
             $table->string("qr_code", 255)->nullable();
+            $table->string("spread_qr", 255)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

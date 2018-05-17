@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\AdminUser;
 use App\Jobs\UpdateAdminPermission;
+use App\WeChat\SpreadQR;
 
 class AdminObserver
 {
@@ -21,10 +22,14 @@ class AdminObserver
         }
         // 生成邀请码
         if (!$user->rec_code) {
-            $code = dechex(sprintf("%u", crc32($user->id)));
+            $code = dechex(sprintf("%u", crc32($user->userid)));
             $user->rec_code = "A{$code}";
-            $user->save();
         }
+        // 生成推广二维码
+        if (!$user->spread_qr) {
+            $user->spread_qr = SpreadQR::forever($user->rec_code);
+        }
+        $user->save();
 
         /* 更新权限
          * 更新权限是耗时操作，而存在并发更新用户操作，

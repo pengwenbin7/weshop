@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\WeChat\Work\Events\ContactEvent;
 use EasyWeChat;
+use App\Models\AdminUser as Admin;
 use Log;
 
 class ServerController extends Controller
@@ -20,11 +21,24 @@ class ServerController extends Controller
     {
         $app = $this->app;
         $app->server->push(function ($message) use($app) {
-            $app->messenger
-                ->ofAgent(env("WECHAT_WORK_AGENT_ID"))
-                ->message(json_encode($message, JSON_UNESCAPED_UNICODE))
-                ->toUser("PengWenBin")
-                ->send();
+            $agent = $message["AgentID"];
+            $from = $message["FromUserName"];
+            $user = Admin::where("userid", "=", $from)->get()->first();
+            if ($message["MsgType"] == "event" &&
+                $message["Event"] == "click" &&
+                $message["EventKey"] == "requestMyQrCode") {
+                $app->messenger
+                    ->ofAgent($agent)
+                    ->message($user->spread_qr)
+                    ->toUser($from)
+                    ->send();
+            } else {
+                $app->messenger
+                    ->ofAgent($agent)
+                    ->message(json_encode($message, JSON_UNESCAPED_UNICODE))
+                    ->toUser($from)
+                    ->send();
+            }
         });
         return $app->server->serve();
     }
