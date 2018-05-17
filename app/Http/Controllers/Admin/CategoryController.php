@@ -13,9 +13,11 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Category::all();
+        $offset = $request->input("offset", 2);
+        $categories = Category::paginate($offset);
+        return view("admin.category.index", ["categories" => $categories]);
     }
 
     /**
@@ -42,8 +44,8 @@ class CategoryController extends Controller
         $category->parent_id = $request->input("parent_id", 0);
         $category->sort_order = $request->input("sort_order", 100);
         $category->description = $request->input("description");
-        
-        return ["store" => $category->save()];
+        $category->save();
+        return redirect()->route("admin.category.index");
     }
 
     /**
@@ -82,7 +84,8 @@ class CategoryController extends Controller
         $category->parent_id = $request->input("parent_id", 0);
         $category->sort_order = $request->input("sort_order", 100);
         $category->description = $request->input("description");
-        return ["update" => $category->save()];
+        $category->save();
+        return redirect()->route("admin.category.index");
     }
 
     /**

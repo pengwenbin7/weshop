@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Storage;
 use App\Models\Address;
+use App\Models\Brand;
 use App\Models\Config;
+use App\Models\Region;
 use Illuminate\Http\Request;
 
 class StorageController extends Controller
@@ -29,8 +31,12 @@ class StorageController extends Controller
      */
     public function create(Request $request)
     {
-        
-        return view("admin.storage.create");
+        $brands = Brand::all();
+        $region = new Region();
+        return view("admin.storage.create", [
+            "brands" => $brands,
+            "region" => $region,
+        ]);
     }
 
     /**

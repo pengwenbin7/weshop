@@ -64,26 +64,7 @@ class ServerController extends Controller
     public function menu()
     {
         $app = EasyWeChat::work();
-        $menus = [
-            'button' => [
-                [
-                    'name' => "首页",
-                    'type' => 'view',
-                    'url' => route("admin.index"),
-                ],
-                [
-                    'name' => '待办',
-                    'type' => 'view',
-                    'url' => route("admin.todo"),
-                ],
-                [
-                    'name' => '我的二维码',
-                    'type' => 'click',
-                    'key' => "requestMyQrCode",
-                ],
-            ],
-        ];
-
+        $menus = config("wework.menu");
         return $app->menu->create($menus);
     }
 }

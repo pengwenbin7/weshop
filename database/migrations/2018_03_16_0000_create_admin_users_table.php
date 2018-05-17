@@ -20,13 +20,13 @@ class CreateAdminUsersTable extends Migration
             $table->string("name", 32);
             $table->string("password", 100)->nullable();
             $table->string("english_name", 32)->nullable();
-            $table->string("email", 100)->unique()->nullable();
+            $table->string("email", 100)->nullable();
             $table->boolean("enable")->default(true);
             $table->unsignedTinyInteger("status")->default(1);
             $table->string("position", 64)->nullable();
             $table->boolean("isleader");
             $table->boolean("gender")->default(0);
-            $table->string("avatar")->nullable();
+            $table->string("avatar", 255)->nullable();
             $table->string("hide_mobile", 32)->nullable();
             $table->string("rec_code", 9)->nullable();
             $table->string("qr_code", 255)->nullable();

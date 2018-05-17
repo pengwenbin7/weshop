@@ -11,6 +11,6 @@
 
     描述:
     <input name="description" type="text" value="" placeholder="可以为空">
-    <input type="submit" value="submit"/>
+    <input type="submit" value="确定"/>
   </form>
 @endsection

@@ -10,13 +10,13 @@ return [
         2 => [
             "system",
         ],
-        // 大管理
+        // 公司管理
         3 => [
             "user", "order",
             "supplier", "report",
             "ship", "pay",
         ],
-        // 小管理
+        // 业务
         4 => [
             "order", "user",
             "supplier", "report",
@@ -25,13 +25,17 @@ return [
         5 => [
             "user", "order", "pay",
         ],
-        // 物流
+        // 采购
         6 => [
+            "user", "order", "pay",
+        ],
+        // 物流
+        7 => [
             "user", "order", "ship",
         ],
-        //　供应商
-        7 => [
-            "supplier",
+        //　VIP
+        8 => [
+            "vip",
         ],
     ],
 ];
