@@ -3,9 +3,9 @@
 @section("content")
     <div class="container" id="app">
       <div class="cart">
-        
+
         <div class="create">
-          <div class="txt">
+          <div class="txt" v-on:click="createCart">
             <span class="black">新建选购单<small>(已创建1个采购单)</small></span>
           </div>
           <div class="icon">
@@ -41,5 +41,41 @@
         </div>
       </div>
       </div>
-  
+
+@endsection
+@section("script")
+<script type="text/javascript">
+var app = new Vue({
+  el: "#app",
+  data: {
+
+  },
+  methods: {
+      createCart: function () {
+        console.log(1);
+        var $this = this;
+        wx.openAddress({
+          success: function (res) {
+            axios.post(
+              "{{ route("wechat.address.store") }}",
+              res
+            ).then(function (res) {
+              var url = "{{ route("wechat.cart.store") }}";
+              var d = {
+          address_id: res.data.address_id
+              };
+              axios.post(url, d).
+          then(function (res) {
+            location.reload();
+          });
+            });
+          },
+          cancel: function () {
+            //
+          }
+        });
+      }
+    }
+})
+</script>
 @endsection
