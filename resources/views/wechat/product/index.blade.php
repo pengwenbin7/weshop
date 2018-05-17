@@ -1,6 +1,10 @@
 @extends("layouts.wechat")
 @section("content")
-
+<style media="screen">
+[v-cloak] {
+display: none;
+}
+</style>
 <div class="container clearfix" id="category">
   <div class="category"  id="app">
   <div class="header" ref = "header">
@@ -12,12 +16,12 @@
   </div>
     <div class="cat-nav" ref = "left">
       <ul id="cat_nav">
-      <li  v-for="(item,index) in items" @click="show(index)" v-bind:class='{on:active==index}'>
-          <div  :class="index == 0 ? 'item on':'item'">
-            <span class="c-name">@{{ item.cateName }}</span>
+      <li  v-for="(item,index) in items" @click="show(index)" v-bind:class='{on:active==index}'  v-cloak>
+          <div  :class="index == 0 ? 'item on':'item'" >
+            <span class="c-name" >@{{ item.cateName }}</span>
           </div>
         </li>
-        
+
       </ul>
     </div>
     <div class="goods-list">
@@ -58,13 +62,11 @@
 							@endif
 						</p>
 						</div>
-          
-          
           </a>
         </div>
         @endforeach
-       
-        
+
+
       </div>
     </div>
   </div>
@@ -111,10 +113,10 @@
         mounted:function(){
 
           //获得主体部分高度
-          var _height =  document.body.clientHeight 
+          var _height =  document.body.clientHeight
           var fontsize = document.documentElement.clientWidth / 7.5;
-          var _h = 33*(fontsize/12)+1;
-          var _h2 = 48*(fontsize/12)+1;
+          var _h = 33*(fontsize/12)-1;
+          var _h2 = 46*(fontsize/12)-2;
           this.$refs.left.style.height = _height-_h+"px";
           this.$refs.right.style.height = _height-_h2+"px";
         }

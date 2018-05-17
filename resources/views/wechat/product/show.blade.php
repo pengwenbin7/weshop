@@ -3,10 +3,20 @@
 @section("style")
 <style>
 .cart{
-  height:300px;
+  height:100%;
   position:fixed;
   bottom:0;
   background:#fff;
+}
+.container .cart {
+    margin-top: .4rem;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: #fff;
+
 }
 </style>
 
@@ -211,7 +221,7 @@
                 </div>
             </div>
             <div class="gb-footer">
-               
+
                 <div class="addtocart" v-on:click="choseAddr">
                     <span class="green">加入采购单</span>
                 </div>
@@ -231,10 +241,10 @@
     data: {
       cart_id: null,
       cart_addr: null,
-			buy_box: false,
-			num: "2",
-			tonTap: "1",
-			addr_box:false
+      buy_box: false,
+      num: "2",
+      tonTap: "1",
+      addr_box:false
     },
     methods: {
       createCart: function () {
@@ -260,59 +270,59 @@
           }
         });
       },
-			choseAddr:function(){
+      choseAddr:function(){
         this.buy_box = false;
-				this.addr_box = true;
-			},
-      addToCart: function (id) {
-				var _this = this
-				var id = id;
-				var params = {
-					cart_id: id,
-					product_id: "{{ $product->id }}"
-				};
-				axios.post("{{ route("wechat.cart.add_product") }}", params)
-					.then(function (res) {
-						alert("添加成功");
-						_this.addr_box = false;
-						_this.buy_box = false;
-					});
-			},
-			buyMe: function () {
-				location.assign("{{ route("wechat.product.buyme") }}" +
-					"?product_id={{ $product->id }}"
-				);
+        this.addr_box = true;
       },
-			showBox: function() {
-				this.buy_box = true;
-			},
-			hideBox: function() {
-				this.buy_box = false;
-			},
-			goBuy: function() {
-				console.log(1)
-				location.href = "./order_confirm.html"
-			},
-			reduceCartNubmer: function() {
-				setPrice(this, "reduce");
-			},
-			addCartNumber: function(a) {
-				setPrice(this, "add");
-			},
-			textCartNumber: function(a) {
-				setPrice(this, "blur");
-			},
-			tontap: function(index) {
-				var _this = this;
-				this.tonTap = index;
-				setTimeout(function() {
-					setPrice(_this)
-				}, 10)
+      addToCart: function (id) {
+        var _this = this
+        var id = id;
+        var params = {
+          cart_id: id,
+          product_id: "{{ $product->id }}"
+        };
+        axios.post("{{ route("wechat.cart.add_product") }}", params)
+          .then(function (res) {
+            alert("添加成功");
+            _this.addr_box = false;
+            _this.buy_box = false;
+          });
+      },
+      buyMe: function () {
+        location.assign("{{ route("wechat.product.buyme") }}" +
+          "?product_id={{ $product->id }}"
+        );
+      },
+      showBox: function() {
+        this.buy_box = true;
+      },
+      hideBox: function() {
+        this.buy_box = false;
+      },
+      goBuy: function() {
+        console.log(1)
+        location.href = "./order_confirm.html"
+      },
+      reduceCartNubmer: function() {
+        setPrice(this, "reduce");
+      },
+      addCartNumber: function(a) {
+        setPrice(this, "add");
+      },
+      textCartNumber: function(a) {
+        setPrice(this, "blur");
+      },
+      tontap: function(index) {
+        var _this = this;
+        this.tonTap = index;
+        setTimeout(function() {
+          setPrice(_this)
+        }, 10)
 
-			}
+      }
     }
   });
-	function setPrice(_this, mode) { // mode  方式  ： 加 -减   blur  
+  function setPrice(_this, mode) { // mode  方式  ： 加 -减   blur
         var _this = _this;
         var goodsNum = _this.$refs.goodsNum;
         var mode = mode;
@@ -348,8 +358,8 @@
         _this.$refs.totalPriceD.innerText = totalPrice;
       }
   </script>
-	<script src="https://cdn.bootcss.com/Chart.js/2.7.2/Chart.js" async="async"></script>
-	<script type="text/javascript">
+  <script src="https://cdn.bootcss.com/Chart.js/2.7.2/Chart.js" async="async"></script>
+  <script type="text/javascript">
       onload = function() {
         var ctx = document.getElementById("myChart");
         var myChart = new Chart(ctx, {
