@@ -26,7 +26,7 @@ class CartController extends Controller
                ->get();
         return view("wechat.cart.index", ["user" => $user, "carts" => $carts, "title" => "采购单"]);
     }
-    
+
     /**
      * store a new cart
      * @param  \Illuminate\Http\Request  $request
@@ -38,7 +38,7 @@ class CartController extends Controller
             "user_id" => auth()->user()->id,
             "address_id" => $request->address_id,
         ]);
-        
+
         return ["cart_id" => $cart->id];
     }
 
@@ -48,12 +48,12 @@ class CartController extends Controller
     public function addProduct(Request $request)
     {
         $cart = Cart::find($request->cart_id);
-        
+
         $item = CartItem::firstOrCreate([
                 "cart_id" => $cart->id,
                 "product_id" => $request->product_id,
         ]);
-        
+
         return ["add" => $item->id];
     }
 
@@ -71,7 +71,7 @@ class CartController extends Controller
             $item->price = $item->product->variable->unit_price;
             $item->func = $item->product->storage->func;
             $item->checked = false;
-        }       
+        }
 
         return view("wechat.cart.show", [
             "cart" => $cart,
@@ -80,7 +80,14 @@ class CartController extends Controller
             "title" => "采购单",
         ]);
     }
-    
+    public function buyAll(Request $request)
+    {
+        $data["products"][] = CartItem::where("cart_id", "=", $request->cart_id)
+               ->with("product")->get();
+        $data["user"] = auth()->user();
+        return view("wechat.order.creates", $data);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -8,18 +8,7 @@
     <link rel="stylesheet" href="{{ asset("assets/css/style.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/font/iconfont.css") }}">
     <script type="text/javascript">
-      (function(doc, win) {
-        var docEl = doc.documentElement,
-          resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-          recalc = function() {
-            var clientWidth = docEl.clientWidth;
-            if(!clientWidth) return;
-            docEl.style.fontSize = (clientWidth / 7.5) + 'px';
-          };
-        if(!doc.addEventListener) return;
-        win.addEventListener(resizeEvt, recalc, false);
-        doc.addEventListener('DOMContentLoaded', recalc, false);
-      })(document, window);
+    var fSize=(document.documentElement.clientWidth/7.5)>100?100:(document.documentElement.clientWidth/7.5);document.documentElement.style.fontSize = fSize + "px";window.addEventListener("orientationchange", function() { location.reload(); }, false);
     </script>
     @yield("style")
   </head>

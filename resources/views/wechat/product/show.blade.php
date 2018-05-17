@@ -9,7 +9,7 @@
   background:#fff;
 }
 .container .cart {
-    margin-top: .4rem;
+    margin-top: 0;
     width: 100%;
     position: fixed;
     top: 0;
@@ -18,6 +18,15 @@
     background: #fff;
 
 }
+  .server-box{position: fixed;width: 100%;bottom: 0;left: 0;background-color: #fff;font-size: .32rem;z-index: 11111;}
+  .server-box .sb-tit h2{height: 1rem;line-height: 1rem;font-size: .32rem;text-align: center;letter-spacing: 2px;border-bottom: 1px solid #eee;}
+  .server-box .server-content{padding: 0 .4rem;padding-bottom: 1.4rem;}
+  .server-box .item{display: flex;display: -webkit-flex; border-bottom: 1px solid #eee; height: 1rem;padding: .15rem 0;}
+  .server-box .item .icon{width: .7rem;}
+  .server-box .item .icon i{color: #ff782f;}
+  .server-box .item .sb-desc{flex: 1;-webkit-flex:1;}
+  .sb-desc h3{height: .35rem;line-height: .35rem;font-size: .3rem;}
+  .sb-desc p{height: .35rem;line-height: .35rem;font-size: .26rem}
 </style>
 
 @endsection
@@ -26,8 +35,8 @@
 <div class="container">
     <div class="product">
 
-        <div class="info">
-            <div class="collect">
+        <div class="info" id="info">
+            <div class="collect" v-on:click="collect({{ $product->id }})">
                 <span class="icons">
                     <i class="iconfont icon-shoucang"></i>
                 </span>
@@ -60,7 +69,7 @@
                 <canvas id="myChart" width="600" height="400"></canvas>
             </div>
         </div>
-        <div class="tips">
+        <div class="tips" onclick="serverShow()">
             <p>
                 <span>
                     <i class="iconfont icon-gou"></i>原厂原包</span>
@@ -80,7 +89,7 @@
             <div class="tit">
                 <span>产品说明</span>
             </div>
-            <p>具有高白度、质软易分散悬浮于水中，良好的可塑性 和高的粘结性、优良的电绝缘性能以及良好的抗酸溶 液、很低的阳离子交换容量。
+            <p>{{ $product->detail->content }}
             </p>
         </div>
     </div>
@@ -133,11 +142,61 @@
         </div>
     </div>
     </div>
-    <!-- //buyb0x -->
+    <!-- //server-box -->
+    <div  v-if="server_box">
+      <div class="mask" v-on:click="severHide"></div>
+      <div class="server-box">
+        <div class="sb-tit">
+          <h2>服务说明</h2>
+        </div>
+        <div class="server-content">
+          <div class="item">
+            <div class="icon">
+              <i class="iconfont icon-gou"></i>
+            </div>
+            <div class="sb-desc">
+              <h3>原厂原包</h3>
+              <p>我们承诺，太好买所有商品均系厂家直供原厂原包</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="icon">
+              <i class="iconfont icon-gou"></i>
+            </div>
+            <div class="sb-desc">
+              <h3>原厂原包</h3>
+              <p>我们承诺，太好买所有商品均系厂家直供原厂原包</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="icon">
+              <i class="iconfont icon-gou"></i>
+            </div>
+            <div class="sb-desc">
+              <h3>原厂原包</h3>
+              <p>我们承诺，太好买所有商品均系厂家直供原厂原包</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="icon">
+              <i class="iconfont icon-gou"></i>
+            </div>
+            <div class="sb-desc">
+              <h3>原厂原包</h3>
+              <p>我们承诺，太好买所有商品均系厂家直供原厂原包</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- //buybox -->
     <div class="gobuy" v-if="buy_box">
         <div class="mask" v-on:click="hideBox()"></div>
+
         <div class="gb-box">
-            <div class="swith-bth">
+            <div class="swith-bth"  v-if="is_ton">
                 <div class="item" v-bind:class="{on:tonTap=='1'}" @click="tontap(1)">
                     <span>按包选购</span>
                 </div>
@@ -155,29 +214,19 @@
                     </span>
                 </div>
                 <div class="item clearfix">
-                    <span>数量</span>
+                  <span>重量</span>
+                  <span class="value"><i ref = "productW">@{{ weight }}</i></span>
                     <div class="quantity">
                         <p class="btn-minus">
                             <a class="minus" v-on:click="reduceCartNubmer()"></a>
                         </p>
                         <p class="btn-input">
-                            <input type="tel" name="" ref="goodsNum"  value="1" data-arr="{'limit':100,'price':{{ $product->variable->unit_price }},'weight':{{ $product->content }}}"
-                                v-on:blur="textCartNumber()">
+                            <input type="tel" name="" ref="goodsNum" step="1" v-bind:value="num" v-on:blur="textCartNumber()">
                         </p>
                         <p class="btn-plus">
                             <a class="plus" v-on:click="addCartNumber()"></a>
                         </p>
                     </div>
-                </div>
-                <div class="item clearfix">
-                    <span>重量</span>
-                    <span class="right">
-                        <i ref="productW">25</i>KG</span>
-                </div>
-                <div class="item clearfix">
-                    <span>价格</span>
-                    <span class="right">￥<i ref="totalPriceD">30850</i>
-                    </span>
                 </div>
             </div>
             <div class="product" v-if="tonTap==2">
@@ -190,38 +239,25 @@
                     </span>
                 </div>
                 <div class="item clearfix">
-                    <span>数量</span>
+                  <span>重量</span>
+                  <span class="value"><i >@{{ ton_num }}</i>吨</span>
                     <div class="quantity">
                         <p class="btn-minus">
                             <a class="minus" v-on:click="reduceCartNubmer()"></a>
                         </p>
                         <p class="btn-input">
                             <input
-                                type="tel"
-                                name=""
-                                ref="goodsNum"
-                                value="1"
-                                data-arr="{'limit':100,'price':{{ $product->variable->unit_price }},'weight':1000}"
-                                v-on:blur="textCartNumber()">
+                                type="tel" step="1" ref="goodsNum"  v-bind:value="ton_num"  v-on:blur="textCartNumber()">
                         </p>
                         <p class="btn-plus">
                             <a class="plus" v-on:click="addCartNumber()"></a>
                         </p>
                     </div>
                 </div>
-                <div class="item clearfix">
-                    <span>重量</span>
-                    <span class="right">
-                        <i ref="productW">25</i>KG</span>
-                </div>
-                <div class="item clearfix">
-                    <span>价格</span>
-                    <span class="right">￥<i ref="totalPriceD">30850</i>
-                    </span>
-                </div>
+
+
             </div>
             <div class="gb-footer">
-
                 <div class="addtocart" v-on:click="choseAddr">
                     <span class="green">加入采购单</span>
                 </div>
@@ -241,11 +277,23 @@
     data: {
       cart_id: null,
       cart_addr: null,
-      buy_box: false,
-      num: "2",
-      tonTap: "1",
-      addr_box:false
+      num: {{ 1000/$product->content }},  //按包购买数量
+      content:{{ $product->content }},
+      ton_num:2,   //按吨购买数量
+      tonTap: "2",  //吨<-->包切换
+      buy_box: false,  //购买按钮弹窗
+      addr_box:false, //购物单弹窗
+      server_box:false, //
+      stock:{{ $product->variable->stock*$product->content }},
+      is_ton:{{ $product->is_ton }}
     },
+    computed: {
+			weight: function () {
+				return (this.num*this.content)<=999.99?
+        this.num*this.content+"KG":
+        this.num*this.content/1000+"吨"
+			}
+		},
     methods: {
       createCart: function () {
         var $this = this;
@@ -299,64 +347,92 @@
       hideBox: function() {
         this.buy_box = false;
       },
+      severHide:function(){
+        this.server_box=false;
+      },
       goBuy: function() {
         console.log(1)
         location.href = "./order_confirm.html"
       },
       reduceCartNubmer: function() {
-        setPrice(this, "reduce");
+        setNum(this, "reduce");
       },
       addCartNumber: function(a) {
-        setPrice(this, "add");
+        setNum(this, "add");
       },
       textCartNumber: function(a) {
-        setPrice(this, "blur");
+        // setPrice(this, "blur");
       },
-      tontap: function(index) {
+      tontap: function(index) {  //切换吨<-->包
         var _this = this;
         this.tonTap = index;
-        setTimeout(function() {
-          setPrice(_this)
-        }, 10)
-
+        //切换时同步数量
+        if(index ==1){
+          this.num = this.ton_num*1000/this.content;
+        }else{
+          this.ton_num = Math.ceil(this.num*this.content/1000) ;
+        }
       }
     }
   });
-  function setPrice(_this, mode) { // mode  方式  ： 加 -减   blur
+  function setNum(_this, mode) { // mode  方式  ： 加 -减   blur
+        // 点击加减更新 num与ton_num的值
         var _this = _this;
-        var goodsNum = _this.$refs.goodsNum;
         var mode = mode;
-        var data = eval('(' + goodsNum.getAttribute("data-arr") + ')');
-        var limit = data.limit;
-        var price = data.price;
-        var weight = data.weight;
+        var limit = _this.stock;
+        var n_num = 0;//临时数量
+        if (_this.tonTap==1){
+          // console.log(_this.num);
+          _this.num = getNum(_this,mode,_this.num);
 
-        var aNum = Number(goodsNum.value);
-        var totalPrice;
-        if(mode == "reduce") {
-          if(aNum <= 1) {
-            return;
+        }else if(_this.tonTap==2){
+          // console.log(getNum(_this,mode,_this.ton_num));
+          _this.ton_num = getNum(_this,mode,_this.ton_num)
+        }
+
+
+      }
+    function getNum(_this,mode,n_num){
+      var weight = 0;
+      if(_this.tonTap==1){
+        weight = (n_num+1) * _this.content;
+      }else{
+        weight = (n_num+1) * 1000;
+      }
+    console.log(weight);
+      var limit = _this.stock;
+      if(mode == "reduce") {
+        console.log(n_num);
+          if(n_num <= 1) {
+            console.log(n_num);
+            return 1;
           } else {
-            aNum = aNum - 1;
+            return n_num-1;
           }
         } else if(mode == "add") {
-          if(aNum >= limit) {
-            alert("购买达到最大数量")
-            return;
-          } else {
-            aNum = aNum + 1;
-          }
-        } else if(mode == "blur") {
-          if(aNum > limit) {
-            alert("购买达到最大数量");
-            aNum = limit;
-          }
+        if(weight >= limit) {
+          alert("购买达到最大数量")
+          return;
+        } else {
+          return n_num+1;
         }
-        totalPrice = aNum * weight * price;
-        goodsNum.value = aNum;
-        _this.$refs.productW.innerText = aNum * weight;
-        _this.$refs.totalPriceD.innerText = totalPrice;
       }
+    }
+    function serverShow(){
+      var _this = app;
+      _this.server_box=true;
+    }
+    var app2 = new Vue({
+      el: "#info",
+      data: {
+
+      },
+      methods:{
+        collect:function(id){
+          // 收藏
+        }
+      }
+    })
   </script>
   <script src="https://cdn.bootcss.com/Chart.js/2.7.2/Chart.js" async="async"></script>
   <script type="text/javascript">
@@ -370,8 +446,8 @@
               label: '价格(元/吨)',
               data: generateDate(),
               borderWidth: 1,
-              borderColor: "blue",
-              backgroundColor: "blue",
+              borderColor: "#00B945",
+              backgroundColor: "#00B945",
               fill: false,
 
             }]
@@ -408,6 +484,7 @@
             }
           }
         });
+        // console.log({!! $product->prices !!})
 
         function generateLabels() {
           var arr = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]

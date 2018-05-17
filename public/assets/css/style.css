@@ -48,7 +48,7 @@
   font-size: .32rem;
   padding-bottom: 1.6rem;
   overflow-y: scroll;
-  -webkit-overflow-scrolling : touch; 
+  -webkit-overflow-scrolling : touch;
 }
 .container#category{
   padding-bottom: 1.2rem;
@@ -984,6 +984,7 @@
 .gb-box .product .item {
   padding: .1rem 0;
   font-size: .36rem;
+  padding-top: .5rem;
 }
 
 .gb-box .product .item span {
@@ -1037,7 +1038,7 @@
   border: 1px solid #00B945;
   text-align: center;
   box-sizing: border-box;
-  
+
 }
 
 .footer.order-footer span {

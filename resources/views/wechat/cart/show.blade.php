@@ -4,7 +4,7 @@
 
       <div class="container" id="app">
 <div class="cart-info">
-      
+
         <div class="cart-info-header">
           <div class="txt">
             <span>采购单1<small>(已创建3个采购单)</small></span>
@@ -57,8 +57,8 @@
           <div class="goods-price">
             <span><i class="font-co">¥</i><i class="font-co" ref="totalprice" >@{{ totalprice }}</i></span>
           </div>
-          <div class="btn-submit"><a href="order_confirm.html">结算</a>
-            
+          <div class="btn-submit" v-on:click="buyAll"><a >结算</a>
+
           </div>
         </div>
       </div>
@@ -73,6 +73,8 @@
           ckall: false, //全选状态
           totalprice: "0",
           distance:1000,
+          cart_id:1,
+          PayChannel:1
         },
         //总价
         beforeMount: function() { //加载页面前计算价格
@@ -82,6 +84,11 @@
 
         },
         methods: {
+          buyAll: function () {
+            location.assign("{{ route("wechat.cart.buyall") }}" +
+              "?cart_id="+this.cart_id
+            );
+          },
           reduceCartNubmer: function(i,a) {
             var _this = this;
             console.log(_this.products[i][a].number)
@@ -161,7 +168,7 @@
               if(pro[p][g].checked){
                 weight += pro[p][g].number * pro[p][g].product.content;
               }
-              
+
             }
             console.log(weight)
             //计算   费用 = 初始值 + 重量*距离*系数 == 初始值/重量+距离*系数
@@ -170,7 +177,7 @@
             }else{
               pro[p][0].freight = 0;
             }
-            
+
             console.log(pro[p])
           }
           for(var x in pro){
@@ -188,11 +195,11 @@
           func.area.forEach(function (e, index, array) {
             if(e.low<=weight&&weight<e.up){
               freight =e.factor * distance + e.const;
-              return 
+              return
             }
           });
           return freight?freight:func.other.factor * distance + func.other.const;
-         
+
       }
       function getDate(name) {
         console.log("ajax获取" + name + "的数据")
@@ -210,7 +217,7 @@
               _this.ckall = true;
             }
           }
-          
+
         }
       }
   </script>

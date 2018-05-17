@@ -7,8 +7,8 @@ Route::get("home", "WeChat\HomeController@index")
 Route::get("waiter", "WeChat\HomeController@waiter")
     ->name("wechat.home.waiter");
 Route::get("product_star", "WeChat\HomeController@productStar")
-    ->name("wechat.home.product_star");  
-    
+    ->name("wechat.home.product_star");
+
 Route::get("logout", "Auth\WeChatAuthController@logout")
     ->name("wechat.logout");
 
@@ -23,7 +23,7 @@ Route::get("product_buyme", "WeChat\ProductController@buyMe")
     ->name("wechat.product.buyme");
 
 Route::get("search", "WeChat\SearchController@search")
-    ->name("wechat.search");   
+    ->name("wechat.search");
 
 Route::resource("address", "WeChat\AddressController", [
     "only" => ["store", "destory",],
@@ -33,11 +33,13 @@ Route::resource("address", "WeChat\AddressController", [
     ],
 ]);
 
+Route::get("cart_buyall", "WeChat\CartController@buyAll")
+    ->name("wechat.cart.buyall");
 Route::resource("cart", "WeChat\CartController", [
     "names" => [
         "index" => "wechat.cart.index",
         "create" => "wechat.cart.create",
-        "store" => "wechat.cart.store",        
+        "store" => "wechat.cart.store",
         "destroy" => "wechat.cart.destroy",
         "show" => "wechat.cart.show",
     ],
