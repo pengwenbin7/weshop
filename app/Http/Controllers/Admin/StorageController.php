@@ -15,9 +15,11 @@ class StorageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Storage::with(["address", "brand"])->get();
+        $offset = $request->input("offset", 2);
+        $storages = Storage::paginate($offset);
+        return view("admin.storage.index", ["storages" => $storages]);
     }
 
     /**
@@ -25,8 +27,9 @@ class StorageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        
         return view("admin.storage.create");
     }
 
@@ -57,7 +60,8 @@ class StorageController extends Controller
             "func" => $func,
             "description" => $request->input("description", null),
         ]);
-        return ["save" => $storage->save()];
+        $storage->save();
+        return redirect()->route("admin.storage.index");
     }
 
     /**

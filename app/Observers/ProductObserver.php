@@ -11,7 +11,7 @@ class ProductObserver
         if ($product->content <= 0) {
             throw new \Exception("product content must more than 0");
         }
-        $product->is_ton = ($product->measure_unit == "kg") &&
+        $product->is_ton = (strtolower($product->measure_unit) == "kg") &&
                         (1000 % $product->content == 0);
         $arr = [
             $product->locale_id,

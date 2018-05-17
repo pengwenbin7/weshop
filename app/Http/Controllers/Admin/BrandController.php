@@ -13,9 +13,11 @@ class BrandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Brand::all();
+        $offset = $request->input("offset", 2);
+        $brands = Brand::paginate($offset);
+        return view("admin.brand.index", ["brands" => $brands]);
     }
 
     /**
@@ -25,7 +27,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-        return view("admin.brand.create");
+        return view("admin.brand.create", ["error" => null]);
     }
 
     /**
@@ -36,13 +38,17 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
+        if (Brand::where("name", "=", $request->name)->get()->isNotEmpty()) {
+            return view("admin.brand.create", ["error" => "名字不能重复"]);
+        }
         $brand = new Brand();
         $brand->name = $request->name;
         $brand->logo = $request->input("logo", null);
         $brand->sort_order = $request->input("sort_order", 100);
         $brand->active = $request->input("active", 1);
         $brand->locale_id = $request->input("locale_id", 1);
-        return ["store" => $brand->save()];
+        $brand->save();
+        return redirect()->route("admin.brand.index");
     }
 
     /**
@@ -81,7 +87,8 @@ class BrandController extends Controller
         $brand->sort_order = $request->input("sort_order", 100);
         $brand->active = $request->input("active", 1);
         $brand->locale_id = $request->input("locale_id", 1);
-        return ["update" => $brand->save()];        
+        $brand->save();
+        return redirect()->route("admin.brand.index");
     }
 
     /**

@@ -2,13 +2,9 @@
 
   <!-- sidebar: style can be found in sidebar.less -->
   <section class="sidebar">
-    
+
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu" data-widget="tree">
-      <li class="header">
-	<a href="{{ route('admin.todo') }}">todo</a>
-      </li>
-      
       <li class="header">产品</li>
       <li>
 	<a href="{{ route("admin.brand.index") }}">

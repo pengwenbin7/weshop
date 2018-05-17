@@ -35,7 +35,7 @@ Route::resource("brand", "Admin\BrandController", [
     ],
 ]);
 
-Route::resource("storage", "Admin\StorageController", [
+Route::resource("st", "Admin\StorageController", [
     "names" => [
         "index" => "admin.storage.index",
         "create" => "admin.storage.create",
@@ -73,4 +73,4 @@ Route::resource("order", "Admin\OrderController", [
     ],
 ]);
 
-Route::post('/logout', 'AdminAuth\LoginController@logout')->name("admin.logout");
+Route::get('/logout', 'AdminAuth\LoginController@logout')->name("admin.logout");
