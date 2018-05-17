@@ -32,7 +32,7 @@
 	  <div class="form-group">
             <label for="sort" class="col-sm-2 control-label">排序</label>
             <div class="col-sm-10">
-              <input class="form-control" id="sort" name="sort_order" type="number" value="" min="0" step="1" required>
+              <input class="form-control" id="sort" name="sort_order" type="number" value="100" min="0" step="1" required>
             </div>
           </div>
 

@@ -12,7 +12,7 @@
 
     描述:
     <input name="description" type="text" value="{{ $category->description }}" placeholder="可以为空">
-    <input name="" type="submit" value="submit"/>
+    <input name="" type="submit" value="确定"/>
   </form>
   
 @endsection

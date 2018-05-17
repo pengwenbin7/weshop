@@ -69,7 +69,7 @@ class AdminUserInit extends Command
         foreach ($all as $i) {
             Permission::firstOrCreate(["name" => $i, "guard_name" => "admin"]);
         }
-
+        
         // 获取部门
         $work = EasyWeChat::work();
         $list = $work->department->list();
@@ -90,32 +90,37 @@ class AdminUserInit extends Command
             foreach ($admins as $a) {
                 // 持久化内部人员
                 $openid = $work->user->userIdToOpenid($a["userid"]);
-                $admin = Admin::firstOrCreate([
-                    "userid" => $a["userid"],
-                    "openid" => $openid["openid"],
-                    "mobile" => $a["mobile"],
-                    "name" => $a["name"],
-                    "english_name" => $a["english_name"] ?? null,
-                    "email" => $a["email"] ?? null,
-                    "enable" => $a["enable"] ?? 1,
-                    "status" => $a["status"],
-                    "position" => $a["position"] ?? null,
-                    "isleader" => $a["isleader"],
-                    "gender" => $a["gender"],
-                    "avatar" => $a["avatar"] ?? null,
-                    "hide_mobile" => $a["hide_mobile"] ?? null,
-                    "qr_code" => $a["qr_code"] ?? null,
-                ]);
-                
-                /**
-                 * 持久化人员所在部门
-                 * 在此操作之后，在监视器里面更新人员权限
-                 */
-                foreach ($a["department"] as $k => $v) {
-                    AdminDepartment::firstOrCreate([
-                        "admin_id" => $admin->id,
-                        "department_id" => $d->id,
+                // 跳过未关注的员工
+                if ($openid["errcode"] != 0) {
+                    echo $openid["errmsg"] . "\n";
+                } else {
+                    $admin = Admin::firstOrCreate([
+                        "userid" => $a["userid"],
+                        "openid" => $openid["openid"],
+                        "mobile" => $a["mobile"],
+                        "name" => $a["name"],
+                        "english_name" => $a["english_name"] ?? null,
+                        "email" => $a["email"] ?? null,
+                        "enable" => $a["enable"] ?? 1,
+                        "status" => $a["status"],
+                        "position" => $a["position"] ?? null,
+                        "isleader" => $a["isleader"],
+                        "gender" => $a["gender"],
+                        "avatar" => $a["avatar"] ?? null,
+                        "hide_mobile" => $a["hide_mobile"] ?? null,
+                        "qr_code" => $a["qr_code"] ?? null,
                     ]);
+                
+                    /**
+                     * 持久化人员所在部门
+                     * 在此操作之后，在监视器里面更新人员权限
+                     */
+                    foreach ($a["department"] as $k => $v) {
+                        AdminDepartment::firstOrCreate([
+                            "admin_id" => $admin->id,
+                            "department_id" => $d->id,
+                        ]);
+                    }
                 }
             }
         }

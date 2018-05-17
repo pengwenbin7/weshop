@@ -16,6 +16,7 @@ class CreateShipmentItemsTable extends Migration
         Schema::create('shipment_items', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger("shipment_id");
+            $table->boolean("purchase")->default(0);
             $table->string("product_name", 100);
             $table->string("product_model", 100);
             $table->string("brand_name", 100);
