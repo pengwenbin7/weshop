@@ -3,9 +3,7 @@
 namespace App\Observers;
 
 use App\Models\AdminUser;
-use App\Jobs\UpdateAdminPermission;
 use App\WeChat\SpreadQR;
-use Log;
 
 class AdminObserver
 {
@@ -33,11 +31,5 @@ class AdminObserver
             $user->spread_qr = SpreadQR::forever($user->rec_code);
             $user->save();
         }
-        
-        /* 更新权限
-         * 更新权限是耗时操作，而存在并发更新用户操作，
-         * 所以需要用 Job 实现
-         */
-        UpdateAdminPermission::dispatch($user);
     }
 }

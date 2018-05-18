@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\AdminUser;
+use Log;
 
 class UpdateAdminPermission implements ShouldQueue
 {
@@ -25,25 +26,29 @@ class UpdateAdminPermission implements ShouldQueue
     }
 
     /**
-     * 该操作存在重复的步骤，非高频且为队列任务，不需要考虑效率
+     * 该方法存在大量冗余
+     * 非高频且为队列任务，不需要考虑效率
      * @return void
      */
     public function handle()
     {
         // 清楚原有全部权限
         $ps = $this->user->permissions;
-        $ps->each(function ($p) {
+        foreach ($ps as $p) {
             $this->user->revokePermissionTo($p);
-        });
-
-        // 按照部门新建权限
-        $department = $this->user->departments;
-        $ps = collect();
-        foreach ($department as $d) {
-            $ps = $ps->merge($d->permissions);
         }
-        $ps->each(function ($p) {
+        
+        // 按照部门新建权限
+        $departments = $this->user->departments;
+        $ps = [];
+        foreach ($departments as $d) {
+            foreach ($d->permissions as $p) {
+                $ps[] = $p->name;
+            }
+        }
+        $ps = array_unique($ps);
+        foreach ($ps as $p) {
             $this->user->givePermissionTo($p);
-        });
+        }
     }
 }

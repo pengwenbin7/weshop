@@ -9,6 +9,8 @@ use App\Models\ProductPrice;
 use App\Models\ProductVariable;
 use App\Models\ProductCategory;
 use App\Models\ProductDetail;
+use App\Models\Brand;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -17,10 +19,13 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Product::with(["variable", "detail", "prices"])
-            ->get();
+        $offset = $request->input("offset", 2);
+        $products = Product::with(["variable", "detail", "brand", "storage"])
+                          ->orderBy("id", "desc")
+                          ->paginate($offset);
+        return view("admin.product.index", ["products" => $products]);
     }
 
     /**

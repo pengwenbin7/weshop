@@ -46,8 +46,8 @@
 	  <div class="form-group">
             <label for="description" class="col-sm-2 control-label">地址选择</label>
             <div class="col-sm-10">
-	      <select name="province">
-		@foreach ($region->where("level", 1)->get() as $p)
+	      <select v-model="province">
+		@foreach ($region->provinces() as $p)
 		  <option value="{{ $p->id }}">{{ $p->fullname }}</option>
 		@endforeach
 	      </select>
@@ -66,5 +66,16 @@
 
 @section("script")
   <script>
+  var vue = new Vue({
+    el: "#app",
+    data: {
+      province: null,
+      city: null,
+      district: null,
+    },
+    methods: {
+      
+    }
+  });
   </script>
 @endsection

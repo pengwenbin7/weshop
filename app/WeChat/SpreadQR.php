@@ -20,7 +20,7 @@ class SpreadQR
         $result = $app->qrcode->forever($code);
         $url = $app->qrcode->url($result["ticket"]);
         $content = file_get_contents($url);
-        $f = "qr/" . time() . str_random(4) . ".jpg";
+        $f = "qr/{$code}.jpg";
         Storage::put($f, $content);
         return Storage::url($f);
     }
