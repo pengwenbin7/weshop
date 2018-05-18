@@ -1,34 +1,9 @@
 @extends("layouts.wechat2")
 
 @section("style")
-<style>
-.cart{
-  height:100%;
-  position:fixed;
-  bottom:0;
-  background:#fff;
-}
-.container .cart {
-    margin-top: 0;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background: #fff;
-
-}
-  .server-box{position: fixed;width: 100%;bottom: 0;left: 0;background-color: #fff;font-size: .32rem;z-index: 11111;}
-  .server-box .sb-tit h2{height: 1rem;line-height: 1rem;font-size: .32rem;text-align: center;letter-spacing: 2px;border-bottom: 1px solid #eee;}
-  .server-box .server-content{padding: 0 .4rem;padding-bottom: 1.4rem;}
-  .server-box .item{display: flex;display: -webkit-flex; border-bottom: 1px solid #eee; height: 1rem;padding: .15rem 0;}
-  .server-box .item .icon{width: .7rem;}
-  .server-box .item .icon i{color: #ff782f;}
-  .server-box .item .sb-desc{flex: 1;-webkit-flex:1;}
-  .sb-desc h3{height: .35rem;line-height: .35rem;font-size: .3rem;}
-  .sb-desc p{height: .35rem;line-height: .35rem;font-size: .26rem}
+<style media="screen">
+  [v-cloak]{ display: none; }
 </style>
-
 @endsection
 
 @section("content")
@@ -55,7 +30,7 @@
                     <span>{{ $product->pack() }}</span>
                 </p>
                 <div class="i-price">
-                    <p class="y">{{ $product->variable->unit_price*1000 }}/吨</p>
+                    <p class="y">￥{{ $product->variable->unit_price*1000/$product->content }}/吨</p>
                     <p></p>
                 </div>
 
@@ -94,7 +69,7 @@
         </div>
     </div>
 </div>
- <div class="buy-box" id="app">
+ <div class="buy-box" id="app" v-cloak>
     <!-- footer -->
     <div class="footer product-footer" v-on:click="showBox()">
         <span>选购</span>
@@ -156,7 +131,7 @@
             </div>
             <div class="sb-desc">
               <h3>原厂原包</h3>
-              <p>我们承诺，太好买所有商品均系厂家直供原厂原包</p>
+              <p>我们承诺，太好买所有商品均系厂家直供原厂原包。</p>
             </div>
           </div>
           <div class="item">
@@ -164,8 +139,8 @@
               <i class="iconfont icon-gou"></i>
             </div>
             <div class="sb-desc">
-              <h3>原厂原包</h3>
-              <p>我们承诺，太好买所有商品均系厂家直供原厂原包</p>
+              <h3>假一赔十</h3>
+              <p>若您在太好买采购到非原厂原包商品，我们承诺假一赔十。</p>
             </div>
           </div>
           <div class="item">
@@ -173,8 +148,8 @@
               <i class="iconfont icon-gou"></i>
             </div>
             <div class="sb-desc">
-              <h3>原厂原包</h3>
-              <p>我们承诺，太好买所有商品均系厂家直供原厂原包</p>
+              <h3>包退包换  </h3>
+              <p>太好买提供七天无理由退换货。</p>
             </div>
           </div>
           <div class="item">
@@ -182,8 +157,8 @@
               <i class="iconfont icon-gou"></i>
             </div>
             <div class="sb-desc">
-              <h3>原厂原包</h3>
-              <p>我们承诺，太好买所有商品均系厂家直供原厂原包</p>
+              <h3>极速发货</h3>
+              <p>太好买所有商品24小时内发货。</p>
             </div>
           </div>
         </div>
@@ -332,6 +307,7 @@
         axios.post("{{ route("wechat.cart.add_product") }}", params)
           .then(function (res) {
             alert("添加成功");
+            location.assign("{{ route("wechat.cart.index") }}" +"/"+params.cart_id );
             _this.addr_box = false;
             _this.buy_box = false;
           });
@@ -410,9 +386,9 @@
             return n_num-1;
           }
         } else if(mode == "add") {
-        if(weight >= limit) {
+        if(weight > limit) {
           alert("购买达到最大数量")
-          return;
+          return n_num;
         } else {
           return n_num+1;
         }

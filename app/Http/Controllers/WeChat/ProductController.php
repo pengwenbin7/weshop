@@ -21,6 +21,7 @@ class ProductController extends Controller
             "products" => $products,
             "categories" => $categories,
             "brands" => $brands,
+            "title" => "分类",
         ]);
     }
 
@@ -29,7 +30,7 @@ class ProductController extends Controller
         $v = $product->variable;
         $v->click += 1;
         $v->save();
-        return view("wechat.product.show", ["product" => $product]);
+        return view("wechat.product.show", ["product" => $product, "title" => $product->name,]);
     }
 
     public function buyMe(Request $request)
