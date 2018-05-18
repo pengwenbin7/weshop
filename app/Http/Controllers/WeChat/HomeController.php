@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WeChat;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -27,5 +28,9 @@ class HomeController extends Controller
         }
         return view("wechat.home.product_star", ["stars" => json_encode($stars), "title" => "我的收藏"]);
     }
-    
+    public function coupon(){
+      $coupons = auth()->user()->coupons;
+      return view("wechat.home.coupon", ["coupons" => $coupons, "title" => "优惠券"]);
+    }
+
 }

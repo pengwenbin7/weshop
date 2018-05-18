@@ -8,6 +8,8 @@ Route::get("waiter", "WeChat\HomeController@waiter")
     ->name("wechat.home.waiter");
 Route::get("product_star", "WeChat\HomeController@productStar")
     ->name("wechat.home.product_star");
+Route::get("coupon", "WeChat\HomeController@coupon")
+    ->name("wechat.home.coupon");
 
 Route::get("logout", "Auth\WeChatAuthController@logout")
     ->name("wechat.logout");

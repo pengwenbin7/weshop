@@ -1,18 +1,17 @@
 @extends("layouts.wechat")
 
 @section("content")
-	   
+
     <div class="container">
       <div class="user">
-        
+
 	      <div class="grid">
 	        <div class="item ord">
 	          <a href="{{ route("wechat.order.index") }}">
-	          <div class="icon">
-	            <i class="iconfont icon-dingdan"></i>
-	          </div>
-	          <div class="txt"><span>全部订单</span></div>
-	         
+							<div class="icon">
+	              <img src="{{ asset("assets/img/order.png") }}" />
+	            </div>
+		          <div class="txt"><span>全部订单</span></div>
 	          </a>
 	        </div>
 	       <div class="item">
@@ -21,16 +20,16 @@
               <i class="iconfont icon-fapiao"></i>
             </div>
             <div class="txt"><span>申请开票</span></div>
-           
+
             </a>
           </div>
           <div class="item">
-            <a href="coupon.html">
+            <a href="{{ route("wechat.home.coupon") }}">
             <div class="icon">
               <i class="iconfont icon-youhuiquan"></i>
             </div>
             <div class="txt"><span>优惠券</span></div>
-           
+
             </a>
           </div>
           <div class="item">
@@ -39,10 +38,10 @@
               <i class="iconfont icon-tuihuanhuo"></i>
             </div>
             <div class="txt"><span>退换货</span></div>
-            
+
             </a>
           </div>
-          
+
 	      </div>
 	      <div class="grid">
           <div class="item">
@@ -65,8 +64,8 @@
             </a>
           </div>
         </div>
-        
+
 	    </div>
-	    
+
 	  </div>
 @endsection
