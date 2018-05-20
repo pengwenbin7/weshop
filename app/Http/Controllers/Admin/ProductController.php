@@ -11,6 +11,7 @@ use App\Models\ProductCategory;
 use App\Models\ProductDetail;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Storage;
 
 class ProductController extends Controller
 {
@@ -21,10 +22,10 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $offset = $request->input("offset", 2);
+        $offset = $request->input("offset", 15);
         $products = Product::with(["variable", "detail", "brand", "storage"])
-                          ->orderBy("id", "desc")
-                          ->paginate($offset);
+                  ->orderBy("id", "desc")
+                  ->paginate($offset);
         return view("admin.product.index", ["products" => $products]);
     }
 
@@ -35,7 +36,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view("admin.product.create");
+        $data["categories"] = Category::all();
+        $data["brands"] = Brand::all();
+        $data["storages"] = Storage::all();
+        return view("admin.product.create", $data);
     }
 
     /**
@@ -103,18 +107,12 @@ class ProductController extends Controller
         }
                
         // save product detail
-        $detail = new ProductDetail();
-        $detail->fill([
-            "product_id" => $product->id,
-            "content" => $request->input("detail", null),
-        ]);
-        $s4 = $detail->save();
-        if (!$s4) {
-            $variable->delete();
-            $category->delete();
-            $price->delete();
-            $product->delete();
-            return ["err" => "save detail error"];
+        $detail = $request->input("detail", false);
+        if ($detail) {
+            ProductDetail::create([
+                "product_id" => $product->id,
+                "content" => $detail,
+            ]);
         }
         
         return [
@@ -192,9 +190,15 @@ class ProductController extends Controller
                
         // save product detail
         $detail = $product->detail;
-        $detail->content = $request->input("detail", null);
-        $detail->save();
-        $s4 = $detail->save();
+        if ($request->has("detail")) {
+            $detail = ProductDetail::firstOrCreate([
+                "product_id" => $product->id,
+            ]);
+            $detail->content = $request->detail;
+            $s4 = $detail->save();
+        } else {
+            $s4 = true;
+        }
 
         return ["update" => $s0 & $s1 & $s2 & $s3 & $s4];
     }

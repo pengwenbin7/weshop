@@ -1,15 +1,15 @@
-@extends("layouts.admin")
+@extends("layouts.admin-address")
 
 @section("content")
-  <div class="col-md-6" id="app">
+  <div class="col-md-6">
     <div class="box box-info">
       <div class="box-header with-border">
 	<h3 class="box-title"><a href="{{ route("admin.storage.index") }}">仓库列表</a></h3>
-        <h3 class="box-title">添加</h3>
+	<h3 class="box-title">添加</h3>
       </div>
       <form class="form-horizontal" action="{{ route("admin.storage.store") }}" method="POST">
-	{{ csrf_field() }}
-        <div class="box-body">
+	<div class="box-body">
+	  {{ csrf_field() }}
           <div class="form-group">
             <label for="name" class="col-sm-2 control-label">名字</label>
             <div class="col-sm-10">
@@ -42,40 +42,18 @@
               <input name="description" id="description" class="form-control">
 	    </div>
           </div>
-
-	  <div class="form-group">
-            <label for="description" class="col-sm-2 control-label">地址选择</label>
-            <div class="col-sm-10">
-	      <select v-model="province">
-		@foreach ($region->provinces() as $p)
-		  <option value="{{ $p->id }}">{{ $p->fullname }}</option>
-		@endforeach
-	      </select>
-	    </div>
-          </div>
-
+	  
+	  <address-component></address-component>
 	</div>
 
-        <div class="box-footer">
+	<div class="box-footer">
           <button type="submit" class="btn btn-info btn-block">确定</button>
-        </div>
+	</div>
       </form>
     </div>
   </div>
+
 @endsection
 
 @section("script")
-  <script>
-  var vue = new Vue({
-    el: "#app",
-    data: {
-      province: null,
-      city: null,
-      district: null,
-    },
-    methods: {
-      
-    }
-  });
-  </script>
 @endsection

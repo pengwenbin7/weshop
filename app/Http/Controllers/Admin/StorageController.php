@@ -20,8 +20,19 @@ class StorageController extends Controller
     public function index(Request $request)
     {
         $offset = $request->input("offset", 2);
-        $storages = Storage::paginate($offset);
-        return view("admin.storage.index", ["storages" => $storages]);
+        $brand_id = $request->input("brand_id", false);
+        $key = $request->input("key", false);
+        $storages = Storage::
+                  when($brand_id, function ($query) use ($brand_id) {
+                          return $query->where("brand_id", "=", $brand_id);
+                      })
+                  ->when($key, function ($query) use ($key) {
+                          return $query->where("name", "like", "%$key%");
+                      })
+                  ->paginate($offset);
+        return $request->has("api")?
+            $storages->items():
+            view("admin.storage.index", ["storages" => $storages]);
     }
 
     /**
@@ -49,13 +60,16 @@ class StorageController extends Controller
     {
         $func = $request->func ??
               Config::where("key", "=", "storage.func")->first()->value;
-        
+
+        $district = $request->has("district")?
+                  Region::find($request->district)->fullname:
+                  null;
         $address = Address::create([
             "contact_name" => $request->input("contact_name", null),
             "contact_tel" => $request->input("contact_tel", null),
-            "province" => $request->province,
-            "city" => $request->city,
-            "district" => $request->district,
+            "province" => Region::find($request->province)->fullname,
+            "city" => Region::find($request->city)->fullname,
+            "district" => $district,
             "code" => $request->code,
             "detail" => $request->detail,
         ]);

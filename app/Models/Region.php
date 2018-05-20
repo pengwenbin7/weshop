@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Region extends Model
 {
+    public const CHINA_ID = 100000;
+        
     protected $fillable = [
         "id", "parent_id", "name",
         "fullname", "lat", "lng",
         "level",
+    ];
+
+    protected $hidden = [
+        "name", "created_at", "updated_at",
     ];
 
     /**

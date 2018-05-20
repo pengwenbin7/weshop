@@ -26,9 +26,7 @@
       @include("layouts.common.footer")
     </div>
 
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
-    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+    <script src="{{ asset("assets/js/app.js") }}"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcss.com/admin-lte/2.4.3/js/adminlte.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>

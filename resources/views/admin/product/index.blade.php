@@ -33,7 +33,7 @@
 	</div>
 	<div class="row">
 	  <div class="col-sm-12 table-responsive">
-	    <table class="table table-bordered table-striped dataTable" role="grid">
+	    <table class="table table-bordered table-striped dataTable table-hover table-condensed" role="grid">
 	      <thead>
 		<tr>
 		  <th>id</th>
@@ -72,16 +72,21 @@
 			否
 		      @endif
 		    </td>
-		    <td><a href="{{ route("admin.product.show", $item) }}">详细</a></td>
+		    <td>
+		      <a href="{{ route("admin.product.edit", $item) }}">编辑</a>
+		    </td>
 		  </tr>
 		@endforeach
 	      </tbody>
 	    </table>
 	  </div>
 	</div>
-	<div class="row">
-	  {{ $products->links() }}
-	</div>
+
+      </div>
+    </div>
+    <div class="box-footer">
+      <div class="row">
+	{{ $products->links() }}
       </div>
     </div>
   </div>

@@ -8,6 +8,7 @@ use App\Models\RegionVersion;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use DB;
+use Storage;
 
 class RegionUpdate extends Command
 {
@@ -54,7 +55,7 @@ class RegionUpdate extends Command
             $request = new Request("GET", $url);
             $res = json_decode($client->send($request)->getBody());
         } while ($res->status != 0);
-        
+
         // save data version
         $version = new RegionVersion();
         $version->version = $res->data_version;
