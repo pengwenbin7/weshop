@@ -1,20 +1,21 @@
 @extends("layouts.wechat2")
 
 @section("content")
-<div class="order" id="app">
-			<div class="container">
+			<div class="container" id="app">
+				<div class="order">
+
 				<div class="address">
-					<div class="a-info" v-on:click="selectAddress">
+					<div class="a-info" >
 						<div class="name">
-							<span class="user-name">@{{ name }}</span>
-							<span>@{{ tel }}</span>
+							<span class="user-name">{{ $cart->address->contact_name }}</span>
+							<span>{{ $cart->address->contact_tel }}</span>
 						</div>
 						<div class="a-dist">
-							<p>@{{ dist }}</p>
+							<p>{{ $cart->address->province }}{{ $cart->address->city }}{{ $cart->address->district }}{{ $cart->address->detail }}</p>
 						</div>
 					</div>
 					<div class="right-arrow">
-						<i class="iconfont icon-jinru"></i>
+
 					</div>
 				</div>
 				<div class="products">
@@ -27,11 +28,11 @@
 								<span class="p-model"> {{ $product->model }} </span>
 							</div>
 							<div class="num clearfix">
-								<span>数量：<i class="black">@{{ number }}包</i><i class="black">25KG</i></span>
+								<span>数量：<i class="black">{{ $product->number }}包</i><i class="black">{{ $product->number*$product->content }}KG</i></span>
 
 							</div>
 							<div class="pirce">
-								<span>价格：<i class="black">￥{{ $product->variable->unit_price*25 }}</i></span>
+								<span>价格：<i class="black">￥{{ $product->variable->unit_price }}</i></span>
 							</div>
 						</div>
 					</div>
@@ -46,79 +47,35 @@
 					 <span> 实付款</span>
 					 <span class="value">￥300</span>
 				 </div>
-				 <div class="item" @click="show('paymode')">
-					 <span> 支付方式</span>
-					 <span class="value"><i class="iconfont icon-weixinzhifu"></i>微信支付<i class="iconfont icon-zhankai"></i></span>
-				 </div>
-			 </div>
-			</div>
-			<div class="footer order-footer">
-				<div class="item"  v-on:click="pay">
-					<span>提交订单</span>
-				</div>
-			</div>
 
-			<div class="flexbox" v-if="paymode">
-				<div class="mask" @click="hideBox()"></div>
-				<div class="paymode">
-					<div class="tit">选择支付方式</div>
-					<div class="pay-list">
-						<div class="item">
-							<span>微信支付</span>
-							<span class="icon"><i class="iconfont icon-weixinzhifu"></i></span>
-						</div>
-						 <div class="item">
-							<span>线下付款</span>
-							<span class="icon"><i class="iconfont icon-xianxiazhifu"></i></span>
-						</div>
-						 <div class="item">
-							<span>银行汇票</span>
-							<span class="icon"><i class="iconfont icon-huipiao"></i></span>
-						</div>
-					</div>
-				</div>
+			 </div>
 			</div>
 			<div class="flexbox" v-if="curpon">
 				<div class="mask" @click="hideBox()"></div>
 				<div class="coupon-list">
-					<div class="tit">优惠券<small>(1张可用)</small></div>
+					<div class="tit">优惠券<small>({{ count($coupons) }}张可用)</small></div>
+
 					<div class="coupons">
-						<div class="item">
-							<div class="c-h">
-								<div class="ch-price">
-									<span>￥200</span>
+						@foreach ($coupons as $coupon)
+							<div class="item">
+								<div class="c-h">
+									<div class="ch-price">
+										<span>￥{{ intval($coupon->discount) }}</span>
+									</div>
+									<div class="ch-info">
+										<p class="title">{{ $coupon->description }}</p>
+										<p>有效期至：{{ date("Y-m-d", strtotime($coupon->expire) ) }}</p>
+									</div>
 								</div>
-								<div class="ch-info">
-									<p class="title">新人专属红包礼券</p>
-									<p>有效期至：2018-05-01</p>
-								</div>
-							</div>
-							<div class="c-f">
-								 <div class="circle"></div>
-								<div class="circle-r"></div>
-								<div class="cf-desc">
-									<p>满10000元可用</p>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="c-h">
-								<div class="ch-price">
-									<span>￥200</span>
-								</div>
-								<div class="ch-info">
-									<p class="title">新人专属红包礼券</p>
-									<p>有效期至：2018-05-01</p>
+								<div class="c-f">
+									 <div class="circle"></div>
+									<div class="circle-r"></div>
+									<div class="cf-desc">
+										<p>满{{ intval($coupon->amount) }}元可用</p>
+									</div>
 								</div>
 							</div>
-							<div class="c-f">
-								<div class="circle"></div>
-								<div class="circle-r"></div>
-								<div class="cf-desc">
-									<p>满10000元可用</p>
-								</div>
-							</div>
-						</div>
+						@endforeach
 					</div>
 					<div class="no-use" @click="hideBox()">
 						<span>不使用优惠券</span>
@@ -126,61 +83,31 @@
 				</div>
 			</div>
 		</div>
-	<!-- <div id="app">
-		<p>
-			 <p>
-	addr_id: <input type="number" v-model="address_id">
-	<button v-on:click="selectAddress">select address</button>
-			</p>
-			付款方式：
-			<select v-model="channel_id">
-	@foreach ($payChannels as $channel)
-		<option value="{{ $channel->id }}">
-			{{ $channel->name }}
-		</option>
-	@endforeach
-			</select>
-			<div v-if="address_id">
-	<button v-on:click="pay">pay</button>
+		<div class="footer order-footer" onclick="pay()">
+			<div class="item"  v-on:click="pay">
+				<span>提交订单</span>
 			</div>
-			<div v-else>
-	<button disabled>pay</button>
-			</div>
-	</div> -->
+		</div>
+
 @endsection
 
 @section("script")
 
 	<script>
-
 	var app = new Vue({
 		el: "#app",
 		data: {
-			is_ton: {{ $product->is_ton }},
-			show_number: 1,
-			address_id: 1,
+			address_id:1,
 			channel_id: 1,
 			freight: 0,
 			paymode:false,
 			curpon:false,
-			name:'',
-			tel:'',
-			dist:''
-		},
-		computed: {
-			number: function () {
-				return 0 == this.is_ton?
-				this.show_number:
-				this.show_number * 1000 / {{ $product->content }};
-			}
 		},
 		beforeCreate: function () {
 			var _this = this;
 			 if(!this.address_id){
 				 //选择地址
-
 				 console.log(this.address_id);
-
 			 }
 		},
 		methods: {
@@ -217,24 +144,7 @@
 	});
 			},
 
-			pay: function () {
-	var data = {
-		address_id: this.address_id,
-		channel_id: this.channel_id,
-		products: [
-			{
-				number: this.number,
-				id: {{ $product->id }}
-			}
-		]
-	};
-	alert(JSON.stringify(data))
-	axios.post("{{ route("wechat.order.store") }}", data)
-		.then(function (res) {
-			location.assign("{{ route("wechat.pay") }}" +
-				"/?order_id=" + res.data.store);
-		});
-			},
+
 
 			countFreight: function () {
 	var $this = this;
@@ -281,5 +191,23 @@
 			}
 		});
 	 });
+	function pay () {
+		var data = {
+		 address_id: app.address_id,
+		 channel_id: app.channel_id,
+		 products: [
+			 {
+				 number: 1,
+				 id: 1
+			 }
+		 ]
+		};
+		alert(JSON.stringify(data))
+		axios.post("{{ route("wechat.order.store") }}", data)
+		 .then(function (res) {
+			 location.assign("{{ route("wechat.pay") }}" +
+				 "/?order_id=" + res.data.store);
+		 });
+	 }
 	</script>
 @endsection

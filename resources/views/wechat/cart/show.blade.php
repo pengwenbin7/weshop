@@ -1,5 +1,9 @@
 @extends("layouts.wechat2")
-
+@section("style")
+<style media="screen">
+  [v-cloak]{ display: none; }
+</style>
+@endsection
 @section("content")
 
       <div class="container" id="app">
@@ -13,7 +17,7 @@
             <i class="iconfont icon-del"></i>
           </div>
         </div>
-        <div class="products" v-for="(pitem,i) in products">
+        <div class="products" v-for="(pitem,i) in products" v-cloak >
           <div class="product" v-for="(item,index) in pitem">
             <div class="p-check">
               <input type="checkbox" v-bind:id="'check'+i+index" name="goods_checked[]" v-on:change="check(i,index)" v-bind:checked="item.checked">
@@ -26,7 +30,7 @@
                 <span class="p-model">@{{ item.product.model }}</span>
               </div>
               <div class="pirce">
-                <span><i>￥@{{ Number(item.price)*Number(item.number)* Number(item.product.content) }}</i>元</span>
+                <span><i>￥@{{ Number(item.number)* Number(item.product.content) }}</i>KG</span>
               </div>
             </div>
             <div class="p-edit">
@@ -47,26 +51,29 @@
             </div>
           </div>
         </div>
-        <div class="goBuy">
-          <div class="check-all">
-            <div class="p-check">
-              <input type="checkbox" id="ck-all" v-on:change="checkAll()" v-bind:checked="ckall">
-              <label for="ck-all">全选</label>
-            </div>
-          </div>
-          <div class="goods-price">
-            <span><i class="font-co">¥</i><i class="font-co" ref="totalprice" >@{{ totalprice }}</i></span>
-          </div>
-          <div class="btn-submit" v-on:click="buyAll"><a >结算</a>
 
-          </div>
+      </div>
+    </div>
+    <div class="goBuy">
+      <div class="check-all">
+        <div class="p-check">
+          <input type="checkbox" id="ck-all" v-on:change="checkAll()" v-bind:checked="ckall">
+          <label for="ck-all">全选</label>
         </div>
+      </div>
+      <div class="goods-price">
+        <span><i class="font-co">¥</i><i class="font-co" id="totalprice" ></i></span>
+      </div>
+      <div class="btn-submit"  onclick="buyAll()">
+        <a >结算</a>
       </div>
     </div>
 @endsection
 @section("script")
   <script>
-  new Vue({
+  var priceEle = document.getElementById("totalprice");
+  priceEle.innerText = "1";
+  var app =  new Vue({
         el: '#app',
         data: {
           products: {!! $products !!},
@@ -153,6 +160,8 @@
           }
 
         }
+        console.log(totalPrice);
+        priceEle.innerText = totalPrice;
         return totalPrice;
       }
       function resetPrice(_this){
@@ -218,6 +227,25 @@
             }
           }
 
+        }
+      }
+      function buyAll(){
+        var param =[];
+        var products = app.products;
+        for(var k in products) {
+          for(var l in products[k]){
+            if(products[k][l].checked) {
+            param.push({
+              "id" : products[k][l].id,
+              "num" :products[k][l].number,
+            })
+            }
+          }
+
+        }
+        if(param.length){
+          location.assign("{{ route("wechat.cart.buyall") }}"+"?cart_id="+app.cart_id+"&&products="+JSON.stringify(param)
+          );
         }
       }
   </script>

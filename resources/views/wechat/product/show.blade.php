@@ -46,15 +46,13 @@
         </div>
         <div class="tips" onclick="serverShow()">
             <p>
-                <span>
-                    <i class="iconfont icon-gou"></i>原厂原包</span>
-                <span>
-                    <i class="iconfont icon-gou"></i>假一赔十</span>
-                <span>
-                    <i class="iconfont icon-gou"></i>包退包换</span>
-                <span>
-                    <i class="iconfont icon-gou"></i>极速发货</span>
-                <span class="right">
+                <span class="t-left">
+                    <i class="iconfont icon-gou"></i><i class="t-t">原厂原包</i>
+                    <i class="iconfont icon-gou"></i><i class="t-t">假一赔十</i>
+                    <i class="iconfont icon-gou"></i><i class="t-t">包退包换</i>
+                    <i class="iconfont icon-gou"></i><i class="t-t">极速发货</i>
+                </span>
+                <span class="t-right">
                     <i class="iconfont icon-jinru"></i>
                 </span>
             </p>

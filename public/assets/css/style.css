@@ -634,8 +634,10 @@
 }
 
 .goBuy .goods-price span {
+  display: block;
   color: #ff9250;
   font-size: 0.36rem;
+  line-height: 1.4rem;
 }
 
 .goBuy .goods-price span .font-co {
@@ -872,10 +874,27 @@
   font-size: .26rem;
   line-height: .4rem
 }
-
+.product .tips p{
+  display: flex;
+  display: -webkit-flex;
+}
+.tips span.t-left{
+  flex: 1;
+  -webkit-flex:1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tips span.t-right{
+  width: .5rem;
+  text-align: right;
+}
 .tips span .iconfont {
   font-size: .26rem;
   color: #ff782f;
+}
+.tips span .t-t{
+  margin-right: .1rem;
 }
 
 .price-h {
@@ -897,6 +916,7 @@
 }
 .price-h .chart {
   width: 100%;
+  margin-top: .2rem;
 }
 
 .p-desc {
@@ -1138,6 +1158,11 @@
 
 .product .num .quantity {
   float: left;
+  margin: .07rem 0;
+  margin-right: .1rem;
+}
+.order .products .product .num{
+  line-height: .8rem;
 }
 
 .product .p-info .price {
@@ -1168,7 +1193,6 @@
   color: #00B945;
   margin-right: .1rem;
 }
-
 .order .grid .item span.value i {
   margin-left: .2rem;
 }

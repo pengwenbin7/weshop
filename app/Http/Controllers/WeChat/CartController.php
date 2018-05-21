@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\PayChannel;
 use App\Models\Product;
 use Auth;
 
@@ -82,9 +83,19 @@ class CartController extends Controller
     }
     public function buyAll(Request $request)
     {
-        $data["products"][] = CartItem::where("cart_id", "=", $request->cart_id)
-               ->with("product")->get();
+        $products = [];
+        $varia = json_decode($request->products);
+        foreach ($varia as $key => $item) {
+          $products[$key] = Product::find($item->id);
+          $products[$key]->number = $item->num;
+        }
+        $data["products"] = $products;
+        $data["payChannels"] = PayChannel::get();
         $data["user"] = auth()->user();
+        $data["varia"] = $varia;
+        $data["coupons"] = auth()->user()->coupons;
+        $data["cart"]=Cart::find($request->cart_id);
+
         return view("wechat.order.creates", $data);
     }
 

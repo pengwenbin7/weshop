@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\PayChannel;
+use App\Models\coupon;
 
 class ProductController extends Controller
 {
@@ -38,6 +39,7 @@ class ProductController extends Controller
         $data["products"][] = Product::find($request->product_id);
         $data["payChannels"] = PayChannel::get();
         $data["user"] = auth()->user();
+        $data["coupons"] = auth()->user()->coupons;
         return view("wechat.order.create", $data);
     }
 }
