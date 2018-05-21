@@ -34,15 +34,23 @@
 	</a>
       </li>
 
-      @can("order", "admin")
+      @if (auth("admin")->user()->can("order"))
       <li>
 	<a href="{{ route("admin.order.index") }}">
 	  所有订单
 	</a>
       </li>
-      @endcan
+      @endif
 
-      @can("ship", "admin")
+      @if (auth("admin")->user()->can("purchase"))
+      <li>
+	<a href="{{ route("admin.purchase.index") }}">
+	  采购单
+	</a>
+      </li>
+      @endif
+	    
+      @if (auth("admin")->user()->can("ship"))
       <li>
 	<a href="{{ route("admin.shipment.index") }}">
 	  发货单
@@ -57,39 +65,39 @@
 	</a>
       </li>
 
-      @can("user", "admin")
+      @if (auth("admin")->user()->can("user"))
       <li>
 	<a href="#">
 	  商城用户
 	</a>
       </li>
-      @endcan
+      @endif
 
-      @can("system", "admin")
+      @if (auth("admin")->user()->can("system"))
       <li>
 	<a href="#">
 	  管理员
 	</a>
       </li>
-      @endcan
+      @endif
 
-      @can("supplier", "admin")
+      @if (auth("admin")->user()->can("supplier"))
       <li>
 	<a href="#">
 	  供应商
 	</a>
       </li>
-      @endcan
+      @endif
 
-      @can("report", "admin")
+      @if (auth("admin")->user()->can("report"))
       <li class="header">报表</li>
       <li><a href="#">用户</a></li>
       <li><a href="#">销售</a></li>
       <li><a href="#">产品</a></li>
       <li><a href="#">品牌</a></li>
-      @endcan
+      @endif
 
-      @can("system", "admin")
+      @if (auth("admin")->user()->can("system"))
       <li class="header">系统设置</li>
       <li>
 	<a href="#">权限</a>
@@ -97,7 +105,7 @@
       <li>
 	<a href="#">系统参数</a>
       </li>
-      @endcan
+      @endif
 
     </ul>
     <!-- /.sidebar-menu -->

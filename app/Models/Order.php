@@ -25,10 +25,11 @@ class Order extends Model
     const PAY_STATUS_AFTER = 4;  // 到付
     const PAY_STATUS_ERROR = 5; // 错误
     // 发货状态
-    const SHIP_STATUS_WAIT = 0;  // 待发货
-    const SHIP_STATUS_PART = 1;  // 部分发货
-    const SHIP_STATUS_DONE = 2;  // 发货完成
-    const SHIP_STATUS_SURE = 3;  // 确认收货
+    const SHIP_STATUS_WAIT = 0;  // 待采购
+    const SHIP_STATUS_DOING = 1;  // 待发货
+    const SHIP_STATUS_PART = 2;  // 部分发货
+    const SHIP_STATUS_DONE = 3;  // 发货完成
+    const SHIP_STATUS_SURE = 4;  // 确认收货
     // 退货状态
     const REFUND_STATUS_NULL = 0;  // 未申请
     const REFUND_STATUS_ASK = 1;  // 申请退货

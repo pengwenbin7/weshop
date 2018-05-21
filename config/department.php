@@ -18,8 +18,7 @@ return [
         ],
         // 业务
         4 => [
-            "order", "user",
-            "supplier", "report",
+            "cs",
         ],
         // 财务
         5 => [
@@ -27,7 +26,7 @@ return [
         ],
         // 采购
         6 => [
-            "user", "order", "pay",
+            "purchase", "user", "order",
         ],
         // 物流
         7 => [
