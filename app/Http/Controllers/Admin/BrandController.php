@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 
 class BrandController extends Controller
 {
+    public function __construct()
+    {
+    }
     /**
      * Display a listing of the resource.
      *

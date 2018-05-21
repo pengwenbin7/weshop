@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 
-class ShipmentController extends Controller
+class PurchaseController extends Controller
 {
     protected $user;
     public function __construct()
     {
-        $this->middleware = ["permission:ship"];
+        $this->middleware = ["permission:purchase"];
         $this->user = auth("admin")->user();
     }
     

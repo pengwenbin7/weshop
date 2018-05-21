@@ -29,15 +29,19 @@
 	  </div>
 	</div>
 	<div class="row">
-	  <div class="col-sm-12">
-	    <table class="table table-bordered table-striped dataTable" role="grid">
+	  <div class="col-sm-12 table-responsive">
+	    <table class="table table-bordered table-striped dataTable table-hover table-condensed" role="grid">
 	      <thead>
 		<tr>
-		  <th>order_id</th>
-		  <th>payment_id</th>
-		  <th>shipment_id</th>
-		  <th>user_id</th>
-		  <th>admin_id</th>
+		  <th>id</th>
+		  <th>用户</th>
+		  <th>金额</th>
+		  <th>业务</th>
+		  <th>下单时间</th>
+		  <th>订单状态</th>
+		  <th>付款状态</th>
+		  <th>采购状态</th>
+		  <th>发货状态</th>
 		  <th>操作</th>
 		</tr>
 	      </thead>
@@ -45,10 +49,91 @@
 		@foreach ($orders as $order)
 		  <tr role="row">
 		    <td>{{ $order->id }}</td>
-		    <td>{{ $order->payment->id ?? "" }}</td>
-		    <td>{{ $order->shipment->id ?? "" }}</td>
-		    <td>{{ $order->user_id ?? "" }}</td>
-		    <td>{{ $order->admin_id ?? "" }}</td>
+		    <td>
+		      {{ $order->user->name }}
+		    </td>
+		    <td>
+		      @if ($order->payment)
+			{{ $order->payment->pay }}
+		      @else
+			--
+		      @endif
+		    </td>
+		    <td>{{ $order->adminUser->name }}</td>
+		    <td>{{ $order->created_at->toDateString() }}</td>
+		    <td>
+		      @switch ($order->status)
+		      @case ($order::ORDER_STATUS_WAIT)
+		      待处理
+		      @break
+		      @case ($order::ORDER_STATUS_DOING)
+		      处理中
+		      @break
+		      @case ($order::ORDER_STATUS_DONE)
+		      完成
+		      @break
+		      @case ($order::ORDER_STATUS_IDL)
+		      无效
+		      @break
+		      @default
+		      --
+		      @break
+		      @endswitch
+		    </td>
+		    <td>
+		      @switch ($order->payment_status)
+		      @case ($order::PAY_STATUS_WAIT)
+		      待付款
+		      @break
+		      @case ($order::PAY_STATUS_PART)
+		      部分付款
+		      @break
+		      @case ($order::PAY_STATUS_DONE)
+		      完成
+		      @break
+		      @case ($order::PAY_STATUS_REFUND)
+		      退款
+		      @break
+		      @case ($order::PAY_STATUS_AFTER)
+		      货到付款
+		      @break
+		      @case ($order::PAY_STATUS_ERROR)
+		      错误
+		      @break
+		      @default
+		      --
+		      @break
+		      @endswitch
+		    </td>
+		    <td>
+		      @switch ($order->shipment_status)
+		      @case ($order::SHIP_STATUS_WAIT)
+		      待采购
+		      @break
+		      @default
+		      采购完成
+		      @break
+		      @endswitch
+		    </td>
+		    <td>
+		      @switch ($order->shipment_status)
+		      @case ($order::SHIP_STATUS_DOING)
+		      待发货
+		      @break
+		      @case ($order::SHIP_STATUS_PART)
+		      部分发货
+		      @break
+		      @case ($order::SHIP_STATUS_DONE)
+		      发货完成
+		      @break
+		      @case ($order::SHIP_STATUS_SURE)
+		      确认收货
+		      @break
+		      @default
+		      --
+		      @break
+		      @endswitch
+		    </td>
 		    <td><a href="{{ route("admin.order.show", ["id" => $order->id]) }}">详细</a></td>
 		  </tr>
 		@endforeach

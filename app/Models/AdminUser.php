@@ -35,6 +35,27 @@ class AdminUser extends Authenticatable
         return $this->belongsToMany("App\Models\Department", "admin_departments", "admin_id", "department_id");
     }
 
+    public function users()
+    {
+        return $this->hasMany("App\Models\User", "admin_id");
+    }
+
+    public function moveUserTo(AdminUser $to)
+    {
+        $users = $this->users;
+        $total = 0;
+        $success = 0;
+        foreach ($users as $user) {
+            $user->admin_id = $to->id;
+            $success += $user->save();
+            $total++;
+        }
+        return [
+            "total" => $total,
+            "success" => $success,
+        ];
+    }
+
     // 调用企业微信发送消息
     public function sendMessage($message)
     {

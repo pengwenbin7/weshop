@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\User;
 use App\Models\AdminUser as Admin;
 use Auth;
@@ -13,7 +14,9 @@ use Log;
 use EasyWeChat;
  
 class AdminAuthController extends Controller
-{    
+{
+    use AuthenticatesUsers;
+    
     public function showLoginForm(Request $request)
     {
         return view("admin.auth.login");
@@ -38,5 +41,10 @@ class AdminAuthController extends Controller
     {
         auth("admin")->logout();
         return "You logout!";
+    }
+
+    protected function guard()
+    {
+        return auth()->guard('admin');
     }
 }

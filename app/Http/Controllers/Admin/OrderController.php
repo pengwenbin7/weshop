@@ -17,7 +17,7 @@ class OrderController extends Controller
     {
         $condition = null;
         $orders = Order::with(["orderItems", "payment", "shipments"])
-                ->orderBy("updated_at", "desc")
+                ->orderBy("id", "desc")
                 ->get();
         return view("admin.order.index", ["orders" => $orders]);
     }
@@ -72,7 +72,9 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        $orders = Order::with(["orderItems", "payment", "shipments"])
+                ->find($order->id);
+        return $orders;
     }
 
     /**
