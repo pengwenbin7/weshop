@@ -32,9 +32,8 @@ class OrderController extends Controller
         return view("wechat.order.index",["orders"=>$orders, "title" => "我的订单"]);
     }
 
-    public function show(Order $order){
-
-
+    public function show(Order $order)
+    {
         return view("wechat.order.show",["order" => $order, "title" => "订单详情"]);
     }
 
@@ -91,7 +90,6 @@ class OrderController extends Controller
         $order->refund_status = Order::REFUND_STATUS_NULL;
         $order->admin_id = $user->admin_id;
         $res = $order->save();
-
         // fetch product
         $totalPrice = 0;
         foreach ($request->products as $p) {
@@ -110,7 +108,7 @@ class OrderController extends Controller
             ]);
             $totalPrice += $item->price * $item->number;
         }
-
+        
         // create payment
         $payment = new Payment();
         $payment->order_id = $order->id;
@@ -124,8 +122,6 @@ class OrderController extends Controller
             }
         }
         $payment->freight = $order->countFreight();
-        $payment->save();
-
         return ["store" => $order->id];
     }
 

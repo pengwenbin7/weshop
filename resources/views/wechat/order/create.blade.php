@@ -235,13 +235,14 @@
       channel_id: app.channel_id,
       products: [{
         number: app.number,
-        id: {{ $product -> id }}
+        id: {{ $product->id }}
       }]
     };
-    alert(JSON.stringify(data))
+    alert(JSON.stringify(data));
     axios.post("{{ route("wechat.order.store") }}", data)
       .then(function(res) {
-        alert(JSON.stringify(res))
+        alert(JSON.stringify(res));
+	console.log(res);
         location.assign("{{ route("wechat.pay") }}" +
           "/?order_id=" + res.data.store);
       });
