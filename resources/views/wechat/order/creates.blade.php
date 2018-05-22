@@ -165,32 +165,7 @@
 		}
 
 	});
-	wx.ready(function(){
-		var _this = app;
-		wx.openAddress({
-			success: function (res) {
-				axios.post("{{ route("wechat.address.store") }}", res)
-				.then(function (res) {
-					_this.name = res.userName;
-					_this.tel = res.telNumber;
-					_this.dist = res.res.provinceName+res.cityName+res.countryName+res.detailInfo;
-					_this.address_id= res.data.address_id;
-					alert(_this.name,_this.tel,_this.dist,_this.address_id);
-			 // 	 var url = "{{ route("wechat.cart.store") }}";
-			 // 	 var d = {
-			// address_id: res.data.address_id
-			 // 	 };
-			 // 	 axios.post(url, d).
-			// then(function (res) {
-			 //  location.reload();
-			// });
-				});
-			},
-			cancel: function () {
-				//
-			}
-		});
-	 });
+
 	function pay () {
 		var data = {
 		 address_id: app.address_id,
@@ -202,9 +177,9 @@
 			 }
 		 ]
 		};
-		alert(JSON.stringify(data))
 		axios.post("{{ route("wechat.order.store") }}", data)
 		 .then(function (res) {
+			 alert(JSON.stringify(res))
 			 location.assign("{{ route("wechat.pay") }}" +
 				 "/?order_id=" + res.data.store);
 		 });
