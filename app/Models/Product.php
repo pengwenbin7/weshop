@@ -17,6 +17,12 @@ class Product extends Model
     use SoftDeletes;
 
     protected $dates = ["deleted_at"];
+    protected $fillable = [
+        "locale_id", "name", "brand_id",
+        "storage_id", "model", "content",
+        "measure_unit", "packing_unit",
+        "active", "sort_order",
+    ];
 
     public function pack()
     {

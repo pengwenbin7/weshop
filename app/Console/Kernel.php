@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\RegionUpdate::class,
         Commands\AdminUserInit::class,
+        Commands\DemoData::class,
     ];
 
     /**

@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
+    protected $fillable = [
+        "name", "locale_id",
+    ];
     /*
     public function supplier()
     {
         return $this->belongsTo("App\Models\SupplierUser");
     }
     */
-
+    
     public function products()
     {
         return $this->hasMany("App\Models\Product");
