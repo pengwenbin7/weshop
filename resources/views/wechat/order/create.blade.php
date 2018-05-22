@@ -217,11 +217,11 @@
 			success: function (res) {
 				axios.post("{{ route("wechat.address.store") }}", res)
 				.then(function (res) {
-					_this.name = res.userName;
-					_this.tel = res.telNumber;
-					_this.dist = res.res.provinceName+res.cityName+res.countryName+res.detailInfo;
-					_this.address_id= res.data.address_id;
-					alert(_this.name,_this.tel,_this.dist,_this.address_id);
+					app.name = res.userName;
+					app.tel = res.telNumber;
+					app.dist = res.res.provinceName+res.cityName+res.countryName+res.detailInfo;
+					app.address_id= res.data.address_id;
+					alert(app.name,app.tel,app.dist,app.address_id);
 			 // 	 var url = "{{ route("wechat.cart.store") }}";
 			 // 	 var d = {
 			// address_id: res.data.address_id
