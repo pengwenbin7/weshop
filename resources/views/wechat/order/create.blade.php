@@ -217,7 +217,7 @@
 			success: function (res) {
 				axios.post("{{ route("wechat.address.store") }}", res)
 				.then(function (res) {
-					alert(JSON.stringify(res))
+					alert(JSON.stringify(res.data))
 					app.name = res.data.userName;
 					app.tel = res.data.telNumber;
 					app.dist = res.data.provinceName+res.data.cityName+res.data.countryName+res.data.detailInfo;
