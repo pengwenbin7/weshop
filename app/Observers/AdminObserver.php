@@ -8,12 +8,12 @@ use App\WeChat\SpreadQR;
 class AdminObserver
 {
     /**
-     * 监听管理员 创建/更新 事件
+     * 监听管理员-创建事件
      *
      * @param  Admin  $user
      * @return void
      */
-    public function saved(AdminUser $user)
+    public function created(AdminUser $user)
     {
         // 设置默认密码
         if (!$user->password) {

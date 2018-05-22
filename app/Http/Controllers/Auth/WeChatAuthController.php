@@ -31,7 +31,6 @@ class WeChatAuthController extends Controller
             $user = new User();
             $user->openid = $openid;
             $user->name = $weInfo["nickname"];
-            $user->rec_code = "xyz"; // 这个值在监听事件中自动修改
             $user->rec_from = $request->input("state", null);
             $user->subscribe_time = $weInfo["subscribe_time"];
 

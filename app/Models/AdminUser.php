@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
 use EasyWeChat;
 
@@ -14,7 +15,8 @@ use EasyWeChat;
  */
 class AdminUser extends Authenticatable
 {
-    use HasPermissions;
+    //use HasPermissions;
+    use HasRoles;
     
     protected $fillable = [
         "userid", "openid", "mobile",
