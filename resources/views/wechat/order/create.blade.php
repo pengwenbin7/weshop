@@ -97,7 +97,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="footer order-footer">
+		<div class="footer order-footer" onclick="pay()">
 			<div class="item"  >
 				<span>提交订单</span>
 			</div>
@@ -217,6 +217,7 @@
 			success: function (res) {
 				axios.post("{{ route("wechat.address.store") }}", res)
 				.then(function (res) {
+					alert(JSON.stringify(res))
 					app.name = res.userName;
 					app.tel = res.telNumber;
 					app.dist = res.res.provinceName+res.cityName+res.countryName+res.detailInfo;
@@ -237,5 +238,24 @@
 			}
 		});
 	 });
+ function  pay() {
+	var data = {
+	 address_id: app.address_id,
+	 channel_id: app.channel_id,
+	 products: [
+		 {
+			 number: app.number,
+			 id: {{ $product->id }}
+		 }
+	 ]
+	};
+	alert(JSON.stringify(data))
+	axios.post("{{ route("wechat.order.store") }}", data)
+	 .then(function (res) {
+		 alert(JSON.stringify(res))
+		 location.assign("{{ route("wechat.pay") }}" +
+			 "/?order_id=" + res.data.store);
+	 });
+	 }
 	</script>
 @endsection
