@@ -218,11 +218,11 @@
 				axios.post("{{ route("wechat.address.store") }}", res)
 				.then(function (res) {
 					alert(JSON.stringify(res))
-					app.name = res.userName;
-					app.tel = res.telNumber;
-					app.dist = res.res.provinceName+res.cityName+res.countryName+res.detailInfo;
+					app.name = res.data.userName;
+					app.tel = res.data.telNumber;
+					app.dist = res.data.provinceName+res.data.cityName+res.data.countryName+res.data.detailInfo;
 					app.address_id= res.data.address_id;
-					alert(app.name,app.tel,app.dist,app.address_id);
+					alert(dist);
 			 // 	 var url = "{{ route("wechat.cart.store") }}";
 			 // 	 var d = {
 			// address_id: res.data.address_id
