@@ -18,7 +18,7 @@
       <ul id="cat_nav">
         <li v-for="(item,index) in items" @click="show(index)"  v-bind:class='{on:active==index}' v-cloak>
         <div :class="index == 0 ? 'item on':'item'">
-          <span class="c-name">@{{ item.cateName }}</span>
+          <span class="c-name">@{{ item.name }}</span>
         </div>
         </li>
 
@@ -77,37 +77,7 @@
   new Vue({
     el: '#app',
     data: {
-      items: [{
-          cateName: '涂料乳液'
-        },
-        {
-          cateName: '油性树脂'
-        },
-        {
-          cateName: '水性树脂'
-        },
-        {
-          cateName: '颜料类'
-        },
-        {
-          cateName: '填料类'
-        },
-        {
-          cateName: '油性助剂'
-        }, {
-          cateName: '水性助剂'
-        }, {
-          cateName: '通用塑料'
-        }, {
-          cateName: '工程塑料'
-        }, {
-          cateName: '热塑弹性体'
-        }, {
-          cateName: '塑料助剂'
-        }, {
-          cateName: '聚酯树脂'
-        }
-      ],
+      items: {!! $categories !!},
       active: "0"
     },
     mounted: function() {

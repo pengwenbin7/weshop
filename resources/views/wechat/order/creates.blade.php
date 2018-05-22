@@ -179,8 +179,7 @@
     };
     axios.post("{{ route("wechat.order.store") }}", data)
       .then(function (res) {
-	alert(JSON.stringify(res));
-	location.assign("{{ route("wechat.pay") }}" +
+	    location.assign("{{ route("wechat.pay") }}" +
 	  "/?order_id=" + res.data.store);
       });
   }

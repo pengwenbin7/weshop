@@ -52,7 +52,7 @@ class PaymentController extends Controller
             if ($order->payment_status == Order::PAY_STATUS_DONE) {
                 return true;
             }
-            
+
             // return_code 表示通信状态，不代表支付状态
             if ($message['return_code'] === 'SUCCESS') {
                 // 调用微信的【订单查询】接口查一下该笔订单的情况,确认是已经支付
@@ -69,7 +69,7 @@ class PaymentController extends Controller
                 } else {
                     $order->payment_status = Order::PAY_STATUS_PART;
                 }
-                
+
                 // 20180507115726
                 $order->payment->pay_time = $query["time_end"];
                 $order->payment->save();
@@ -78,13 +78,13 @@ class PaymentController extends Controller
             } else {
                 return $fail("Notice error, call me later.");
             }
-            
+
             return true; // 返回处理完成
         });
-        
+
         return $response;
     }
-    
+
     /**
      * Display a listing of the resource.
      *

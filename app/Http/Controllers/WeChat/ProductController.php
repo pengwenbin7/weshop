@@ -20,7 +20,7 @@ class ProductController extends Controller
         $products = Product::with(["brand", "storage", "variable"])->paginate(10);
         return view("wechat.product.index", [
             "products" => $products,
-            "categories" => $categories,
+            "categories" => json_encode($categories),
             "brands" => $brands,
             "title" => "分类",
         ]);
