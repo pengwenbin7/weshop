@@ -17,14 +17,14 @@
       <div class="item">
         <div class="cart-header">
           <div class="title">
-            <a href="{{ route(" wechat.cart.show ",["id " => $cartlist->id ]) }}">采购单1 <small>(已添加2件商品)</small> </a>
+            <a href="{{ route("wechat.cart.show",["id " => $cartlist->id ]) }}">采购单1 <small>(已添加2件商品)</small> </a>
           </div>
           <div class="cart-del">
             <span><i class="iconfont icon-del"></i></span>
           </div>
         </div>
         <div class="cart-addr">
-          <a href="{{ route(" wechat.cart.show ",["id " => $cartlist->id ]) }}">
+          <a href="{{ route("wechat.cart.show",["id " => $cartlist->id ]) }}">
             <div class="cart-user-info">
               <span>收货人：{{ $cartlist->address->contact_name }}</span>
               <span class="tel">{{ $cartlist->address->contact_tel }}</span>

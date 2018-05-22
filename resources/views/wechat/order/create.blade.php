@@ -1,6 +1,6 @@
-@extends("layouts.wechat2")
+@extends( "layouts.wechat2")
 
-@section("content")
+@section( "content")
 <div class="container" id="app">
   <div class="order">
 
@@ -105,158 +105,145 @@
 </div>
 @endsection
 
-@section("script")
+@section( "script")
 
-  <script>
-
+<script>
   var app = new Vue({
-  el: "#app",
-  data: {
-  is_ton: {{ $product->is_ton }},
-  show_number: 1,
-  address_id: 1,
-  channel_id: 1,
-  freight: 0,
-  paymode:false,
-  curpon:false,
-  content:{{ $product->content }},
-  name:'',
-  tel:'',
-  dist:''
-  },
-  computed: {
-  number: function () {
-  return 0 == this.is_ton?
-  this.show_number:
-  this.show_number * 1000 / {{ $product->content }};
-  },
-  weight:function(){
-  return this.number*this.content>999.99?
-  this.number*this.content/1000+"吨":
-  this.number*this.content+"KG"
+    el: "#app",
+    data: {
+      is_ton: {{ $product -> is_ton }},
+      show_number: 1,
+      address_id: 1,
+      channel_id: 1,
+      freight: 0,
+      paymode: false,
+      curpon: false,
+      content: {{ $product -> content }},
+      name: '',
+      tel: '',
+      dist: '1'
+    },
+    computed: {
+      number: function() {
+        return 0 == this.is_ton ?
+          this.show_number :
+          this.show_number * 1000 / {{ $product -> content }};
+      },
+      weight: function() {
+        return this.number * this.content > 999.99 ?
+          this.number * this.content / 1000 + "吨" :
+          this.number * this.content + "KG"
+      }
+    },
+    beforeCreate: function() {
+      var _this = this;
+      if (!this.address_id) {
+        //选择地址
+        console.log(this.address_id);
+
+      }
+    },
+    methods: {
+      show: function(mode) {
+        this.curpon = true
+      },
+      hideBox: function() {
+        this.paymode = false;
+        this.curpon = false;
+      },
+      // storage default freight function
+      storageFunc: function() {
+        var func = JSON.parse('{!! $product->storage->func !!}');
+      },
+
+      selectAddress: function() {
+        var $this = this;
+        wx.openAddress({
+          success: function(res) {
+            axios.post("{{ route("wechat.address.store") }}",res)
+              .then(function(res) {
+              $this.address_id = res.data.address_id;
+            });
+          },
+          cancel: function() {
+            alert("取消");
+          }
+        });
+      },
+
+      pay: function() {
+        var data = {
+          address_id: this.address_id,
+          channel_id: this.channel_id,
+          products: [{
+            number: this.number,
+            id: {{ $product -> id }}
+          }]
+        };
+        alert(JSON.stringify(data))
+        axios.post("{{ route("wechat.order.store") }}", data)
+          .then(function(res) {
+            location.assign("{{ route("wechat.pay") }}" +
+              "/?order_id=" + res.data.store);
+          });
+      },
+
+      countFreight: function() {
+        var $this = this;
+        var data = {
+          address_id: this.address_id,
+          products: [{
+            id: {{ $product -> id }},
+            number: $this.number
+          }]
+        };
+        axios.post("{{ route("wechat.order.count-freight") }}",
+          data).then(function(res) {
+          $this.freight = res.data;
+        });
+      }
+    },
+
+    mounted: function() {}
+
+  });
+  wx.ready(function() {
+    var _this = app;
+    wx.openAddress({
+      success: function(res) {
+        alert(JSON.stringify(res))
+        _this.name = res.userName;
+        _this.tel = res.telNumber;
+        _this.dist = res.provinceName + res.cityName + res.countryName + res.detailInfo;
+        alert(app.dist)
+        axios.post("{{ route("wechat.address.store") }}", res)
+          .then(function(res) {
+            _this.address_id = res.data.address_id;
+            alert(app.address_id);
+          });
+      },
+      cancel: function() {
+        //
+      }
+    });
+  });
+
+  function pay() {
+    var data = {
+      address_id: app.address_id,
+      channel_id: app.channel_id,
+      products: [{
+        number: app.number,
+        id: {{ $product -> id }}
+      }]
+    };
+    alert(JSON.stringify(data))
+    axios.post("{{ route("wechat.order.store") }}", data)
+      .then(function(res) {
+        alert(JSON.stringify(res))
+        location.assign("{{ route("wechat.pay") }}" +
+          "/?order_id=" + res.data.store);
+      });
   }
-  },
-  beforeCreate: function () {
-  var _this = this;
-   if(!this.address_id){
-   //选择地址
-   console.log(this.address_id);
-
-   }
-  },
-  methods: {
-  show:function(mode){
-  this.curpon = true
-  },
-  hideBox:function(){
-  this.paymode=false;
-  this.curpon = false;
-  },
-  // storage default freight function
-  storageFunc: function () {
-  var func = JSON.parse('{!! $product->storage->func !!}');
-  },
-
-  selectAddress: function () {
-  var $this = this;
-  wx.openAddress({
-  success: function (res) {
-  axios.post(
-  "{{ route("wechat.address.store") }}",
-  res
-  ).then(function (res) {
-  $this.address_id = res.data.address_id;
-  });
-  },
-  cancel: function () {
-  alert("取消");
-  }
-  });
-  },
-
-  pay: function () {
-  var data = {
-  address_id: this.address_id,
-  channel_id: this.channel_id,
-  products: [
-  {
-  number: this.number,
-  id: {{ $product->id }}
-  }
-]
-  };
-  alert(JSON.stringify(data))
-  axios.post("{{ route("wechat.order.store") }}", data)
-  .then(function (res) {
-  location.assign("{{ route("wechat.pay") }}" +
-  "/?order_id=" + res.data.store);
-  });
-  },
-
-  countFreight: function () {
-  var $this = this;
-  var data = {
-  address_id: this.address_id,
-  products: [
-  {id: {{ $product->id }}, number: $this.number}
-  ]
-  };
-  axios.post("{{ route("wechat.order.count-freight") }}",
-  data).then(function (res) {
-  $this.freight = res.data;
-  });
-  }
-  },
-
-  mounted: function () {
-  }
-
-  });
-  wx.ready(function(){
-  var _this = app;
-  wx.openAddress({
-  success: function (res) {
-  alert(JSON.stringify(res))
-  _this.name = res.userName;
-  _this.tel = res.telNumber;
-  _this.dist = res.provinceName+res.cityName+res.countryName+res.detailInfo;
-
-  axios.post("{{ route("wechat.address.store") }}", res)
-    .then(function (res) {
-  _this.address_id= res.data.address_id;
-   // 	 var url = "{{ route("wechat.cart.store") }}";
-   // 	 var d = {
-  // address_id: res.data.address_id
-   // 	 };
-   // 	 axios.post(url, d).
-  // then(function (res) {
-   //  location.reload();
-  // });
-  });
-  },
-  cancel: function () {
-  //
-  }
-  });
-   });
- function  pay() {
-  var data = {
-   address_id: app.address_id,
-   channel_id: app.channel_id,
-   products: [
-   {
-   number: app.number,
-   id: {{ $product->id }}
-   }
-   ]
-  };
-  alert(JSON.stringify(data))
-  axios.post("{{ route("wechat.order.store") }}", data)
-   .then(function (res) {
-   alert(JSON.stringify(res))
-   location.assign("{{ route("wechat.pay") }}" +
-   "/?order_id=" + res.data.store);
-   });
-   }
-  </script>
+</script>
 @endsection

@@ -78,8 +78,7 @@
   var app = new Vue({
     el: '#app',
     data: {
-      products: {!!$products!!
-      },
+      products: {!!$products!!},
       ckall: false, //全选状态
       totalprice: "0",
       distance: 1000,
@@ -88,18 +87,15 @@
     },
     //总价
     beforeMount: function() { //加载页面前计算价格
-      console.log({!!$products!!
-      })
+      console.log({!! $products !!})
       this.totalprice = getTotalPrice(this);
       checkall(this);
 
     },
     methods: {
       buyAll: function() {
-        location.assign("{{ route("
-          wechat.cart.buyall ") }}" +
-          "?cart_id=" + this.cart_id
-        );
+        location.assign("{{ route("wechat.cart.buyall") }}" +
+          "?cart_id=" + this.cart_id );
       },
       reduceCartNubmer: function(i, a) {
         var _this = this;
@@ -253,9 +249,7 @@
 
     }
     if (param.length) {
-      location.assign("{{ route("
-        wechat.cart.buyall ") }}" + "?cart_id=" + app.cart_id + "&&products=" + JSON.stringify(param)
-      );
+      location.assign("{{ route("wechat.cart.buyall") }}" + "?cart_id=" + app.cart_id + "&&products=" + JSON.stringify(param));
     }
   }
 </script>
