@@ -1,9 +1,6 @@
 <?php
 
-Route::get("/", function () {
-    return view("admin.index");
-    //return auth("admin")->user();
-})->name("admin.index");
+Route::get("/", "Admin\IndexController@index")->name("admin.index");
 Route::get("todo", function () {
     return "TODO LIST";
 })->name("admin.todo");

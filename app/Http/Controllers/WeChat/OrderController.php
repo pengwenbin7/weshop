@@ -12,6 +12,7 @@ use App\Models\Coupon;
 use App\Models\Address;
 use App\Models\Storage;
 use App\Utils\Count;
+use App\Models\Payment;
 use Log;
 
 class OrderController extends Controller

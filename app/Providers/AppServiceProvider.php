@@ -50,6 +50,30 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton("MPDF", function ($app) {
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+            $pdf = new \Mpdf\Mpdf([
+                "fontDir" => array_merge($fontDirs, [
+                    storage_path("fonts/")
+                ]),
+                "fontdata" => $fontData + [
+                    "msyh" => [
+                        "R" => "msyh.ttf",
+                    ],
+                    "msyhbd" => [
+                        "B" => "msyhbd.ttf",
+                    ],
+                    "simsun" => [
+                        "R" => "simsun.ttf",
+                    ],
+                ],
+                "default_font" => "simsun",
+            ]);
+            $pdf->SetAuthor("马蜂科技（上海）有限公司");
+            return $pdf;
+        });
     }
 }
