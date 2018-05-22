@@ -122,6 +122,7 @@ class OrderController extends Controller
             }
         }
         $payment->freight = $order->countFreight();
+        $payment->save();
         return ["store" => $order->id];
     }
 

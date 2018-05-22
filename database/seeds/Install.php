@@ -84,6 +84,10 @@ class Install extends Seeder
         DB::table("pay_channels")->insert([
             "name" => "wechat",
         ]);
-        
+
+        DB::table("pay_channels")->insert([
+            "name" => "after_pay",
+            "is_vip" => 1,
+        ]);
     }
 }
