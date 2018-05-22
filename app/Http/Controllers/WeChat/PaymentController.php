@@ -31,6 +31,7 @@ class PaymentController extends Controller
         $json = $jssdk->bridgeConfig($result["prepay_id"]);
         return view("wechat.pay.wait", [
             "json" => $json,
+            "pay" => $order->payment->pay,
         ]);
     }
 

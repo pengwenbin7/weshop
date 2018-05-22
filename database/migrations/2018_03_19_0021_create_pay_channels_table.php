@@ -18,6 +18,7 @@ class CreatePayChannelsTable extends Migration
             $table->string("name", 100);
             $table->text("params")->nullable();
             $table->boolean("active")->default(true);
+            $table->boolean("is_vip")->default(false);
             $table->timestamps();
         });
     }
