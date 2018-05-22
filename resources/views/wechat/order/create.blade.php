@@ -216,7 +216,7 @@
   var _this = app;
   wx.openAddress({
   success: function (res) {
-  alert(JSON.stringify(res.data))
+  alert(JSON.stringify(res))
   _this.name = res.userName;
   _this.tel = res.telNumber;
   _this.dist = res.provinceName+res.cityName+res.countryName+res.detailInfo;
