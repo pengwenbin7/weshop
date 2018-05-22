@@ -33,7 +33,7 @@ class OrderController extends Controller
     }
 
     public function show(Order $order){
-        
+
 
         return view("wechat.order.show",["order" => $order, "title" => "订单详情"]);
     }
@@ -48,7 +48,7 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $data["user"] = auth()->user();
-        
+
         $data["products"] = [];
         $ps = $request->products;
         foreach ($ps as $p) {
@@ -62,7 +62,7 @@ class OrderController extends Controller
                 "number" => $num,
             ];
         }
-        
+
         $data["payChannels"] = PayChannel::get();
         return view("wechat.order.create", ["date" => $data, "title" => "提交订单"]);
     }
@@ -91,11 +91,11 @@ class OrderController extends Controller
         $order->refund_status = Order::REFUND_STATUS_NULL;
         $order->admin_id = $user->admin_id;
         $res = $order->save();
-        
+
         // fetch product
         $totalPrice = 0;
         foreach ($request->products as $p) {
-            // create order items            
+            // create order items
             $product = Product::find($p["id"]);
             $item = OrderItem::create([
                 "order_id" => $order->id,
@@ -110,7 +110,7 @@ class OrderController extends Controller
             ]);
             $totalPrice += $item->price * $item->number;
         }
-        
+
         // create payment
         $payment = new Payment();
         $payment->order_id = $order->id;
@@ -121,14 +121,14 @@ class OrderController extends Controller
             if ($coupon && $coupon->valid($user, $payment)) {
                 $payment->coupon_id = $coupon->id;
                 $payment->discount = $coupon->discount;
-            } 
+            }
         }
         $payment->freight = $order->countFreight();
         $payment->save();
-        
+
         return ["store" => $order->id];
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -167,7 +167,7 @@ class OrderController extends Controller
                 $ss[$product->storage->id] = $product->content * $p["number"];
             }
         }
-        
+
         // 分组计算运费
         $total = [];
         foreach ($ss as $storage_id => $weight) {

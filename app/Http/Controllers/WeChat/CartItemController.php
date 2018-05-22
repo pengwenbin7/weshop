@@ -20,7 +20,7 @@ class CartItemController extends Controller
         $cartItem->number = $request->number >= 1?
                          $request->number:
                          1;
-        
+
         return ["update" => $cartItem->save()];
     }
 
