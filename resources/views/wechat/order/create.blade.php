@@ -5,12 +5,13 @@
   <div class="order">
 
     <div class="address">
-      <div class="a-info" v-on:click="selectAddress">
-        <div class="name">
+      <div class="a-info" v-on:click="selectAddress" >
+        <p v-if="!address_id">点击选择地址</p>
+        <div class="name" v-if="address_id">
           <span class="user-name">@{{ name }}</span>
           <span>@{{ tel }}</span>
         </div>
-        <div class="a-dist">
+        <div class="a-dist" v-if="address_id">
           <p>
             @{{ dist }}</p>
         </div>
@@ -113,7 +114,7 @@
     data: {
       is_ton: {{ $product -> is_ton }},
       show_number: 1,
-      address_id: 1,
+      address_id:  null,
       channel_id: 1,
       freight: 0,
       paymode: false,
@@ -121,7 +122,7 @@
       content: {{ $product -> content }},
       name: '',
       tel: '',
-      dist: '1'
+      dist: ''
     },
     computed: {
       number: function() {
@@ -157,13 +158,16 @@
       },
 
       selectAddress: function() {
-        var $this = this;
+        var _this = this;
         wx.openAddress({
           success: function(res) {
-            axios.post("{{ route("wechat.address.store") }}",res)
+            _this.name = res.userName;
+            _this.tel = res.telNumber;
+            _this.dist = res.provinceName + res.cityName + res.countryName + res.detailInfo;
+            axios.post("{{ route("wechat.address.store") }}", res)
               .then(function(res) {
-              $this.address_id = res.data.address_id;
-            });
+                _this.address_id = res.data.address_id;
+              });
           },
           cancel: function() {
             alert("取消");
@@ -211,15 +215,12 @@
     var _this = app;
     wx.openAddress({
       success: function(res) {
-        alert(JSON.stringify(res))
         _this.name = res.userName;
         _this.tel = res.telNumber;
         _this.dist = res.provinceName + res.cityName + res.countryName + res.detailInfo;
-        alert(app.dist)
         axios.post("{{ route("wechat.address.store") }}", res)
           .then(function(res) {
             _this.address_id = res.data.address_id;
-            alert(app.address_id);
           });
       },
       cancel: function() {
