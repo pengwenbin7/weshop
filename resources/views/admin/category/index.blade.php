@@ -44,7 +44,16 @@
 		    <td>{{ $item->id }}</td>
 		    <td>{{ $item->name }}</td>
 		    <td>{{ $item->sort_order }}</td>
-		    <td><a href="{{ route("admin.category.edit", $item) }}">编辑</a></td>
+		    <td>
+		      <a href="{{ route("admin.category.edit", $item) }}">编辑</a>
+		      &nbsp;|&nbsp;
+		      <a href="#" v-on:click="delete({{ $item->id }})">删除</a>
+		      @if ($item->products)
+		      @else
+			&nbsp;|&nbsp;
+			<a href="#" v-on:click="delete({{ $item->id }})">删除</a>
+		      @endif
+		    </td>
 		  </tr>
 		@endforeach
 	      </tbody>
@@ -57,4 +66,17 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section("script")
+  <script>
+  var app = new Vue({
+    el: "#app",
+    methods: {
+      delete: function (id) {
+	console.log(id);
+      }
+    }
+  });
+  </script>
 @endsection

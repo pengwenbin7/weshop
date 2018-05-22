@@ -15,8 +15,8 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $offset = $request->input("offset", 2);
-        $categories = Category::paginate($offset);
+        $offset = $request->input("offset", 15);
+        $categories = Category::with("products")->paginate($offset);
         return view("admin.category.index", ["categories" => $categories]);
     }
 
@@ -96,7 +96,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if ($category->products()->isEmpty()) {
+        if ($category->products->isEmpty()) {
             return ["destroy" => $category->delete()];
         } else {
             return ["err" => "The category has products, you can't delete it."];
