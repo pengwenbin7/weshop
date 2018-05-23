@@ -55,10 +55,12 @@
       @endforeach
     </div>
     <div class="grid">
+      @if (count($coupons))
       <div class="item" @click="show('curpon')">
         <span> 优惠券</span>
         <span class="value y">-￥300 <i class="iconfont icon-zhankai"></i></span>
       </div>
+      @endif
       <div class="item">
         <span> 实付款</span>
         <span class="value">￥300</span>

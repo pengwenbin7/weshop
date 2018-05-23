@@ -1826,6 +1826,12 @@
   overflow: hidden;
 }
 
+.item.on .c-h .ch-info .title{
+  color: #888;
+}
+.item.on .c-h .ch-price span{
+  color: #888;
+}
 .coupons .c-h {
   background-color: #fff;
 }

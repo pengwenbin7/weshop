@@ -84,18 +84,24 @@ class CartController extends Controller
     public function buyAll(Request $request)
     {
         $products = [];
+        $price=0;
         $varia = json_decode($request->products);
         foreach ($varia as $key => $item) {
           $products[$key] = Product::find($item->id);
           $products[$key]->number = $item->num;
+          $price += Product::find($item->id)->variable->unit_price*$item->num;
+        }
+        $coupons = auth()->user()->coupons;
+        foreach ($coupons as $key => $coupon) {
+          $coupon->expire_time = date("Y-m-d", strtotime($coupon->expire) );
         }
         $data["products"] = $products;
         $data["payChannels"] = PayChannel::get();
         $data["user"] = auth()->user();
-        $data["varia"] = $varia;
-        $data["coupons"] = auth()->user()->coupons;
+        $data["varia"] = json_encode($varia);
+        $data["price"] = $price;
+        $data["coupons"] = json_encode($coupons);
         $data["cart"]=Cart::find($request->cart_id);
-
         return view("wechat.order.creates", $data);
     }
 
