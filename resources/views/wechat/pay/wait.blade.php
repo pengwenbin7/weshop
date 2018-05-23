@@ -27,7 +27,7 @@
       .footer span a{color: #fff;}
       .on .icon-duigongzhuanzhang{color: #3bb6ff;}
       .on .icon-huipiao{color: #c273ff;}
-      .on .icon-gou{color: #3db858;}
+      .on .icon-xuanzhong-on{color: #3db858;}
       .on .icon-huodaofukuan{color: #16c2c2;}
     </style>
     <script type="text/javascript">
