@@ -252,7 +252,7 @@
       cart_addr: null,
       num: {{ 1000/$product->content }},  //按包购买数量
       content:{{ $product->content }},
-      ton_num:2,   //按吨购买数量
+      ton_num:1,   //按吨购买数量
       tonTap: "2",  //吨<-->包切换
       buy_box: false,  //购买按钮弹窗
       addr_box:false, //购物单弹窗
@@ -312,7 +312,7 @@
       },
       buyMe: function() {
         location.assign("{{ route("wechat.product.buyme") }}" +
-          "?product_id={{ $product->id }}"
+          "?product_id={{ $product->id }}"+"&&num="+this.num
         );
       },
       showBox: function() {
@@ -362,7 +362,8 @@
 
     } else if (_this.tonTap == 2) {
       // console.log(getNum(_this,mode,_this.ton_num));
-      _this.ton_num = getNum(_this, mode, _this.ton_num)
+      _this.ton_num = getNum(_this, mode, _this.ton_num);
+      _this.num = _this.ton_num * 1000 / _this.content;
     }
 
 

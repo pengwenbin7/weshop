@@ -55,12 +55,10 @@
       @endforeach
     </div>
     <div class="grid">
-      @if (count($coupons))
-      <div class="item" @click="show('curpon')">
-        <span> 优惠券</span>
-        <span class="value y">-￥300 <i class="iconfont icon-zhankai"></i></span>
-      </div>
-      @endif
+      <div class="item" @click="show('coupon')"  v-if="coupons.length">
+      <span> 优惠券</span>
+      <span class="value y"><i>@{{ coupon_text }}</i> <i class="iconfont icon-zhankai"></i></span>
+    </div>
       <div class="item">
         <span> 实付款</span>
         <span class="value">￥300</span>
@@ -68,32 +66,33 @@
 
     </div>
   </div>
-  <div class="flexbox" v-if="curpon">
+  <div class="flexbox" v-if="coupon_box">
     <div class="mask" @click="hideBox()"></div>
     <div class="coupon-list">
-      <div class="tit">优惠券<small>({{ count($coupons) }}张可用)</small></div>
+      <div class="tit">优惠券<small>(@{{ coupons.length }}张)</small></div>
 
       <div class="coupons">
-        @foreach ($coupons as $coupon)
-        <div class="item">
+        <div v-bind:class="coupon.amount>=limit_price?'item on':'item'" v-for="(coupon,index) in coupons" v-on:click="chooseCoupon(index)">
           <div class="c-h">
             <div class="ch-price">
-              <span>￥{{ intval($coupon->discount) }}</span>
+              <span>￥@{{ parseInt(coupon.discount) }}</span>
             </div>
             <div class="ch-info">
-              <p class="title">{{ $coupon->description }}</p>
-              <p>有效期至：{{ date("Y-m-d", strtotime($coupon->expire) ) }}</p>
+              <p class="title">
+                @{{ coupon.description }}</p>
+              <p>有效期至：
+                @{{ coupon.expire_time }}</p>
             </div>
           </div>
           <div class="c-f">
             <div class="circle"></div>
             <div class="circle-r"></div>
             <div class="cf-desc">
-              <p>满{{ intval($coupon->amount) }}元可用</p>
+              <p>满
+                @{{ parseInt(coupon.amount) }}元可用</p>
             </div>
           </div>
         </div>
-        @endforeach
       </div>
       <div class="no-use" @click="hideBox()">
         <span>不使用优惠券</span>
@@ -119,8 +118,17 @@
       address_id:  null,
       channel_id: 1,
       freight: 0,
+      address_id: 1,
+      channel_id: 1,
+      coupon_id: 0,
+      freight: 0,
+      coupon_text:"选择优惠券",
+      limit_price:{{ $price }},
+      price:{{ $price }},
+      coupon_box: false,
+      coupons: {!! $coupons !!},
       paymode: false,
-      curpon: false,
+      coupon_box: false,
       content: {{ $product -> content }},
       name: '',
       tel: '',
@@ -148,17 +156,31 @@
     },
     methods: {
       show: function(mode) {
-        this.curpon = true
+        this.coupon_box = true
       },
       hideBox: function() {
         this.paymode = false;
-        this.curpon = false;
+        this.coupon_box = false;
       },
       // storage default freight function
       storageFunc: function() {
         var func = JSON.parse('{!! $product->storage->func !!}');
       },
+      chooseCoupon: function(index){
+        var coupon = this.coupons[index];
+        var amount = coupon.amount;
+        var discount = coupon.discount;
+        if(amount<=this.limit_price){
+          this.coupon_text = "-￥"+discount;
+          this.price = this.limit_price-discount;
+          this.coupon_id = coupon.id;
+          this.coupon_box = false;
+        }else{
+          alert("此红包不可用");
+          this.coupon_box = false;
+        }
 
+      },
       selectAddress: function() {
         var _this = this;
         wx.openAddress({
