@@ -12,8 +12,8 @@
           <span>@{{ tel }}</span>
         </div>
         <div class="a-dist" v-if="address_id">
-          <p>
-            @{{ dist }}</p>
+          <span>
+            @{{ dist }}</span>
         </div>
       </div>
       <div class="right-arrow">
