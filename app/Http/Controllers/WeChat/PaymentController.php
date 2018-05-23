@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use EasyWeChat;
 use App\Events\OrderPaidEvent;
+use Auth;
 use Log;
 
 class PaymentController extends Controller
@@ -31,7 +32,7 @@ class PaymentController extends Controller
         $json = $jssdk->bridgeConfig($result["prepay_id"]);
         return view("wechat.pay.wait", [
             "json" => $json,
-            "pay" => $order->payment->pay,
+            "order" => $order,
         ]);
     }
 
@@ -160,5 +161,12 @@ class PaymentController extends Controller
     public function destroy(Payment $payment)
     {
         return $payment->delete();
+    }
+    public function payOffline(Request $request, Payment $payment)
+    {
+      $order = Order::find($request->order_id);
+      $type  = $request->type;
+      $user = Auth()->user();
+      return view("wechat.pay.offline",["order" => $order,"user" => $user, "type" => $type ]);
     }
 }

@@ -4,10 +4,14 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>收银台</title>
+    <link rel="stylesheet" href ="{{asset("assets/css/reset.css")}}" >
+    <link rel="stylesheet" href =" {{asset("assets/font/iconfont.css")}}">
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
     <style media="screen">
+    html,body{padding:0;margin:0;font-size:50px;}
+    .pay{font-size:.32rem}
       .pay .item{display: flex;display: -webkit-flex;width: 100%; background-color: #fff;height: 1.6rem;padding: .3rem .4rem;}
       .pay .item .pay-t{width: 60%;line-height: 1rem;}
       .pay .item .pay-t i{font-size: .4rem;font-weight: bold;}
@@ -18,8 +22,12 @@
       .group .item .pay-title{flex: 1;-webkit-flex:1;line-height: .4rem;}
       .group .item .pay-title p.gray{font-size: .28rem; color: #888;}
       .group .item .pay-title p.title{font-size: .32rem;font-weight: bold;}
-      .footer{position: absolute;bottom: 0;height: 1.2rem;line-height: 1.2rem;background-color: #00b945;}
+      .footer{width:100%; position: absolute;bottom: 0;height: 1.2rem;line-height: 1.2rem;background-color: #00b945;}
       .footer span{display: block;width: 100%;text-align: center;font-weight: bold;color: #fff;letter-spacing: 2px;font-size: .34rem;}
+      .footer span a{color: #fff;}
+      .on .icon-zhuanzhanghuikuan{color: #3bb6ff;}
+      .on .icon-huipiao{color: #c273ff;}
+      .on .icon-gou{color: #3db858;}
     </style>
     <script type="text/javascript">
     //调用微信JS api 支付
@@ -55,18 +63,24 @@
   <div class="pay">
     <div class="item">
       <div class="pay-t">
-        <span>需支付：<i class="y">￥178000</i></span>
+        <span>需支付：<i class="y">￥{{ $order->payment->pay  }}</i></span>
       </div>
       <div class="pay-limit">
         <p>剩余支付时间</p>
-        <p>{{ expire }}</p>
+        <p>@{{ expire }}</p>
       </div>
     </div>
     <div class="group">
       <div v-for="item in items">
         <div class="item" v-on:click="setChannel(item.id)" v-bind:class="item.id==active?'on':''" >
-          <div class="icon">
-            <i class="iconfont icon-wx"></i>
+          <div class="icon" v-if="item.id==2">
+            <i class="iconfont icon-weixinzhifu"></i>
+          </div>
+          <div class="icon" v-if="item.id==1">
+            <i class="iconfont icon-zhuanzhanghuikuan"></i>
+          </div>
+          <div class="icon" v-if="item.id==3">
+            <i class="iconfont icon-weixinzhifu"></i>
           </div>
           <div class="pay-title" v-if="item.id==2">
             <p class="title">微信支付</p>
@@ -86,7 +100,7 @@
         </div>
         <div class="item"  v-if="item.id==1" v-on:click="setChannel(0)" v-bind:class="active==0?'on':''" >
           <div class="icon">
-            <i class="iconfont icon-wx"></i>
+            <i class="iconfont icon-huipiao"></i>
           </div>
 
           <div class="pay-title">
@@ -102,25 +116,12 @@
     </div>
   </div>
   <div class="footer">
-    <span v-if="active==2">确认支付</span>
-    <span v-if="active==0">确认</span>
-    <span v-if="active==1">确认</span>
-    <span v-if="active==3">确认</span>
+    <span v-if="active==2"  onclick="callpay()">确认支付</span>
+    <span v-if="active==0"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=0">确认</a></span>
+    <span v-if="active==1"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=1">确认</a></span>
+    <span v-if="active==3"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=3">确认</a></span>
   </div>
 </div>
-
-    <code>{!! $json !!}</code>
-    <font color="#9ACD32">
-      <b>该笔订单支付金额为
-	<span style="color:#f00;font-size:50px">
-	  ￥:{{ $pay }}
-	</span>
-	钱
-      </b>
-    </font>
-    <div align="center">
-      <button style="width:210px; height:50px; border-radius: 15px;background-color:#FE6714; border:0px #FE6714 solid; cursor: pointer;  color:white;  font-size:16px;" type="button" onclick="callpay()" >立即支付</button>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script type="text/javascript">
     new Vue({
@@ -140,9 +141,11 @@
           }
         ],
         active: 1,
-        expire:"2011111111"
+        expire:""
       },
-
+      mounted () {
+        countdown(this)
+      },
       methods: {
         setChannel:function(index){
           this.active = index;
@@ -150,8 +153,26 @@
       }
 
     })
-
-
+    function countdown(_this){
+      var order_expire ={{ strtotime($order->expire) }} ;
+      var expire = 0;
+      time = setInterval(function () {
+        timestamp =parseInt(new Date().getTime()/1000);
+        expire = order_expire - timestamp;
+        _this.expire = init(expire);
+      }, 1000);
+    }
+    function init(mss){
+      if(mss<=1){
+        clearInterval(time);
+        //订单超时
+      }
+      var days = parseInt(mss / (60 * 60 * 24))?parseInt(mss / (60 * 60 * 24))+"天 ":"";
+      var hours = parseInt((mss % ( 60 * 60 * 24)) / (60 * 60))?parseInt((mss % ( 60 * 60 * 24)) / (60 * 60))+"时 ":"";
+      var minutes = parseInt((mss % (60 * 60)) / 60);
+      var seconds = mss % 60;
+      return days + hours + minutes + "分 " + seconds + "秒 ";
+    }
   </script>
   </body>
 </html>
