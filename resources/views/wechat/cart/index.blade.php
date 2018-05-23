@@ -4,9 +4,9 @@
 <div class="container" id="app">
   <div class="cart">
 
-    <div class="create">
-      <div class="txt" v-on:click="createCart">
-        <span class="black">新建选购单<small>(已创建1个采购单)</small></span>
+    <div class="create" v-on:click="createCart">
+      <div class="txt">
+        <span class="black">新建选购单<small>(已创建{{ count($carts) }}个采购单)</small></span>
       </div>
       <div class="icon">
         <i class="iconfont icon-tianjia"></i>
@@ -17,7 +17,7 @@
       <div class="item">
         <div class="cart-header">
           <div class="title">
-            <a href="{{ route("wechat.cart.show",["id " => $cartlist->id ]) }}">采购单1 <small>(已添加2件商品)</small> </a>
+            <a href="{{ route("wechat.cart.show",["id " => $cartlist->id ]) }}">{{ $cartlist->name }} <small>(已添加1件商品)</small> </a>
           </div>
           <div class="cart-del">
             <span><i class="iconfont icon-del"></i></span>
