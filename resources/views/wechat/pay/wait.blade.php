@@ -25,9 +25,10 @@
       .footer{width:100%; position: absolute;bottom: 0;height: 1.2rem;line-height: 1.2rem;background-color: #00b945;}
       .footer span{display: block;width: 100%;text-align: center;font-weight: bold;color: #fff;letter-spacing: 2px;font-size: .34rem;}
       .footer span a{color: #fff;}
-      .on .icon-zhuanzhanghuikuan{color: #3bb6ff;}
+      .on .icon-duigongzhuanzhang{color: #3bb6ff;}
       .on .icon-huipiao{color: #c273ff;}
       .on .icon-gou{color: #3db858;}
+      .on .icon-huodaofukuan{color: #16c2c2;}
     </style>
     <script type="text/javascript">
     //调用微信JS api 支付
@@ -77,10 +78,10 @@
             <i class="iconfont icon-weixinzhifu"></i>
           </div>
           <div class="icon" v-if="item.id==1">
-            <i class="iconfont icon-zhuanzhanghuikuan"></i>
+            <i class="iconfont icon-duigongzhuanzhang"></i>
           </div>
           <div class="icon" v-if="item.id==3">
-            <i class="iconfont icon-weixinzhifu"></i>
+            <i class="iconfont icon-huodaofukuan"></i>
           </div>
           <div class="pay-title" v-if="item.id==2">
             <p class="title">微信支付</p>
@@ -95,7 +96,7 @@
             <p class="gray">收货后支付货款</p>
           </div>
           <div class="icon">
-            <i class="iconfont icon-gou"></i>
+            <i v-bind:class="active==item.id?'iconfont icon-xuanzhong-on':'iconfont icon-xuanzhong' "></i>
           </div>
         </div>
         <div class="item"  v-if="item.id==1" v-on:click="setChannel(0)" v-bind:class="active==0?'on':''" >
@@ -109,7 +110,7 @@
           </div>
 
           <div class="icon">
-            <i class="iconfont icon-gou"></i>
+            <i v-bind:class="active==0?'iconfont icon-xuanzhong-on':'iconfont icon-xuanzhong' "></i>
           </div>
         </div>
       </div>

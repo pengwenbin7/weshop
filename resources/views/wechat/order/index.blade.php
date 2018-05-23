@@ -3,7 +3,7 @@
 @section("content")
     <div class="container">
   <div class="order-list" id="app">
-    
+
       <div class="taps">
         <div class="item">
           <a class="on">全部订单</a>
@@ -20,7 +20,7 @@
         <div class="order">
           <a href="{{ route("wechat.order.show", $order->id) }}">
           <div class="order-header">
-            
+
             <div class="order-number">
               <span class="icon-order">
                   <i class="iconfont icon-dingdan1"></i>
@@ -43,18 +43,18 @@
             @foreach ($order->orderItems as $orderItem)
               <div class="item">
                 <div class="pro">
-                  <a href="order.html">
-                  <span>{{ $orderItem->brand_name }}</span><span>{{ $orderItem->product_name }}</span>
-                  <span>{{ $orderItem->model }}</span><span>x{{ $orderItem->number }}</span>
+                  <a href="{{ route("wechat.order.show", $order->id) }}">
+                  <span>{{ $orderItem->brand_name }} </span><span>{{ $orderItem->product_name }} </span>
+                  <span>{{ $orderItem->model }} </span><span>x{{ $orderItem->number }}</span>
                   <span>{{ $orderItem->price }}</span>
                   </a>
                 </div>
                 <div class="show-express"><a href="" class="black">查看物流</a></div>
               </div>
               @endforeach
-              
+
             </div>
-            
+
           </div>
           </a>
           <div class="order-footer">
@@ -70,14 +70,14 @@
               @elseif ($order->status === 3)
               <span class="green">确认收货</span>
               @endif
-              
+
             </div>
           </div>
         </div>
         @endforeach
-        
+
       </div>
     </div>
-    
+
   </div>
 @endsection("content")
