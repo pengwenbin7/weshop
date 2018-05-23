@@ -238,14 +238,16 @@
         id: {{ $product->id }}
       }]
     };
-    alert(JSON.stringify(data));
-    axios.post("{{ route("wechat.order.store") }}", data)
-      .then(function(res) {
-        alert(JSON.stringify(res));
-	console.log(res);
-        location.assign("{{ route("wechat.pay") }}" +
-          "/?order_id=" + res.data.store);
-      });
+    if(app.address_id){
+      axios.post("{{ route("wechat.order.store") }}", data)
+        .then(function(res) {
+          location.assign("{{ route("wechat.pay") }}" +
+            "/?order_id=" + res.data.store);
+        });
+    }else{
+      alert("请先选择收货地址");
+    }
+
   }
 </script>
 @endsection
