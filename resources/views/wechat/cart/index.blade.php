@@ -14,13 +14,13 @@
     </div>
     <div class="cart-list">
       @foreach ($carts as $cartlist)
-      <div class="item">
+      <div class="item" ref = "cart_{{ $cartlist->id }}">
         <div class="cart-header">
           <div class="title">
-            <a href="{{ route("wechat.cart.show",["id " => $cartlist->id ]) }}">{{ $cartlist->name }} <small>(已添加1件商品)</small> </a>
+            <a href="{{ route("wechat.cart.show",["id " => $cartlist->id ]) }}">{{ $cartlist->name }} <small>(已添加{{ count($cartlist->cartItems) }}件商品)</small> </a>
           </div>
-          <div class="cart-del">
-            <span><i class="iconfont icon-del"></i></span>
+          <div class="cart-del" v-on:click="deleteCart({{ $cartlist->id }})">
+            <span><i class="iconfont icon-shanchu"></i></span>
           </div>
         </div>
         <div class="cart-addr">
@@ -49,6 +49,16 @@
 
     },
     methods: {
+      deleteCart: function(id){
+        var _this = this;
+        axios.delete("{{ route("wechat.cart.index") }}"+"/"+id)
+        .then(function(res){
+          if(res.data.delete){
+            _this.$refs["cart_"+id].remove();
+          }
+        })
+
+      },
       createCart: function() {
         console.log(1);
         var $this = this;

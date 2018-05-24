@@ -13,7 +13,7 @@
 
     <div class="cart-info-header">
       <div class="txt">
-        <span>{{ $cart->name }}<small>(已添加2件商品)</small></span>
+        <span>{{ $cart->name }}<small>(已添加{{ count($cart->cartItems) }}件商品)</small></span>
       </div>
       <div class="icon">
         <i class="iconfont icon-del"></i>
