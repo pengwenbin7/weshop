@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string("name", 100);
             $table->unsignedInteger("brand_id");
             $table->unsignedInteger("storage_id");
-            $table->string("model", 32);
+            $table->string("model", 32)->unique();
             $table->unsignedDecimal("content", 10, 2)->comment("含量(eg: 25)")->default(25);
             $table->string("measure_unit", 16)->comment("计量单位(eg: kg)")->default("kg");
             $table->string("packing_unit", 16)->comment("包装单位(eg: 包)")->default("包");

@@ -43,9 +43,10 @@ class ProductController extends Controller
         $data["price"] = Product::find($request->product_id)->variable->unit_price*$request->num;
         $coupons = auth()->user()->coupons;
         foreach ($coupons as $key => $coupon) {
-          $coupon->expire_time = date("Y-m-d", strtotime($coupon->expire) );
+            $coupon->expire_time = $coupon->expire->toDateString();
         }
         $data["coupons"] = json_encode($coupons);
+        $data["interfaces"] = ["getLocation"];
         return view("wechat.order.create", $data);
     }
 }

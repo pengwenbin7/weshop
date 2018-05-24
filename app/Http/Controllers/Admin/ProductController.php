@@ -60,6 +60,7 @@ class ProductController extends Controller
         $product->measure_unit = $request->measure_unit;
         $product->packing_unit = $request->packing_unit;
         $product->sort_order = $request->input("sort_order", 1000);
+        $product->active = $request->active;
         $s0 = $product->save();
         if (!$s0) {
             return ["err" => "save product error"];
@@ -115,9 +116,7 @@ class ProductController extends Controller
             ]);
         }
         
-        return [
-            "store" => $product->id,
-        ];
+        return redirect()->route("admin.product.index");
     }
 
     /**
@@ -139,7 +138,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view("admin.product.edit", ["product" => $product]);
+        return view("admin.product.edit", [
+            "product" => $product,
+            "categories" => Category::select("id", "name")->get(),
+            "brands" => Brand::select("id", "name")->get(),
+        ]);
     }
 
     /**
@@ -160,33 +163,32 @@ class ProductController extends Controller
         $product->content = $request->content;
         $product->measure_unit = $request->measure_unit;
         $product->packing_unit = $request->packing_unit;
+        $product->active = $request->active;
         $product->sort_order = $request->input("sort_order", 1000);
-        $s0 = $product->save();
+        $product->save();
 
         // save product price
-        if ($request->unit_price != $product->price()->unit_price) {
-            $price = new ProductPrice();
-            $price->fill([
+        if ($request->unit_price != $product->variable->unit_price) {
+            $price = ProductPrice::create([
                 "product_id" => $product->id,
                 "unit_price" => $request->unit_price,
             ]);
-            $s1 = $price->save();
             event(new ProductPriceChangedEvent($product));
-        } else {
-            $s1 = true;
-        }
-
+        } 
+        
         // 以下过程未做判断，有些是非必须的
         // save product primary category
-        $category = $product->category();
-        $category->category_id = $request->category_id;
-        $s2 = $category->save();
+        ProductCategory::firstOrCreate([
+            "category_id" => $request->category_id,
+            "product_id" => $product->id,
+            "is_primary" => 1,
+        ]);
         
         // save product variable
         $variable = $product->variable;
         $variable->stock = $request->stock;
         $variable->unit_price = $request->unit_price;
-        $s3 = $variable->save();
+        $variable->save();
                
         // save product detail
         $detail = $product->detail;
@@ -195,12 +197,10 @@ class ProductController extends Controller
                 "product_id" => $product->id,
             ]);
             $detail->content = $request->detail;
-            $s4 = $detail->save();
-        } else {
-            $s4 = true;
+            $detail->save();
         }
 
-        return ["update" => $s0 & $s1 & $s2 & $s3 & $s4];
+        return redirect()->route("admin.product.show", $product);
     }
 
     /**

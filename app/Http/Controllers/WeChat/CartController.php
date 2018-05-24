@@ -25,7 +25,12 @@ class CartController extends Controller
                ->where("user_id", "=", $user->id)
                ->orderBy("id", "desc")
                ->get();
-        return view("wechat.cart.index", ["user" => $user, "carts" => $carts, "title" => "选购单"]);
+        return view("wechat.cart.index", [
+            "user" => $user,
+            "carts" => $carts,
+            "title" => "采购单",
+            "interfaces" => ["getLocation"],
+        ]);
     }
 
     /**
@@ -89,11 +94,11 @@ class CartController extends Controller
         foreach ($varia as $key => $item) {
           $products[$key] = Product::find($item->id);
           $products[$key]->number = $item->num;
-          $price += Product::find($item->id)->variable->unit_price*$item->num;
+          $price += Product::find($item->id)->variable->unit_price * $item->num;
         }
         $coupons = auth()->user()->coupons;
         foreach ($coupons as $key => $coupon) {
-          $coupon->expire_time = date("Y-m-d", strtotime($coupon->expire) );
+            $coupon->expire_time = $coupon->expire->toDateString();
         }
         $data["products"] = $products;
         $data["payChannels"] = PayChannel::get();
@@ -101,7 +106,7 @@ class CartController extends Controller
         $data["varia"] = json_encode($varia);
         $data["price"] = $price;
         $data["coupons"] = json_encode($coupons);
-        $data["cart"]=Cart::find($request->cart_id);
+        $data["cart"] = Cart::find($request->cart_id);
         return view("wechat.order.creates", $data);
     }
 

@@ -92,12 +92,12 @@ class AdminUserInit extends Command
                 $openid = $work->user->userIdToOpenid($a["userid"]);
                 // 跳过未关注的员工
                 if ($openid["errcode"] != 0) {
-                    echo $openid["errmsg"] . "\n";
+                    echo $a["userid"] . ":" . $openid["errmsg"] . "\n";
                 } else {
                     $admin = Admin::firstOrCreate([
                         "userid" => $a["userid"],
                         "openid" => $openid["openid"],
-                        "mobile" => $a["mobile"],
+                        "mobile" => $a["mobile"] ?? null,
                         "name" => $a["name"],
                         "english_name" => $a["english_name"] ?? null,
                         "email" => $a["email"] ?? null,

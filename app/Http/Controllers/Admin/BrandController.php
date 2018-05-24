@@ -18,9 +18,14 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        $offset = $request->input("offset", 2);
-        $brands = Brand::paginate($offset);
-        return view("admin.brand.index", ["brands" => $brands]);
+        $limit = $request->input("limit", 15);
+        $key = $request->input("key", "");
+        $brands = Brand::where("name", "like", "%$key%")->paginate($limit);
+        return view("admin.brand.index", [
+            "brands" => $brands,
+            "key" => $key,
+            "limit" => $limit,
+        ]);
     }
 
     /**

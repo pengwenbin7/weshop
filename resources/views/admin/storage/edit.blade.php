@@ -1,20 +1,64 @@
-@extends("layouts.admin")
+@extends("layouts.admin-address")
 
 @section("content")
-  <form action="{{ route("admin.storage.update", $storage->id) }}" method="POST">
-    {{ csrf_field() }}
-    <input name="_method" type="hidden" value="PUT">
-    name: <input name="name" type="text" value="{{ $storage->name }}" required/><br>
-    brand_id: <input name="brand_id" type="number" value="{{ $storage->brand_id }}" required><br>
-    func: <textarea name="func">{{ $storage->func }}</textarea>
-    description: <input name="description" type="text" value="{{ $storage->description }}"><br>
-    contact_name: <input name="contact_name" type="text" value="{{ $storage->address->contact_name or "" }}"><br>
-    contact_tel: <input name="contact_tel" type="text" value="{{ $storage->address->contact_tel or "" }}"><br>
-    province: <input name="province" type="text" value="{{ $storage->address->province }}" required><br>
-    city: <input name="city" type="text" value="{{ $storage->address->city }}" required><br>
-    district: <input name="district" type="text" value="{{ $storage->address->district }}"><br>
-    code: <input name="code" type="number" value="{{ $storage->address->code }}" required><br>
-    address-detail: <input name="detail" type="text" value="{{ $storage->address->detail }}"><br>
-    <input type="submit" value="go">
-  </form>
+  <div class="col-md-6">
+    <div class="box box-info">
+      <div class="box-header with-border">
+	<h3 class="box-title"><a href="{{ route("admin.storage.index") }}">仓库列表</a></h3>
+	<h3 class="box-title">添加</h3>
+      </div>
+      <form class="form-horizontal" action="{{ route("admin.storage.update", $storage->id) }}" method="POST">
+	<div class="box-body">
+	  {{ csrf_field() }}
+	  {{ method_field("PUT") }}
+          <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">名字</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="name" name="name" type="text" required value="{{ $storage->name }}">
+            </div>
+          </div>
+
+	  <div class="form-group">
+            <label for="brand" class="col-sm-2 control-label">品牌</label>
+            <div class="col-sm-10">
+              <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" name="brand_id">
+		@foreach ($brands as $brand)
+		  @if ($brand->id == $storage->brand_id)
+		    <option value="{{ $brand->id }}" selected>{{ $brand->name }}</option>
+		  @else
+		    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+		  @endif
+		@endforeach
+              </select>
+            </div>
+          </div>
+
+	  <div class="form-group">
+            <label for="func" class="col-sm-2 control-label">运费公式</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="func" name="func">
+		{!! $storage->func !!}
+	      </textarea>
+            </div>
+          </div>
+
+	  <div class="form-group">
+            <label for="description" class="col-sm-2 control-label">仓库描述</label>
+            <div class="col-sm-10">
+              <input name="description" id="description" class="form-control" value="{{ $storage->description }}">
+	    </div>
+          </div>
+	  <address-component></address-component>
+	</div>
+
+	<div class="box-footer">
+          <button type="submit" class="btn btn-info btn-block">确定</button>
+	</div>
+      </form>
+    </div>
+  </div>
+
+@endsection
+
+@section("script")
 @endsection

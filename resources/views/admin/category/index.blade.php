@@ -33,7 +33,7 @@
 	      <thead>
 		<tr>
 		  <th>id</th>
-		  <th>名称</th>
+		  <tCh>名称</th>
 		  <th>排序</th>
 		  <th>操作</th>
 		</tr>

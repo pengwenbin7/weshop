@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * 数据库支持一个 Product 有多个分类，逻辑上未实现
+ */
 class Category extends Model
 {
     protected $fillable = [

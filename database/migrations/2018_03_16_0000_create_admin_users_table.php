@@ -16,7 +16,7 @@ class CreateAdminUsersTable extends Migration
             $table->increments("id");
             $table->string("userid", 32)->unique();
             $table->string("openid", 100)->unique();
-            $table->string("mobile", 32)->unique();
+            $table->string("mobile", 32)->unique()->nullable();
             $table->string("name", 32);
             $table->string("password", 100)->nullable();
             $table->string("english_name", 32)->nullable();
