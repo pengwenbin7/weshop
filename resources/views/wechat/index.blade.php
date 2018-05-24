@@ -127,7 +127,6 @@
 			},
 
 			getAddress: function() {
-				alert(1)
 				wx.openAddress({
 					success: function(res) {
 							alert(JSON.stringify(res))

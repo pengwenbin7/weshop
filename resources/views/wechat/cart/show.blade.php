@@ -211,7 +211,6 @@
       }
     });
     return freight ? freight : func.other.factor * distance + func.other.const;
-
   }
 
   function getDate(name) {

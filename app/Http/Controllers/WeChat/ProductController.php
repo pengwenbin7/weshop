@@ -36,7 +36,8 @@ class ProductController extends Controller
 
     public function buyMe(Request $request)
     {
-        $data["products"][] = Product::find($request->product_id);
+        $data["products"] = Product::find($request->product_id);
+        $data["products"]->number = $request->num;
         $data["payChannels"] = PayChannel::get();
         $data["user"] = auth()->user();
         $data["price"] = Product::find($request->product_id)->variable->unit_price*$request->num;

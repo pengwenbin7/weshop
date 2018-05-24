@@ -1,7 +1,13 @@
 @extends( "layouts.wechat2")
-
+@section( "style")
+<style media="screen">
+  [v-cloak] {
+    display: none;
+  }
+</style>
+@endsection
 @section( "content")
-<div class="container" id="app">
+<div class="container" id="app" v-cloak>
   <div class="order">
 
     <div class="address">
@@ -21,13 +27,12 @@
       </div>
     </div>
     <div class="products">
-      @foreach ($products as $product)
       <div class="product">
         <div class="p-info">
-          <div class="title">
-            <span class="p-bname">  {{ $product->brand->name }}</span>
-            <span class="p-name"> {{ $product->name }} </span>
-            <span class="p-model"> {{ $product->model }} </span>
+          <div class="title" v-on:click="countFreight">
+            <span class="p-bname">  {{ $products->brand->name }}</span>
+            <span class="p-name"> {{ $products->name }} </span>
+            <span class="p-model"> {{ $products->model }} </span>
           </div>
           <div class="num clearfix">
             {{-- <span>数量：<i class="black">@{{ number }}包</i><i class="black">25KG</i></span> --}}
@@ -48,11 +53,10 @@
           </div>
 
           <div class="pirce">
-            <span>价格：<i class="black">￥{{ $product->variable->unit_price*25 }}</i></span>
+            <span>价格：<i class="black">￥@{{ number*unit_price+freight }}</i></span>
           </div>
         </div>
       </div>
-      @endforeach
     </div>
     <div class="grid">
       <div class="item" @click="show('coupon')"  v-if="coupons.length">
@@ -61,7 +65,7 @@
     </div>
       <div class="item">
         <span> 实付款</span>
-        <span class="value">￥300</span>
+        <span class="value">@{{ number*unit_price+freight-coupon_discount }}</span>
       </div>
 
     </div>
@@ -72,7 +76,7 @@
       <div class="tit">优惠券<small>(@{{ coupons.length }}张)</small></div>
 
       <div class="coupons">
-        <div v-bind:class="coupon.amount>=limit_price?'item on':'item'" v-for="(coupon,index) in coupons" v-on:click="chooseCoupon(index)">
+        <div v-bind:class="coupon.amount>=(number*unit_price+freight)?'item on':'item'" v-for="(coupon,index) in coupons" v-on:click="chooseCoupon(index)">
           <div class="c-h">
             <div class="ch-price">
               <span>￥@{{ parseInt(coupon.discount) }}</span>
@@ -94,7 +98,7 @@
           </div>
         </div>
       </div>
-      <div class="no-use" @click="hideBox()">
+      <div class="no-use" @click="hideBox('coupon')">
         <span>不使用优惠券</span>
       </div>
     </div>
@@ -108,38 +112,28 @@
 @endsection
 
 @section( "script")
-
 <script>
   var app = new Vue({
     el: "#app",
     data: {
-      is_ton: {{ $product -> is_ton }},
-      show_number: 1,
+      number: {{ $products->number }},
       address_id:  null,
-      channel_id: 1,
       freight: 0,
-      address_id: 1,
       channel_id: 1,
       coupon_id: 0,
-      freight: 0,
+      coupon_discount:0,
+      coupon_amount:0,
       coupon_text:"选择优惠券",
-      limit_price:{{ $price }},
-      price:{{ $price }},
-      coupon_box: false,
+      unit_price:{{$products->variable->unit_price }},
       coupons: {!! $coupons !!},
-      paymode: false,
+      distance:1000,
       coupon_box: false,
-      content: {{ $product -> content }},
+      content: {{ $products->content }},
       name: '',
       tel: '',
       dist: ''
     },
     computed: {
-      number: function() {
-        return 0 == this.is_ton ?
-          this.show_number :
-          this.show_number * 1000 / {{ $product -> content }};
-      },
       weight: function() {
         return this.number * this.content > 999.99 ?
           this.number * this.content / 1000 + "吨" :
@@ -158,21 +152,26 @@
       show: function(mode) {
         this.coupon_box = true
       },
-      hideBox: function() {
-        this.paymode = false;
+      hideBox: function(m) {
         this.coupon_box = false;
+        if(m=="coupon"){
+          this.coupon_discount = 0;
+          this.coupon_text = "选择优惠券";
+        }
       },
       // storage default freight function
       storageFunc: function() {
-        var func = JSON.parse('{!! $product->storage->func !!}');
+        var func = JSON.parse('{!! $products->storage->func !!}');
       },
       chooseCoupon: function(index){
         var coupon = this.coupons[index];
         var amount = coupon.amount;
         var discount = coupon.discount;
-        if(amount<=this.limit_price){
+        var limit_price = this.number*this.unit_price+this.freight;
+        if(amount<=limit_price){
           this.coupon_text = "-￥"+discount;
-          this.price = this.limit_price-discount;
+          this.coupon_discount =discount;
+          this.coupon_amount =coupon.amount;
           this.coupon_id = coupon.id;
           this.coupon_box = false;
         }else{
@@ -182,60 +181,68 @@
 
       },
       selectAddress: function() {
+        oAddress();
+      },
+      reduceCartNubmer: function(i, a) {
         var _this = this;
-        wx.openAddress({
-          success: function(res) {
-            _this.name = res.userName;
-            _this.tel = res.telNumber;
-            _this.dist = res.provinceName + res.cityName + res.countryName + res.detailInfo;
-            axios.post("{{ route("wechat.address.store") }}", res)
-              .then(function(res) {
-                _this.address_id = res.data.address_id;
-              });
-          },
-          cancel: function() {
-            alert("取消");
+        if (_this.number <= 1) {
+          return
+        } else {
+           //点击减少，发送请求，成功后数量减一
+           console.log(_this.number);
+          _this.number--;
+          _this.countFreight();
+          if(_this.coupon_amount<=(_this.number*_this.unit_price+_this.freight)){
+            return
+          }else{
+            _this.coupon_discount = 0;
+            _this.coupon_text = "选择优惠券";
+
           }
-        });
+        }
       },
-
-      pay: function() {
-        var data = {
-          address_id: this.address_id,
-          channel_id: this.channel_id,
-          products: [{
-            number: this.number,
-            id: {{ $product -> id }}
-          }]
-        };
-        alert(JSON.stringify(data))
-        axios.post("{{ route("wechat.order.store") }}", data)
-          .then(function(res) {
-            location.assign("{{ route("wechat.pay") }}" +
-              "/?order_id=" + res.data.store);
-          });
+      textCartNumber: function(){
+         this.number = Number(this.$refs.goodsNum.value);
+          this.countFreight();
       },
-
+      addCartNumber:function(){
+        var _this = this;
+           _this.number++;
+            this.countFreight();
+      },
       countFreight: function() {
-        var $this = this;
-        var data = {
-          address_id: this.address_id,
-          products: [{
-            id: {{ $product -> id }},
-            number: $this.number
-          }]
-        };
-        axios.post("{{ route("wechat.order.count-freight") }}",
-          data).then(function(res) {
-          $this.freight = res.data;
-        });
+        var weight = this.number * this.content;
+        var distance = this.distance;
+        var func = JSON.parse('{!! $products->storage->func !!}');
+        this.freight = freight(func,weight,distance);
       }
     },
-
-    mounted: function() {}
-
+    mounted: function() {
+      this.countFreight();
+    }
   });
+
+  function freight(func, weight, distance) {
+    var freight = 0;
+    console.log(func, weight, distance);
+    func.area.forEach(function(e, index, array) {
+      if (e.low <= weight && weight < e.up) {
+        freight = e.factor * distance + e.const;
+        return
+      }
+    });
+    return freight ? freight : func.other.factor * distance + func.other.const;
+  }
+
+
+
+
+
+
   wx.ready(function() {
+   oAddress()
+  });
+  function oAddress(){
     var _this = app;
     wx.openAddress({
       success: function(res) {
@@ -251,15 +258,15 @@
         //
       }
     });
-  });
-
+  }
   function pay() {
     var data = {
       address_id: app.address_id,
       channel_id: app.channel_id,
+       coupon_id: app.coupon_id,
       products: [{
         number: app.number,
-        id: {{ $product->id }}
+        id: {{ $products->id }}
       }]
     };
     if(app.address_id){
