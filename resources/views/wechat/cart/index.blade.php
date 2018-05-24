@@ -13,11 +13,11 @@
       </div>
     </div>
     <div class="cart-list">
-      @foreach ($carts as $cartlist)
+      @foreach ($carts as $index => $cartlist)
       <div class="item" ref = "cart_{{ $cartlist->id }}">
         <div class="cart-header">
           <div class="title">
-            <a href="{{ route("wechat.cart.show",["id " => $cartlist->id ]) }}">{{ $cartlist->name }} <small>(已添加{{ count($cartlist->cartItems) }}件商品)</small> </a>
+            <a href="{{ route("wechat.cart.show",["id " => $cartlist->id ]) }}">采购单{{ $index+1 }} <small>(已添加{{ count($cartlist->cartItems) }}件商品)</small> </a>
           </div>
           <div class="cart-del" v-on:click="deleteCart({{ $cartlist->id }})">
             <span><i class="iconfont icon-shanchu"></i></span>
