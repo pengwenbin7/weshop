@@ -11,7 +11,7 @@
 					<input class="btn-submit" type="submit" value="找货" />
 				</form>
 			</div>
-			<div class="hot-search" v-on:click="getAddress">
+			<div class="hot-search">
 				<div class="title">
 					<span>热门搜索</span>
 				</div>
