@@ -77,7 +77,7 @@
         </div>
       </div>
     </div>
-    <div class="no-use" @click="hideBox()">
+    <div class="no-use" @click="hideBox('coupon')">
       <span>不使用优惠券</span>
     </div>
   </div>
@@ -99,7 +99,7 @@
     data: {
       address_id: 1,
       channel_id: 1,
-      coupon_id: 0,
+      coupon_id: null,
       freight: 0,
       coupon_text:"选择优惠券",
       limit_price:{{ $price }},
@@ -113,8 +113,13 @@
           this.coupon_box = true
         }
       },
-      hideBox: function() {
+      hideBox: function(m) {
         this.coupon_box = false;
+        if(m=="coupon"){
+          this.coupon_discount = 0;
+          this.coupon_text = "选择优惠券";
+          this.coupon_id = null;
+        }
       },
       chooseCoupon: function(index){
         var coupon = this.coupons[index];
