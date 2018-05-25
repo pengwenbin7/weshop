@@ -11,19 +11,24 @@
 	<div class="row">
 	  <div class="col-sm-6">
 	    <div class="dataTables_length">
-	      <label>
-		每页
-		<select name="limit" class="form-control input-sm">
-		  <option value="25">25</option>
-		  <option value="50">50</option>
-		  <option value="100">100</option>
+	      <form action="{{ url()->current() }}">
+		品牌
+		<select name="brand_id" class="select2">
+		  <option value="">全部</option>
+		  @foreach ($brands as $brand)
+		    @if ($brand->id == $brand_id)
+		      <option value="{{ $brand->id }}" selected>{{ $brand->name }}</option>
+		    @else
+		      <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+		    @endif
+		  @endforeach
 		</select>
-		条
-	      </label>
-	      <label>
-		<input name="key" class="form-control input-sm" type="search">
+		每页<input name="limit" class="form-control input-sm"
+			    value="{{ $storages->perPage() }}">
+		关键词<input name="key" class="form-control input-sm"
+			      value="{{ $key }}">
 		<button>搜索</button>
-	      </label>
+	      </form>
 	    </div>
 	  </div>
 	</div>
@@ -50,7 +55,9 @@
 	  </div>
 	</div>
 	<div class="row">
-	  {{ $storages->links() }}
+	  {{ $storages->appends([
+	     "limit" => $limit, "brand_id" => $brand_id, "key" => $key,
+	     ])->links() }}
 	</div>
       </div>
     </div>

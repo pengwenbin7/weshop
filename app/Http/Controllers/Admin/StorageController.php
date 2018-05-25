@@ -19,7 +19,7 @@ class StorageController extends Controller
      */
     public function index(Request $request)
     {
-        $offset = $request->input("offset", 2);
+        $limit = $request->input("limit", 15);
         $brand_id = $request->input("brand_id", false);
         $key = $request->input("key", false);
         $storages = Storage::
@@ -29,10 +29,17 @@ class StorageController extends Controller
                   ->when($key, function ($query) use ($key) {
                           return $query->where("name", "like", "%$key%");
                       })
-                  ->paginate($offset);
+                  ->paginate($limit);
+        $brands = Brand::select("id", "name")->get();
         return $request->has("api")?
             $storages->items():
-            view("admin.storage.index", ["storages" => $storages]);
+            view("admin.storage.index", [
+                "storages" => $storages,
+                "brand_id" => $brand_id,
+                "key" => $key,
+                "limit" => $limit,
+                "brands" => $brands,
+            ]);
     }
 
     /**
@@ -105,7 +112,9 @@ class StorageController extends Controller
      */
     public function edit(Storage $storage)
     {
+        return $storage;
         $data["storage"] = $storage;
+        $data["brands"] = Brand::select("id", "name")->get();
         return view("admin.storage.edit", $data);
     }
 

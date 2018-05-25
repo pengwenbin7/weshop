@@ -11,19 +11,17 @@
 	<div class="row">
 	  <div class="col-sm-6">
 	    <div class="dataTables_length">
-	      <label>
+	      <form action="{{ url()->current() }}">
 		每页
-		<select name="limit" class="form-control input-sm">
-		  <option value="25">25</option>
-		  <option value="50">50</option>
-		  <option value="100">100</option>
-		</select>
-		条
-	      </label>
-	      <label>
-		<input name="key" class="form-control input-sm" type="search">
-		<button>搜索</button>
-	      </label>
+		<input name="limit" value="{{ $brands->perPage() }}"
+			required class="form-control input-sm">
+		关键词
+		<input name="key" class="form-control input-sm" type="text"
+			value="{{ $key }}">
+		
+		<input name="page" type="hidden" value="{{ $brands->currentPage() }}">
+		<button class="btn btn-default">搜索</button>
+	      </form>
 	    </div>
 	  </div>
 	</div>
@@ -50,7 +48,7 @@
 	  </div>
 	</div>
 	<div class="row">
-	  {{ $brands->links() }}
+	  {{ $brands->appends(["key" => $key, "limit" => $limit])->links() }}
 	</div>
       </div>
     </div>
