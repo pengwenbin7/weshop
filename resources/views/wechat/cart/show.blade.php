@@ -251,7 +251,7 @@
         if (products[k][l].checked) {
           param.push({
             "id": products[k][l].product.id,
-            "num": products[k][l].number,
+            "number": products[k][l].number,
           })
         }
       }

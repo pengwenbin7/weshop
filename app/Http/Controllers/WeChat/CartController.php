@@ -94,8 +94,8 @@ class CartController extends Controller
         $varia = json_decode($request->products);
         foreach ($varia as $key => $item) {
           $products[$key] = Product::find($item->id);
-          $products[$key]->number = $item->num;
-          $price += Product::find($item->id)->variable->unit_price * $item->num;
+          $products[$key]->number = $item->number;
+          $price += Product::find($item->id)->variable->unit_price * $item->number;
         }
         $coupons = auth()->user()->coupons;
         foreach ($coupons as $key => $coupon) {

@@ -221,6 +221,7 @@
         var distance = this.distance;
         var func = JSON.parse('{!! $products->storage->func !!}');
         this.freight =Math.floor(freight(func,weight,distance));
+        alert(this.freight);
       }
     },
     mounted: function() {
