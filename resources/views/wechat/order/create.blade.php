@@ -53,7 +53,10 @@
             </div>
 
             <div class="pirce">
-              <span>价格：<i class="black">￥@{{ number*unit_price+freight }}</i></span>
+              <span>价格：
+                <i class="black" v-if="!address_id">选择地址后显示价格</i>
+                <i class="black" v-if="address_id">￥@{{ number*unit_price+freight }}</i>
+              </span>
             </div>
           </div>
 	</div>
@@ -65,7 +68,8 @@
 	</div>
 	<div class="item">
           <span> 实付款</span>
-          <span class="value">@{{ number*unit_price+freight-coupon_discount }}</span>
+          <span class="value"  v-if="!address_id">选择地址后显示价格</span>
+          <span class="value" v-if="address_id">@{{ number*unit_price+freight-coupon_discount }}</span>
 	</div>
 
       </div>
@@ -117,7 +121,7 @@
     el: "#app",
     data: {
       number: {{ $products->number }},
-      address_id:  2,
+      address_id:  null,
       p_address_id:{{ $products->storage->address_id  }},
       freight: 0,
       channel_id: 1,
@@ -183,6 +187,7 @@
       },
       selectAddress: function() {
         oAddress();
+
       },
       reduceCartNubmer: function(i, a) {
         var _this = this;
@@ -215,7 +220,7 @@
         var weight = this.number * this.content;
         var distance = this.distance;
         var func = JSON.parse('{!! $products->storage->func !!}');
-        this.freight = freight(func,weight,distance);
+        this.freight =Math.floor(freight(func,weight,distance));
       }
     },
     mounted: function() {
@@ -262,12 +267,12 @@
               to: _this.p_address_id,
             }
             axios.post("{{ route("wechat.tool.distance") }}", param)
-              .then(function(res) {
-                alert(res)
-                if(res<0){
+              .then(function(res2) {
+                alert(res2)
+                if(res2.data<0){
                   alert("你的地址有误，请重新添加");
                 }else{
-                  _this.distance = res;
+                  _this.distance = res2.data;
                   _this.countFreight();
                 }
 
