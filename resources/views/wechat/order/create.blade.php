@@ -62,7 +62,7 @@
 	</div>
       </div>
       <div class="grid">
-	<div class="item" @click="show('coupon')"  v-if="coupons.length">
+	<div class="item" @click="show('coupon')"  v-if="coupons.length&&address_id ">
 	  <span> 优惠券</span>
 	  <span class="value y"><i>@{{ coupon_text }}</i> <i class="iconfont icon-zhankai"></i></span>
 	</div>
@@ -242,26 +242,19 @@
     return freight ? freight : func.other.factor * distance + func.other.const;
   }
 
-
-
-
-
-
   wx.ready(function() {
     oAddress();
   });
   function oAddress(){
     wx.openAddress({
       success: function(res) {
-	var _this = app;
+	      var _this = app;
         _this.name = res.userName;
         _this.tel = res.telNumber;
         _this.dist = res.provinceName + res.cityName + res.countryName + res.detailInfo;
         axios.post("{{ route("wechat.address.store") }}", res)
-          .then(function(res) {
-            _this.address_id = res.data.address_id;
-            var _this = this;
-            console.log(1);
+          .then(function(res1) {
+            _this.address_id = res1.data.address_id;
             var param ={
               from: _this.address_id,
               to: _this.p_address_id,

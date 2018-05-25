@@ -23,7 +23,7 @@ class CartController extends Controller
         $user = auth()->user();
         $carts = Cart::with(["address", "cartItems"])
                ->where("user_id", "=", $user->id)
-               ->orderBy("id", "desc")
+               ->orderBy("id")
                ->get();
         return view("wechat.cart.index", [
             "user" => $user,

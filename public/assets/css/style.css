@@ -375,7 +375,11 @@
   color: #00b945;
 }
 
-.cart-list {}
+.buy-box .cart-list {
+  height: 100%;
+  padding-bottom: 1.4rem;
+  overflow-y: scroll;
+}
 
 .cart-list .item {
   margin-bottom: .4rem;
