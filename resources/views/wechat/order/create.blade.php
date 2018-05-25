@@ -117,7 +117,8 @@
     el: "#app",
     data: {
       number: {{ $products->number }},
-      address_id:  null,
+      address_id:  1,
+      p_address_id:{{ $products->storage->address_id  }},
       freight: 0,
       channel_id: 1,
       coupon_id: 0,
@@ -219,6 +220,17 @@
     },
     mounted: function() {
       this.countFreight();
+      var _this = this;
+      console.log(1);
+      var param ={
+        id: _this.address_id,
+        p_address_id: _this.p_address_id,
+      }
+      axios.post("{{ route("wechat.tool.distance") }}", param)
+        .then(function(res) {
+          console.log(res);
+
+        });
     }
   });
 
@@ -252,7 +264,9 @@
         axios.post("{{ route("wechat.address.store") }}", res)
           .then(function(res) {
             _this.address_id = res.data.address_id;
+
           });
+
       },
       cancel: function() {
         //
