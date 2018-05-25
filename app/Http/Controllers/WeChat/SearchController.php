@@ -13,7 +13,7 @@ class SearchController extends Controller
     {
         $key = $request->input("keyword", '');
         if (!$key) {
-            $products = Product::with(["brand", "variable"])->all();
+            $products = Product::with(["brand", "variable", "categories"])->get();
             return view("wechat.search",["products" => $products]);
         }
         $arr = preg_split("/[\s]+/", $key);
@@ -24,13 +24,12 @@ class SearchController extends Controller
                 "keyword" => $k,
                 "action" => "search",
             ]);
-            $pobj = $pobj->where(function ($query) use ($k) {
-                return $query->where("name", "like", "%$k%")
-                    ->orWhere("model", "like", "%$k%")
-                    ->orWhere();
-            });
+            $pobj = $pobj->where(
+                function ($query) use ($k) {
+                    return $query->where("keyword", "like", "%$k%");
+                });
         }
-        $products = Product::where("name", "like", "%$key%")->get();
+        $products = $pobj->with(["brand", "variable", "categories"])->paginate(20);
         return view("wechat.search",["products" => $products]);
     }
 }

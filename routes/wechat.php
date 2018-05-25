@@ -79,4 +79,5 @@ Route::get("pay", "WeChat\PaymentController@pay")
 Route::get("offline", "WeChat\PaymentController@payOffline")
         ->name("wechat.pay.offline");
 
-Route::match(["get", "post"], "distance", "WeChat\ToolController@distance");
+Route::match(["get", "post"], "distance", "WeChat\ToolController@distance")
+    ->name("wechat.tool.distance");
