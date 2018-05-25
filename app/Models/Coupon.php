@@ -9,8 +9,9 @@ use Carbon\Carbon;
 
 class Coupon extends Model
 {
+    protected $dates = ["expire"];
     protected $fillable = [
-        "user_id", "discouont", "amount",
+        "user_id", "discount", "amount",
         "expire", "from_admin", "description",
     ];
 
