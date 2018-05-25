@@ -69,6 +69,24 @@ class Product extends Model
         return $this->hasOne("App\Models\ProductVariable");
     }
 
+    public function updateKeyword()
+    {
+        $cs = null;
+        // 考虑到分类不会太多，直接拼接字符串
+        foreach ($this->categories as $c) {
+            $cs .= "{$c->name} ";
+        }
+        $keyword = sprintf("%s %s %s %s",
+                           $this->name,
+                           $this->model,
+                           $this->brand->name,
+                           $cs);
+        if ($this->keyword != $keyword) {
+            $this->keyword = $keyword;
+            $this->save();
+        }
+    }
+
     /**
      * If you have called "variable" method,
      * or you'll use more than one of following method,

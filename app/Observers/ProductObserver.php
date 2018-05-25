@@ -28,18 +28,6 @@ class ProductObserver
 
     public function saved(Product $product)
     {
-        $cs = '';
-        foreach ($product->categories as $c) {
-            $cs .= "{$c->name} ";
-        }
-        $keyword = sprintf("%s %s %s %s",
-                           $product->name,
-                           $product->model,
-                           $product->brand->name,
-                           $cs);
-        if ($product->keyword != $keyword) {
-            $product->keyword = $keyword;
-            $product->save();
-        }
+        $product->updateKeyword();
     }
 }

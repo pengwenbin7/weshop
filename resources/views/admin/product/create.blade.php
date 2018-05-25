@@ -63,11 +63,11 @@
 	    <div class="col-sm-10">
 	      <div class="form-group col-sm-4">
 		<input class="form-control" name="content" type="number"
-			required value="25" placeholder="25">
+			v-model="content" required value="25" placeholder="25">
 	      </div>
 	      <div class="form-group col-sm-4">
 		<input class="form-control" name="measure_unit" type="text"
-			required value="kg"
+			required value="kg" v-model="measure_unit"
 			placeholder="kg">
 	      </div>
 	      <div class="form-group col-sm-4">
@@ -77,17 +77,28 @@
             </div>
 	  </div>
 
+	  <div class="form-group" v-if="is_ton">
+	    <label class="col-sm-2 control-label">吨价</label>
+	    <div class="col-sm-4">
+	      <div class="input-group">
+		<div class="input-group-addon">￥</div>
+		<input type="number" class="form-control"
+			min="0" step="0.01" v-model="ton_price">
+	      </div>
+	    </div>
+	  </div>
+	  
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">单价</label>
 	    <div class="col-sm-4">
 	      <div class="input-group">
 		<div class="input-group-addon">￥</div>
 		<input type="number" class="form-control" name="unit_price"
-			min="0" step="0.01" required>
+			v-model="unit_price" min="0" step="0.01" required>
 	      </div>
 	    </div>
 	  </div>
-
+	  
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">库存</label>
 	    <div class="col-sm-4">
@@ -137,6 +148,20 @@
     data: {
       brand: null,
       storages: [],
+      measure_unit: "kg",
+      ton_price: null,
+      content: 25
+    },
+    computed: {
+      is_ton: function () {
+	return this.is_ton = (1000 % this.content == 0) && (this.measure_unit == "kg");
+      },
+      factor: function () {
+	return this.is_ton? (1000 / this.content): 0;
+      },
+      unit_price: function () {
+	return this.ton_price / this.factor;
+      }
     },
     methods: {
       brandChange: function () {

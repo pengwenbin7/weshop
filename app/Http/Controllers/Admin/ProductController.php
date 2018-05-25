@@ -61,53 +61,31 @@ class ProductController extends Controller
         $product->packing_unit = $request->packing_unit;
         $product->sort_order = $request->input("sort_order", 1000);
         $product->active = $request->active;
-        $s0 = $product->save();
-        if (!$s0) {
+        
+        if (!$product->save()) {
             return ["err" => "save product error"];
         }
 
         // save product price
-        $price = new ProductPrice();
-        $price->fill([
+        ProductPrice::create([
             "product_id" => $product->id,
             "unit_price" => $request->unit_price,
         ]);
-        $s1 = $price->save();
-        if (!$s1) {
-            $product->delete();
-            return ["err" => "save price error"];
-        }
-
+        
         // save product category
-        $category = new ProductCategory();
-        $category->fill([
+        ProductCategory::create([
             "product_id" => $product->id,
             "category_id" => $request->input("category_id"),
             "is_primary" => 1,
         ]);
-        $s2 = $category->save();
-        if (!$s2) {
-            $price->delete();
-            $product->delete();
-            return ["err" => "save category error"];
-        }
         
         // save product variable
-        $variable = new ProductVariable();
-        $variable->fill([
+        ProductVariable::create([
             "product_id" => $product->id,
             "unit_price" => $request->unit_price,
             "stock" => $request->input("stock", 0),
         ]);
-        $s3 = $variable->save();
-        if (!$s3) {
-            $category->delete();
-            $price->delete();
-            $product->delete();
-            return ["err" => "save variable error"];
-        }
-               
-        // save product detail
+        
         $detail = $request->input("detail", false);
         if ($detail) {
             ProductDetail::create([
