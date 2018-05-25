@@ -82,7 +82,7 @@
       ckall: false, //全选状态
       totalprice: "0",
       distance: 1000,
-      cart_id: 1,
+      cart_id: {{ $cart->id }},
       PayChannel: 1
     },
     //总价
@@ -250,7 +250,7 @@
       for (var l in products[k]) {
         if (products[k][l].checked) {
           param.push({
-            "id": products[k][l].id,
+            "id": products[k][l].product.id,
             "num": products[k][l].number,
           })
         }
