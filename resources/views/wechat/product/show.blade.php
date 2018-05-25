@@ -80,7 +80,7 @@
     <div class="cart">
       <div class="create" v-on:click="createCart">
         <div class="txt">
-          <span class="black">新建选购单<small>(已创建1个采购单)</small>
+          <span class="black">新建选购单<small>(已创建{{ count(auth()->user()->carts) }}个采购单)</small>
                 </span>
         </div>
         <div class="icon">
@@ -88,12 +88,12 @@
         </div>
       </div>
       <div class="cart-list">
-        @foreach (auth()->user()->carts as $cart)
+        @foreach (auth()->user()->carts as $index => $cart)
         <div class="item" v-on:click="addToCart( {{ $cart->id }} )">
           <div class="cart-header">
             <div class="title">
-              <a>采购单1
-                            <small>(已添加2件商品)</small>
+              <a>采购单{{ $index+1 }}
+                            <small>(已添加{{ count($cart->cartItems) }}件商品)</small>
                         </a>
             </div>
             <div class="cart-del">
@@ -103,8 +103,8 @@
           <div class="cart-addr">
             <a>
               <div class="cart-user-info">
-                <span>收货人：</span>
-                <span class="tel"></span>
+                <span>收货人：{{ $cart->address->contact_name }}</span>
+                <span class="tel">{{ $cart->address->contact_tel }}</span>
               </div>
               <div class="cart-desc">
                 <p>收货地址: {{ $cart->address->getText() }}</p>
@@ -171,14 +171,14 @@
 
     <div class="gb-box">
       <div class="swith-bth" v-if="is_ton">
-        <div class="item" v-bind:class="{on:tonTap=='1'}" @click="tontap(1)">
+        <div class="item" v-bind:class="{on:tonTap=='0'}" @click="tontap(0)">
           <span>按包选购</span>
         </div>
-        <div class="item" v-bind:class="{on:tonTap=='2'}" @click="tontap(2)">
+        <div class="item" v-bind:class="{on:tonTap=='1'}" @click="tontap(1)">
           <span>按吨选购</span>
         </div>
       </div>
-      <div class="product" v-if="tonTap==1">
+      <div class="product" v-if="tonTap==0">
         <div class="item title  clearfix">
           <span class="p-bname">{{ $product->brand->name }}</span>
           <span class="p-name">
@@ -203,7 +203,7 @@
           </div>
         </div>
       </div>
-      <div class="product" v-if="tonTap==2">
+      <div class="product" v-if="tonTap==1">
         <div class="item title  clearfix">
           <span class="p-bname">{{ $product->brand->name }}</span>
           <span class="p-name">
@@ -220,7 +220,7 @@
               <a class="minus" v-on:click="reduceCartNubmer()"></a>
             </p>
             <p class="btn-input">
-              <input type="tel" step="1" ref="goodsNum" v-bind:value="ton_num" v-on:blur="textCartNumber()">
+              <input type="tel" step="1" ref="goodsNum" v-bind:value="ton_num" v-on:blur="textCartNumber()" @keydown="check($event)" >
             </p>
             <p class="btn-plus">
               <a class="plus" v-on:click="addCartNumber()"></a>
@@ -248,12 +248,10 @@
   var app = new Vue({
     el: "#app",
     data: {
-      cart_id: null,
-      cart_addr: null,
-      num: {{ 1000/$product->content }},  //按包购买数量
+      num: {{ $product->is_ton }}?{{ 1000/$product->content }}:1,  //按包购买数量
       content:{{ $product->content }},
-      ton_num:1,   //按吨购买数量
-      tonTap: "2",  //吨<-->包切换
+      ton_num:{{ $product->is_ton }},   //按吨购买数量
+      tonTap: {{ $product->is_ton }},  //吨<-->包切换 1 为吨 0为包
       buy_box: false,  //购买按钮弹窗
       addr_box:false, //购物单弹窗
       server_box:false, //
@@ -336,7 +334,7 @@
         setNum(this, "add");
       },
       textCartNumber: function(a) {
-        // setPrice(this, "blur");
+        setNum(this, "blur");
       },
       tontap: function(index) { //切换吨<-->包
         var _this = this;
@@ -346,6 +344,19 @@
           this.num = this.ton_num * 1000 / this.content;
         } else {
           this.ton_num = Math.ceil(this.num * this.content / 1000);
+        }
+      },
+      check(event){
+        console.log(event);
+        var thisDom = event.currentTarget;
+        var reg=new RegExp("\\d","g");
+        console.log(event.code.match(reg));
+        if(!event.code.match(reg))
+        {
+          var c = event.code;
+          console.log(thisDom.value);
+          thisDom.value = thisDom.value;
+          this.ton_num = thisDom.value
         }
       }
     }
@@ -357,11 +368,11 @@
     var mode = mode;
     var limit = _this.stock;
     var n_num = 0; //临时数量
-    if (_this.tonTap == 1) {
+    if (_this.tonTap == 0) {
       // console.log(_this.num);
       _this.num = getNum(_this, mode, _this.num);
 
-    } else if (_this.tonTap == 2) {
+    } else if (_this.tonTap == 1) {
       // console.log(getNum(_this,mode,_this.ton_num));
       _this.ton_num = getNum(_this, mode, _this.ton_num);
       _this.num = _this.ton_num * 1000 / _this.content;
@@ -372,7 +383,7 @@
 
   function getNum(_this, mode, n_num) {
     var weight = 0;
-    if (_this.tonTap == 1) {
+    if (_this.tonTap == 0) {
       weight = (n_num + 1) * _this.content;
     } else {
       weight = (n_num + 1) * 1000;
