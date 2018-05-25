@@ -12,6 +12,6 @@ class ToolController extends Controller
      */
     public function distance(Request $request)
     {
-        return App\Utils\Count::distance($request->from, $request->to);
+        return \App\Utils\Count::distance($request->from, $request->to);
     }
 }

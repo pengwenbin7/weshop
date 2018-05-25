@@ -117,7 +117,7 @@
     el: "#app",
     data: {
       number: {{ $products->number }},
-      address_id:  1,
+      address_id:  2,
       p_address_id:{{ $products->storage->address_id  }},
       freight: 0,
       channel_id: 1,
@@ -127,7 +127,7 @@
       coupon_text:"选择优惠券",
       unit_price:{{$products->variable->unit_price }},
       coupons: {!! $coupons !!},
-      distance:1000,
+      distance:0,
       coupon_box: false,
       content: {{ $products->content }},
       name: '',
@@ -219,18 +219,9 @@
       }
     },
     mounted: function() {
-      this.countFreight();
-      var _this = this;
-      console.log(1);
-      var param ={
-        id: _this.address_id,
-        p_address_id: _this.p_address_id,
-      }
-      axios.post("{{ route("wechat.tool.distance") }}", param)
-        .then(function(res) {
-          console.log(res);
 
-        });
+
+
     }
   });
 
@@ -264,6 +255,23 @@
         axios.post("{{ route("wechat.address.store") }}", res)
           .then(function(res) {
             _this.address_id = res.data.address_id;
+            var _this = this;
+            console.log(1);
+            var param ={
+              from: _this.address_id,
+              to: _this.p_address_id,
+            }
+            axios.post("{{ route("wechat.tool.distance") }}", param)
+              .then(function(res) {
+                alert(res)
+                if(res<0){
+                  alert("你的地址有误，请重新添加");
+                }else{
+                  _this.distance = res;
+                  _this.countFreight();
+                }
+
+              });
 
           });
 
