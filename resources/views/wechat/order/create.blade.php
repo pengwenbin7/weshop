@@ -62,7 +62,7 @@
 	</div>
       </div>
       <div class="grid">
-	<div class="item" @click="show('coupon')"  v-if="coupons.length">
+	<div class="item" @click="show('coupon')"  v-if="coupons.length&&address_id ">
 	  <span> 优惠券</span>
 	  <span class="value y"><i>@{{ coupon_text }}</i> <i class="iconfont icon-zhankai"></i></span>
 	</div>
