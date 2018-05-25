@@ -125,7 +125,7 @@
       p_address_id:{{ $products->storage->address_id  }},
       freight: 0,
       channel_id: 1,
-      coupon_id: null,
+      coupon_id: 2,
       coupon_discount:0,
       coupon_amount:0,
       coupon_text:"选择优惠券",
@@ -162,6 +162,7 @@
         if(m=="coupon"){
           this.coupon_discount = 0;
           this.coupon_text = "选择优惠券";
+          this.coupon_id = null;
         }
       },
       // storage default freight function
@@ -181,7 +182,6 @@
           this.coupon_box = false;
         }else{
           alert("此红包不可用");
-          this.coupon_box = false;
         }
 
       },
