@@ -255,8 +255,6 @@
         axios.post("{{ route("wechat.address.store") }}", res)
           .then(function(res1) {
             _this.address_id = res1.data.address_id;
-            var _this = this;
-            console.log(1);
             var param ={
               from: _this.address_id,
               to: _this.p_address_id,
