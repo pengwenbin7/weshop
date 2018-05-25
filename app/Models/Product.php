@@ -21,7 +21,7 @@ class Product extends Model
         "locale_id", "name", "brand_id",
         "storage_id", "model", "content",
         "measure_unit", "packing_unit",
-        "active", "sort_order",
+        "active", "sort_order", "keyword",
     ];
 
     public function pack()

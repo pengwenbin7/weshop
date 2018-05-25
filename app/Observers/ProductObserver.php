@@ -24,5 +24,10 @@ class ProductObserver
             $product->packing_unit,
         ];
         $product->unique_code = dechex(sprintf("%u", crc32(implode("", $arr))));
+        $product->keyword = sprintf("%s %s %s %s",
+                                   $product->name,
+                                   $product->model,
+                                   $product->brand->name,
+                                   $product->category()->name);
     }
 }
