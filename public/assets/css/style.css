@@ -440,7 +440,7 @@
   margin-bottom: .3rem;
   background-color: #fff;
   box-shadow: 1px 1px 2px #eee;
-  margin-top: .2rem;
+  margin-top: .3rem;
 }
 
 .cart-info-header .txt {
@@ -707,7 +707,6 @@
 .grid .item {
   border-bottom: 1px solid #eee;
 }
-
 .grid .item:last-child {
   border: none;
 }

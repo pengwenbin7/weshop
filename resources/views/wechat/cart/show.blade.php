@@ -27,7 +27,7 @@
         </div>
         <div class="p-info">
           <div class="title">
-            <span class="p-bname">@{{ item.product.name }}</span>
+            <span class="p-bname">@{{ item.brand_name }}</span>
             <span class="p-name">@{{ item.product.name }} </span>
             <span class="p-model">@{{ item.product.model }}</span>
           </div>
@@ -38,7 +38,7 @@
         <div class="p-edit">
           <div class="p-del">
             <span class="icons" v-on:click="del(i,index)">
-                   <i class="iconfont icon-del"></i>
+                   <i class="iconfont icon-shanchu"></i>
                 </span>
           </div>
           <div class="quantity">
@@ -141,8 +141,18 @@
         this.totalprice = getTotalPrice(this)
       },
       del: function(i, a) {
-        this.products[i].splice(a, 1);
-        this.totalprice = getTotalPrice(this)
+        var _this = this;
+        var id = _this.products[i][a].id;
+
+        axios.delete("{{ route("wechat.cart_item.index") }}"+"/"+id)
+        .then(function(res){
+          if(res.data.destroy){
+            console.log(res);
+            _this.products[i].splice(a, 1);
+            _this.totalprice = getTotalPrice(_this);
+          }
+        })
+
       }
     }
   })

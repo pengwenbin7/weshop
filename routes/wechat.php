@@ -52,10 +52,11 @@ Route::post("cart_add", "WeChat\CartController@addProduct")
 
 Route::resource("cart_item", "WeChat\CartItemController", [
     "names" => [
+        "index" => "wechat.cart_item.index",
         "update" => "wechat.cart_item.update",
         "destroy" => "wechat.cart_item.destroy",
     ],
-    "except" => ["store", "index", "create", "edit", "show"],
+    "except" => ["store", "create", "edit", "show"],
 ]);
 
 Route::resource("order", "WeChat\OrderController", [

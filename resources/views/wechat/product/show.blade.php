@@ -300,7 +300,8 @@
         var id = id;
         var params = {
           cart_id: id,
-          product_id: "{{ $product->id }}"
+          product_id: "{{ $product->id }}",
+          num : _this.num
         };
         axios.post("{{ route("wechat.cart.add_product") }}", params)
           .then(function(res) {
