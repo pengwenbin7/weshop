@@ -58,6 +58,7 @@ class CartController extends Controller
         $item = CartItem::firstOrCreate([
                 "cart_id" => $cart->id,
                 "product_id" => $request->product_id,
+                "number" => $request->num,
         ]);
 
         return ["add" => $item->id];

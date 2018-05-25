@@ -1,4 +1,4 @@
-@extends( "layouts.wechat")
+@extends( "layouts.wechat2")
 @section( "style")
   <style media="screen">
   [v-cloak] {
