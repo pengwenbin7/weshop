@@ -24,10 +24,22 @@ class ProductObserver
             $product->packing_unit,
         ];
         $product->unique_code = dechex(sprintf("%u", crc32(implode("", $arr))));
-        $product->keyword = sprintf("%s %s %s %s",
-                                   $product->name,
-                                   $product->model,
-                                   $product->brand->name,
-                                   $product->category()->name);
+    }
+
+    public function saved(Product $product)
+    {
+        $cs = '';
+        foreach ($product->categories as $c) {
+            $cs .= "{$c->name} ";
+        }
+        $keyword = sprintf("%s %s %s %s",
+                           $product->name,
+                           $product->model,
+                           $product->brand->name,
+                           $cs);
+        if ($product->keyword != $keyword) {
+            $product->keyword = $keyword;
+            $product->save();
+        }
     }
 }

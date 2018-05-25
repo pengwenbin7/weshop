@@ -41,7 +41,7 @@
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">品牌</label>
 	    <div class="col-sm-10">
-	      <select class="form-control select2" name="brand_id" v-model="brand" @change="brandChange" required>
+	      <select class="form-control select" name="brand_id" v-model="brand" @change="brandChange" required>
 		@foreach ($brands as $brand)
 		  @if ($brand->id == $product->brand_id)
 		    <option value="{{ $brand->id }}" selected>{{ $brand->name }}</option>

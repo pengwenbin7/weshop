@@ -22,10 +22,10 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $offset = $request->input("offset", 15);
+        $limit = $request->input("limit", 15);
         $products = Product::with(["variable", "detail", "brand", "storage"])
                   ->orderBy("id", "desc")
-                  ->paginate($offset);
+                  ->paginate($limit);
         return view("admin.product.index", ["products" => $products]);
     }
 
