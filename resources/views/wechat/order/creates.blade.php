@@ -1,9 +1,14 @@
 @extends( "layouts.wechat2")
-
+@section( "style")
+<style media="screen">
+  [v-cloak] {
+    display: none;
+  }
+</style>
+@endsection
 @section( "content")
-<div class="container" id="app">
+<div class="container" id="app" v-lock>
   <div class="order">
-
     <div class="address">
       <div class="a-info">
         <div class="name">
@@ -14,28 +19,24 @@
           <p>{{ $cart->address->province }}{{ $cart->address->city }}{{ $cart->address->district }}{{ $cart->address->detail }}</p>
         </div>
       </div>
-      <div class="right-arrow">
 
-      </div>
     </div>
-    <div class="products">
-      @foreach ($products as $product)
-      <div class="product">
+    <div class="products" v-for="items in products">
+      <div class="product" v-for="product in items">
         <div class="p-info">
           <div class="title">
-            <span class="p-bname">  {{ $product->brand->name }}</span>
-            <span class="p-name"> {{ $product->name }} </span>
-            <span class="p-model"> {{ $product->model }} </span>
+            <span class="p-bname">@{{ product.brand_name }}</span>
+            <span class="p-name"> @{{ product.name }} </span>
+            <span class="p-model"> @{{ product.model }} </span>
           </div>
           <div class="num clearfix">
-            <span>数量：<i class="black">{{ $product->number }}{{ $product->packing_unit }}</i><i class="black">{{ $product->number*$product->content }}KG</i></span>
+            <span>数量：<i class="black">@{{ product.number }}@{{ product.packing_unit }}</i><i class="black">@{{ Number(product.number) * Number(product.content) }}KG</i></span>
           </div>
           <div class="pirce">
-            <span>价格：<i class="black">￥{{ $product->variable->unit_price }}</i></span>
+            <span>价格：<i class="black">￥@{{ product.total }}</i></span>
           </div>
         </div>
       </div>
-      @endforeach
     </div>
     <div class="grid">
       <div class="item" @click="show('coupon')"  v-if="coupons.length">
@@ -44,7 +45,7 @@
     </div>
     <div class="item">
       <span> 实付款</span>
-      <span class="value">￥@{{ price }}</span>
+      <span class="value">￥@{{ price-coupon_discount }}</span>
     </div>
 
   </div>
@@ -97,15 +98,20 @@
   var app = new Vue({
     el: "#app",
     data: {
+      products:{!! $products !!},
       address_id: 1,
       channel_id: 1,
       coupon_id: null,
       freight: 0,
       coupon_text:"选择优惠券",
-      limit_price:{{ $price }},
-      price:{{ $price }},
+      limit_price:0,
+      price:0,
       coupon_box: false,
       coupons: {!! $coupons !!},
+      coupon_discount : 0,
+    },
+    beforeMount:function(){
+      count(this);
     },
     methods: {
       show: function(mode) {
@@ -127,7 +133,7 @@
         var discount = coupon.discount;
         if(amount<=this.limit_price){
           this.coupon_text = "-￥"+discount;
-          this.price = this.limit_price-discount;
+          this.coupon_discount = discount;
           this.coupon_id = coupon.id;
           this.coupon_box = false;
         }else{
@@ -141,7 +147,45 @@
     mounted: function() {}
 
   });
+  function count(_this){
+    var _this = _this;
+    var products = _this.products;
+    var fee = 0, distance = 0, weight = 0, total = 0,limit_price = 0, func;
+    //循环数组获得距离-和公式
+    for (var n in products) {
+      weight = 0;
+      total = 0;
+      distance = products[n][0].distance;
+      func     = JSON.parse(products[n][0].func);
+      for (var m in products[n]) {
+          weight += products[n][m].number * Number(products[n][m].content);
+          total  += products[n][m].number * Number(products[n][m].price)
+      }
+        fee = freight(func, weight, distance)/weight;
+        console.log("物品总计  =>   "+total+"     运费计算(kg)  =>   "+fee);
+        // 按比例分配费用
+      for (var z in products[n]) {
+          weight = products[n][z].number * Number(products[n][z].content);
+          total = Math.floor( products[n][z].number * Number(products[n][z].price)+weight*fee)
+          products[n][z].total  = total;
+          _this.limit_price += total;
+          _this.price += total
+      }
+    }
+    //赋值
 
+  }
+  function freight(func, weight, distance) {
+    var fee = 0;
+    func.area.forEach(function(e, index, array) {
+      if (e.low <= weight && weight < e.up) {
+        fee = e.factor * distance + e.const;
+        return
+      }
+    });
+    return fee ? fee : func.other.factor * distance + func.other.const;
+  }
+  console.log({!! $products !!});
   function pay() {
     var data = {
       address_id: app.address_id,
