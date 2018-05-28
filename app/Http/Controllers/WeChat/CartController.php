@@ -75,13 +75,11 @@ class CartController extends Controller
             $products[$item->product->storage_id][] = $item;
             $item->brand_name = $item->product->brand->name;
             $item->stock = $item->product->variable->stock;
-            $item->unit_price = $item->product->variable->unit_price;
             $item->price = $item->product->variable->unit_price;
             $item->func = $item->product->storage->func;
             $item->distance = Count::distance($cart->address->id,$item->product->storage->id);
             $item->checked = false;
         }
-
         return view("wechat.cart.show", [
             "cart" => $cart,
             "items" => json_encode($items),
@@ -92,22 +90,29 @@ class CartController extends Controller
     public function buyAll(Request $request)
     {
         $products = [];
-        $price=0;
         $varia = json_decode($request->products);
+        $cart = Cart::find($request->cart_id);
         foreach ($varia as $key => $item) {
-          $products[$key] = Product::find($item->id);
-          $products[$key]->number = $item->number;
-          $price += Product::find($item->id)->variable->unit_price * $item->number;
+         $items[] = Product::find($item->id);
+         $items[$key]->number = $item->number;
+        }
+        foreach ($items as $item) {
+          $products[$item->storage_id][]=$item;
+          $item->brand_name = $item->brand->name;
+          $item->price = $item->variable->unit_price;
+          $item->total = 0;//加运费价格
+          $item->func = $item->storage->func;
+          $item->distance = Count::distance($cart->address->id,$item->storage->id);
+          // code...
         }
         $coupons = auth()->user()->coupons;
         foreach ($coupons as $key => $coupon) {
             $coupon->expire_time = $coupon->expire->toDateString();
         }
-        $data["products"] = $products;
+        $data["products"] = json_encode($products);
         $data["payChannels"] = PayChannel::get();
         $data["user"] = auth()->user();
         $data["varia"] = json_encode($varia);
-        $data["price"] = $price;
         $data["coupons"] = json_encode($coupons);
         $data["cart"] = Cart::find($request->cart_id);
         return view("wechat.order.creates", $data);
