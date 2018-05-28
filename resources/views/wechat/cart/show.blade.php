@@ -13,7 +13,7 @@
 
     <div class="cart-info-header">
       <div class="txt">
-        <span>{{ $cart->name }}<small>(已添加{{ count($cart->cartItems) }}件商品)</small></span>
+        <span>选购单<small>(已添加{{ count($cart->cartItems) }}件商品)</small></span>
       </div>
       <div class="icon">
         <i class="iconfont icon-del"></i>
@@ -59,7 +59,7 @@
 <div class="goBuy">
   <div class="check-all">
     <div class="p-check">
-      <input type="checkbox" id="ck-all" v-on:change="checkAll()" v-bind:checked="ckall">
+      <input type="checkbox" id="ck-all" onchange="checkAllBtn()">
       <label for="ck-all">全选</label>
     </div>
   </div>
@@ -73,23 +73,17 @@
 @endsection
 @section( "script")
 <script>
-  var priceEle = document.getElementById("totalprice");
-  priceEle.innerText = "1";
+  var totalDom = document.getElementById("totalprice");
+  var domAll = document.getElementById("ck-all");
   var app = new Vue({
     el: '#app',
     data: {
       products: {!!$products!!},
-      ckall: false, //全选状态
-      totalprice: "0",
-      distance: 1000,
       cart_id: {{ $cart->id }},
-      PayChannel: 1
+      PayChannel: 1,
     },
     //总价
     beforeMount: function() { //加载页面前计算价格
-      console.log({!! $products !!})
-      this.totalprice = getTotalPrice(this);
-      checkall(this);
 
     },
     methods: {
@@ -99,150 +93,108 @@
       },
       reduceCartNubmer: function(i, a) {
         var _this = this;
-        console.log(_this.products[i][a].number)
         if (_this.products[i][a].number <= 1) {
           return
         } else {
-          // Vue.http.get('./a.json').then(successCallback); //点击减少，发送请求，成功后数量减一
-          function successCallback(date) {
-            if (date.body.code) {
-              console.log("请求成功")
-              _this.products[i][a].number--;
-              _this.totalprice = getTotalPrice(_this)
-            }
-          }
           _this.products[i][a].number--;
-          _this.totalprice = getTotalPrice(_this)
+         count(this);
         }
       },
       addCartNumber: function(i, a) {
-
         this.products[i][a].number++;
-        this.totalprice = getTotalPrice(this)
+        count(this);
       },
       textCartNumber: function(i, a) {
-        console.log(this.$refs.xxx)
         this.products[i][a].number = Number(this.$refs.xxx[a].value)
+        count(this);
       },
       check: function(i, a) {
         this.products[i][a].checked = !this.products[i][a].checked;
+        count(this);
         checkall(this);
-        this.totalprice = getTotalPrice(this)
       },
-      checkAll: function() {
-        var status = this.ckall;
-        console.log(status)
-        for (var m in this.products) {
-          for (var n in this.products[m]) {
-            this.products[m][n].checked = !status;
+      setCheckAll: function(status){
+        var products = this.products;
+        for(var x in products){
+          for (var y in products[x]){
+            products[x][y].checked = status;
           }
         }
-        checkall(this);
-        this.totalprice = getTotalPrice(this)
+        count(this);
       },
       del: function(i, a) {
         var _this = this;
         var id = _this.products[i][a].id;
-
         axios.delete("{{ route("wechat.cart_item.index") }}"+"/"+id)
         .then(function(res){
           if(res.data.destroy){
-            console.log(res);
             _this.products[i].splice(a, 1);
-            _this.totalprice = getTotalPrice(_this);
+            count(_this)
           }
         })
-
       }
     }
   })
-
-  function getTotalPrice(_this) {
+  function count(_this){
     var _this = _this;
-    var arr = _this.products;
-    var distance = _this.distance;
-    resetPrice(_this)
-    var totalPrice = 0;
-    for (var i in arr) {
-      for (var j in arr[i]) {
-        if (arr[i][j].checked) {
-          totalPrice += arr[i][j].number * arr[i][j].product.content * arr[i][j].price;
+    var products = _this.products;
+    var fee = 0, distance = 0, weight = 0, total = 0, func;
+    //循环数组获得距离-和公式
+    for (var n in products) {
+      weight = 0;
+      distance = products[n][0].distance;
+      func     = JSON.parse(products[n][0].func);
+      for (var m in products[n]) {
+        if(products[n][m].checked){
+          weight += products[n][m].number * Number(products[n][m].product.content);
+          total  += products[n][m].number * Number(products[n][m].price)
         }
       }
-
+      if(weight){
+        fee += freight(func, weight, distance)
+      }
     }
-    console.log(totalPrice);
-    priceEle.innerText = totalPrice;
-    return totalPrice;
+    //赋值
+    totalDom.innerText = total + fee;
+    console.log("物品总计  =>   "+total+"     运费计算  =>   "+fee);
   }
-
-  function resetPrice(_this) {
-    var _this = _this;
-    var pro = _this.products;
-    var distance = _this.distance;
-    for (var p in pro) {
-      var func = JSON.parse(pro[p][0].func);
-      // 获取每个数组
-      //计算每个数组的价格
-      var weight = 0;
-      for (var g in pro[p]) {
-        if (pro[p][g].checked) {
-          weight += pro[p][g].number * pro[p][g].product.content;
-        }
-
-      }
-      console.log(weight)
-      //计算   费用 = 初始值 + 重量*距离*系数 == 初始值/重量+距离*系数
-      if (weight) {
-        pro[p][0].freight = freight(func, weight, distance) / weight;
-      } else {
-        pro[p][0].freight = 0;
-      }
-
-      console.log(pro[p])
-    }
-    for (var x in pro) {
-      for (var z in pro[x]) {
-        if (pro[x][z].checked) {
-          pro[x][z].price = Number(pro[x][z].unit_price) + Number(pro[x][0].freight);
-        } else {
-          pro[x][z].price = Number(pro[x][z].unit_price);
-        }
-      }
-    }
-  }
-
+  //计算费用
   function freight(func, weight, distance) {
-    var freight = 0;
+    var fee = 0;
     func.area.forEach(function(e, index, array) {
       if (e.low <= weight && weight < e.up) {
-        freight = e.factor * distance + e.const;
+        fee = e.factor * distance + e.const;
         return
       }
     });
-    return freight ? freight : func.other.factor * distance + func.other.const;
+    return fee ? fee : func.other.factor * distance + func.other.const;
   }
-
-  function getDate(name) {
-    console.log("ajax获取" + name + "的数据")
-  }
-
   function checkall(_this) {
-    var _this = _this;
     var products = _this.products;
-    for (var k in products) {
-      for (var l in products[k]) {
-        if (!products[k][l].checked) {
-          _this.ckall = false;
-          return;
-        } else {
-          _this.ckall = true;
+    var check = true;
+    for(var x in products){
+      if(!check){
+        break;
+      }
+      for (var y in products[x]){
+        if(!products[x][y].checked){
+          check = false;
+          break;
+        }else{
+          check = true;
         }
       }
-
+    }
+    if(check){
+      domAll.checked = true;
+    }else{
+      domAll.checked = false;
     }
   }
-
+  function checkAllBtn(){
+    var status   = domAll.checked;
+    app.setCheckAll(status);
+  }
   function buyAll() {
     var param = [];
     var products = app.products;
@@ -255,7 +207,6 @@
           })
         }
       }
-
     }
     if (param.length) {
       location.assign("{{ route("wechat.cart.buyall") }}" + "?cart_id=" + app.cart_id + "&&products=" + JSON.stringify(param));

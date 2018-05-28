@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\PayChannel;
 use App\Models\Product;
+use App\Utils\Count;
 use Auth;
 
 class CartController extends Controller
@@ -77,6 +78,7 @@ class CartController extends Controller
             $item->unit_price = $item->product->variable->unit_price;
             $item->price = $item->product->variable->unit_price;
             $item->func = $item->product->storage->func;
+            $item->distance = Count::distance($cart->address->id,$item->product->storage->id);
             $item->checked = false;
         }
 
