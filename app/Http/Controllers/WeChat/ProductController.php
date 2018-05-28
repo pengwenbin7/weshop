@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\PayChannel;
 use App\Models\coupon;
+use App\Models\UserAction;
 
 class ProductController extends Controller
 {
@@ -31,6 +32,11 @@ class ProductController extends Controller
         $v = $product->variable;
         $v->click += 1;
         $v->save();
+        UserAction::create([
+            "user_id" => auth()->user()->id,
+            "product_id" => $product->id,
+            "action" => "view",
+        ]);
         return view("wechat.product.show", ["product" => $product, "title" => $product->name,]);
     }
 
@@ -40,7 +46,9 @@ class ProductController extends Controller
         $data["products"]->number = $request->num;
         $data["payChannels"] = PayChannel::get();
         $data["user"] = auth()->user();
-        $data["price"] = Product::find($request->product_id)->variable->unit_price*$request->num;
+        $data["price"] = Product::find($request->product_id)
+                       ->variable
+                       ->unit_price * $request->num;
         $coupons = auth()->user()->coupons;
         foreach ($coupons as $key => $coupon) {
             $coupon->expire_time = $coupon->expire->toDateString();

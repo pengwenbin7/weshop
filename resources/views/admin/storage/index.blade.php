@@ -39,6 +39,7 @@
 		<tr>
 		  <th>id</th>
 		  <th>名称</th>
+		  <th>品牌</th>
 		  <th>操作</th>
 		</tr>
 	      </thead>
@@ -47,6 +48,7 @@
 		  <tr role="row">
 		    <td>{{ $item->id }}</td>
 		    <td>{{ $item->name }}</td>
+		    <td>{{ $item->brand->name }}</td>
 		    <td><a href="{{ route("admin.storage.edit", ["id" => $item->id]) }}">编辑</a></td>
 		  </tr>
 		@endforeach

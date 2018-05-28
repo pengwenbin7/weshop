@@ -60,7 +60,7 @@
 		      @endif
 		    </td>
 		    <td>{{ $order->adminUser->name }}</td>
-		    <td>{{ $order->created_at->toDateString() }}</td>
+		    <td>{{ $order->created_at }}</td>
 		    <td>
 		      @switch ($order->status)
 		      @case ($order::ORDER_STATUS_WAIT)

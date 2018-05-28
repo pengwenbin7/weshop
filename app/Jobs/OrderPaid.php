@@ -31,7 +31,8 @@ class OrderPaid implements ShouldQueue
     public function handle()
     {
         $url = route("admin.order.show", ["id" => $this->order->id]);
-        $message = '你的用户订单付款状态发生变化【<a href="' . $url . '">查看</a>】';
+        $name = $this->order->user->name;
+        $message = '<a href="' . $url . '">你的用户【' . "{$name}】的订单状态变化</a>";
         $this->order->adminUser->sendMessage($message);
     }
 }
