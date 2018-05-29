@@ -299,6 +299,9 @@
 .products .product .title span {
   padding-right: .1rem;
 }
+.products .product .title .p-bname{
+  font-size: .28rem;
+}
 
 /*footer*/
 
@@ -331,7 +334,12 @@
   display: block;
   height: 1.2rem;
 }
-
+.footer .item a span{
+  display: block;
+  height: .6rem;
+  text-align: center;
+  line-height: .6rem;
+}
 .footer .item a .iconfont {
   font-size: 0.5rem;
   font-weight: normal;
@@ -811,13 +819,19 @@
   background-color: #fff;
 }
 
-.info h1 {
+.info h1,.info h2{
   width: 80%;
   font-size: .4rem;
   line-height: .5rem;
-  height: 1.3rem;
+  height: .7rem;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
+.info h2{
+  font-size: .36rem;
+}
 .info .collect {
   position: absolute;
   right: .4rem;
@@ -1080,12 +1094,22 @@
   font-weight: bold;
 }
 
+.gb-box .product .item.title {
+  padding: .1rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .gb-box .product .item.title span {
   display: inline;
   padding-right: .2rem;
   font-size: .4rem;
 }
-
+.gb-box .product .item.title span {
+  display: inline;
+  padding-right: .2rem;
+  font-size: .4rem;
+}
 .gb-box .product .item {
   padding: .1rem 0;
   font-size: .36rem;
@@ -1177,6 +1201,7 @@
 .order .address p {
   line-height: .8rem;
   font-size: .3rem;
+  color: red;
 }
 
 .order .address .a-info {
@@ -1191,6 +1216,7 @@
 }
 .order .address .a-info .a-dist span{
   word-break: break-all;
+  font-size: .28rem;
 }
 .order .address .name .user-name {
   color: #151515;
@@ -1223,7 +1249,9 @@
   margin: .07rem 0;
   margin-right: .1rem;
 }
-
+.order .product .num .quantity{
+  float: right;
+}
 .order .products .product .num {
   line-height: .8rem;
 }
@@ -1256,11 +1284,19 @@
   color: #00B945;
   margin-right: .1rem;
 }
-
+.order .products .product .pirce .disable{
+  font-weight: normal;
+  color: #aaa;
+  font-size: .28rem;
+}
 .order .grid .item span.value i {
   margin-left: .2rem;
 }
-
+.order .grid .item span.value.disable{
+  font-weight: normal;
+  color: #aaa;
+  font-size: .3rem;
+}
 .paymode {
   background-color: #fff;
   position: relative;
@@ -1511,7 +1547,11 @@
 .order-address .address-detail p {
   line-height: .4rem;
 }
-
+.address-detail p.p-list{
+  font-size: .28rem;
+  color: #888;
+  line-height: .5rem;
+}
 .order-address .address-detail p.small {
   font-size: .3rem;
 }
@@ -1539,8 +1579,11 @@
 
 .product-info .product-detail {
   padding: .3rem .4rem;
+  border-bottom: 1px solid #ddd;
 }
-
+.product-info .product-detail:last-child{
+  border-bottom: none;
+}
 .product-info .product-detail .item {
   width: 50%;
   float: left;

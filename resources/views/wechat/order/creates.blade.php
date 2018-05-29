@@ -16,7 +16,7 @@
           <span>{{ $cart->address->contact_tel }}</span>
         </div>
         <div class="a-dist">
-          <p>{{ $cart->address->province }}{{ $cart->address->city }}{{ $cart->address->district }}{{ $cart->address->detail }}</p>
+          <span class="p-dist">{{ $cart->address->province }}{{ $cart->address->city }}{{ $cart->address->district }}{{ $cart->address->detail }}</span>
         </div>
       </div>
 
@@ -25,9 +25,9 @@
       <div class="product" v-for="product in items">
         <div class="p-info">
           <div class="title">
-            <span class="p-bname">@{{ product.brand_name }}</span>
-            <span class="p-name"> @{{ product.name }} </span>
-            <span class="p-model"> @{{ product.model }} </span>
+            <p><span class="p-name"> @{{ product.name }}&nbsp; &nbsp;@{{ product.model }} </span></p>
+            <p> <span class="p-bname">@{{ product.brand_name }}</span></p>
+
           </div>
           <div class="num clearfix">
             <span>数量：<i class="black">@{{ product.number }}@{{ product.packing_unit }}</i><i class="black">@{{ Number(product.number) * Number(product.content) }}KG</i></span>
@@ -45,7 +45,7 @@
     </div>
     <div class="item">
       <span> 实付款</span>
-      <span class="value">￥@{{ price-coupon_discount }}</span>
+      <span class="value y">￥@{{ price-coupon_discount }}</span>
     </div>
 
   </div>

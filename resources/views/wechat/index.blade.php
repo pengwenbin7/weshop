@@ -6,14 +6,14 @@
     <div class="index" id="app">
       <div class="search">
 	<div class="i-search">
-	  <form action="{{ route("wechat.search") }}" method="get">
+    <a  href="{{ route("wechat.search") }}">
 	    <input type="text" name="keyword" id="keyword" value="" placeholder="输入关键词快速查找商品" />
 	    <input class="btn-submit" type="submit" value="找货" />
-	  </form>
+      </a>
 	</div>
 	<div class="hot-search" v-on:click="getAddress">
 	  <div class="title">
-	    <span>热门搜索</span>
+	    <span>热搜</span>
 	  </div>
 	  <div class="h-list">
 	    <a href="">钛白粉</a>
@@ -32,7 +32,7 @@
 
       <div class="products" id="product">
 	<div class="title">
-	  <span>热卖商品</span>
+	  <span>热卖</span>
 	</div>
 	@foreach($products as $product)
 	  <div class="product">

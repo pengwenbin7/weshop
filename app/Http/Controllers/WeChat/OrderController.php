@@ -34,6 +34,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
+        return $order->shipments;
         return view("wechat.order.show",["order" => $order, "title" => "订单详情"]);
     }
 
@@ -108,7 +109,7 @@ class OrderController extends Controller
             ]);
             $totalPrice += $item->price * $item->number;
         }
-        
+
         // create payment
         $payment = new Payment();
         $payment->order_id = $order->id;

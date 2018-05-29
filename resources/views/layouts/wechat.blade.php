@@ -37,7 +37,7 @@
       <div class="item  {{ url()->current() == route("wechat.home.index")? "on":"" }}">
         <a href="{{ route("wechat.home.index") }}"><span class="icons">
           <i class="iconfont icon-user{{ url()->current() == route("wechat.home.index")? "-on":"" }}"></i>
-        </span><br><span>我的</span></a>
+        </span><br>我的</a>
       </div>
     </div>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>

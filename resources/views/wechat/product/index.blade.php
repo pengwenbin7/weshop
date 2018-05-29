@@ -9,7 +9,7 @@
   <div class="category" id="app">
     <div class="header" ref="header">
       <div class="search">
-        <a class="search-box" href="{{ route("wechat.index") }}">
+        <a class="search-box" href="{{ route("wechat.search") }}">
           <i class="iconfont icon-sousuo"></i><span>快速搜索</span>
       </a>
       </div>

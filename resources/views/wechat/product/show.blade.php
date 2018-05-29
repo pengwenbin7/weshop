@@ -19,13 +19,13 @@
                 </span>
       </div>
       <h1>
-                <span>
-                    {{ $product->brand->name }}</span>
+
+
                 <span>
                     {{ $product->name }}</span>
                 <span>{{ $product->model }}</span>
             </h1>
-
+            <h2>{{ $product->brand->name }}</h2>
       <div class="i-info">
         <p>
           <del>历史价格￥788800/吨</del>
@@ -187,6 +187,7 @@
           <span class="p-model">{{ $product->model }}
                     </span>
         </div>
+
         <div class="item clearfix">
           <span>重量</span>
           <span class="value"><i ref = "productW">@{{ weight }}</i></span>
@@ -205,12 +206,10 @@
       </div>
       <div class="product" v-if="tonTap==1">
         <div class="item title  clearfix">
+          <span class="p-name">{{ $product->name }}&nbsp;&nbsp; {{ $product->model }}</span>
+        </div>
+        <div class="item title  clearfix">
           <span class="p-bname">{{ $product->brand->name }}</span>
-          <span class="p-name">
-                        {{ $product->name }}
-                    </span>
-          <span class="p-model">{{ $product->model }}
-                    </span>
         </div>
         <div class="item clearfix">
           <span>重量</span>
