@@ -178,7 +178,7 @@ class ProductController extends Controller
             $detail->save();
         }
 
-        return redirect()->route("admin.product.show", $product);
+        return redirect()->route("admin.product.index");
     }
 
     /**

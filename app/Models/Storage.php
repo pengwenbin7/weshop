@@ -23,12 +23,4 @@ class Storage extends Model
         return $this->belongsTo("App\Models\Brand");
     }
 
-    /**
-     * If you have called "address" method,
-     * don't call me. Thks.
-     */
-    public function center()
-    {
-        return $this->address()->city_center;
-    }
 }

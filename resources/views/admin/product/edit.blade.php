@@ -64,12 +64,12 @@
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">仓库</label>
 	    <div class="col-sm-10">
-	      <select v-if="storages.length" class="form-control select2" name="storage_id" required>
+	      <select v-if="brand_changed" class="form-control select" name="storage_id" required>
 		<option v-for="option in storages" v-bind:value="option.id">
 		  @{{ option.name }}
 		</option>
 	      </select>
-	      <select v-else class="form-control select2" name="storage_id" required>
+	      <select v-else class="form-control select" name="storage_id" required>
 		@foreach ($product->brand->storages as $storage)
 		  @if ($storage->id == $product->storage_id)
 		    <option value="{{ $storage->id }}" selected>
@@ -90,20 +90,31 @@
 	    <div class="col-sm-10">
 	      <div class="form-group col-sm-4">
 		<input class="form-control" name="content" type="number"
-			required value="{{ $product->content }}" placeholder="25">
+			required v-model="content">
 	      </div>
 	      <div class="form-group col-sm-4">
 		<input class="form-control" name="measure_unit" type="text"
-			required value="{{ $product->measure_unit }}"
+			required v-model="measure_unit"
 			placeholder="kg">
 	      </div>
 	      <div class="form-group col-sm-4">
 		<input class="form-control" name="packing_unit" type="text"
-			placeholder="包" required value="{{ $product->packing_unit }}">
+			placeholder="包" required v-model="packing_unit">
 	      </div>
             </div>
 	  </div>
 
+	  <div class="form-group" v-if="is_ton">
+	    <label class="col-sm-2 control-label">吨价</label>
+	    <div class="col-sm-4">
+	      <div class="input-group">
+		<div class="input-group-addon">￥</div>
+		<input type="number" class="form-control"
+			min="0" step="0.01" v-model="ton_price">
+	      </div>
+	    </div>
+	  </div>
+	  
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">单价</label>
 	    <div class="col-sm-4">
@@ -171,10 +182,27 @@
     el: "#app",
     data: {
       brand: "{{ $product->brand_id }}",
-      storages: []
+      brand_changed: 0,
+      storages: [],
+      measure_unit: "{{ $product->measure_unit }}",
+      ton_price: {{ $product->is_ton }},
+      content: "{{ $product->content }}",
+      packing_unit: "{{ $product->packing_unit }}"
+    },
+    computed: {
+      is_ton: function () {
+	return this.is_ton = (1000 % this.content == 0) && (this.measure_unit == "kg");
+      },
+      factor: function () {
+	return this.is_ton? (1000 / this.content): 0;
+      },
+      unit_price: function () {
+	return this.ton_price / this.factor;
+      }
     },
     methods: {
       brandChange: function () {
+	this.brand_changed = 1;
 	var $this = this;
 	var url = "{{ route("admin.storage.index", ["api" => 1]) }}" + "&brand_id=" + this.brand;
 	axios.get(url)

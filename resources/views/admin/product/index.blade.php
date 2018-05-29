@@ -74,6 +74,8 @@
 		    </td>
 		    <td>
 		      <a href="{{ route("admin.product.edit", $item) }}">编辑</a>
+		      &nbsp;|&nbsp;
+		      <a href="{{ route("admin.product.show", $item) }}">详细</a>
 		    </td>
 		  </tr>
 		@endforeach

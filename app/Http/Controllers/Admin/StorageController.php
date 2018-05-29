@@ -112,7 +112,6 @@ class StorageController extends Controller
      */
     public function edit(Storage $storage)
     {
-        return $storage;
         $data["storage"] = $storage;
         $data["brands"] = Brand::select("id", "name")->get();
         return view("admin.storage.edit", $data);
