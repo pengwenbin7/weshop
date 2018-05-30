@@ -15,16 +15,23 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        $id = $request->id;
+        $page = 1;
+        if($id==""){
         $condition = null;
         $categories = Category::all();
         $brands = Brand::all();
-        $products = Product::with(["brand", "storage", "variable"])->paginate(10);
+        $products = Category::find(1)->products;
         return view("wechat.product.index", [
-            "products" => $products,
+            "products" => json_encode($products),
             "categories" => json_encode($categories),
             "brands" => $brands,
             "title" => "分类",
         ]);
+      }else{
+        $products = Category::find($id)->products;
+        return $products;
+      }
     }
 
     public function show(Product $product)

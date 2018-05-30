@@ -16,7 +16,7 @@
     </div>
     <div class="cat-nav" ref="left">
       <ul id="cat_nav">
-        <li v-for="(item,index) in items" @click="show(index)"  v-bind:class='{on:active==index}' v-cloak>
+        <li v-for="(item,index) in items" @click="show(item.id)"  v-bind:class='{on:active==index}' v-cloak>
         <div :class="index == 0 ? 'item on':'item'">
           <span class="c-name">@{{ item.name }}</span>
         </div>
@@ -43,30 +43,26 @@
         </div>
       </div>
       <div class="products" ref="right">
-        @foreach ($products as $product)
-        <div class="product">
-          <a href="{{ route("wechat.product.show", $product->id) }}">
+
+        <div class="product" v-for="product in products">
+          <a >
             <div class="prop">
               <p class="black">
-                <span class="p-name">{{ $product->name }}</span>
-                <span class="p-model">{{ $product->model }}</span>
+                <span class="p-name">@{{ product.name }}</span>
+                <span class="p-model">@{{ product.model }}</span>
               </p>
               <p class="gray">
-                <span class="p-bname">{{ $product->brand->name }}</span>
+                <span class="p-bname">@{{ product.name }}</span>
               </p>
               <p class="pirce">
-                @if($product->is_ton)
-                  <span class="y"><i>￥</i>{{ $product->variable->unit_price*1000/$product->content }}/吨</span>
-                  @else
-                  <span class="y"><i>￥</i>{{ $product->variable->unit_price }}/{{ $product->packing_unit }}</span>
-                  @endif
+
               </p>
             </div>
           </a>
         </div>
-        @endforeach
 
 
+      </div>
       </div>
     </div>
   </div>
@@ -78,7 +74,8 @@
     el: '#app',
     data: {
       items: {!! $categories !!},
-      active: "0"
+      active: "0",
+      products:{!! $products !!}
     },
     mounted: function() {
 
@@ -91,20 +88,25 @@
       this.$refs.right.style.height = _height - _h2 + "px";
     },
     methods: {
-      show: function(index) {
-        var catName = this.items[index].cateName;
-        this.active = index;
-        console.log(this.active, index)
-        getDate(catName);
-      }
+      show: function(id) {
+        var id = id;
+        // this.active = index;
+        this.getDate(id);
+      },
+      getDate: function(id) {
+        var _this = this;
+        axios.get("{{ route("wechat.product.index") }}"+"?page=1&&id="+id )
+          .then(function(res) {
+          console.log(res.data);
+          _this.products = res.data;
+        })
+      },
     },
     beforeRouteLeave: function() {
       console.log(1)
     }
   })
 
-  function getDate(name) {
-    console.log("ajax获取" + name + "的数据")
-  }
+
 </script>
 @endsection
