@@ -22,11 +22,16 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
+        $status = $request->order_status;
+        // return $status;
         $orders = Order::with(["orderItems", "shipments"])
                 ->where("user_id", "=", $user->id)
+                ->when($status!=null,function ($query) use ($status) {
+                    return $query->where('payment_status', '=', $status);
+                })
                 ->orderBy("created_at", "desc")
                 ->get();
         return view("wechat.order.index",["orders"=>$orders, "title" => "我的订单"]);
@@ -34,7 +39,6 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        return $order->shipments;
         return view("wechat.order.show",["order" => $order, "title" => "订单详情"]);
     }
 
