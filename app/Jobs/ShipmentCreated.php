@@ -33,7 +33,7 @@ class ShipmentCreated implements ShouldQueue
      */
     public function handle()
     {
-        $url = route("admin.shipment.show", ["id" => $this->shipment->id]);
+        $url = route("admin.shipment.show", $this->shipment);
         $msg = '待处理的发货单【<a href="' . $url . '">查看</a>】';
         $ids = [];
         Department::permission("ship")
@@ -42,10 +42,11 @@ class ShipmentCreated implements ShouldQueue
             ->each(function ($d) use (&$ids) {
                 $ids[] = $d->id;
             });
+
         $work = EasyWeChat::work();
         $work->messenger
             ->ofAgent(env("WECHAT_WORK_AGENT_ID"))
-            ->message($message)
+            ->message($msg)
             ->toParty($ids)
             ->send();
     }
