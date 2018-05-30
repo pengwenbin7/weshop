@@ -6,13 +6,13 @@
 
       <div class="taps">
         <div class="item">
-          <a class="on">全部订单</a>
+          <a class="{{ url()->full() == route("wechat.order.index")? "on":"" }}" href="{{ route("wechat.order.index") }}">全部订单</a>
         </div>
         <div class="item">
-          <a>待付款</a>
+          <a class="{{ url()->full() == route("wechat.order.index","order_status=0")? "on":"" }}" href="{{ route("wechat.order.index","order_status=0") }}">待付款</a>
         </div>
         <div class="item">
-          <a>待收货</a>
+          <a class="{{ url()->full() == route("wechat.order.index","order_status=1")? "on":"" }}" href="{{ route("wechat.order.index","order_status=1") }}">待收货</a>
         </div>
       </div>
       <div class="orders">
