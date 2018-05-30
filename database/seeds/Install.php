@@ -78,16 +78,28 @@ class Install extends Seeder
         ]);
 
         DB::table("pay_channels")->insert([
-            "name" => "offline",
+            "name" => "微信支付",
         ]);
 
         DB::table("pay_channels")->insert([
-            "name" => "wechat",
+            "name" => "线下转账",
+        ]);
+        
+        DB::table("pay_channels")->insert([
+            "name" => "汇票支付",
         ]);
 
         DB::table("pay_channels")->insert([
-            "name" => "after_pay",
+            "name" => "货到付款",
             "is_vip" => 1,
         ]);
     }
 }
+
+
+
+
+
+
+
+

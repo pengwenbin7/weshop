@@ -131,14 +131,16 @@ class Order extends Model
                 "from_address" => Address::find($storage_id)->getText(),
                 "to_address" => $this->address->getText(),
             ]);
-            ShipmentItem::create([
-                "shipment_id" => $shipment->id,
-                "product_name" => $item->product_name,
-                "product_model" => $item->model,
-                "brand_name" => $item->brand_name,
-                "number" => $item->number,
-                "packing_unit" => $item->packing_unit,
-            ]);
+            foreach ($item as $i) {
+                ShipmentItem::create([
+                    "shipment_id" => $shipment->id,
+                    "product_name" => $i->product_name,
+                    "product_model" => $i->model,
+                    "brand_name" => $i->brand_name,
+                    "number" => $i->number,
+                    "packing_unit" => $i->packing_unit,
+                ]);
+            }
         }
     }
 

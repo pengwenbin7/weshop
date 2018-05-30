@@ -15,4 +15,9 @@ class Payment extends Model
     {
         return $this->belongsTo("App\Models\Order");
     }
+
+    public function channel()
+    {
+        return $this->belongsTo("App\Models\PayChannel", "channel_id");
+    }
 }
