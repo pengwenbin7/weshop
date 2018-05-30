@@ -10,28 +10,43 @@ use App\Models\Brand;
 use App\Models\PayChannel;
 use App\Models\coupon;
 use App\Models\UserAction;
+use App\Models\ProductCategory;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $id = $request->id;
-        $page = 1;
-        if($id==""){
-        $condition = null;
         $categories = Category::all();
-        $brands = Brand::all();
-        $products = Category::find(1)->products;
-        return view("wechat.product.index", [
-            "products" => json_encode($products),
-            "categories" => json_encode($categories),
-            "brands" => $brands,
-            "title" => "分类",
-        ]);
-      }else{
-        $products = Category::find($id)->products;
-        return $products;
-      }
+        $firstCategoryId = $categories->first()->id;
+        $id = $request->input("id", $firstCategoryId);
+        
+        $limit = $request->input("limit", 15);
+
+        // get products' id of the category
+        $pcs = ProductCategory::where("category_id", "=", $id)
+             ->select("product_id")
+             ->paginate($limit);
+        $ids = [];
+        $arr = $pcs->toArray()["data"];
+        foreach ($arr as $i) {
+            $ids[] = $i["product_id"];
+        }
+        $products = Product::whereIn("id", $ids)->get();
+
+        if ($request->has("id")) {
+            return [
+                "products" => $products,
+                "pcs" => $pcs,
+            ];
+        } else {
+            return view("wechat.product.index", [
+                "products" => json_encode($products),
+                "categories" => json_encode($categories),
+                "pcs" => $pcs,
+                "title" => "分类",
+            ]);
+
+        }
     }
 
     public function show(Product $product)
