@@ -14,10 +14,11 @@ class CreateProductStarsTable extends Migration
     public function up()
     {
         Schema::create('product_stars', function (Blueprint $table) {
+            $table->increments("id");
             $table->unsignedInteger("user_id");
             $table->unsignedInteger("product_id");
             $table->timestamps();
-            $table->primary(["user_id", "product_id"]);
+            $table->unique(["user_id", "product_id"]);
             $table->foreign("user_id")->references("id")->on("users")
                 ->onDelete("cascade");
             $table->foreign("product_id")->references("id")->on("products")

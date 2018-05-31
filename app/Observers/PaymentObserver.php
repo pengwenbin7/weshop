@@ -15,7 +15,6 @@ class PaymentObserver
                          $payment->total + $payment->tax +
                          $payment->freight - $payment->coupon_discount -
                          $payment->share_discount - $payment->pay_discount;
-            Log::info($payment);
             $payment->save();
         }
     }

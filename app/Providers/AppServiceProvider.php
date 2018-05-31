@@ -11,6 +11,7 @@ use App\Models\ProductCategory;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Shipment;
 use App\Models\Department;
 use App\Models\AdminDepartment;
 use App\Observers\AddressObserver;
@@ -20,6 +21,7 @@ use App\Observers\ProductObserver;
 use App\Observers\ProductCategoryObserver;
 use App\Observers\OrderObserver;
 use App\Observers\PaymentObserver;
+use App\Observers\ShipmentObserver;
 use App\Observers\DepartmentObserver;
 use App\Observers\AdminDepartmentObserver;
 
@@ -39,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         ProductCategory::observe(ProductCategoryObserver::class);
         Order::observe(OrderObserver::class);
         Payment::observe(PaymentObserver::class);
+        Shipment::observe(ShipmentObserver::class);
         Department::observe(DepartmentObserver::class);
         AdminDepartment::observe(AdminDepartmentObserver::class);
         
