@@ -7,7 +7,7 @@ use App\Jobs\ShipmentCreated;
 
 class ShipmentObserver
 {
-    public function saved(Shipment $shipment)
+    public function created(Shipment $shipment)
     {
         dispatch(new ShipmentCreated($shipment));
     }

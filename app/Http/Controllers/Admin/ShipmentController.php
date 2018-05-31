@@ -9,11 +9,8 @@ use App\Models\Order;
 
 class ShipmentController extends Controller
 {
-    protected $user;
     public function __construct()
     {
-        $this->middleware = ["permission:ship"];
-        $this->user = auth("admin")->user();
     }
     
     /**
@@ -21,9 +18,14 @@ class ShipmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Shipment::all()->orderBy("id", "desc");
+        $limit = $request->input("limit", 15);
+        $shipments = Shipment::orderBy("id", "desc")->paginate($limit);
+        return view("admin.shipment.index", [
+            "shipments" => $shipments,
+            "limit" => $limit,
+        ]);
     }
 
     /**
@@ -33,11 +35,6 @@ class ShipmentController extends Controller
      */
     public function create(Request $request)
     {
-        $order = Order::find($request->order_id);
-        return [
-            "user" => $this->user,
-            "order" => $order,
-        ];
     }
 
     /**

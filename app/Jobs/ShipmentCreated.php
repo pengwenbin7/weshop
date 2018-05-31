@@ -42,7 +42,6 @@ class ShipmentCreated implements ShouldQueue
             ->each(function ($d) use (&$ids) {
                 $ids[] = $d->id;
             });
-
         $work = EasyWeChat::work();
         $work->messenger
             ->ofAgent(env("WECHAT_WORK_AGENT_ID"))
