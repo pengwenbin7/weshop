@@ -15,17 +15,12 @@
 	  <div class="title">
 	    <span>热搜</span>
 	  </div>
-	  <div class="h-list">
-	    <a href="">钛白粉</a>
-	    <a href="">炭黑</a>
-	    <a href="">三项方</a>
-	    <a href="">杜邦</a>
-	    <a href="">PVC</a>
-	    <a href="">钛白粉</a>
-	    <a href="">炭黑</a>
-	    <a href="">三项方</a>
-	    <a href="">杜邦</a>
-	    <a href="">PVC</a>
+    <div class="h-list">
+    @foreach ($hot_search as $item)
+      <a href="{{ route("wechat.search") }}?keyword={{ $item->keyword }}">{{ $item->keyword }}</a>
+    @endforeach
+
+
 	  </div>
 	</div>
       </div>

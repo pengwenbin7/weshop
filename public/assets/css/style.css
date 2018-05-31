@@ -840,7 +840,9 @@
   font-size: .26rem;
   text-align: center;
 }
-
+.info .collect.on i{
+  color: #f60;
+}
 .info .i-info {
   font-size: .26rem;
   color: #888;

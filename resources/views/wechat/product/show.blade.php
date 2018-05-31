@@ -13,8 +13,8 @@
   <div class="product">
 
     <div class="info" id="info">
-      <div class="collect" v-on:click="collect({{ $product->id }})">
-        <span class="icons"> <i class="iconfont icon-shoucang"></i></span>
+      <div :class="star?'collect on':'collect'" v-on:click="collect(star)"  >
+        <span class="icons" > <i class="iconfont icon-shoucang"></i></span>
       </div>
       <h1>
           <span>
@@ -250,7 +250,6 @@
       server_box:false, //
       stock:{{ $product->variable->stock*$product->content }},
       is_ton:{{ $product->is_ton }},
-      limit:1000
     },
     computed: {
       weight: function() {
@@ -417,14 +416,29 @@
   var app2 = new Vue({
     el: "#info",
     data: {
-
+      star:"{{ $product->star }}"
     },
     methods: {
-      collect: function(id) {
+      collect: function(mode) {
+        var _this = this;
+        if(mode){
+          axios.get("{{ route("wechat.unstar",$product->id)}}")
+          .then(function(){
+            _this.star = false;
+          })
+        }else{
+          axios.get("{{ route("wechat.star",$product->id)}}")
+          .then(function(){
+            _this.star = true;
+          })
+        }
+
+
         // 收藏
       }
     }
   })
+  console.log();
 </script>
 <script src="https://cdn.bootcss.com/Chart.js/2.7.2/Chart.js" async="async"></script>
 <script type="text/javascript">

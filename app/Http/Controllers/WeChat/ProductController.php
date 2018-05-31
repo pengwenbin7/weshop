@@ -11,6 +11,7 @@ use App\Models\PayChannel;
 use App\Models\coupon;
 use App\Models\UserAction;
 use App\Models\ProductCategory;
+use App\Models\ProductStar;
 
 class ProductController extends Controller
 {
@@ -61,6 +62,12 @@ class ProductController extends Controller
             "product_id" => $product->id,
             "action" => "view",
         ]);
+        $star = ProductStar::where("user_id", "=", auth()->user()->id)
+          ->where("product_id","=",$product->id)
+          ->get()
+          ->isEmpty();
+          $product->star=!$star;
+          // return $product;
         return view("wechat.product.show", ["product" => $product, "title" => $product->name,]);
     }
 
