@@ -14,18 +14,14 @@
 
     <div class="info" id="info">
       <div class="collect" v-on:click="collect({{ $product->id }})">
-        <span class="icons">
-                    <i class="iconfont icon-shoucang"></i>
-                </span>
+        <span class="icons"> <i class="iconfont icon-shoucang"></i></span>
       </div>
       <h1>
-
-
-                <span>
-                    {{ $product->name }}</span>
-                <span>{{ $product->model }}</span>
-            </h1>
-            <h2>{{ $product->brand->name }}</h2>
+          <span>
+              {{ $product->name }}</span>
+          <span>{{ $product->model }}</span>
+      </h1>
+      <h2>{{ $product->brand->name }}</h2>
       <div class="i-info">
         <p>
           <del>历史价格￥788800/吨</del>
@@ -35,7 +31,6 @@
           <p class="y">￥{{ $product->variable->unit_price*1000/$product->content }}/吨</p>
           <p></p>
         </div>
-
       </div>
     </div>
     <div class="price-h">
@@ -180,14 +175,13 @@
       </div>
       <div class="product" v-if="tonTap==0">
         <div class="item title  clearfix">
-          <span class="p-bname">{{ $product->brand->name }}</span>
           <span class="p-name">
-                        {{ $product->name }}
-                    </span>
-          <span class="p-model">{{ $product->model }}
+                        {{ $product->name }}&nbsp;&nbsp; {{ $product->model }}
                     </span>
         </div>
-
+        <div class="item title  clearfix">
+          <span class="p-bname">{{ $product->brand->name }}</span>
+        </div>
         <div class="item clearfix">
           <span>重量</span>
           <span class="value"><i ref = "productW">@{{ weight }}</i></span>
@@ -196,7 +190,7 @@
               <a class="minus" v-on:click="reduceCartNubmer()"></a>
             </p>
             <p class="btn-input">
-              <input type="tel" name="" ref="goodsNum" step="1" v-bind:value="num" v-on:blur="textCartNumber()">
+              <input type="tel" name="" ref="goodsNum" step="1" v-bind:value="num" v-on:blur="textCartNumber()"  @keyup="check($event)">
             </p>
             <p class="btn-plus">
               <a class="plus" v-on:click="addCartNumber()"></a>
@@ -219,7 +213,7 @@
               <a class="minus" v-on:click="reduceCartNubmer()"></a>
             </p>
             <p class="btn-input">
-              <input type="tel" step="1" ref="goodsNum" v-bind:value="ton_num" v-on:blur="textCartNumber()" @keydown="check($event)" >
+              <input type="tel" step="1" ref="goodsNum" v-bind:value="ton_num" v-on:blur="textCartNumber()"  @keyup="check($event)" >
             </p>
             <p class="btn-plus">
               <a class="plus" v-on:click="addCartNumber()"></a>
@@ -255,7 +249,8 @@
       addr_box:false, //购物单弹窗
       server_box:false, //
       stock:{{ $product->variable->stock*$product->content }},
-      is_ton:{{ $product->is_ton }}
+      is_ton:{{ $product->is_ton }},
+      limit:1000
     },
     computed: {
       weight: function() {
@@ -322,10 +317,6 @@
       severHide: function() {
         this.server_box = false;
       },
-      goBuy: function() {
-        console.log(1)
-        location.href = "./order_confirm.html"
-      },
       reduceCartNubmer: function() {
         setNum(this, "reduce");
       },
@@ -341,21 +332,25 @@
         //切换时同步数量
         if (index == 1) {
           this.num = this.ton_num * 1000 / this.content;
+          this.ton_num = Math.ceil(this.num * this.content / 1000);
         } else {
           this.ton_num = Math.ceil(this.num * this.content / 1000);
+          this.num = this.ton_num * 1000 / this.content;
         }
       },
       check(event){
-        console.log(event);
-        var thisDom = event.currentTarget;
-        var reg=new RegExp("\\d","g");
-        console.log(event.code.match(reg));
-        if(!event.code.match(reg))
-        {
-          var c = event.code;
-          console.log(thisDom.value);
-          thisDom.value = thisDom.value;
-          this.ton_num = thisDom.value
+        var dom = event.currentTarget
+        var num = dom.value;
+        num = num.replace(/\D/g, '');
+        num = (isNaN(num) ? 1 : num); //只能为数字
+        num = num > 0 ? num : 0;
+        if(this.tonTap==1){
+          this.ton_num = num;
+          dom.value = num;
+        }else{
+          this.num =num;
+          this.ton_num = num*this.content/1000;
+          dom.value = num;
         }
       }
     }
@@ -366,46 +361,54 @@
     var _this = _this;
     var mode = mode;
     var limit = _this.stock;
-    var n_num = 0; //临时数量
-    if (_this.tonTap == 0) {
-      // console.log(_this.num);
-      _this.num = getNum(_this, mode, _this.num);
+    var l_num =0;//临时数字
+    l_num = _this.num;
+    var weight;
+    if (_this.tonTap == 0) {  //按包选购
+      weight = _this.num*_this.content;
+      if (mode == "reduce") {
+        if (l_num <= 1) {
+          return ;
+        } else {
+          _this.num--;
+        }
+      }else{
+        if(weight<limit){
+          if(mode=="add"){
+             _this.num++;
+          }
+        }else{
+          alert("购买数量超过库存");
+          _this.num = _this.stock/_this.content;
+          _this.ton_num = Math.floor(_this.stock/1000)
+        }
+      }
 
-    } else if (_this.tonTap == 1) {
-      // console.log(getNum(_this,mode,_this.ton_num));
-      _this.ton_num = getNum(_this, mode, _this.ton_num);
-      _this.num = _this.ton_num * 1000 / _this.content;
+    }else{
+      //按吨选购
+      weight =( _this.ton_num+1)*1000;
+      if (mode == "reduce") {
+        if (_this.ton_num <= 1) {
+          return ;
+        } else {
+          _this.ton_num--;
+        }
+      }else{
+        if(weight<limit){
+          if(mode=="add"){
+             _this.ton_num++;
+          }
+        }else{
+          alert("购买数量超过库存");
+          _this.num = _this.stock/_this.content;
+          _this.ton_num = Math.floor(_this.stock/1000)
+        }
+      }
     }
 
 
   }
 
-  function getNum(_this, mode, n_num) {
-    var weight = 0;
-    if (_this.tonTap == 0) {
-      weight = (n_num + 1) * _this.content;
-    } else {
-      weight = (n_num + 1) * 1000;
-    }
-    console.log(weight);
-    var limit = _this.stock;
-    if (mode == "reduce") {
-      console.log(n_num);
-      if (n_num <= 1) {
-        console.log(n_num);
-        return 1;
-      } else {
-        return n_num - 1;
-      }
-    } else if (mode == "add") {
-      if (weight > limit) {
-        alert("购买达到最大数量")
-        return n_num;
-      } else {
-        return n_num + 1;
-      }
-    }
-  }
 
   function serverShow() {
     var _this = app;
@@ -473,7 +476,6 @@
         }
       }
     });
-    // console.log({!! $product->prices !!})
 
     function generateLabels() {
       var arr = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
