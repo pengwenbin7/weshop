@@ -74,75 +74,42 @@
     <div class="group">
       <div v-for="item in items">
         <div class="item" v-on:click="setChannel(item.id)" v-bind:class="item.id==active?'on':''" >
-          <div class="icon" v-if="item.id==2">
-            <i class="iconfont icon-weixinzhifu"></i>
+
+          <div class="icon">
+            <i class="iconfont icon-weixinzhifu" v-if="item.id==1"></i>
+            <i class="iconfont icon-duigongzhuanzhang" v-if="item.id==2"></i>
+            <i class="iconfont icon-huipiao" v-if="item.id==3"></i>
+            <i class="iconfont icon-huodaofukuan" v-if="item.id==4"></i>
           </div>
-          <div class="icon" v-if="item.id==1">
-            <i class="iconfont icon-duigongzhuanzhang"></i>
+          <div class="pay-title" >
+            <p class="title">@{{ item.name }}</p>
+            <p class="gray">@{{ item.params }}</p>
           </div>
-          <div class="icon" v-if="item.id==3">
-            <i class="iconfont icon-huodaofukuan"></i>
-          </div>
-          <div class="pay-title" v-if="item.id==2">
-            <p class="title">微信支付</p>
-            <p class="gray">微信安全支付</p>
-          </div>
-          <div class="pay-title" v-if="item.id==1">
-            <p class="title">对公转账</p>
-            <p class="gray">公司对公转账支付</p>
-          </div>
-          <div class="pay-title" v-if="item.id==3">
-            <p class="title">货到付款</p>
-            <p class="gray">收货后支付货款</p>
-          </div>
+
           <div class="icon">
             <i v-bind:class="active==item.id?'iconfont icon-xuanzhong-on':'iconfont icon-xuanzhong' "></i>
           </div>
         </div>
-        <div class="item"  v-if="item.id==1" v-on:click="setChannel(0)" v-bind:class="active==0?'on':''" >
-          <div class="icon">
-            <i class="iconfont icon-huipiao"></i>
-          </div>
 
-          <div class="pay-title">
-            <p class="title">银行汇票</p>
-            <p class="gray">银行邮寄汇票支付</p>
-          </div>
-
-          <div class="icon">
-            <i v-bind:class="active==0?'iconfont icon-xuanzhong-on':'iconfont icon-xuanzhong' "></i>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-  <div class="footer">
-    <span v-if="active==2"  onclick="callpay()">确认支付</span>
-    <span v-if="active==0"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=0">确认</a></span>
-    <span v-if="active==1"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=1">确认</a></span>
+  <div class="footer" v-if="!out_time">
+    <span v-if="active==1"  onclick="callpay()">确认支付</span>
+    <span v-if="active==2"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=2">确认</a></span>
     <span v-if="active==3"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=3">确认</a></span>
+    <span v-if="active==4"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=4">确认</a></span>
   </div>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script type="text/javascript">
-    new Vue({
+    var app = new Vue({
       el: '#app',
       data: {
-        items: [{
-            id : 1,
-            name : "offline"
-          },
-          {
-            id : 2,
-            name : "wechat"
-          },
-          {
-            id : 3,
-            name : "wechat"
-          }
-        ],
+        items: {!! $pay_channel !!},
         active: 1,
-        expire:""
+        expire:"",
+        out_time:"",
       },
       mounted () {
         countdown(this)
@@ -167,6 +134,9 @@
       if(mss<=1){
         clearInterval(time);
         //订单超时
+        app.out_time=true;
+        return "订单超时";
+
       }
       var days = parseInt(mss / (60 * 60 * 24))?parseInt(mss / (60 * 60 * 24))+"天 ":"";
       var hours = parseInt((mss % ( 60 * 60 * 24)) / (60 * 60))?parseInt((mss % ( 60 * 60 * 24)) / (60 * 60))+"时 ":"";

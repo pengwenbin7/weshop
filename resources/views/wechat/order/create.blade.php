@@ -126,7 +126,7 @@
       p_address_id:{{ $products->storage->address_id  }},
       freight: 0,
       channel_id: 1,
-      coupon_id: 2,
+      coupon_id: null,
       coupon_discount:0,
       coupon_amount:0,
       coupon_text:"选择优惠券",

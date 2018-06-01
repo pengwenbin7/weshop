@@ -2,7 +2,7 @@
 
 @section( "content")
 <div class="container" style="background-color:#fff;">
-  @if($type==1)
+  @if($type==2)
 <div class="payul">
   <div class="pay-way">
     <div class="pay-value">
@@ -29,7 +29,7 @@
           </a>
         </div>
       </div>
-      @elseif($type == 0)
+      @elseif($type == 3)
       <div class="payul">
         <div class="pay-way">
           <div class="pay-value">
@@ -56,7 +56,7 @@
                 </a>
               </div>
             </div>
-            @elseif($type==3)
+            @elseif($type==4)
             收到货物确认付款
             @endif
     </div>

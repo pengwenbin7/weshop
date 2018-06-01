@@ -4,6 +4,7 @@ namespace App\Http\Controllers\WeChat;
 
 use App\Models\Payment;
 use App\Models\Order;
+use App\Models\PayChannel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use EasyWeChat;
@@ -30,9 +31,11 @@ class PaymentController extends Controller
         ]);
         $jssdk = $this->payment->jssdk;
         $json = $jssdk->bridgeConfig($result["prepay_id"]);
+        $pay_channel = PayChannel::all();
         return view("wechat.pay.wait", [
             "json" => $json,
             "order" => $order,
+            "pay_channel" => json_encode($pay_channel),
         ]);
     }
 
