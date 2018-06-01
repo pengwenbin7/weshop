@@ -78,7 +78,6 @@ class CartController extends Controller
             $item->price = $item->product->variable->unit_price;
             $item->func = $item->product->storage->func;
             $item->distance = Count::distance($cart->address->id,$item->product->storage->id);
-            $item->checked = false;
         }
         return view("wechat.cart.show", [
             "cart" => $cart,

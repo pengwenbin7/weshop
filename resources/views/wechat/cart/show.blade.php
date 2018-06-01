@@ -64,7 +64,7 @@
     </div>
   </div>
   <div class="goods-price">
-    <span><i class="font-co">¥</i><i class="font-co" id="totalprice" ></i></span>
+    <span><i class="font-co">¥</i><i class="font-co" id="totalprice" >0</i></span>
   </div>
   <div class="btn-submit" onclick="buyAll()">
     <a>结算</a>
@@ -109,7 +109,11 @@
         count(this);
       },
       check: function(i, a) {
-        this.products[i][a].checked = !this.products[i][a].checked;
+        if(typeof(this.products[i][a].checked)=="undefined"){
+          this.$set(this.products[i][a],"checked",true);
+        }else{
+          this.products[i][a].checked=!this.products[i][a].checked;
+        }
         count(this);
         checkall(this);
       },
@@ -117,7 +121,12 @@
         var products = this.products;
         for(var x in products){
           for (var y in products[x]){
-            products[x][y].checked = status;
+            if(typeof(products[x][y].checked)=="undefined"){
+              this.$set(products[x][y],"checked",status);
+            }else{
+              products[x][y].checked = status;
+            }
+
           }
         }
         count(this);
