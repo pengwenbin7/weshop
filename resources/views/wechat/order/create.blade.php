@@ -214,8 +214,7 @@
         var weight = this.number * this.content;
         var distance = this.distance;
         var func = JSON.parse('{!! $products->storage->func !!}');
-        this.freight =Math.floor(freight(func,weight,distance));
-        alert(this.freight);
+        this.freight =Math.floor(freight(func,weight,distance))
       }
     },
     mounted: function() {
@@ -256,7 +255,6 @@
             }
             axios.post("{{ route("wechat.tool.distance") }}", param)
               .then(function(res2) {
-                alert(JSON.stringify(res2))
                 if(res2.data<0){
                   alert("你的地址有误，请重新添加");
                 }else{
