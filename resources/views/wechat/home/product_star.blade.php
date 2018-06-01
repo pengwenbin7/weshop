@@ -1,57 +1,51 @@
 @extends("layouts.wechat2")
 
 @section("content")
- 
+
   <div class="container">
 <div class="collect" id="app">
-  
-    <div class="products" id="product" >
-      <div class="product" v-for="(item,index) in items">
+
+    <div class="products" >
+      @foreach ($stars as  $star)
+      <div class="product">
         <div class="p-info">
-        <a v-bind:href="'{{ route("wechat.product.index") }}/'+item.id">
+        <a href="{{ route("wechat.product.show",$star->id) }}">
         <div class="title">
-            <span class="p-bname">@{{ item.brand_name }}</span>
-            <span class="p-name">@{{ item.name }} </span>
-            <span class="p-model">@{{ item.model }}</span>
+            <span class="p-bname">{{ $star->brand_name }}</span>
+            <span class="p-name">{{ $star->name }} </span>
+            <span class="p-model">{{ $star->model }}</span>
           </div>
           <div class="pirce">
-            <span><i>￥@{{ item.unit_price*1000 }}</i>元/吨</span>
+            <span><i>￥{{ $star->unit_price*1000 }}</i>元/吨</span>
           </div>
           </a>
           </div>
-          <div class="p-edit" @click="remove(index)">
-            <span>
+          <div class="p-edit"  @click="remove('{{route("wechat.unstar",$star->id)}}')">
+            <span >
               <i class="iconfont icon-shoucang y"></i>
               <br />取消
             </span>
           </div>
       </div>
+      @endforeach
     </div>
   </div>
 </div>
 @endsection
 @section("script")
 <script type="text/javascript">
-console.log({!! $stars !!})
-  new Vue({
-    el: '#product',
-    data: {
-      items: {!! $stars !!}
-    },
-    methods: {
-      remove:function(index){
-        console.log(index)
-       var data = {
-         id : this.items[index].id
-       };
-        console.log(data)
-        axios.post("", data)
-        .then(function (res) {
-          
-        });
-        this.items.splice(index, 1);
-      }
-    }
-  })
+   new Vue({
+     el: "#app",
+     data:{},
+     methods:{
+       remove:function(url){
+         console.log(url);
+         axios.get(url)
+         .then(function(){
+           location.reload();
+         })
+       }
+     }
+   })
 </script>
 @endSection

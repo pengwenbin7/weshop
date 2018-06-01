@@ -48,7 +48,7 @@
     </div>
     <div class="grid">
       <div class="item">
-        <a href="{{ route("wechat.home.product_star") }}">
+        <a href="{{ route("wechat.star.all") }}">
           <div class="icon">
             <i class="iconfont icon-wodeshoucang"></i>
           </div>

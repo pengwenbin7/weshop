@@ -19,15 +19,7 @@ class HomeController extends Controller
         $user = auth()->user();
         return view("wechat.home.waiter", ["user" => $user, "title" => "客服"]);
     }
-    public function productStar()
-    {
-        $stars = auth()->user()->stars;
-        foreach($stars as $star){
-            $star->brand_name = $star->brand->name;
-            $star->unit_price = $star->variable->unit_price;
-        }
-        return view("wechat.home.product_star", ["stars" => json_encode($stars), "title" => "我的收藏"]);
-    }
+    
     public function coupon(){
       $coupons = auth()->user()->coupons;
       return view("wechat.home.coupon", ["coupons" => $coupons, "title" => "优惠券"]);

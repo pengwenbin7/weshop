@@ -11,12 +11,15 @@ class StarController extends Controller
 {
     public function all(Request $request)
     {
-        $limit = $request->input("limit", 15);
-        $stars = Star::where("user_id", "=", auth()->user()->id)
-               ->paginate($limit);
-        return $stars;
+      $stars = auth()->user()->stars;
+      foreach($stars as $star){
+          $star->brand_name = $star->brand->name;
+          $star->unit_price = $star->variable->unit_price;
+      }
+               // return $stars;
+         return view("wechat.home.product_star", ["stars" => $stars, "title" => "我的收藏"]);
     }
-    
+
     public function star($id)
     {
         return Star::firstOrCreate([
