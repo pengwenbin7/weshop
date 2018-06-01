@@ -11,7 +11,7 @@
 	    <input class="btn-submit" type="submit" value="找货" />
       </a>
 	</div>
-	<div class="hot-search" v-on:click="getAddress">
+	<div class="hot-search">
 	  <div class="title">
 	    <span>热搜</span>
 	  </div>
@@ -64,7 +64,7 @@
   var app = new Vue({
     el: "#app",
     data: {
-     
+
     },
     methods: {
       scan: function() {
