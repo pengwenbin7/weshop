@@ -4,6 +4,9 @@
   [v-cloak] {
     display: none;
   }
+  #more{
+    padding: .5rem 0 ;
+  }
 </style>
 <div class="container clearfix" id="category">
   <div class="category" id="app" v-cloak>
@@ -86,6 +89,9 @@
     mounted: function() {
       this.active =this.items[0].id;
       //获得主体部分高度
+      if(this.total=1){
+        more_box:false;
+      }
       var _height = document.body.clientHeight
       var fontsize = document.documentElement.clientWidth / 7.5;
       var _h = 33 * (fontsize / 12) - 1;
