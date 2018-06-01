@@ -1,6 +1,7 @@
 @extends("layouts.wechat2")
 
 @section("content")
+@if (count($stars))
 
   <div class="container">
 <div class="collect" id="app">
@@ -31,6 +32,14 @@
     </div>
   </div>
 </div>
+@else
+  <div class="no-content">
+    <span><i class="iconfont icon-dingdan1"></i></span>
+
+    <br>
+    <p><a class="gray" href="{{ route("wechat.product.index") }}">您还没有收藏商品,去看看～</a></p>
+     </div>
+@endif
 @endsection
 @section("script")
 <script type="text/javascript">

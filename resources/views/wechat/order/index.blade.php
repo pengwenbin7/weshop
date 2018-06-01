@@ -1,9 +1,9 @@
 @extends("layouts.wechat2")
 
 @section("content")
+  @if (count($orders))
     <div class="container">
-  <div class="order-list" id="app">
-
+      <div class="order-list" id="app">
       <div class="taps">
         <div class="item">
           <a class="{{ url()->full() == route("wechat.order.index")? "on":"" }}" href="{{ route("wechat.order.index") }}">全部订单</a>
@@ -79,5 +79,14 @@
       </div>
     </div>
 
-  </div>
+    </div>
+  @else
+    <div class="no-content">
+      <span><i class="iconfont icon-dingdan1"></i></span>
+
+      <br>
+      <p><a class="gray" href="{{ route("wechat.product.index") }}">您还没有订单,去看看～</a></p>
+       </div>
+  @endif
+
 @endsection("content")

@@ -24,7 +24,7 @@
       <h2>{{ $product->brand->name }}</h2>
       <div class="i-info">
         <p>
-          <del>历史价格￥788800/吨</del>
+          <del>历史价格￥@{{ old_price }}/吨</del>&nbsp;&nbsp;
           <span>{{ $product->pack() }}</span>
         </p>
         <div class="i-price">
@@ -237,6 +237,7 @@
 @endsection
 
 @section( "script")
+  <script src="https://cdn.bootcss.com/Chart.js/2.7.2/Chart.js" async="async"></script>
 <script>
   var app = new Vue({
     el: "#app",
@@ -250,6 +251,7 @@
       server_box:false, //
       stock:{{ $product->variable->stock*$product->content }},
       is_ton:{{ $product->is_ton }},
+
     },
     computed: {
       weight: function() {
@@ -258,6 +260,7 @@
           this.num * this.content / 1000 + "吨"
       }
     },
+
     methods: {
       createCart: function() {
         var $this = this;
@@ -416,7 +419,34 @@
   var app2 = new Vue({
     el: "#info",
     data: {
-      star:"{{ $product->star }}"
+      star:"{{ $product->star }}",
+      prices:{!! $product->prices !!},
+      is_ton:{{ $product->is_ton }},
+      content:{{ $product->content }},
+      old_price:"",
+      time:[],
+      pri:[],
+    },
+    mounted:function(){
+      var prices = this.prices;
+      var time = [],pri = [];
+      for (var i = 0; i < prices.length; i++) {
+        time.push(prices[i].updated)
+        if(this.is_ton){
+          pri.push(Number(prices[i].unit_price) * 1000 / Number(this.content))
+        }else{
+          pri.push(prices[i].unit_price)
+        }
+
+      }
+      if(prices.length>1){
+         this.old_price = pri[pri.length-2];
+      }else{
+        this.old_price = pri[pri.length-1];
+      }
+
+       this.time = time;
+       this.pri = pri;
     },
     methods: {
       collect: function(mode) {
@@ -432,16 +462,11 @@
             _this.star = true;
           })
         }
-
-
         // 收藏
       }
     }
   })
-  console.log();
-</script>
-<script src="https://cdn.bootcss.com/Chart.js/2.7.2/Chart.js" async="async"></script>
-<script type="text/javascript">
+
   onload = function() {
     var ctx = document.getElementById("myChart");
     var myChart = new Chart(ctx, {
@@ -492,12 +517,12 @@
     });
 
     function generateLabels() {
-      var arr = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+      var arr = app2.time;
       return arr;
     }
 
     function generateDate() {
-      var arr = [7888, 7890, 8288, 8388, 7999, 7890, 8130, 8210, 7990, 7888, 8000, 7989]
+      var arr = app2.pri;
       return arr;
     }
   }

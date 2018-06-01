@@ -1,7 +1,8 @@
 @extends("layouts.wechat2")
 
 @section("content")
-<div class="container" id="app">
+  @if (count($coupons))
+<div class="container" id="app" id="coupons">
     <div class="coupon">
         <div class="coupons">
           @foreach($coupons as $coupon)
@@ -30,5 +31,15 @@
           <hr />
         </div>
       </div>
+  @else
+
+
+    </div>
+  @endif
+ <div class="no-content">
+   <span><i class="iconfont icon-kongbaiyouhuiquan"></i></span>
+
+   <br>
+   <p>你没有可使用的优惠券～</p>
     </div>
 @endsection

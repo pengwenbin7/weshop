@@ -66,8 +66,13 @@ class ProductController extends Controller
           ->where("product_id","=",$product->id)
           ->get()
           ->isEmpty();
+
+          $prices = $product->prices;
+          foreach ($prices as $price) {
+            $price->updated = $price->updated_at->toDateString();
+          }
           $product->star=!$star;
-          // return $product;
+          $product->prices=json_encode($product->prices);
         return view("wechat.product.show", ["product" => $product, "title" => $product->name,]);
     }
 
