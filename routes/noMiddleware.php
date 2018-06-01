@@ -14,5 +14,9 @@ Route::get("wework/msg", "WeWork\MessageController@send");
 
 Route::any("once/{token}", "OnceController@index");
 
-Route::match(["get", "post"], "admin/auth/callback", "Auth\AdminAuthController@callback")
-    ->name("admin.auth.callback");
+Route::domain("admin.mafkj.com")->group(function () {
+    Route::match(["get", "post"],
+                 "auth/callback",
+                 "AdminAuth\LoginController@callback"
+    )->name("admin.auth.callback");
+});

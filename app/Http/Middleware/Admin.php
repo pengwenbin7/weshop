@@ -18,7 +18,9 @@ class Admin
         if (auth($guard)->check()) {
             return $next($request);
         } else {
-            return redirect()->route("admin.login");
+            return redirect()->route("admin.login", [
+                "state" => $request->fullUrl(),
+            ]);
         }
     }
 }

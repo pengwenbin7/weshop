@@ -39,9 +39,16 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
-        return view('admin.auth.login', ["error" => ""]);
+        $appid = env("WECHAT_WORK_CORP_ID");
+        $redirect = urlencode(route("admin.auth.callback"));
+        $state = urlencode($request->state);
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$redirect}&response_type=code&scope=snsapi_base&state={$state}#wechat_redirect";
+        return view("admin.auth.login", [
+            "url" => $url,
+            "error" => "",
+        ]);
     }
 
     /**
@@ -62,5 +69,10 @@ class LoginController extends Controller
         } else {
             return view('admin.auth.login', ["error" => "账号密码错误"]);
         }
+    }
+
+    public function callback(Request $request)
+    {
+        return $request->all();
     }
 }

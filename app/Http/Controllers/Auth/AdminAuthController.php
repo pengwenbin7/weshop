@@ -19,7 +19,10 @@ class AdminAuthController extends Controller
     
     public function showLoginForm(Request $request)
     {
-        return view("admin.auth.login");
+        $appid = env("WECHAT_WORK_CORP_ID");
+        $redirect = urlencode(route("admin.auth.callback"));
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$redirect}&response_type=code&scope=snsapi_base#wechat_redirect";
+        return view("admin.auth.login", ["url" => $url]);
     }
 
     public function login(Request $request)
@@ -34,7 +37,7 @@ class AdminAuthController extends Controller
     
     public function callback(Request $request)
     {
-        
+     
     }
     
     public function logout()
