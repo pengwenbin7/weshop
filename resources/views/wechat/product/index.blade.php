@@ -75,21 +75,26 @@
       active: "",
       products:{!! $products !!},
       page:1,
-      total:{{ $pcs->lastPage() }},
+      total:"",
       more_box:true,
     },
     mounted: function() {
-      this.active =this.items[0].id;
-      //获得主体部分高度
-      if(this.total=1){
-        more_box:false;
-      }
-      var _height = document.body.clientHeight
-      var fontsize = document.documentElement.clientWidth / 7.5;
-      var _h = 33 * (fontsize / 12) - 1;
-      var _h2 = 46 * (fontsize / 12) - 2;
-      this.$refs.left.style.height = _height - _h + "px";
-      this.$refs.right.style.height = _height - _h2 + "px";
+      this.$nextTick(function () {
+        this.active =this.items[0].id;
+        //获得主体部分高度
+        var total = "{{ $pcs->lastPage() }}";
+        console.log(total);
+        if(total=1){
+          this.more_box=false;
+        }
+        var _height = document.body.clientHeight
+        var fontsize = document.documentElement.clientWidth / 7.5;
+        var _h = 33 * (fontsize / 12) - 1;
+        var _h2 = 46 * (fontsize / 12) - 2;
+        this.$refs.left.style.height = _height - _h + "px";
+        this.$refs.right.style.height = _height - _h2 + "px";
+      })
+
     },
     methods: {
       show: function(id) {
@@ -110,7 +115,7 @@
         var _this = this;
         axios.get("{{ route("wechat.product.index") }}"+"?page=1&&id="+id )
           .then(function(res) {
-          _this.total=res.data.pcs.total;
+          _this.total=res.data.pcs.last_page;
           if(_this.total==1){
             _this.more_box = false
           }else{
