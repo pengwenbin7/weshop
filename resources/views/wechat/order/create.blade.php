@@ -1,6 +1,6 @@
 @extends( "layouts.wechat2")
 @section( "content")
-  <div class="container" id="app" v-cloak>
+  <div class="container" id="app" v-lock>
     <div class="order">
 
       <div class="address">

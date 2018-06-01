@@ -14,8 +14,8 @@
       </div>
 
     </div>
-    <div class="products" v-for="items in products">
-      <div class="product" v-for="product in items">
+    <div class="products" v-for="items in products" v-lock>
+      <div class="product" v-for="product in items" v-lock>
         <div class="p-info">
           <div class="title">
             <p><span class="p-name"> @{{ product.name }}&nbsp; &nbsp;@{{ product.model }} </span></p>
@@ -43,7 +43,7 @@
 
   </div>
 </div>
-<div class="flexbox" v-if="coupon_box">
+<div class="flexbox" v-if="coupon_box"  v-lock>
   <div class="mask" @click="hideBox()"></div>
   <div class="coupon-list">
     <div class="tit">优惠券<small>(@{{ coupons.length }}张)</small></div>

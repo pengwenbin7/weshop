@@ -509,6 +509,7 @@
 
     function generateLabels() {
       var arr = app2.time;
+      alert(arr.toString())
       return arr;
     }
 
