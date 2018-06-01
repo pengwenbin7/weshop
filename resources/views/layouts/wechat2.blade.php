@@ -10,6 +10,11 @@
     <script type="text/javascript">
     var fSize=(document.documentElement.clientWidth/7.5)>100?100:(document.documentElement.clientWidth/7.5);document.documentElement.style.fontSize = fSize + "px";window.addEventListener("orientationchange", function() { location.reload(); }, false);
     </script>
+    <style media="screen">
+      [v-cloak] {
+        display: none;
+      }
+    </style>
     @yield("style")
   </head>
   <body style="background-color:#f0f1f0">

@@ -10,6 +10,9 @@
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
     <style media="screen">
+    [v-cloak] {
+      display: none;
+    }
     html,body{padding:0;margin:0;font-size:50px;}
     .pay{font-size:.32rem}
       .pay .item{display: flex;display: -webkit-flex;width: 100%; background-color: #fff;height: 1.6rem;padding: .3rem .4rem;}
@@ -60,7 +63,7 @@
     </script>
   </head>
   <body style="background-color:#f0f1f0;">
-    <div class="container" id="app">
+    <div class="container" id="app" v-lock>
   <div class="pay">
     <div class="item">
       <div class="pay-t">

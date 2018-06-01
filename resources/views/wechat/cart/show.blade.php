@@ -1,14 +1,8 @@
 @extends( "layouts.wechat2")
-@section( "style")
-<style media="screen">
-  [v-cloak] {
-    display: none;
-  }
-</style>
-@endsection
+
 @section( "content")
 
-<div class="container" id="app">
+<div class="container" id="app" v-lock>
   <div class="cart-info">
 
     <div class="cart-info-header">

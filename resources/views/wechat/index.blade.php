@@ -64,36 +64,7 @@
   var app = new Vue({
     el: "#app",
     data: {
-      items: [{
-	brand: '恒和化工',
-	name: '真石漆质感漆乳液 ',
-	model: 'LR-9611',
-	price: '79999'
-      },
-	{
-	  brand: '振洲涂料',
-	  name: '丙烯酸改性乳液',
-	  model: 'A-98',
-	  price: '8600'
-	},
-	{
-	  brand: '紫石化工',
-	  name: '木器底漆乳液',
-	  model: 'ZS-6808A',
-	  price: '10800'
-	}, {
-	  brand: '佰利联2',
-	  name: '氧化铁',
-	  model: 'BLT-0011011',
-	  price: '79999'
-	}, {
-	  brand: '佰利联2',
-	  name: '氧化铁',
-	  model: 'BLT-0011011',
-	  price: '79999'
-	}
-
-      ]
+     
     },
     methods: {
       scan: function() {

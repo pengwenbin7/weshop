@@ -1,7 +1,7 @@
 @extends( "layouts.wechat")
 
 @section( "content")
-<div class="container" id="app">
+<div class="container" id="app" v-lock>
   <div class="cart">
 
     <div class="create" v-on:click="createCart">

@@ -1,13 +1,5 @@
 @extends( "layouts.wechat")
 @section( "content")
-<style media="screen">
-  [v-cloak] {
-    display: none;
-  }
-  #more{
-    padding: .5rem 0 ;
-  }
-</style>
 <div class="container clearfix" id="category">
   <div class="category" id="app" v-cloak>
     <div class="header" ref="header" id="header">

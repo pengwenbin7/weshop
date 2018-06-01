@@ -1,18 +1,9 @@
 @extends( "layouts.wechat2")
-
-@section( "style")
-<style media="screen">
-  [v-cloak] {
-    display: none;
-  }
-</style>
-@endsection
-
 @section( "content")
 <div class="container">
   <div class="product">
 
-    <div class="info" id="info">
+    <div class="info" id="info" v-lock>
       <div :class="star?'collect on':'collect'" v-on:click="collect(star)"  >
         <span class="icons" > <i class="iconfont icon-shoucang"></i></span>
       </div>

@@ -1,7 +1,7 @@
 @extends("layouts.wechat2")
 
 @section("content")
-  @if (count($orders))
+  @if (count($orders)||url()->full() == route("wechat.order.index","order_status=0")||route("wechat.order.index","order_status=1"))
     <div class="container">
       <div class="order-list" id="app">
       <div class="taps">
