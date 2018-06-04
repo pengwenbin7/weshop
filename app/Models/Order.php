@@ -76,9 +76,14 @@ class Order extends Model
         return $this->hasOne("App\Models\Payment");
     }
 
+    public function invoice()
+    {
+        return $this->hasOne("App\Models\Invoice");
+    }
+
     public function canRemove()
     {
-        return true;
+        return $this->status == $this::ORDER_STATUS_IDL;
     }
 
     /**

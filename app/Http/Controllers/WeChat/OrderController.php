@@ -139,9 +139,13 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        $res = $order->address->delete();
-        $res = $res & $order->delete();
-        return ["destroy" => $res];
+        if ($order->canRemove()) {
+            $res = $order->address->delete();
+            $res = $res & $order->delete();
+            return ["destroy" => $res];
+        } else {
+            return ["err" => "Don't allow"];
+        }
     }
 
     /**
