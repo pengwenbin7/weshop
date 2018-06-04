@@ -29,7 +29,7 @@ class CartController extends Controller
         return view("wechat.cart.index", [
             "user" => $user,
             "carts" => $carts,
-            "title" => "采购单",
+            "title" => "选购单",
             "interfaces" => ["getLocation"],
         ]);
     }

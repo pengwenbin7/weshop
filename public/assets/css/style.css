@@ -2058,3 +2058,6 @@
 #more{
   padding: .5rem 0 ;
 }
+.cart-info .no-content,.cart-list .no-content{
+  background-color: #f0f1f0;
+}

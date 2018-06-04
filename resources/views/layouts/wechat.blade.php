@@ -37,7 +37,7 @@
       <div class="item  {{ url()->current() == route("wechat.cart.index")? "on":"" }}">
         <a href="{{ route("wechat.cart.index") }}"><span class="icons">
           <i class="iconfont icon-caigoudan{{ url()->current() == route("wechat.cart.index")? "-on":"" }}"></i>
-        </span><br>采购单</a>
+        </span><br>选购单</a>
       </div>
       <div class="item  {{ url()->current() == route("wechat.home.index")? "on":"" }}">
         <a href="{{ route("wechat.home.index") }}"><span class="icons">

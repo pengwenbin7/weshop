@@ -66,7 +66,7 @@
     <div class="cart">
       <div class="create" v-on:click="createCart">
         <div class="txt">
-          <span class="black">新建选购单<small>(已创建{{ count(auth()->user()->carts) }}个采购单)</small>
+          <span class="black">新建选购单<small>(已创建{{ count(auth()->user()->carts) }}个选购单)</small>
                 </span>
         </div>
         <div class="icon">
@@ -78,7 +78,7 @@
         <div class="item" v-on:click="addToCart( {{ $cart->id }} )">
           <div class="cart-header">
             <div class="title">
-              <a>采购单{{ $index+1 }}
+              <a>选购单{{ $index+1 }}
                             <small>(已添加{{ count($cart->cartItems) }}件商品)</small>
                         </a>
             </div>
@@ -216,7 +216,7 @@
       </div>
       <div class="gb-footer">
         <div class="addtocart" v-on:click="choseAddr">
-          <span class="green">加入采购单</span>
+          <span class="green">加入选购单</span>
         </div>
         <div class="buy-commit" v-on:click="buyMe">
           <span>立即购买</span>
