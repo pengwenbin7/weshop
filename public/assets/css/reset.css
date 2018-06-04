@@ -15,7 +15,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   font-size: 62.5%;
   background: transparent;
-  color: #151515;
+  color: #000;
 }
 
 body,
@@ -101,9 +101,9 @@ i{
   font-style: normal;
 }
 .clearfix:after {
-   content:""; 
-   display: block; 
-   clear:both; 
+   content:"";
+   display: block;
+   clear:both;
 }
 .icon .iconfont{
   font-size: .5rem;
@@ -147,7 +147,7 @@ i{
   color: #739bff;
 }
 .black{
-  color: #151515;
+  color: #000;
 }
 .icon .iconfont.icon-tianjia{
   font-size: .6rem;

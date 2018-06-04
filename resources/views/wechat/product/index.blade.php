@@ -20,7 +20,7 @@
       </ul>
     </div>
     <div class="goods-list">
-      <div class="filter clearfix" id="fillter">
+      <!-- <div class="filter clearfix" id="fillter">
         <div class="item"><span>智能推荐</span></div>
         <div class="item">
           <span>按价格</span>
@@ -36,11 +36,10 @@
               <i class="iconfont icon-xiangxiashaixuan"></i>
           </span>
         </div>
-      </div>
+      </div> -->
       <div class="products" ref="right"  id = "products">
-
         <div class="product" v-for="product in products">
-          <a >
+          <a  @click="linkTo('{{ route("wechat.product.index") }}',product.id)">
             <div class="prop">
               <p class="black">
                 <span class="p-name">@{{ product.name }}</span>
@@ -90,13 +89,17 @@
         var _height = document.body.clientHeight
         var fontsize = document.documentElement.clientWidth / 7.5;
         var _h = 33 * (fontsize / 12) - 1;
-        var _h2 = 46 * (fontsize / 12) - 2;
+        var _h2 = 33 * (fontsize / 12) - 1;
         this.$refs.left.style.height = _height - _h + "px";
         this.$refs.right.style.height = _height - _h2 + "px";
       })
 
     },
     methods: {
+      linkTo:function(url,id){
+        location.assign(url+"/"+id);
+      }
+      ,
       show: function(id) {
         var id = id;
         this.active = id;
