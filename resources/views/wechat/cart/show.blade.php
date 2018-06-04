@@ -48,6 +48,13 @@
       </div>
     </div>
 
+    @if (!count($cart->cartItems))
+    <div class="no-content" >
+      <span><i class="iconfont icon-dingdan1"></i></span>
+      <br>
+      <p><a class="gray" href="{{ route("wechat.product.index") }}">您的选购单还没有商品,尽快去 <a href="{{route("wechat.product.index")}}" class="green">选购</a>吧～</a></p>
+    </div>
+     @endif
   </div>
 </div>
 <div class="goBuy">

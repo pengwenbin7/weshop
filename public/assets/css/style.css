@@ -144,7 +144,7 @@
 
 .cat-nav li {
   font-size: .3rem;
-  color: #151515;
+  color: #000;
   height: 1.06rem;
   border-bottom: 1px solid #eee;
   border-right: 1px solid #eee;
@@ -280,7 +280,7 @@
 }
 
 .products .product .num i {
-  color: #151515;
+  color: #000;
 }
 
 .products .product .pirce {
@@ -929,7 +929,7 @@
   font-weight: bold;
   line-height: .6rem;
   text-align: left;
-  color: #151515;
+  color: #000;
 }
 
 .p-desc p {
@@ -1221,7 +1221,7 @@
   font-size: .28rem;
 }
 .order .address .name .user-name {
-  color: #151515;
+  color: #000;
 }
 
 .address .right-arrow {
@@ -1316,7 +1316,7 @@
 
 .flexbox .tit {
   font-size: .36rem;
-  color: #151515;
+  color: #000;
   font-weight: bold;
   padding: .4rem;
   background-color: #fff;
@@ -1508,7 +1508,7 @@
 
 .order-footer .order-edit span {
   display: inline-block;
-  border: 1px solid #151515;
+  border: 1px solid #000;
   border-radius: 2px;
   width: 1.4rem;
   padding: .15rem 0;
@@ -1604,7 +1604,7 @@
 }
 
 .contracts .btn-click {
-  border: 1px solid #151515;
+  border: 1px solid #000;
   height: .6rem;
   width: 1.4rem;
   text-align: center;
@@ -1667,7 +1667,7 @@
 
 .order-detail .footer .item .btn-click {
   display: inline-block;
-  border: 1px solid #151515;
+  border: 1px solid #000;
   height: .6rem;
   padding: .15rem 0;
   line-height: .3rem;
@@ -1909,7 +1909,7 @@
 
 .c-h .ch-info .title {
   font-weight: bold;
-  color: #151515;
+  color: #000;
   font-size: .4rem;
 }
 
@@ -2036,7 +2036,7 @@
 }
 
 .contact .tel-list a>.tel-info p {
-  color: #151515;
+  color: #000;
   font-weight: bold;
 }
 .no-content{
@@ -2057,4 +2057,7 @@
 }
 #more{
   padding: .5rem 0 ;
+}
+.cart-info .no-content,.cart-list .no-content{
+  background-color: #f0f1f0;
 }

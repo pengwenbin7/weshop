@@ -18,9 +18,9 @@
   </div>
   <div class="container">
     <div class="apply-goods">
-      <p>如未找到合适商品，点此可申请所需产品
+      <!-- <p>如未找到合适商品，点此可申请所需产品
         <a href="apply_product.html">申请采购</a>
-      </p>
+      </p> -->
     </div>
     <div class="products" id="product" >
       @foreach($products as $product)
