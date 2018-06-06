@@ -46,12 +46,11 @@
 @section("script")
   <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
   <script>
-  wx.config({!! app("wechat.work")->jssdk->buildConfig(["scanQRCode"], true) !!});
+  wx.config({!! app("wechat.work")->jssdk->buildConfig(["scanQRCode"], false) !!});
   wx.ready(function () {
     wx.checkJsApi({
       jsApiList: ["scanQRCode"],
       success: function(res) {
-	alert("{!! $url !!}");
 	location.assign("{!! $url !!}");
       }
     });

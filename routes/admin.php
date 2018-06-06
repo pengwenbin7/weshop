@@ -85,16 +85,4 @@ Route::resource("shipment", "Admin\ShipmentController", [
     ],
 ]);
 
-Route::resource("purchase", "Admin\PurchaseController", [
-    "names" => [
-        "index" => "admin.purchase.index",
-        "show" => "admin.purchase.show",
-        "create" => "admin.purchase.create",
-        "edit" => "admin.purchase.edit",
-        "store" => "admin.purchase.store",
-        "update" => "admin.purchase.update",
-        "destroy" => "admin.purchase.destroy",
-    ],
-]);
-
 Route::get('/logout', 'AdminAuth\LoginController@logout')->name("admin.logout");

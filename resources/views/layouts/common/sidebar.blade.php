@@ -42,14 +42,6 @@
       </li>
       @endif
 
-      @if (auth("admin")->user()->can("purchase"))
-      <li>
-	<a href="{{ route("admin.purchase.index") }}">
-	  采购单
-	</a>
-      </li>
-      @endif
-	    
       @if (auth("admin")->user()->can("ship"))
       <li>
 	<a href="{{ route("admin.shipment.index") }}">

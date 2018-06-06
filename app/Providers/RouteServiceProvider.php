@@ -35,10 +35,7 @@ n     * In addition, it is set as the URL generator's root namespace.
      */
     public function map()
     {
-        $this->mapApiRoutes();
-
         $this->mapWebRoutes();
-
         $this->mapWechatRoutes();
         $this->mapAdminRoutes();
         $this->mapNoMiddlewareRoutes();
@@ -56,14 +53,6 @@ n     * In addition, it is set as the URL generator's root namespace.
         Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
-    }
-
-    protected function mapApiRoutes()
-    {
-        Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/api.php'));
     }
 
     protected function mapWechatRoutes()
