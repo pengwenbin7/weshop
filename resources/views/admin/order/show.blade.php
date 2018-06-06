@@ -127,14 +127,18 @@
 	  <div class="form-group">
             <label class="col-sm-2 control-label">发货状态</label>
             <div class="col-sm-10">
-	      @if (auth("admin")->user()->can("ship") && $order->shipment_status > $order::SHIP_STATUS_DOING && $order->shipment_status < $order::SHIP_STATUS_SURE)
+	      @if (auth("admin")->user()->can("ship") && $order->shipment_status > $order::SHIP_STATUS_WAIT && $order->shipment_status < $order::SHIP_STATUS_SURE)
 		<select class="form-control select" name="shipment_status"
 			v-model="shipment_status">
+		  <option value="{{ $order::SHIP_STATUS_DOING }}">待发货</option>
 		  <option value="{{ $order::SHIP_STATUS_PART }}">部分发货</option>
 		  <option value="{{ $order::SHIP_STATUS_DONE }}">完成发货</option>
 		</select>
 	      @else
 		@switch ($order->shipment_status)
+		@case ($order::SHIP_STATUS_DOING)
+		<input class="form-control" type="text" value="待发货" readonly>
+		@break
 		@case ($order::SHIP_STATUS_PART)
 		<input class="form-control" type="text" value="部分发货" readonly>
 		@break
