@@ -82,6 +82,7 @@
       products: {!!$products!!},
       cart_id: {{ $cart->id }},
       PayChannel: 1,
+      price:0,
     },
     //总价
     beforeMount: function() { //加载页面前计算价格
@@ -148,25 +149,33 @@
   function count(_this){
     var _this = _this;
     var products = _this.products;
-    var fee = 0, distance = 0, weight = 0, total = 0, func;
+    var fee = 0, distance = 0, weight = 0, func;
     //循环数组获得距离-和公式
     for (var n in products) {
+      _this.price =0;
       weight = 0;
       distance = products[n][0].distance;
       func     = JSON.parse(products[n][0].func);
       for (var m in products[n]) {
         if(products[n][m].checked){
           weight += products[n][m].number * Number(products[n][m].product.content);
-          total  += products[n][m].number * Number(products[n][m].price)
         }
       }
-      if(weight){
-        fee += freight(func, weight, distance)
+      fee = freight(func, weight, distance)/weight;
+      // 按比例分配费用
+    for (var z in products[n]) {
+       weight = 0;
+       total =0;
+      if(products[n][z].checked){
+        weight = products[n][z].number * Number(products[n][z].product.content);
+        total = Math.floor( products[n][z].number * Number(products[n][z].price)+weight*fee);
+        products[n][z].total  = total;
+        _this.price += total
+        }
       }
     }
     //赋值
-    totalDom.innerText = total + fee;
-    console.log("物品总计  =>   "+total+"     运费计算  =>   "+fee);
+    totalDom.innerText = _this.price;
   }
   //计算费用
   function freight(func, weight, distance) {
