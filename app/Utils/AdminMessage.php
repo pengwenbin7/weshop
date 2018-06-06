@@ -20,8 +20,8 @@ class AdminMessage
         $items = [
             new NewsItem([
                 'title'       => "客户注册",
-                'description' => "你有一个新的客户",
-                'url'         => "http://www.baidu.com",
+                'description' => "你有一个新的客户【{$user->name}】",
+                'url'         => "",
                 //"url" => route("admin.user.show", ["id" => $user->id]),
                 'image'       => "",
             ]),

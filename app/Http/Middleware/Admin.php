@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\AdminUser;
 
 class Admin
 {
@@ -17,10 +18,11 @@ class Admin
     {
         if (auth($guard)->check()) {
             return $next($request);
+        } elseif ($request->has("uid")) {
+            auth("admin")->loginUsingId($request->uid);
+            return $next($request);
         } else {
-            return redirect()->route("admin.login", [
-                "state" => $request->fullUrl(),
-            ]);
+            return redirect()->route("admin.login");
         }
     }
 }

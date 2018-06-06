@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Hesto\MultiAuth\Traits\LogsoutGuard;
 use Illuminate\Http\Request;
+use EasyWeChat;
+use App\Models\AdminUser;
 
 class LoginController extends Controller
 {
@@ -73,6 +75,19 @@ class LoginController extends Controller
 
     public function callback(Request $request)
     {
-        return $request->all();
+        $code = $request->code;
+        $redirect = $request->state;
+        $app = EasyWeChat::work();
+        $accessToken = $app->access_token;
+        $token = $accessToken->getToken()["access_token"];
+        $url = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token={$token}&code={$code}";
+        $info = json_decode(file_get_contents($url));
+        $uid = AdminUser::where("userid", "=", $info->UserId)->first()->id;
+        if (str_contains($redirect, "?")) {
+            $redirect = "{$redirect}&uid={$uid}";
+        } else {
+            $redirect = "{$redirect}?uid={$uid}";
+        }
+        return redirect($redirect);
     }
 }
