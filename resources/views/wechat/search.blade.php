@@ -3,20 +3,19 @@
 @section("style")
 @endsection
 @section("content")
-
-<div class="searchs" id="app">
-  <div class="header">
-    <div class="search">
-      <div class="search-box">
-        <form action="{{ route("wechat.search") }}" method="get">
-      <input type="text" class="search-inp" name="keyword" id="search_inp" value="" />
-          <i class="iconfont icon-sousuo"></i>
-          <input class="btn-submit" type="hidden" />
-        </form>
-    </div>
-    </div>
-  </div>
   <div class="container">
+    <div class="searchs" id="app">
+      <div class="header">
+        <div class="search">
+          <div class="search-box">
+            <form action="{{ route("wechat.search") }}" method="get">
+          <input type="text" class="search-inp" name="keyword" id="search_inp" value="" placeholder="快速搜索" />
+              <i class="iconfont icon-sousuo"></i>
+              <input class="btn-submit" type="hidden" />
+            </form>
+        </div>
+        </div>
+      </div>
     <div class="apply-goods">
       <!-- <p>如未找到合适商品，点此可申请所需产品
         <a href="apply_product.html">申请采购</a>
@@ -24,17 +23,27 @@
     </div>
     <div class="products" id="product" >
       @foreach($products as $product)
-      <div class="product" v-for="item in items">
-        <a href="{{ route("wechat.product.show", $product->id) }}">
-        <div class="title">
-            <span class="p-bname">{{ $product->brand->name }}</span>
-            <span class="p-name">{{ $product->name }} </span>
-            <span class="p-model">{{ $product->model }}</span>
+      <div class="product">
+        <a  href="{{ route("wechat.product.show", $product->id) }}">
+          <div class="prop">
+            <p class="black">
+              <span class="p-name">{{ $product->name }}</span>
+              <span class="p-model">{{ $product->model }}</span>
+            </p>
+            <p class="gray">
+              <span class="p-bname">{{ $product->brand->name }}</span>
+            </p>
+            <p class="pirce">
+              @if ($product->is_ton)
+                <span class="y" ><i>￥</i>{{ $product->variable->unit_price*1000/$product->content }}/吨</span>
+              @else
+                <span class="y" ><i>￥</i>{{ $product->variable->unit_price }}/{{ $product->packing_unit }}</span>
+              @endif
+
+
+            </p>
           </div>
-          <div class="pirce">
-            <span><i>￥</i>{{ $product->variable->unit_price*1000 }}元/吨</span>
-          </div>
-          </a>
+        </a>
       </div>
       @endforeach
     </div>

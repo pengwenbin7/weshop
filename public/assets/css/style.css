@@ -16,7 +16,15 @@
 .search {
   padding: .4rem 0;
 }
-
+.searchs .header{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+.searchs{
+  padding-top: 1.5rem;
+}
 .search-box {
   display: block;
   height: .7rem;
@@ -477,7 +485,7 @@
 }
 
 .product .p-check {
-  width: 7%;
+  width: 10%;
 }
 
 .p-check input {
@@ -518,8 +526,8 @@
 }
 
 .product .p-info {
-  width: 63%;
-  ;
+  flex:1;
+  -webkit-flex:1;
 }
 
 .product .p-edit .p-del {
@@ -1757,6 +1765,7 @@
 
 .container .searchs {
   border-top: 1px solid #eee;
+  margin-bottom: -1.4rem;
 }
 
 .search .search-inp {
@@ -1769,6 +1778,7 @@
 }
 
 .apply-goods {
+  display: none;
   padding: 0 .4rem .25rem;
   background: #fff;
   border-bottom: 1px solid #eee;
