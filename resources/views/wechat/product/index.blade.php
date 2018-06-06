@@ -137,7 +137,7 @@
   var more = document.getElementById("more");
   var element = document.getElementById("products");
   var height,_height,offsetHeight,rHeight;
-  rHeight = document.getElementById("header").offsetHeight+document.getElementById("fillter").offsetHeight+20;
+  rHeight = document.getElementById("header").offsetHeight+20;
   me.touchmoveCall=function(e){
     height = element.scrollTop;
     offsetHeight = element.offsetHeight;
