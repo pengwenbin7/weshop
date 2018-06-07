@@ -49,7 +49,17 @@
 		    <td>{{ $item->id }}</td>
 		    <td>{{ $item->name }}</td>
 		    <td>{{ $item->brand->name }}</td>
-		    <td><a href="{{ route("admin.storage.edit", ["id" => $item->id]) }}">编辑</a></td>
+		    <td>
+		      <a class="btn btn-small btn-info" href="{{ route("admin.storage.edit", ["id" => $item->id]) }}">编辑</a>
+		      @if ($item->products->isEmpty())
+			&nbsp;|&nbsp;
+			<form class="inline" action="{{ route("admin.storage.destroy", $item) }}" method="POST">
+			  {{ csrf_field() }}
+			  {{ method_field("DELETE") }}
+			  <input class="btn btn-small btn-warning" type="submit" value="删除">
+			</form>
+		      @endif
+		    </td>
 		  </tr>
 		@endforeach
 	      </tbody>

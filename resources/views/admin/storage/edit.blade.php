@@ -48,6 +48,7 @@
               <input name="description" id="description" class="form-control" value="{{ $storage->description }}">
 	    </div>
           </div>
+	  
 	  <address-component></address-component>
 	</div>
 
@@ -61,4 +62,5 @@
 @endsection
 
 @section("script")
+
 @endsection
