@@ -155,13 +155,16 @@ class ProductController extends Controller
             event(new ProductPriceChangedEvent($product));
         } 
         
-        // 以下过程未做判断，有些是非必须的
+        // 现在只使用单分类
+        ProductCategory::where("product_id", "=", $product->id)
+             ->update(["is_primary" => 0]);
         // save product primary category
-        ProductCategory::firstOrCreate([
+        $p = ProductCategory::firstOrCreate([
             "category_id" => $request->category_id,
             "product_id" => $product->id,
-            "is_primary" => 1,
         ]);
+        $p->is_primary = 1;
+        $p->save();
         
         // save product variable
         $variable = $product->variable;

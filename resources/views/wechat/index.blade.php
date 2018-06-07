@@ -6,19 +6,19 @@
     <div class="index" id="app">
       <div class="search">
 	<div class="i-search">
-    <a  href="{{ route("wechat.search") }}">
+	  <a  href="{{ route("wechat.search") }}">
 	    <input type="text" name="keyword" id="keyword" value="" placeholder="输入关键词快速查找商品" />
 	    <input class="btn-submit" type="submit" value="找货" />
-      </a>
+	  </a>
 	</div>
 	<div class="hot-search">
 	  <div class="title">
 	    <span>热搜</span>
 	  </div>
-    <div class="h-list">
-    @foreach ($hot_search as $item)
-      <a href="{{ route("wechat.search") }}?keyword={{ $item->keyword }}">{{ $item->keyword }}</a>
-    @endforeach
+	  <div class="h-list">
+	    @foreach ($hot_search as $item)
+	      <a href="{{ route("wechat.search") }}?keyword={{ $item->keyword }}">{{ $item->keyword }}</a>
+	    @endforeach
 
 
 	  </div>
