@@ -51,9 +51,12 @@ class StorageController extends Controller
     {
         $brands = Brand::all();
         $region = new Region();
+        $func = $request->func ??
+              Config::where("key", "=", "storage.func")->first()->value;
         return view("admin.storage.create", [
             "brands" => $brands,
             "region" => $region,
+            "func"   => $func,
         ]);
     }
 
@@ -114,6 +117,13 @@ class StorageController extends Controller
     {
         $data["storage"] = $storage;
         $data["brands"] = Brand::select("id", "name")->get();
+        $data["address"] = $storage->address;
+
+        $data["province"]   =Region::where("fullname", $storage->address->province)->first();
+        $data["city"]   =Region::where("fullname", $storage->address->city)->first();
+        $data["district"]   =Region::where("fullname", $storage->address->district)->first();
+        // $data["region"]=$region;
+        // return $data;
         return view("admin.storage.edit", $data);
     }
 
@@ -127,16 +137,19 @@ class StorageController extends Controller
     public function update(Request $request, Storage $storage)
     {
         // update storage's address
+        $district = $request->has("district")?
+                  Region::find($request->district)->fullname:
+                  null;
         $address = $storage->address;
         $address->contact_name = $request->input("contact_name", null);
         $address->contact_tel = $request->input("contact_tel", null);
-        $address->province = $request->province;
-        $address->city = $request->city;
-        $address->district = $request->district;
+        $address->province =Region::find($request->province)->fullname;
+        $address->city = Region::find($request->city)->fullname;
+        $address->district = $district;
         $address->code = $request->code;
         $address->detail = $request->detail;
         $res = $address->save();
-        
+
         $storage->name = $request->name;
         $storage->brand_id = $request->brand_id;
         $storage->active = $request->input("active", true);
