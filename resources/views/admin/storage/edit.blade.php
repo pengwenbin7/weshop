@@ -132,7 +132,7 @@
         cities: [],
         district: "{{ $district?$district->id:'' }}",
         districts: [],
-        code: null,
+        code: {{ $address->code }},
         fee:{!! $storage->func !!},
       },
       mounted: function() {
