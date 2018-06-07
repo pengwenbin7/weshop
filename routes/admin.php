@@ -35,17 +35,18 @@ Route::resource("brand", "Admin\BrandController", [
 // "/storage" is a using path
 Route::get("st", "Admin\StorageController@index")
     ->name("admin.storage.index");
-Route::resource("storage", "Admin\StorageController", [
-    "names" => [
-        "create" => "admin.storage.create",
-        "store" => "admin.storage.store",
-        "edit" => "admin.storage.edit",
-        "update" => "admin.storage.update",
-        "destroy" => "admin.storage.destroy",
-        "show" => "admin.storage.show",
-    ],
-    "except" => ["index",],
-]);
+Route::get("st/create", "Admin\StorageController@create")
+    ->name("admin.storage.create");
+Route::post("st", "Admin\StorageController@store")
+    ->name("admin.storage.store");
+Route::put("st/{storage}", "Admin\StorageController@update")
+    ->name("admin.storage.update");
+Route::get("st/{storage}/edit", "Admin\StorageController@edit")
+    ->name("admin.storage.edit");
+Route::delete("st/{storage}", "Admin\StorageController@destroy")
+    ->name("admin.storage.destroy");
+Route::get("st/{storage", "Admin\StorageController@show")
+    ->name("admin.storage.show");
 
 Route::resource("product", "Admin\ProductController", [
     "names" => [

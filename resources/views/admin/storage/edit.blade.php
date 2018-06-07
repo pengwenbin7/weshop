@@ -63,6 +63,7 @@
               <input name="description" id="description" class="form-control" value="{{ $storage->description }}">
 	    </div>
           </div>
+<<<<<<< HEAD
           <div id="address-selector">
             <div class="form-group">
               <label for="contact_name" class="col-sm-2 control-label">联系人</label>
@@ -110,6 +111,10 @@
               </div>
             </div>
           </div>
+=======
+	  
+	  <address-component></address-component>
+>>>>>>> 19d5521bd3253d5b6ec57a4b5dc82667bf2b4378
 	</div>
 
 	<div class="box-footer">
@@ -122,6 +127,7 @@
 @endsection
 
 @section("script")
+<<<<<<< HEAD
   <script>
     const app = new Vue({
       el: '#app',
@@ -236,4 +242,7 @@
 
     });
   </script>
+=======
+
+>>>>>>> 19d5521bd3253d5b6ec57a4b5dc82667bf2b4378
 @endsection

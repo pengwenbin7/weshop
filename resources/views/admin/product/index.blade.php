@@ -40,6 +40,7 @@
 		  <th>名字</th>
 		  <th>品牌</th>
 		  <th>型号</th>
+		  <th>分类</th>
 		  <th>仓库</th>
 		  <th>库存</th>
 		  <th>价格</th>
@@ -55,6 +56,7 @@
 		    <td>{{ $item->name }}</td>
 		    <td>{{ $item->brand->name }}</td>
 		    <td>{{ $item->model }}</td>
+		    <td>{{ $item->category()->name }}</td>
 		    <td>{{ $item->storage->name }}</td>
 		    <td>{{ $item->variable->stock }}</td>
 		    <td>{{ $item->variable->unit_price }}</td>

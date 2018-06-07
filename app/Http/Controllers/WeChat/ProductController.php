@@ -20,11 +20,12 @@ class ProductController extends Controller
         $categories = Category::all();
         $firstCategoryId = $categories->first()->id;
         $id = $request->input("id", $firstCategoryId);
-
+        
         $limit = $request->input("limit", 15);
 
         // get products' id of the category
         $pcs = ProductCategory::where("category_id", "=", $id)
+             ->where("is_primary", "=", 1)
              ->select("product_id")
              ->paginate($limit);
         $ids = [];
@@ -35,6 +36,7 @@ class ProductController extends Controller
         $products = Product::whereIn("id", $ids)->get();
         foreach ($products as  $product) {
           $product->unit_price = $product->variable->unit_price;
+          $product->brand_name = $product->brand->name;
         }
         if ($request->has("id")) {
             return [

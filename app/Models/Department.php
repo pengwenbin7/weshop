@@ -33,7 +33,7 @@ class Department extends Authenticatable
         $work->messenger
             ->ofAgent(env("WECHAT_WORK_AGENT_ID"))
             ->message($message)
-            ->toPart($this->userid)
+            ->toParty($this->id)
             ->send();
     }
 }

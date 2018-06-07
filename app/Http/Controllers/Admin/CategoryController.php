@@ -97,7 +97,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         if ($category->products->isEmpty()) {
-            return ["destroy" => $category->delete()];
+            $category->delete();
+            return route("admin.category.index");
         } else {
             return ["err" => "The category has products, you can't delete it."];
         }
