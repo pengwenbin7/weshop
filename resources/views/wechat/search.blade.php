@@ -39,6 +39,7 @@
 		  @else
 		    <span class="y"><i>￥</i>{{ $product->variable->unit_price }}/{{ $product->packing_unit }}</span>
 		  @endif
+      <span class="right">{{ $product->storage->address->city }}</span>
 		</p>
 	      </div>
 	    </a>

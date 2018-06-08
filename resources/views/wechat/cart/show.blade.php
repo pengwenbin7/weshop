@@ -26,7 +26,10 @@
             <span class="p-model">@{{ item.product.model }}</span>
           </div>
           <div class="pirce">
-            <span><i>￥@{{ Number(item.number)* Number(item.product.content) }}</i>KG</span>
+            <span><i>@{{  Number(item.product.content) }}</i>KG</span>
+          </div>
+          <div class="pirce">
+            <span><i>￥@{{ Number(item.price) }}</i>/@{{ item.product.packing_unit }}</span>
           </div>
         </div>
         <div class="p-edit">
@@ -65,7 +68,8 @@
     </div>
   </div>
   <div class="goods-price">
-    <span><i class="font-co">¥</i><i class="font-co" id="totalprice" >0</i></span>
+    <span class="fee">零售附加： <i  id="fee">111</i>   </span>
+    <span><i class="font-co">¥</i><i class="font-co" id="totalprice" >0</i></span><br>
   </div>
   <div class="btn-submit" onclick="buyAll()">
     <a>结算</a>
@@ -76,6 +80,7 @@
 <script>
   var totalDom = document.getElementById("totalprice");
   var domAll = document.getElementById("ck-all");
+  var domFee = document.getElementById("fee");
   var app = new Vue({
     el: '#app',
     data: {
@@ -128,7 +133,6 @@
             }else{
               products[x][y].checked = status;
             }
-
           }
         }
         count(this);
@@ -149,33 +153,29 @@
   function count(_this){
     var _this = _this;
     var products = _this.products;
-    var fee = 0, distance = 0, weight = 0, func;
+    var fee = 0, distance = 0, weight = 0,price = 0, func;
     //循环数组获得距离-和公式
     for (var n in products) {
-      _this.price =0;
       weight = 0;
       distance = products[n][0].distance;
       func     = JSON.parse(products[n][0].func);
       for (var m in products[n]) {
         if(products[n][m].checked){
           weight += products[n][m].number * Number(products[n][m].product.content);
+          price +=  products[n][m].number * Number(products[n][m].price);
         }
       }
-      fee = freight(func, weight, distance)/weight;
+      console.log(weight);
+      if(weight){
+        fee += freight(func, weight, distance);
+      }
+
       // 按比例分配费用
-    for (var z in products[n]) {
-       weight = 0;
-       total =0;
-      if(products[n][z].checked){
-        weight = products[n][z].number * Number(products[n][z].product.content);
-        total = Math.floor( products[n][z].number * Number(products[n][z].price)+weight*fee);
-        products[n][z].total  = total;
-        _this.price += total
-        }
-      }
+      console.log(fee);
     }
     //赋值
-    totalDom.innerText = _this.price;
+    totalDom.innerText = price+fee;
+    domFee.innerText = fee;
   }
   //计算费用
   function freight(func, weight, distance) {

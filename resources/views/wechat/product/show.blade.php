@@ -16,7 +16,8 @@
       <div class="i-info">
         <p>
           <del>历史价格￥@{{ old_price }}/吨</del>&nbsp;&nbsp;
-          <span>{{ $product->pack() }}</span>
+          <span>{{ $product->pack() }}</span>&nbsp;&nbsp;
+          <span>发货地：{{ $product->storage->address->city }}</span>
         </p>
         <div class="i-price">
           <p class="y">￥{{ $product->variable->unit_price*1000/$product->content }}/吨</p>

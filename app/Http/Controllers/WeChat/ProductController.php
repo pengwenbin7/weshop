@@ -20,7 +20,7 @@ class ProductController extends Controller
         $categories = Category::all();
         $firstCategoryId = $categories->first()->id;
         $id = $request->input("id", $firstCategoryId);
-        
+
         $limit = $request->input("limit", 15);
 
         // get products' id of the category
@@ -37,6 +37,7 @@ class ProductController extends Controller
         foreach ($products as  $product) {
           $product->unit_price = $product->variable->unit_price;
           $product->brand_name = $product->brand->name;
+          $product->city = $product->storage->address->city;
         }
         if ($request->has("id")) {
             return [
