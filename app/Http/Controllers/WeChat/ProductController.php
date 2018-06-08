@@ -33,7 +33,9 @@ class ProductController extends Controller
         foreach ($arr as $i) {
             $ids[] = $i["product_id"];
         }
-        $products = Product::whereIn("id", $ids)->get();
+        $products = Product::whereIn("id", $ids)
+                  ->where("active", "=", 1)
+                  ->get();
         foreach ($products as  $product) {
           $product->unit_price = $product->variable->unit_price;
           $product->brand_name = $product->brand->name;
@@ -73,7 +75,7 @@ class ProductController extends Controller
           foreach ($prices as $price) {
             $price->updated = $price->updated_at->toDateString();
           }
-          $product->star=!$star;
+          $product->star = !$star;
           $product->prices=json_encode($product->prices);
         return view("wechat.product.show", ["product" => $product, "title" => $product->name,]);
     }

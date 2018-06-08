@@ -126,6 +126,8 @@ class OrderController extends Controller
                 $payment->discount = $coupon->discount;
             }
         }
+        Log::info($order);
+        Log::info($order->countFreight());
         $payment->freight = $order->countFreight();
         $payment->save();
         return ["store" => $order->id];

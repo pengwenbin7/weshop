@@ -9,7 +9,7 @@
       </div>
       <h1>
           <span>
-              {{ $product->name }}</span>
+            {{ $product->name }}</span>
           <span>{{ $product->model }}</span>
       </h1>
       <h2>{{ $product->brand->name }}</h2>
