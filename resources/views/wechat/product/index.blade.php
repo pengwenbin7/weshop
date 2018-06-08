@@ -20,23 +20,7 @@
 	</ul>
       </div>
       <div class="goods-list">
-	<!-- <div class="filter clearfix" id="fillter">
-        <div class="item"><span>智能推荐</span></div>
-        <div class="item">
-        <span>按价格</span>
-        <span class="uad">
-        <i class="iconfont icon-xiangshangshaixuan"></i>
-        <i class="iconfont icon-xiangxiashaixuan"></i>
-        </span>
-        </div>
-        <div class="item">
-        <span>按销量</span>
-        <span class="uad">
-        <i class="iconfont icon-xiangshangshaixuan"></i>
-        <i class="iconfont icon-xiangxiashaixuan"></i>
-        </span>
-        </div>
-	</div> -->
+
 	<div class="products" ref="right"  id = "products">
           <div class="product" v-for="product in products">
             <a  @click="linkTo('{{ route("wechat.product.index") }}',product.id)">
@@ -51,6 +35,7 @@
 		<p class="pirce">
                   <span class="y" v-if="product.is_ton"><i>￥</i>@{{ Number(product.unit_price * 1000 / product.content) }}/吨</span>
                   <span class="y" v-if="!product.is_ton"><i>￥</i>@{{ product.unit_price }}/@{{ product.packing_unit }}</span>
+                  <span class="right">@{{ product.city }}</span>
 		</p>
               </div>
             </a>

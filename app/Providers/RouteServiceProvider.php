@@ -62,7 +62,7 @@ n     * In addition, it is set as the URL generator's root namespace.
             ->namespace($this->namespace)
             ->group(base_path("routes/wechat.php"));
     }
-    
+
     protected function mapAdminRoutes()
     {
         Route::group([
@@ -75,7 +75,7 @@ n     * In addition, it is set as the URL generator's root namespace.
         });
     }
 
-    
+
     protected function mapNoMiddlewareRoutes()
     {
         Route::namespace($this->namespace)

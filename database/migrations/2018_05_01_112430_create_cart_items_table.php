@@ -18,6 +18,7 @@ class CreateCartItemsTable extends Migration
             $table->unsignedInteger("cart_id");
             $table->unsignedInteger("product_id")->nullable();
             $table->unsignedInteger("number")->default(1);
+            $table->boolean("checked")->default(0);
             $table->foreign("cart_id")
                 ->references("id")
                 ->on("carts")

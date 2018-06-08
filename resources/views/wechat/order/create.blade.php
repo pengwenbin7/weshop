@@ -55,6 +55,10 @@
 	</div>
       </div>
       <div class="grid">
+        <div class="item">
+                <span> 零售附加</span>
+                <span class="value "  >￥ <i id="fee"> @{{ freight }}</i></span>
+      	</div>
 	<div class="item" >
 	  <span> 优惠券</span>
     <span class="value disable" v-if="!(coupons.length&&address_id) "><i>暂无可用优惠券</i></span>
