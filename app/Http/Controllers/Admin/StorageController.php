@@ -121,9 +121,13 @@ class StorageController extends Controller
 
         $data["province"]   =Region::where("fullname", $storage->address->province)->first();
         $data["city"]   =Region::where("fullname", $storage->address->city)->first();
+<<<<<<< HEAD
         $data["district"]   =Region::where("fullname", $storage->address->district)
           ->where("parent_id",$data["city"]->id)
           ->first();
+=======
+        $data["district"]   =Region::where("fullname", $storage->address->district)->first();
+>>>>>>> 384899d24b32a85f19eaa815ba4a682c365850f9
         // $data["region"]=$region;
         // return $data;
         return view("admin.storage.edit", $data);
