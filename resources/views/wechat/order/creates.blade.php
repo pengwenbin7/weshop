@@ -14,31 +14,40 @@
       </div>
 
     </div>
-    <div class="products" v-for="items in products" v-lock>
-      <div class="product" v-for="product in items" v-lock>
+    <div class="products" v-for="items in products" >
+      <div class="product" v-for="product in items">
         <div class="p-info">
-          <div class="title">
-            <p><span class="p-name"> @{{ product.name }}&nbsp; &nbsp;@{{ product.model }} </span></p>
-            <p> <span class="p-bname">@{{ product.brand_name }}</span></p>
-
+          <div class="num clearfix">
+            <span>品名：<i class="black"> @{{ product.name }}</i></span>
+          </div>
+          <div class="num clearfix">
+            <span>型号：<i class="black"> @{{ product.model }}</i></span>
+          </div>
+          <div class="num clearfix">
+            <span>厂商：<i class="black"> @{{ product.brand_name }}</i></span>
+          </div>
+          <div class="pirce">
+            <span>单价：<i class="black">￥@{{ product.price }}</i></span>
           </div>
           <div class="num clearfix">
             <span>数量：<i class="black">@{{ product.number }}@{{ product.packing_unit }}</i><i class="black">@{{ Number(product.number) * Number(product.content) }}KG</i></span>
           </div>
-          <div class="pirce">
-            <span>价格：<i class="black">￥@{{ product.total }}</i></span>
-          </div>
+
         </div>
       </div>
     </div>
     <div class="grid">
+      <div class="item">
+      <span> 零售附加</span>
+      <span class="value"><i>@{{ freight }}</i> </span>
+    </div>
       <div class="item" @click="show('coupon')"  v-if="coupons.length">
       <span> 优惠券</span>
       <span class="value y"><i>@{{ coupon_text }}</i> <i class="iconfont icon-zhankai"></i></span>
     </div>
     <div class="item">
       <span> 实付款</span>
-      <span class="value y">￥@{{ price-coupon_discount }}</span>
+      <span class="value y">￥@{{ price+freight-coupon_discount }}</span>
     </div>
 
   </div>
@@ -47,7 +56,6 @@
   <div class="mask" @click="hideBox()"></div>
   <div class="coupon-list">
     <div class="tit">优惠券<small>(@{{ coupons.length }}张)</small></div>
-
     <div class="coupons">
       <div v-bind:class="coupon.amount>=limit_price?'item on':'item'" v-for="(coupon,index) in coupons" v-on:click="chooseCoupon(index)">
         <div class="c-h">
@@ -136,7 +144,6 @@
 
       }
     },
-
     mounted: function() {}
 
   });
@@ -147,24 +154,17 @@
     //循环数组获得距离-和公式
     for (var n in products) {
       weight = 0;
-      total = 0;
       distance = products[n][0].distance;
       func     = JSON.parse(products[n][0].func);
       for (var m in products[n]) {
           weight += products[n][m].number * Number(products[n][m].content);
           total  += products[n][m].number * Number(products[n][m].price)
       }
-        fee = freight(func, weight, distance)/weight;
+        fee += freight(func, weight, distance);
         console.log("物品总计  =>   "+total+"     运费计算(kg)  =>   "+fee);
-        // 按比例分配费用
-      for (var z in products[n]) {
-          weight = products[n][z].number * Number(products[n][z].content);
-          total = Math.floor( products[n][z].number * Number(products[n][z].price)+weight*fee)
-          products[n][z].total  = total;
-          _this.limit_price += total;
-          _this.price += total
-      }
     }
+    _this.freight = fee;
+    _this.price = total;
     //赋值
 
   }

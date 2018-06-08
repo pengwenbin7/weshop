@@ -16,7 +16,8 @@
       <div class="i-info">
         <p>
           <del>历史价格￥@{{ old_price }}/吨</del>&nbsp;&nbsp;
-          <span>{{ $product->pack() }}</span>
+          <span>{{ $product->pack() }}</span>&nbsp;&nbsp;
+          <span>发货地：{{ $product->storage->address->city }}</span>
         </p>
         <div class="i-price">
           <p class="y">￥{{ $product->variable->unit_price*1000/$product->content }}/吨</p>
@@ -116,7 +117,7 @@
           </div>
           <div class="sb-desc">
             <h3>原厂原包</h3>
-            <p>我们承诺，太好买所有商品均系厂家直供原厂原包。</p>
+            <p>太好买承诺所有商品均系原厂原包。</p>
           </div>
         </div>
         <div class="item">
@@ -125,7 +126,7 @@
           </div>
           <div class="sb-desc">
             <h3>假一赔十</h3>
-            <p>若您在太好买采购到非原厂原包商品，我们承诺假一赔十。</p>
+            <p>太好买所有非原厂原包商品，假一赔十。</p>
           </div>
         </div>
         <div class="item">
