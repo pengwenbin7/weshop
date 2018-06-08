@@ -174,7 +174,11 @@
         <div class="item title  clearfix">
           <span class="p-bname">{{ $product->brand->name }}</span>
         </div>
-        <div class="item clearfix">
+        <div class="item">
+          <span>单价</span>
+          <span class="value">￥{{ $product->variable->unit_price*1000/$product->content }}/吨</span>
+        </div>
+        <div class="item weight clearfix">
           <span>重量</span>
           <span class="value"><i ref = "productW">@{{ weight }}</i></span>
           <div class="quantity">
@@ -189,6 +193,7 @@
             </p>
           </div>
         </div>
+
       </div>
       <div class="product" v-if="tonTap==1">
         <div class="item title  clearfix">
@@ -197,7 +202,11 @@
         <div class="item title  clearfix">
           <span class="p-bname">{{ $product->brand->name }}</span>
         </div>
-        <div class="item clearfix">
+        <div class="item">
+          <span>单价</span>
+          <span class="value">￥{{ $product->variable->unit_price*1000/$product->content }}/吨</span>
+        </div>
+        <div class="item weight clearfix">
           <span>重量</span>
           <span class="value"><i >@{{ ton_num }}</i>吨</span>
           <div class="quantity">
@@ -212,6 +221,7 @@
             </p>
           </div>
         </div>
+
 
 
       </div>
@@ -386,11 +396,13 @@
           return ;
         } else {
           _this.ton_num--;
+          _this.num = _this.ton_num*1000/_this.content;
         }
       }else{
         if(weight<limit){
           if(mode=="add"){
              _this.ton_num++;
+             _this.num = _this.ton_num*1000/_this.content;
           }
         }else{
           alert("购买数量超过库存");

@@ -68,8 +68,10 @@
     </div>
   </div>
   <div class="goods-price">
-    <span class="fee">零售附加： <i  id="fee">111</i>   </span>
-    <span><i class="font-co">¥</i><i class="font-co" id="totalprice" >0</i></span><br>
+    <p><span class="fee">零售附加：<i  id="fee">0</i></span>
+    <span><i class="font-co">¥</i><i class="font-co" id="totalprice" >0</i></span>
+  </p>
+
   </div>
   <div class="btn-submit" onclick="buyAll()">
     <a>结算</a>

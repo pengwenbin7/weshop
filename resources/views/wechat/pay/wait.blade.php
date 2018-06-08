@@ -15,23 +15,23 @@
     }
     html,body{padding:0;margin:0;font-size:50px;}
     .pay{font-size:.32rem}
-      .pay .item{display: flex;display: -webkit-flex;width: 100%; background-color: #fff;height: 1.6rem;padding: .3rem .4rem;}
-      .pay .item .pay-t{width: 60%;line-height: 1rem;}
+      .pay .item{width: 100%; background-color: #fff;height: 1.6rem;padding: .3rem .4rem;}
+      .pay .item .pay-t{width: 100%;line-height: .5rem;}
       .pay .item .pay-t i{font-size: .4rem;font-weight: bold;}
-      .pay .item .pay-limit{width: 40%; line-height: .4rem;font-size: .28rem;text-align: right;color: #888;}
+      .pay .item .pay-limit{width: 100%; line-height: .4rem;font-size: .28rem;color: #888;}
       .group{margin-top: .4rem;}
       .group .item {display: flex;display: -webkit-flex;height: 1.3rem;padding: .25rem .4rem;line-height: .8rem;border-bottom: 1px solid #eee;}
       .group .item .icon{ width: .7rem; font-size: .5rem;text-align: center;}
-      .group .item .pay-title{flex: 1;-webkit-flex:1;line-height: .4rem;}
+      .group .item .pay-title{flex: 1;-webkit-flex:1;line-height: .8rem;}
       .group .item .pay-title p.gray{font-size: .28rem; color: #888;}
       .group .item .pay-title p.title{font-size: .32rem;font-weight: bold;}
       .footer{width:100%; position: absolute;bottom: 0;height: 1.2rem;line-height: 1.2rem;background-color: #00b945;}
       .footer span{display: block;width: 100%;text-align: center;font-weight: bold;color: #fff;letter-spacing: 2px;font-size: .34rem;}
       .footer span a{color: #fff;}
-      .on .icon-duigongzhuanzhang{color: #3bb6ff;}
-      .on .icon-huipiao{color: #c273ff;}
-      .on .icon-xuanzhong-on{color: #3db858;}
-      .on .icon-huodaofukuan{color: #16c2c2;}
+      .icon-duigongzhuanzhang{color: #3bb6ff;}
+      .icon-huipiao{color: #c273ff;}
+      .icon-xuanzhong-on{color: #3db858;}
+      .icon-huodaofukuan{color: #16c2c2;}
     </style>
     <script type="text/javascript">
     //调用微信JS api 支付
@@ -70,8 +70,7 @@
         <span>需支付：<i class="y">￥{{ $order->payment->pay  }}</i></span>
       </div>
       <div class="pay-limit">
-        <p>剩余支付时间</p>
-        <p>@{{ expire }}</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;剩余支付时间：@{{ expire }}</p>
       </div>
     </div>
     <div class="group">
@@ -86,7 +85,6 @@
           </div>
           <div class="pay-title" >
             <p class="title">@{{ item.name }}</p>
-            <p class="gray">@{{ item.params }}</p>
           </div>
 
           <div class="icon">

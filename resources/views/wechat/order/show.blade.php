@@ -16,7 +16,7 @@
             @elseif ($order->status === 3)
             <span class="green">货到付款</span>
             @endif
-           
+
           </div>
         </div>
         <div class="order-address">
@@ -35,11 +35,12 @@
           </div>
           @foreach ($order->orderItems as $item)
           <div class="product-detail clearfix">
-            <div class="item"><span>品名：{{ $item->brand_name }}</span></div>
-            <div class="item"> <span>厂家：{{ $item->product_name }}</span></div>
-            <div class="item"><span>型号：{{ $item->product_name }}</span></div>
+            <div class="item"><span>品名：{{ $item->product_name }}</span></div>
+            <div class="item"><span>型号：{{ $item->model }}</span></div>
+            <div class="item"> <span>厂家：{{ $item->brand_name }}</span></div>
+
             <div class="item"><span>数量：{{ $item->number }}{{ $item->packing_unit }}</span></div>
-            <div class="item"><span>价格： <i class="y">￥{{ $item->price *$item->number }}</i>   </span></div>
+            <div class="item"><span>金额： <i class="y">￥{{ $item->price *$item->number }}</i>   </span></div>
           </div>
           @endforeach
         </div>
@@ -62,7 +63,7 @@
           </div>
         </div>
         <div class="footer">
-          <div class="item price y"><span>实付款：{{ $order->payment->pay }}</span></div>
+          <div class="item price y"><span>实付金额：{{ $order->payment->pay }}</span></div>
           <div class="item">
             <span class="btn-click">再来一单</span>
           </div>

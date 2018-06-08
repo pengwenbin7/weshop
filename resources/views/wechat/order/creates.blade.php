@@ -37,16 +37,17 @@
       </div>
     </div>
     <div class="grid">
-      <div class="item">
-      <span> 零售附加</span>
-      <span class="value"><i>@{{ freight }}</i> </span>
-    </div>
+
       <div class="item" @click="show('coupon')"  v-if="coupons.length">
       <span> 优惠券</span>
       <span class="value y"><i>@{{ coupon_text }}</i> <i class="iconfont icon-zhankai"></i></span>
     </div>
     <div class="item">
-      <span> 实付款</span>
+    <span> 零售附加</span>
+    <span class="value"><i>@{{ freight }}</i> </span>
+  </div>
+    <div class="item">
+      <span> 实付金额</span>
       <span class="value y">￥@{{ price+freight-coupon_discount }}</span>
     </div>
 

@@ -58,11 +58,11 @@
 		    <td>{{ $item->model }}</td>
 		    <td>{{ $item->category()->name }}</td>
 		    <td>{{ $item->storage->name }}</td>
-		    <td>{{ $item->variable->stock }}</td>
-		    <td>{{ $item->variable->unit_price }}</td>
+
+
 		    <td>
 		      @if ($item->is_ton)
-			{{ $item->variable->unit_price * 1000 / $item->content }}
+			
 		      @else
 			--
 		      @endif

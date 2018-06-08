@@ -37,7 +37,7 @@ class ProductController extends Controller
                   ->where("active", "=", 1)
                   ->get();
         foreach ($products as  $product) {
-          $product->unit_price = $product->variable->unit_price;
+          $product->unit_price = $product->prices->last()->unit_price;
           $product->brand_name = $product->brand->name;
           $product->city = $product->storage->address->city;
         }

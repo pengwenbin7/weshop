@@ -21,13 +21,23 @@
       </div>
       <div class="products">
 	<div class="product">
-          <div class="p-info">
-            <div class="title" v-on:click="countFreight">
-              <p><span class="p-name"> {{ $products->name }} </span>
-              <span class="p-model"> {{ $products->model }} </span></p>
+    <div class="p-info">
+      <div class="num clearfix">
+        <span>品名：<i class="black"> {{ $products->name }}</i></span>
+      </div>
+      <div class="num clearfix">
+        <span>型号：<i class="black">  {{ $products->model }}</i></span>
+      </div>
+      <div class="num clearfix">
+        <span>厂商：<i class="black">  {{ $products->brand->name }}</i></span>
+      </div>
 
-              <p> <span class="p-bname">  {{ $products->brand->name }}</span></p>
-            </div>
+      <div class="pirce">
+        <span>单价：
+
+          <i class="black" >￥@{{ unit_price }}</i>
+        </span>
+      </div>
            <div class="num clearfix">
               {{-- <span>数量：<i class="black">@{{ number }}包</i><i class="black">25KG</i></span> --}}
               <span>重量：</span>
@@ -45,27 +55,23 @@
               </div>
             </div>
 
-            <div class="pirce">
-              <span>价格：
-                <i class="black disable" v-if="!address_id">选择地址后显示价格</i>
-                <i class="black" v-if="address_id">￥@{{ number*unit_price+freight }}</i>
-              </span>
-            </div>
+
           </div>
 	</div>
       </div>
       <div class="grid">
-        <div class="item">
-                <span> 零售附加</span>
-                <span class="value "  >￥ <i id="fee"> @{{ freight }}</i></span>
-      	</div>
+
 	<div class="item" >
 	  <span> 优惠券</span>
     <span class="value disable" v-if="!(coupons.length&&address_id) "><i>暂无可用优惠券</i></span>
 	  <span class="value y" @click="show('coupon')"  v-if="coupons.length&&address_id "><i>@{{ coupon_text }}</i> <i class="iconfont icon-zhankai"></i></span>
 	</div>
+  <div class="item">
+        <span> 零售附加</span>
+        <span class="value "  >￥ <i id="fee"> @{{ freight }}</i></span>
+</div>
 	<div class="item">
-          <span> 实付款</span>
+          <span> 实付金额</span>
           <span class="value disable"  v-if="!address_id">选择地址后显示价格</span>
           <span class="value y" v-if="address_id">@{{ number*unit_price+freight-coupon_discount }}</span>
 	</div>
