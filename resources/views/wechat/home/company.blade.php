@@ -1,29 +1,105 @@
 @extends( "layouts.wechat2")
-
+<style media="screen">
+  .company .search{
+    background-color: #FFF;
+    display: flex;
+    display: -webkit-flex;
+    margin-top: .4rem;
+    margin-bottom: .4rem;
+    padding: .2rem .4rem;
+  }
+  .company .search .txt{
+    flex: 1;
+    -webkit-flex:1;
+  }
+  .company .search .btn-search{
+    float:right;
+    height: .6rem;
+    width: 2rem;
+    background: none;
+    text-align: right;
+  }
+  .company .row{
+    background-color: #fff;
+    margin-bottom: .2rem;
+    padding: .4rem;
+  }
+  .company-name{
+    margin-bottom: .4rem;
+  }
+  .company .q .btn{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 1.2rem;
+    background-color: #009b45;
+    color: #fff;
+    letter-spacing: 3px;
+}
+</style>
 @section( "content")
   <div class="container">
-    <div class="company" id = "app">
-        <input type="text" name="keyword" value="" placeholder="请输入你的公司名，企业码">
-      <input type="button" name="" value="搜索" @click="getCompany('aaa')">
-      <div class="">
-        -------------------------------
+     <div class="company" id = "app" >
+    @if ($company)
+      <div class="company-name">
+        <div class="search">
+         {{ $company->name }}
+        </div>
       </div>
-      <div class="row" v-for="item in company">
+      <div class="row">
         <div class="title">
-         名字 @{{ item.Name }}
+         电话: {{ $company->company_tel }}
         </div>
         <div class="title">
-         信用代码 @{{ item.CreditCode }}
+         地址:{{ $company->address->province }}{{ $company->address->city }}
         </div>
-        <div class="title">
-         法人 @{{ item.OperName }}
-        </div>
-        <div class="title">
-         地址 @{{ item.Address }}
-        </div>
-        <br><br>
       </div>
-    </div>
+    @else
+      <div class="s" v-show="s">
+        <div class="search">
+          <input type="text" class="txt" name="keyword" value="" placeholder="请输入你的公司名，企业码">
+        <input type="button" class="btn-search" name="" value="搜索" @click="getCompany('aaa')">
+        </div>
+        <div class="row"  v-for="(item,index) in companys" @click="choseCompany(index)">
+          <div class="title">
+           名字: @{{ item.Name }}
+          </div>
+          <div class="title">
+           法人: @{{ item.OperName }}
+          </div>
+          <div class="title">
+           地址: @{{ item.Address }}
+          </div>
+          <div class="title">
+           信用代码: @{{ item.CreditCode }}
+          </div>
+        </div>
+        </div>
+        <div class="q" v-show="q"  v-lock>
+          <div class="row"  >
+            <div class="title">
+             名字: @{{ company.Name }}
+            </div>
+            <div class="title">
+             法人: @{{ company.OperName }}
+            </div>
+            <div class="title">
+             地址: @{{ company.Address }}
+            </div>
+            <div class="title">
+             信用代码: @{{ company.CreditCode }}
+            </div>
+          </div>
+          <div class="btn" @click = "saveCompany">
+            保存
+          </div>
+        </div>
+
+    @endif
+  </div>
+
   </div>
 @endsection
 @section("script")
@@ -31,7 +107,11 @@
     var app = new Vue({
       el:"#app",
       data:{
+        companys:[],
         company:[],
+         s:true,
+        q:false,
+
       },
       methods:{
         getCompany:function(key){
@@ -39,9 +119,24 @@
           axios.get('{{ route("wechat.home.company_list") }}')
             .then(function(res){
               console.log(res);
-              _this.company = res.data.Result;
+              _this.companys = res.data.Result;
               console.log(_this.company);
             })
+        },
+        choseCompany:function(index){
+          this.company = this.companys[index];
+          this.q = true;
+          this.s = false;
+          location.assign("#");
+        },
+        saveCompany:function(){
+          console.log(1);
+          if(this.company.Address){
+            axios.post("{{ route("wechat.home.company_store")}}",this.company)
+            .then(function(res){
+              console.log(res);
+            })
+          }
         }
       }
     })

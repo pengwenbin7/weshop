@@ -16,6 +16,8 @@ Route::get("invoice", "WeChat\HomeController@invoice")
     ->name("wechat.home.invoice");
 Route::match(["get", "post"], "company_list", "WeChat\HomeController@companyList")
    ->name("wechat.home.company_list");
+Route::match(["get", "post"], "company_store", "WeChat\HomeController@companyStore")
+  ->name("wechat.home.company_store");
 
 Route::get("logout", "Auth\WeChatAuthController@logout")
     ->name("wechat.logout");

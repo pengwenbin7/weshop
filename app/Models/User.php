@@ -65,4 +65,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany("App\Models\Product", "product_stars", "user_id", "product_id");
     }
+    public function company()
+    {
+      return $this->belongsTo("App\Models\Company");
+    }
 }

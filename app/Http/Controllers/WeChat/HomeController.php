@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\User;
+use App\Models\Company;
 
 class HomeController extends Controller
 {
@@ -28,7 +29,8 @@ class HomeController extends Controller
     public function company()
     {
       $user = auth()->user();
-      return view("wechat.home.company",["user" => $user, "title" => "我的公司"]);
+      $company = $user->company;
+      return view("wechat.home.company",["user" => $user, "company" => $company, "title" => "我的公司"]);
     }
     public function companyList(Request $request)
     {
@@ -41,7 +43,8 @@ class HomeController extends Controller
       			"Status": "存续（在营、开业、在册）",
       			"No": "110108015068911",
       			"CreditCode": "9111010859963405XW",
-            "Address" : "上海市嘉定区"
+            "Address" : "上海市嘉定区",
+            "Tel" : "69000038"
       		},
       		{
       			"KeyNo": "4178fc374c59a79743c59ecaf098d4dd",
@@ -51,7 +54,8 @@ class HomeController extends Controller
       			"Status": "存续",
       			"No": "440301112653267",
       			"CreditCode": "91440300334945450M",
-            "Address" : "上海市嘉定区"
+            "Address" : "上海市嘉定区",
+            "Tel" : "69000038"
       		},
       		{
       			"KeyNo": "e53a833a0267614103e0a20114db89b0",
@@ -61,7 +65,8 @@ class HomeController extends Controller
       			"Status": "存续",
       			"No": "",
       			"CreditCode": "91440101MA59PRRKXX",
-            "Address" : "上海市嘉定区"
+            "Address" : "上海市嘉定区",
+            "Tel" : "69000038"
       		}
       	]
       }';
@@ -72,5 +77,42 @@ class HomeController extends Controller
       $user = auth()->user();
       $id = $request->id;
       return view("wechat.home.invoice",["user" => $user, "id" => $id, "title" => "我的发票"]);
+    }
+    public function companyStore(Request $request)
+    {
+      $user = auth()->user();
+      // get address_id  插入到user
+      $address = new Address();
+      $address->fill([
+          "province" => "上海",
+          "city" => "嘉定",
+          "code" => "1111",
+          "contact_name" => $request->OperName,
+          "contact_tel" => $request->Tel,
+          "detail" => $request->Address,
+      ]);
+      $res = $address->save();
+      if (true) {
+        $company = new Company();
+        $company->fill([
+                "name" => $request->Name,
+                "company_tel" => $request->product_id,
+                "address_id" => $address->id,
+                "contact_name	" => $request->OperName,
+                "contact_phone" => $request->Tel,
+                "code" => "1111",
+                "creator" => $user->id,
+        ]);
+        $res2 = $company->save();
+        if ($res2){
+          return ["company_id" => $company->id];
+        }
+
+      } else {
+          return ["err" => "保存失败"];
+      }
+      //插入公司
+
+      //更新
     }
 }
