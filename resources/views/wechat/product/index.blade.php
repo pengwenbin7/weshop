@@ -91,15 +91,7 @@
         this.active = id;
         this.getDate(id);
       },
-      more:function() {
-        var id =this.id;
-        var _this =this;
-        axios.get("{{ route("wechat.product.index") }}"+"?page=2&&id="+id )
-          .then(function(res) {
-            var arr = _this.products.concat(res.data.products)
-              _this.products=arr;
-          })
-      },
+
       getDate: function(id) {
         var _this = this;
         axios.get("{{ route("wechat.product.index") }}"+"?page=1&&id="+id )
@@ -142,7 +134,7 @@
           return;
       }
       element.removeEventListener('touchmove', me.touchmoveCall);
-      axios.get("{{ route("wechat.product.index") }}"+"?page="+_this.page+"&&id=1")
+      axios.get("{{ route("wechat.product.index") }}"+"?page="+_this.page+"&&id="+_this.id)
         .then(function(res) {
           var arr = _this.products.concat(res.data.products);
           _this.products=arr;
