@@ -164,7 +164,7 @@
         fee += freight(func, weight, distance);
         console.log("物品总计  =>   "+total+"     运费计算(kg)  =>   "+fee);
     }
-    _this.freight = fee;
+    _this.freight = Math.floor(fee);
     _this.price = total;
     //赋值
 

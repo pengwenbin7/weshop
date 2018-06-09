@@ -176,8 +176,8 @@
       console.log(fee);
     }
     //赋值
-    totalDom.innerText = price+fee;
-    domFee.innerText = fee;
+    totalDom.innerText = price+Math.floor(fee);
+    domFee.innerText = Math.floor(fee);
   }
   //计算费用
   function freight(func, weight, distance) {
