@@ -60,6 +60,7 @@
       products:{!! $products !!},
       page:1,
       total:"",
+      id:"",
       more_box:true,
     },
     mounted: function() {
@@ -86,12 +87,12 @@
       }
       ,
       show: function(id) {
-        var id = id;
+        this.id = id;
         this.active = id;
         this.getDate(id);
       },
       more:function() {
-        var id =1;
+        var id =this.id;
         var _this =this;
         axios.get("{{ route("wechat.product.index") }}"+"?page=2&&id="+id )
           .then(function(res) {
