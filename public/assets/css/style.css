@@ -686,13 +686,13 @@
 
 .user .header {
   background-color: #fff;
-  height: 3.2rem;
-  margin-bottom: .2rem;
+  height: 1.9rem;
+  margin-bottom: .4rem;
 }
 
 .u-photo {
   position: relative;
-  padding-top: .9rem;
+  padding-top: .3rem;
   text-align: center;
 }
 
@@ -704,11 +704,15 @@
 
 .u-photo .name {
   margin-left: 2rem;
-  line-height: 1.4rem;
+  line-height: .5rem;
   font-size: .42rem;
   text-align: left;
+  padding: .2rem 0
 }
-
+.u-photo .name .tel{
+  color: #888;
+  font-size: .28rem;
+}
 .u-photo .photo img {
   width: 100%;
   height: 100%;
@@ -717,7 +721,7 @@
 .u-photo .admin-msg {
   position: absolute;
   right: 0;
-  top: 1.5rem;
+  top: .85rem;
   font-size: .3rem;
 }
 
@@ -1215,7 +1219,7 @@
   display: -webkit-flex;
   font-size: .34rem;
   background-color: #fff;
-  border-bottom: 2px solid #f90;
+  border-bottom: 2px solid #8ee951;
 }
 
 .order .address p {

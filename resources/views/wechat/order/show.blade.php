@@ -46,7 +46,7 @@
         </div>
         <div class="contracts">
           <div class="invoice">
-            <span><i>发票信息</i></span><span class="btn-click right">申请开票</span>
+             <span><i>发票信息</i></span><span class="btn-click right"> <a href="{{ route("wechat.home.invoice" ) }}?id={{ $order->id }}">申请开票</a> </span>
           </div>
            <div class="contract">
             <span><i>合同信息</i></span><span class="btn-click right">下载合同</span>

@@ -4,7 +4,24 @@
 
 <div class="container">
   <div class="user">
-
+   <div class="header">
+	      <div class="u-photo">
+          <a href="{{ route("wechat.home.company") }}">
+	        <div class="photo">
+	          <img src="http://m.taihaomai.com/images/logo2.png"/>
+	        </div>
+	        <div class="name">
+	          <p>马蜂科技</p>
+            <p class="tel">手机号：18949150120</p>
+	        </div>
+	        <div class="admin-msg">
+	          <span class="icons">
+            <i class="iconfont icon-jinru"></i>
+	          </span>
+	        </div>
+          </a>
+	      </div>
+	    </div>
     <div class="grid">
       <div class="item ord">
         <a href="{{ route("wechat.order.index") }}">

@@ -46,7 +46,7 @@
 		  @else
 		    <span class="y"><i>￥</i>{{ $product->product->variable->unit_price }}/{{ $product->product->packing_unit }}</span>
 		  @endif
-      <span class="right">{{ $product->product->storage->address->city }}</span>
+      <span class="right">{{ str_replace('市','',str_replace('省','',$product->product->storage->address->province))  }}</span>
 		</p>
 	      </div>
 	    </a>

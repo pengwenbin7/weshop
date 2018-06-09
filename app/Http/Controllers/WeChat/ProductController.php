@@ -39,7 +39,7 @@ class ProductController extends Controller
         foreach ($products as  $product) {
           $product->unit_price = $product->prices->last()->unit_price;
           $product->brand_name = $product->brand->name;
-          $product->city = $product->storage->address->city;
+          $product->province = str_replace('市','',str_replace('省','',$product->storage->address->province));
         }
         if ($request->has("id")) {
             return [

@@ -10,6 +10,12 @@ Route::get("product_star", "WeChat\HomeController@productStar")
     ->name("wechat.home.product_star");
 Route::get("coupon", "WeChat\HomeController@coupon")
     ->name("wechat.home.coupon");
+Route::get("company", "WeChat\HomeController@company")
+     ->name("wechat.home.company");
+Route::get("invoice", "WeChat\HomeController@invoice")
+    ->name("wechat.home.invoice");
+Route::match(["get", "post"], "company_list", "WeChat\HomeController@companyList")
+   ->name("wechat.home.company_list");
 
 Route::get("logout", "Auth\WeChatAuthController@logout")
     ->name("wechat.logout");

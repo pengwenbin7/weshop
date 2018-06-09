@@ -35,7 +35,7 @@
 		<p class="pirce">
                   <span class="y" v-if="product.is_ton"><i>￥</i>@{{ Number(product.unit_price * 1000 / product.content) }}/吨</span>
                   <span class="y" v-if="!product.is_ton"><i>￥</i>@{{ product.unit_price }}/@{{ product.packing_unit }}</span>
-                  <span class="right">@{{ product.city }}</span>
+                  <span class="right">@{{ product.province }}</span>
 		</p>
               </div>
             </a>
