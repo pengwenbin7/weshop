@@ -75,7 +75,12 @@ class CartController extends Controller
             $products[$item->product->storage_id][] = $item;
             $item->brand_name = $item->product->brand->name;
             $item->stock = $item->product->variable->stock;
-            $item->price = $item->product->variable->unit_price;
+            if($item->product->is_ton){
+                $item->price = $item->product->variable->unit_price * 1000 / $item->product->content;
+            }else {
+                $item->price = $item->product->variable->unit_price;
+            }
+
             $item->func = $item->product->storage->func;
             $item->distance = Count::distance($cart->address->id,$item->product->storage->id);
         }
@@ -108,13 +113,13 @@ class CartController extends Controller
         foreach ($coupons as $key => $coupon) {
             $coupon->expire_time = $coupon->expire->toDateString();
         }
-        $data["products"] = json_encode($products);
+        $data["products"] = $products;
         $data["payChannels"] = PayChannel::get();
         $data["user"] = auth()->user();
         $data["varia"] = json_encode($varia);
         $data["coupons"] = json_encode($coupons);
         $data["cart"] = Cart::find($request->cart_id);
-        return view("wechat.order.creates", $data);
+        return view("wechat.order.creates",   $data );
     }
 
     /**

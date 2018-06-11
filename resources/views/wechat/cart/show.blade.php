@@ -26,10 +26,13 @@
             <span class="p-model">@{{ item.product.model }}</span>
           </div>
           <div class="pirce">
-            <span><i>@{{  Number(item.product.content) }}</i>KG</span>
+            <span><i>@{{  Number(item.product.content)*item.number | tonC }}</i></span>
           </div>
           <div class="pirce">
-            <span><i>￥@{{ Number(item.price) }}</i>/@{{ item.product.packing_unit }}</span>
+            <span>
+              <i v-if="item.product.is_ton">￥@{{ Number(item.price) }}/吨</i>
+              <i v-else>￥@{{ Number(item.price) }}/@{{ item.product.packing_unit }}</i>
+            </span>
           </div>
         </div>
         <div class="p-edit">
@@ -94,6 +97,15 @@
     //总价
     beforeMount: function() { //加载页面前计算价格
 
+    },
+    filters: {
+      tonC: function (value) {
+        if (value<1000){
+          return value+"kg";
+        }else{
+          return value/1000+"吨"
+        }
+      }
     },
     methods: {
       buyAll: function() {
@@ -172,12 +184,11 @@
         fee += freight(func, weight, distance);
       }
 
-      // 按比例分配费用
-      console.log(fee);
+
     }
     //赋值
-    totalDom.innerText = price+Math.floor(fee);
-    domFee.innerText = Math.floor(fee);
+    totalDom.innerText = price+Math.round(fee/100)*100;
+    domFee.innerText = Math.round(fee/100)*100;
   }
   //计算费用
   function freight(func, weight, distance) {

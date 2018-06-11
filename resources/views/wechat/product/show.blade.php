@@ -3,24 +3,36 @@
 <div class="container">
   <div class="product">
 
-    <div class="info" id="info" v-lock>
-      <div :class="star?'collect on':'collect'" v-on:click="collect(star)"  >
-        <span class="icons" > <i class="iconfont icon-shoucang"></i></span>
+    <div class="info" id="info"  v-lock>
+      <div class="title">
+        <div class="name">
+          <h1><span>{{ $product->name }}&nbsp;&nbsp;{{ $product->model }}</span></h1>
+          <h2>{{ $product->brand->name }}</h2>
+        </div>
+        <div :class="star?'collect on':'collect'" v-on:click="collect(star)"  >
+          <span class="icons" > <i class="iconfont icon-shoucang"></i></span>
+        </div>
       </div>
-      <h1>
-          <span>
-            {{ $product->name }}</span>
-          <span>{{ $product->model }}</span>
-      </h1>
-      <h2>{{ $product->brand->name }}</h2>
-      <div class="i-info">
+
+
+      <div class="i-info" >
         <p>
-          <del>历史价格￥@{{ old_price }}/吨</del>&nbsp;&nbsp;
+          @if ($product->is_ton)
+             <del>历史价格￥@{{ old_price }}/吨</del>
+          @else
+             <del>历史价格￥@{{ parseFloat(old_price) }}/{{ $product->packing_unit }}</del>
+          @endif
+
           <span>{{ $product->pack() }}</span>&nbsp;&nbsp;
-          <span>发货地：{{ $product->storage->address->city }}</span>
+          <span>发货地：{{ $product->address }}</span>
         </p>
         <div class="i-price">
-          <p class="y">￥{{ $product->variable->unit_price*1000/$product->content }}/吨</p>
+          @if ($product->is_ton)
+            <p class="y">￥{{ $product->price }}/吨</p>
+          @else
+            <p class="y">￥{{ $product->price }}/{{ $product->packing_unit }}</p>
+          @endif
+
           <p></p>
         </div>
       </div>
@@ -63,7 +75,7 @@
   </div>
 
   <!-- //cart -->
-  <div class="container" v-if="addr_box">
+  <div class="container" v-show="addr_box">
     <div class="cart">
       <div class="create" v-on:click="createCart">
         <div class="txt">
@@ -80,8 +92,8 @@
           <div class="cart-header">
             <div class="title">
               <a>选购单{{ $index+1 }}
-                            <small>(已添加{{ count($cart->cartItems) }}件商品)</small>
-                        </a>
+                  <small>(已添加{{ count($cart->cartItems) }}件商品)</small>
+              </a>
             </div>
             <div class="cart-del">
               <span></span>
@@ -104,7 +116,7 @@
     </div>
   </div>
   <!-- //server-box -->
-  <div v-if="server_box">
+  <div v-show="server_box">
     <div class="mask" v-on:click="severHide"></div>
     <div class="server-box">
       <div class="sb-tit">
@@ -153,7 +165,7 @@
   </div>
 
   <!-- //buybox -->
-  <div class="gobuy" v-if="buy_box">
+  <div class="gobuy" v-show="buy_box">
     <div class="mask" v-on:click="hideBox()"></div>
 
     <div class="gb-box">
@@ -176,7 +188,12 @@
         </div>
         <div class="item">
           <span>单价</span>
-          <span class="value">￥{{ $product->variable->unit_price*1000/$product->content }}/吨</span>
+          @if ($product->is_ton)
+            <span class="value">￥{{ $product->price }}/吨</span>
+            @else
+              <span class="value">￥{{ $product->price }}/{{ $product->packing_unit }}</span>
+          @endif
+
         </div>
         <div class="item weight clearfix">
           <span>重量</span>
@@ -204,7 +221,11 @@
         </div>
         <div class="item">
           <span>单价</span>
-          <span class="value">￥{{ $product->variable->unit_price*1000/$product->content }}/吨</span>
+          @if ($product->is_ton)
+            <span class="value">￥{{ $product->price }}/吨</span>
+            @else
+              <span class="value">￥{{ $product->price }}/{{ $product->packing_unit }}</span>
+          @endif
         </div>
         <div class="item weight clearfix">
           <span>重量</span>

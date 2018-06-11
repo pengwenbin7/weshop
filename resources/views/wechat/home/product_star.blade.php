@@ -11,21 +11,37 @@
       <div class="product">
         <div class="p-info">
         <a href="{{ route("wechat.product.show",$star->id) }}">
-        <div class="title">
-            <span class="p-bname">{{ $star->brand_name }}</span>
-            <span class="p-name">{{ $star->name }} </span>
-            <span class="p-model">{{ $star->model }}</span>
+          <div class="prop">
+            <p class="p-name">
+              <span>{{ $star->name }}</span>
+              <span>{{ $star->model }}</span>
+            </p>
+            <p class="p-bname">
+              <span>{{ $star->brand_name }}</span>
+              @if ($star->is_ton)
+                <span class="p-stock" >库存:{{ $star->stock }}吨</span>
+              @else
+                <span class="p-stock" >库存:{{ $star->stock }}{{ $star->packing_unit }}</span>
+              @endif
+            </p>
+            <p class="pirce">
+              @if ($star->is_ton)
+                <span class="y"><i>￥</i>{{ $star->price }}/吨</span>
+              @else
+                <span class="y"><i>￥</i>{{ $star->price }}/{{ $star->packing_unit }}</span>
+              @endif
+            </p>
           </div>
-          <div class="pirce">
-            <span><i>￥{{ $star->unit_price*1000 }}</i>元/吨</span>
-          </div>
+
+
           </a>
           </div>
           <div class="p-edit"  @click="remove('{{route("wechat.unstar",$star->id)}}')">
             <span >
               <i class="iconfont icon-shoucang y"></i>
-              <br />取消
+              <br />取消<br />{{ $star->address }}
             </span>
+
           </div>
       </div>
       @endforeach

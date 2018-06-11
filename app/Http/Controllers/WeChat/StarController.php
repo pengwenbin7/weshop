@@ -11,12 +11,19 @@ class StarController extends Controller
 {
     public function all(Request $request)
     {
-      $stars = auth()->user()->stars;
-      foreach($stars as $star){
-          $star->brand_name = $star->brand->name;
-          $star->unit_price = $star->variable->unit_price;
-      }
-               // return $stars;
+        $stars = auth()->user()->stars;
+        foreach($stars as $star){
+            if($star->is_ton){
+                $star->price = $star->variable->unit_price * 1000 / $star->content;
+                $star->stock = $star->variable->stock * $star->content /1000;
+            }else{
+                $star->price = floatval($star->variable->unit_price);
+                $star->stock = $star->variable->stock;
+            }
+            $star->brand_name = $star->brand->name;
+            $star->address = str_replace(array('省', '市'), array('', ''), $star->storage->address->province);
+
+        }
          return view("wechat.home.product_star", ["stars" => $stars, "title" => "我的收藏"]);
     }
 

@@ -284,6 +284,14 @@
   white-space: nowrap;
 }
 
+.products .product .prop .p-bname{
+  color: #888;
+  font-size: .3rem;
+}
+.products .product .prop .p-stock{
+  font-size: .3rem;
+  margin-left: .4rem;
+}
 .products .product .num {
   color: #888;
 }
@@ -832,12 +840,18 @@
   position: relative;
   background-color: #fff;
 }
-
+.info .title{
+  display: flex;
+  display: -webkit-flex;
+}
+.info .name{
+  flex: 1;
+  -webkit-flex:1;
+}
 .info h1,.info h2{
-  width: 80%;
   font-size: .4rem;
   line-height: .5rem;
-  height: .7rem;
+  height: .6rem;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -847,10 +861,8 @@
   font-size: .36rem;
 }
 .info .collect {
-  position: absolute;
-  right: .4rem;
-  top: .8rem;
-  line-height: .3rem;
+  line-height: .5rem;
+  width: 1rem;
   font-size: .26rem;
   text-align: center;
 }
@@ -867,6 +879,7 @@
   width: 3.3rem;
   font-size: .4rem;
   font-weight: bold;
+  line-height: .8rem;
 }
 
 .info .i-price p {
@@ -1012,7 +1025,7 @@
   display: flex;
   display: -webkit-flex;
   border-bottom: 1px solid #eee;
-  padding: .15rem 0;
+  padding: .2rem 0;
 }
 
 .server-box .item .icon {

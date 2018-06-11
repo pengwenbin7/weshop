@@ -37,9 +37,15 @@ class ProductController extends Controller
                   ->where("active", "=", 1)
                   ->get();
         foreach ($products as  $product) {
-          $product->unit_price = $product->prices->last()->unit_price;
           $product->brand_name = $product->brand->name;
-          $product->province = str_replace('市','',str_replace('省','',$product->storage->address->province));
+          if($product->is_ton){
+              $product->stock = $product->variable->stock * $product->content /1000;
+              $product->price = $product->variable->unit_price * 1000 / $product->content;
+          }else{
+              $product->stock = $product->variable->stock;
+              $product->price = floatval($product->variable->unit_price);
+          }
+          $product->address = str_replace(array('省', '市'), array('', ''), $product->storage->address->province);
         }
         if ($request->has("id")) {
             return [
@@ -68,15 +74,23 @@ class ProductController extends Controller
             "action" => "view",
         ]);
         $star = ProductStar::where("user_id", "=", auth()->user()->id)
-          ->where("product_id","=",$product->id)
-          ->get()
-          ->isEmpty();
+                ->where("product_id","=",$product->id)
+                ->get()
+                ->isEmpty();
 
           $prices = $product->prices;
           foreach ($prices as $price) {
-            $price->updated = $price->updated_at->toDateString();
+              $price->updated = $price->updated_at->toDateString();
           }
           $product->star = !$star;
+          $product->address = str_replace(array('省', '市'), array('', ''), $product->storage->address->province);
+          if($product->is_ton){
+              $product->stock = $product->variable->stock * $product->content /1000;
+              $product->price = $product->variable->unit_price * 1000 / $product->content;
+          }else{
+              $product->stock = $product->variable->stock;
+              $product->price = floatval($product->variable->unit_price);
+          }
           $product->prices=json_encode($product->prices);
         return view("wechat.product.show", ["product" => $product, "title" => $product->name,]);
     }

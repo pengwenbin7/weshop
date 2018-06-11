@@ -14,30 +14,33 @@
       </div>
 
     </div>
-    <div class="products" v-for="items in products" >
-      <div class="product" v-for="product in items">
-        <div class="p-info">
-          <div class="num clearfix">
-            <span>品名：<i class="black"> @{{ product.name }}</i></span>
+    <div class="products">
+      @foreach ($products as $productsto)
+        @foreach ($productsto as $product)
+        <div class="product" >
+          <div class="p-info">
+            <div class="num clearfix">
+              <span>品名：<i class="black"> {{ $product->name }}</i></span>
+            </div>
+            <div class="num clearfix">
+              <span>型号：<i class="black"> {{ $product->model }}</i></span>
+            </div>
+            <div class="num clearfix">
+              <span>厂商：<i class="black"> {{ $product->brand_name }}</i></span>
+            </div>
+            <div class="pirce">
+              <span>单价：<i class="black">￥{{ $product->price }}</i></span>
+            </div>
+            <div class="num clearfix">
+              <span>数量：<i class="black">{{ $product->number }}{{ $product->packing_unit }}</i><i class="black">{{ $product->number * $product->content }}KG</i></span>
+            </div>
           </div>
-          <div class="num clearfix">
-            <span>型号：<i class="black"> @{{ product.model }}</i></span>
-          </div>
-          <div class="num clearfix">
-            <span>厂商：<i class="black"> @{{ product.brand_name }}</i></span>
-          </div>
-          <div class="pirce">
-            <span>单价：<i class="black">￥@{{ product.price }}</i></span>
-          </div>
-          <div class="num clearfix">
-            <span>数量：<i class="black">@{{ product.number }}@{{ product.packing_unit }}</i><i class="black">@{{ Number(product.number) * Number(product.content) }}KG</i></span>
-          </div>
-
         </div>
-      </div>
+        @endforeach
+      @endforeach
+
     </div>
     <div class="grid">
-
       <div class="item" @click="show('coupon')"  v-if="coupons.length">
       <span> 优惠券</span>
       <span class="value y"><i>@{{ coupon_text }}</i> <i class="iconfont icon-zhankai"></i></span>
@@ -50,10 +53,9 @@
       <span> 实付金额</span>
       <span class="value y">￥@{{ price+freight-coupon_discount }}</span>
     </div>
-
   </div>
 </div>
-<div class="flexbox" v-if="coupon_box"  v-lock>
+<div class="flexbox" v-show="coupon_box"  v-lock>
   <div class="mask" @click="hideBox()"></div>
   <div class="coupon-list">
     <div class="tit">优惠券<small>(@{{ coupons.length }}张)</small></div>
@@ -100,7 +102,6 @@
   var app = new Vue({
     el: "#app",
     data: {
-      products:{!! $products !!},
       address_id: 1,
       channel_id: 1,
       coupon_id: null,
@@ -113,7 +114,7 @@
       coupon_discount : 0,
     },
     beforeMount:function(){
-      count(this);
+      console.log(1);
     },
     methods: {
       show: function(mode) {
@@ -148,38 +149,6 @@
     mounted: function() {}
 
   });
-  function count(_this){
-    var _this = _this;
-    var products = _this.products;
-    var fee = 0, distance = 0, weight = 0, total = 0,limit_price = 0, func;
-    //循环数组获得距离-和公式
-    for (var n in products) {
-      weight = 0;
-      distance = products[n][0].distance;
-      func     = JSON.parse(products[n][0].func);
-      for (var m in products[n]) {
-          weight += products[n][m].number * Number(products[n][m].content);
-          total  += products[n][m].number * Number(products[n][m].price)
-      }
-        fee += freight(func, weight, distance);
-        console.log("物品总计  =>   "+total+"     运费计算(kg)  =>   "+fee);
-    }
-    _this.freight = Math.floor(fee);
-    _this.price = total;
-    //赋值
-
-  }
-  function freight(func, weight, distance) {
-    var fee = 0;
-    func.area.forEach(function(e, index, array) {
-      if (e.low <= weight && weight < e.up) {
-        fee = e.factor * distance + e.const;
-        return
-      }
-    });
-    return fee ? fee : func.other.factor * distance + func.other.const;
-  }
-  console.log({!! $products !!});
   function pay() {
     var data = {
       address_id: app.address_id,

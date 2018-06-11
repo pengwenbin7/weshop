@@ -33,20 +33,25 @@
 	  <div class="product">
 	    <a href="{{ route("wechat.product.show", $product->id) }}">
 	      <div class="prop">
-		<p class="black">
-		  <span class="p-name">{{ $product->product->name }}</span>
-		  <span class="p-model">{{ $product->product->model }}</span>
+		<p class="p-name">
+		  <span>{{ $product->product->name }}</span>
+		  <span>{{ $product->product->model }}</span>
 		</p>
-		<p class="gray">
-		  <span class="p-bname">{{ $product->product->brand->name }}</span>
+		<p class="p-bname">
+		  <span>{{ $product->product->brand->name }}</span>
+      @if ($product->product->is_ton)
+        <span class="p-stock">库存:{{ $product->stock }}吨</span>
+      @else
+        <span class="p-stock">库存:{{ $product->stock }}{{ $product->product->packing_unit }}</span>
+      @endif
 		</p>
 		<p class="pirce">
 		  @if($product->product->is_ton)
-		    <span class="y"><i>￥</i>{{ $product->product->variable->unit_price*1000/$product->product->content }}/吨</span>
+		    <span class="y"><i>￥</i>{{ $product->product->price }}/吨</span>
 		  @else
-		    <span class="y"><i>￥</i>{{ $product->product->variable->unit_price }}/{{ $product->product->packing_unit }}</span>
+		    <span class="y"><i>￥</i>{{ $product->product->price }}/{{ $product->product->packing_unit }}</span>
 		  @endif
-      <span class="right">{{ str_replace('市','',str_replace('省','',$product->product->storage->address->province))  }}</span>
+      <span class="right">{{ $product->product->address  }}</span>
 		</p>
 	      </div>
 	    </a>

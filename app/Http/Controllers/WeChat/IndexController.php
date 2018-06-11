@@ -20,6 +20,16 @@ class IndexController extends Controller
             "uploadImage", "downloadImage",
         ];
         $products = ProductVariable::with("product")->orderBy("buy","desc")->limit(10)->get();
+        foreach ($products as $product) {
+          if($product->product->is_ton){
+            $product->stock = $product->stock * $product->product->content/1000;
+            $product->product->price = $product->unit_price * 1000 / $product->product->content;
+          }else{
+            $product->stock = $product->stock;
+            $product->product->price = floatval($product->unit_price);
+          }
+          $product->product->address = str_replace(array('省', '市'), array('', ''), $product->product->storage->address->province);
+        }
         $hot_search =new UserAction();
         return view("wechat.index", [
             "user" => auth()->user(),
