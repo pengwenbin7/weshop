@@ -40,6 +40,7 @@
 		  <th>id</th>
 		  <th>名称</th>
 		  <th>品牌</th>
+		  <th>地址</th>
 		  <th>操作</th>
 		</tr>
 	      </thead>
@@ -49,6 +50,7 @@
 		    <td>{{ $item->id }}</td>
 		    <td>{{ $item->name }}</td>
 		    <td>{{ $item->brand->name }}</td>
+		    <td>{{ $item->address->getText() }}</td>
 		    <td>
 		      <a class="btn btn-small btn-info" href="{{ route("admin.storage.edit", ["id" => $item->id]) }}">编辑</a>
 		      @if ($item->products->isEmpty())

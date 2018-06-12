@@ -24,11 +24,11 @@ class StorageController extends Controller
         $key = $request->input("key", false);
         $storages = Storage::
                   when($brand_id, function ($query) use ($brand_id) {
-                          return $query->where("brand_id", "=", $brand_id);
-                      })
+                      return $query->where("brand_id", "=", $brand_id);
+                  })
                   ->when($key, function ($query) use ($key) {
-                          return $query->where("name", "like", "%$key%");
-                      })
+                      return $query->where("name", "like", "%$key%");
+                  })
                   ->paginate($limit);
         $brands = Brand::select("id", "name")->get();
         return $request->has("api")?
@@ -119,13 +119,13 @@ class StorageController extends Controller
         $data["brands"] = Brand::select("id", "name")->get();
         $data["address"] = $storage->address;
 
-        $data["province"]   =Region::where("fullname", $storage->address->province)->first();
-        $data["city"]   =Region::where("fullname", $storage->address->city)->first();
-        $data["district"]   =Region::where("fullname", $storage->address->district)
-          ->where("parent_id",$data["city"]->id)
-          ->first();
-        // $data["region"]=$region;
-        // return $data;
+        $data["province"] = Region::where("fullname", $storage->address->province)->first();
+        $data["city"] = Region::where("fullname", $storage->address->city)
+                      ->where("parent_id", $data["province"]->id)
+                      ->first();
+        $data["district"] = Region::where("fullname", $storage->address->district)
+                          ->where("parent_id", $data["city"]->id)
+                          ->first();
         return view("admin.storage.edit", $data);
     }
 
