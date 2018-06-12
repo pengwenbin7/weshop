@@ -31,7 +31,7 @@
 	</div>
 	@foreach($products as $product)
 	  <div class="product">
-	    <a href="{{ route("wechat.product.show", $product->id) }}">
+	    <a href="{{ route("wechat.product.show", $product->product->id) }}">
 	      <div class="prop">
 		<p class="p-name">
 		  <span>{{ $product->product->name }}</span>
