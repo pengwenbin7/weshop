@@ -75,6 +75,7 @@ class CartController extends Controller
             $products[$item->product->storage_id][] = $item;
             $item->brand_name = $item->product->brand->name;
             $item->stock = $item->product->variable->stock;
+             $item->unit_price = $item->product->variable->unit_price;
             if($item->product->is_ton){
                 $item->price = $item->product->variable->unit_price * 1000 / $item->product->content;
             }else {

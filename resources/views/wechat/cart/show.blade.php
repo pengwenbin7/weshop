@@ -30,7 +30,7 @@
               <span>重量<i >@{{  Number(item.product.content)*item.number | tonC }}</i></span>
             </p>
           </div>
-         
+
           <div class="pirce">
             <span>
               <i class="y" v-if="item.product.is_ton">￥@{{ Number(item.price) }}/吨</i>
@@ -179,7 +179,7 @@
       for (var m in products[n]) {
         if(products[n][m].checked){
           weight += products[n][m].number * Number(products[n][m].product.content);
-          price +=  products[n][m].number * Number(products[n][m].price);
+          price +=  products[n][m].number * Number(products[n][m].unit_price);
         }
       }
       console.log(weight);

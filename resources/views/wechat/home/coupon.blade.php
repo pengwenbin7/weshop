@@ -31,15 +31,16 @@
           <hr />
         </div>
       </div>
+    </div>
+      
   @else
+    <div class="no-content">
+      <span><i class="iconfont icon-kongbaiyouhuiquan"></i></span>
 
+      <br>
+      <p>你没有可使用的优惠券～</p>
+       </div>
 
-    </div>
   @endif
- <div class="no-content">
-   <span><i class="iconfont icon-kongbaiyouhuiquan"></i></span>
 
-   <br>
-   <p>你没有可使用的优惠券～</p>
-    </div>
 @endsection

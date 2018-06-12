@@ -49,33 +49,39 @@
       @endforeach
     </div>
     <div class="grid">
-      <div class="item" @click="show('coupon')" >
+      <div class="item" onclick="show('coupon')" >
       <span> 优惠券</span>
-      <span class="value y"><i>暂无可用</i> <i class="iconfont icon-zhankai"></i></span>
+      <span class="value y">
+        @if ($coupons->count())
+          <i id="coupon">选择优惠券</i>
+        @else
+          <i>暂无可用</i>
+        @endif
+        <i class="iconfont icon-zhankai"></i></span>
     </div>
     <div class="item">
     <span> 零售附加</span>
-    <span class="value"><i>{{ $freight }}</i> </span>
+    <span class="value"><i>+{{ $freight }}</i> </span>
   </div>
     <div class="item">
       <span> 实付金额</span>
-      <span class="value y">{{ $freight+$totalPrice }}</span>
+      <span class="value y" id="total">{{ $freight+$totalPrice }}</span>
     </div>
   </div>
 </div>
 <div class="flexbox hidden">
-  <div class="mask" @click="hideBox()"></div>
+  <div class="mask" onclick="hideBox()"></div>
   <div class="coupon-list">
-    <div class="tit">优惠券(<small >{{ count($coupons) }}</small>张)</div>
+    <div class="tit">优惠券(<small >{{ $coupons->count() }}</small>张)</div>
     <div class="coupons">
       @foreach ($coupons as $coupon)
-      <div class="item" >
+      <div class="item" onclick="selectCoupon(this)" data-prop="{'id':'{{$coupon->id}}', 'discount':'{{$coupon->discount}}','amount':'{{ $coupon->amount }}'}">
         <div class="c-h">
           <div class="ch-price">
-            <span >￥{{ $coupon->discount }}</span>
+            <span >￥{{ intval($coupon->discount) }}</span>
           </div>
           <div class="ch-info">
-            <p class="title" >{{ $coupon->description }}
+            <p class="title" >{{  $coupon->description ?? "默认红包" }}
              </p>
             <p>有效期至： <span >{{ $coupon->expire_time }} </span>
               </p>
@@ -86,13 +92,13 @@
           <div class="circle-r"></div>
           <div class="cf-desc">
             <p>满
-              {{ $coupon->amount }}元可用</p>
+              {{ intval($coupon->amount) }}元可用</p>
           </div>
         </div>
       </div>
        @endforeach
     </div>
-    <div class="no-use" @click="hideBox('coupon')">
+    <div class="no-use" onclick="nochoose()">
       <span>不使用优惠券</span>
     </div>
   </div>
@@ -109,14 +115,49 @@
 @section( "script")
 
 <script>
-
+  var total = document.querySelector("#total");
+  var coupon = document.querySelector("#coupon");
+  var flexbox = document.querySelector(".flexbox");
+  var totalPrice = {{ $totalPrice + $freight }};
+  var coupon_id = null;
+  var fee = {{ $freight }};
+  function show(){
+    var len = {{ count($coupons) }};
+    if(len){
+      flexbox.style.display="block";
+    }
+  }
+  function hideBox(){
+    flexbox.style.display="none";
+  }
+  function selectCoupon(dom){
+    console.log(dom.dataset.prop);
+    var prop = eval('(' + dom.dataset.prop + ')');
+    console.log(prop.id);
+    if(prop.amount<totalPrice){
+      coupon_id = prop.id;
+      discount = prop.discount;
+      coupon.innerText="-￥"+discount;
+      total.innerText = totalPrice - discount;
+      hideBox();
+    }else{
+      alert("优惠券不可用");
+      hideBox();
+    }
+    console.log(prop);
+  }
+  function nochoose(){
+    coupon_id = null;
+    coupon.innerText="选择优惠券";
+    total.innerText = totalPrice;
+    hideBox();
+  }
   function pay() {
-    // var data = {
-    //   address_id: app.address_id,
-    //   channel_id: app.channel_id,
-    //   coupon_id: app.coupon_id,
-    //   products: {!! $varia !!}
-    // };
+    var data = {
+      address_id: {{ $cart->address->id }},
+      coupon_id: coupon_id,
+      products: {!! $varia !!}
+    };
     axios.post("{{ route("wechat.order.store") }}", data)
       .then(function(res) {
         location.assign("{{ route("wechat.pay") }}" +
