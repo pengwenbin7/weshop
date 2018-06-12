@@ -93,21 +93,36 @@ class CartController extends Controller
     }
     public function buyAll(Request $request)
     {
+
         $products = [];
         $varia = json_decode($request->products);
         $cart = Cart::find($request->cart_id);
         foreach ($varia as $key => $item) {
-         $items[] = Product::find($item->id);
-         $items[$key]->number = $item->number;
+            $items[] = Product::find($item->id);
+            $items[$key]->number = $item->number;
         }
         foreach ($items as $item) {
-          $products[$item->storage_id][]=$item;
-          $item->brand_name = $item->brand->name;
-          $item->price = $item->variable->unit_price;
-          $item->total = 0;//加运费价格
-          $item->func = $item->storage->func;
-          $item->distance = Count::distance($cart->address->id,$item->storage->id);
-          // code...
+            $products[$item->storage_id][] = $item;
+            $item->brand_name = $item->brand->name;
+            if($item->is_ton){
+                $item->price = $item->variable->unit_price * 1000 / $item->content;
+            }else{
+                $item->price = $item->variable->unit_price;
+            }
+
+        }
+        $freight = 0;
+        $totalPrice = 0;
+        foreach ($products as $key=>$item) {
+          $weight=0;
+          $distance =0 ;
+          $distance=Count::distance($cart->address->id,$key);
+          foreach ($item as $product) {
+              $weight += $product->content * $product->number;
+              $totalPrice += $product->number * $product->variable->unit_price;
+          }
+          $freight += Count::freight($key,$weight,$distance);
+
         }
         $coupons = auth()->user()->coupons;
         foreach ($coupons as $key => $coupon) {
@@ -117,8 +132,11 @@ class CartController extends Controller
         $data["payChannels"] = PayChannel::get();
         $data["user"] = auth()->user();
         $data["varia"] = json_encode($varia);
-        $data["coupons"] = json_encode($coupons);
+        $data["coupons"] = $coupons;
+        $data["freight"] = $freight;
+        $data["totalPrice"] = $totalPrice;
         $data["cart"] = Cart::find($request->cart_id);
+        $data["title"] = "创建订单";
         return view("wechat.order.creates",   $data );
     }
 

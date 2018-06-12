@@ -20,18 +20,21 @@
           <label v-bind:for="'check'+i+index"></label>
         </div>
         <div class="p-info">
-          <div class="title">
-            <span class="p-bname">@{{ item.brand_name }}</span>
-            <span class="p-name">@{{ item.product.name }} </span>
-            <span class="p-model">@{{ item.product.model }}</span>
+          <div class="prop">
+            <p class="p-name">
+              <span>@{{ item.product.name }} </span>
+              <span>@{{ item.product.model }}</span>
+            </p>
+            <p class="p-bname">
+              <span>@{{ item.brand_name }}</span>
+              <span>重量<i >@{{  Number(item.product.content)*item.number | tonC }}</i></span>
+            </p>
           </div>
-          <div class="pirce">
-            <span><i>@{{  Number(item.product.content)*item.number | tonC }}</i></span>
-          </div>
+         
           <div class="pirce">
             <span>
-              <i v-if="item.product.is_ton">￥@{{ Number(item.price) }}/吨</i>
-              <i v-else>￥@{{ Number(item.price) }}/@{{ item.product.packing_unit }}</i>
+              <i class="y" v-if="item.product.is_ton">￥@{{ Number(item.price) }}/吨</i>
+              <i class="y" v-else>￥@{{ Number(item.price) }}/@{{ item.product.packing_unit }}</i>
             </span>
           </div>
         </div>
@@ -71,7 +74,7 @@
     </div>
   </div>
   <div class="goods-price">
-    <p><span class="fee">零售附加：<i  id="fee">0</i></span>
+    <p><span class="fee gray">零售附加：<i  id="fee">0</i></span>
     <span><i class="font-co">¥</i><i class="font-co" id="totalprice" >0</i></span>
   </p>
 

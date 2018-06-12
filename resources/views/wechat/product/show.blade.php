@@ -15,7 +15,7 @@
       </div>
 
 
-      <div class="i-info" >
+      <div class="i-info clearfix" >
         <p>
           @if ($product->is_ton)
              <del>历史价格￥@{{ old_price }}/吨</del>

@@ -34,6 +34,6 @@ class SearchController extends Controller
         $products = $pobj->with(["brand", "variable", "categories"])
                   ->where("active", "=", 1)
                   ->paginate(20);
-        return view("wechat.search",["products" => $products]);
+        return view("wechat.search",["products" => $products, "title" => "选购单" ]);
     }
 }
