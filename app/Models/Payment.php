@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
+    protected $fillable = [
+        "order_id", "channel_id", "total",
+        "tax", "freight", "coupon_discount",
+        "share_discount", "pay_discount", "pay",
+        "paid", "pay_time",
+    ];
+    
     public function coupon()
     {
         return $this->belongsTo("App\Models\Coupon");

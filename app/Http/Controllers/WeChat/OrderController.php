@@ -95,7 +95,8 @@ class OrderController extends Controller
         $order->refund_status = Order::REFUND_STATUS_NULL;
         $order->admin_id = $user->admin_id;
         // save order
-        $res = $order->save();
+        $order->save();
+        $order = Order::find($order->id);
         // fetch product
         $totalPrice = 0;
         foreach ($request->products as $p) {
@@ -115,18 +116,20 @@ class OrderController extends Controller
             $totalPrice += $item->price * $item->number;
         }
         // create payment
-        $payment = new Payment();
-        $payment->order_id = $order->id;
-        $payment->channel_id = $request->channel_id;
-        $payment->total = $totalPrice;
+        $payment = Payment::create([
+            "order_id" => $order->id,
+            "channel_id" => PayChannel::all()->first()->id,
+            "total" => $totalPrice,
+            "freight" => $order->countFreight(),
+        ]);
         if ($request->input("coupon_id", false)) {
             $coupon = Coupon::find($request->coupon_id);
             if ($coupon && $coupon->valid($user, $payment)) {
-                $payment->coupon_id = $coupon->id;
-                $payment->discount = $coupon->discount;
+                $payment->coupon_discount = $coupon->discount;
+            } else {
+                Log::info("payment: {$payment->id}, fail coupon: {$coupon->id}");
             }
         }
-        $payment->freight = $order->find($order->id)->countFreight();
         $payment->save();
         return ["store" => $order->id];
     }

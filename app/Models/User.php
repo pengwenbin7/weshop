@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use EasyWeChat;
 
 class User extends Authenticatable
 {
@@ -69,4 +70,11 @@ class User extends Authenticatable
     {
       return $this->belongsTo("App\Models\Company");
     }
+
+    public function sendMessage($msg)
+    {
+        $app = EasyWeChat::officialAccount();
+        $app->customer_service->message($msg)->to($this->openid)->send();
+    }
+    
 }

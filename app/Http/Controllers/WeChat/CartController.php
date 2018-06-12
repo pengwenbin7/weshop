@@ -55,12 +55,20 @@ class CartController extends Controller
     public function addProduct(Request $request)
     {
         $cart = Cart::find($request->cart_id);
-
-        $item = CartItem::firstOrCreate([
+        $item = CartItem::where("cart_id", "=", $request->cart_id)
+                  ->where("product_id", "=", $request->product_id)
+                  ->get();
+        if ($item->isEmpty()) {
+            $item = CartItem::create([
                 "cart_id" => $cart->id,
                 "product_id" => $request->product_id,
                 "number" => $request->num,
-        ]);
+            ]);
+        } else {
+            $item = $item->first();
+            $item->number = $request->num;
+            $item->save();
+        }
 
         return ["add" => $item->id];
     }

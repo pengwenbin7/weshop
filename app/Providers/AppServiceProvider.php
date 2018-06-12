@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Models\User;
+use App\Models\Coupon;
 use App\Models\AdminUser;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -16,6 +17,7 @@ use App\Models\Department;
 use App\Models\AdminDepartment;
 use App\Observers\AddressObserver;
 use App\Observers\UserObserver;
+use App\Observers\CouponObserver;
 use App\Observers\AdminObserver;
 use App\Observers\ProductObserver;
 use App\Observers\ProductCategoryObserver;
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {        
         User::observe(UserObserver::class);
+        Coupon::observe(CouponObserver::class);
         Address::observe(AddressObserver::class);
         AdminUser::observe(AdminObserver::class);
         Product::observe(ProductObserver::class);

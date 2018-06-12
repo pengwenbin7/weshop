@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\Order;
+use App\Models\Payment;
 use Carbon\Carbon;
 
 class Coupon extends Model
@@ -26,9 +26,9 @@ class Coupon extends Model
     }
     
     // 判断用户此订单是否可以用此优惠券
-    public function valid(User $user, Order $order)
+    public function valid(User $user, Payment $payment)
     {
-        if ($order->payment->amount >= $this->amount &&
+        if ($payment->pay >= $this->amount &&
             $this->expire->gt(Carbon::now()) &&
             $user == $this->user
         ) {

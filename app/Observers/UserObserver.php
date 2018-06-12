@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Models\AdminUser as Admin;
+use App\Models\Coupon;
+use Carbon\Carbon;
 use App\Jobs\UserRegistered;
 
 class UserObserver
@@ -48,6 +50,14 @@ class UserObserver
         
         $user->admin_id = $admin->id;
         $user->save();
+        // 送一张优惠券
+        Coupon::create([
+            "user_id" => $user->id,
+            "discount" => 100,
+            "amount" => 0,
+            "expire" => Carbon::now()->addYear(1),
+            "description" => "感谢关注",
+        ]);
         dispatch(new UserRegistered($user));
     }
 }
