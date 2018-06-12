@@ -48,7 +48,7 @@
             <p class="btn-minus">
               <a class="minus" v-on:click="reduceCartNubmer(i,index)"></a>
             </p>
-            <p class="btn-input"><input type="tel" name="" id="cart_num_2578" ref="xxx" v-bind:value="item.number" v-on:blur="textCartNumber(i,index)"></p>
+            <p class="btn-input"><input type="tel" name="" id="cart_num_2578" ref="xxx" v-bind:value="item.number" v-on:blur="textCartNumber(i,index)"   @keyup="check($event)"></p>
             <p class="btn-plus">
               <a class="plus" v-on:click="addCartNumber(i,index)"></a>
             </p>
@@ -121,15 +121,18 @@
           return
         } else {
           _this.products[i][a].number--;
+          this.addPro(this.products[i][a].product.id,this.products[i][a].number);
          count(this);
         }
       },
       addCartNumber: function(i, a) {
         this.products[i][a].number++;
+        this.addPro(this.products[i][a].product.id,this.products[i][a].number);
         count(this);
       },
       textCartNumber: function(i, a) {
         this.products[i][a].number = Number(this.$refs.xxx[a].value)
+        this.addPro(this.products[i][a].product.id,this.products[i][a].number);
         count(this);
       },
       check: function(i, a) {
@@ -140,6 +143,21 @@
         }
         count(this);
         checkall(this);
+      },
+      checkipu(event){
+        var dom = event.currentTarget
+        var num = dom.value;
+        num = num.replace(/\D/g, '');
+        num = (isNaN(num) ? 1 : num); //只能为数字
+        num = num > 0 ? num : 0;
+        if(this.tonTap==1){
+          this.ton_num = num;
+          dom.value = num;
+        }else{
+          this.num =num;
+          this.ton_num = num*this.content/1000;
+          dom.value = num;
+        }
       },
       setCheckAll: function(status){
         var products = this.products;
@@ -164,6 +182,14 @@
             count(_this)
           }
         })
+      },
+      addPro:function(id,num){
+        var params = {
+          cart_id: {{ $cart->id }},
+          product_id: id,
+          num : num
+        };
+        axios.post("{{ route("wechat.cart.add_product") }}", params)
       }
     }
   })
