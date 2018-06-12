@@ -166,7 +166,7 @@
             "const":0
           };
           console.log(low,up,factor,_const);
-            if(up<=low){
+          if (up <= low) {
             alert("第二个数字必须大于第一个数字")
             return
           }

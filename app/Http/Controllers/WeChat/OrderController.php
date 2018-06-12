@@ -94,6 +94,7 @@ class OrderController extends Controller
         $order->shipment_status = Order::SHIP_STATUS_WAIT;
         $order->refund_status = Order::REFUND_STATUS_NULL;
         $order->admin_id = $user->admin_id;
+        // save order
         $res = $order->save();
         // fetch product
         $totalPrice = 0;
@@ -113,7 +114,6 @@ class OrderController extends Controller
             ]);
             $totalPrice += $item->price * $item->number;
         }
-
         // create payment
         $payment = new Payment();
         $payment->order_id = $order->id;
@@ -126,9 +126,7 @@ class OrderController extends Controller
                 $payment->discount = $coupon->discount;
             }
         }
-        Log::info($order);
-        Log::info($order->countFreight());
-        $payment->freight = $order->countFreight();
+        $payment->freight = $order->find($order->id)->countFreight();
         $payment->save();
         return ["store" => $order->id];
     }

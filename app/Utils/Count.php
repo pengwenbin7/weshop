@@ -64,20 +64,21 @@ class Count
     }
 
     /**
-     * count freight
+     * count freight, 按百位四舍五入
      * @param int $storage_id
      * @param int $weight - kg
      * @param int $distance - m
      */
     public static function freight($storage_id, $weight, $distance)
     {
+        $freight = 0;
         $storage = Storage::find($storage_id);
         $func = json_decode($storage->func);
         foreach ($func->area as $a) {
             if ($a->low  <= $weight && $weight < $a->up) {
-                return intval($distance * $a->factor + $a->const);
+                return round(($distance * $a->factor + $a->const) / 100) * 100;
             }
         }
-        return intval($distance * $func->other->factor + $func->other->const);
+        return round(($distance * $func->other->factor + $func->other->const) / 100) * 100;
     }
 }

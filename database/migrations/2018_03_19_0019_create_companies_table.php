@@ -16,7 +16,7 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->string("name", 100)->nullable();
-            $table->unsignedInteger("address_id")->nullable();
+            $table->string("address", 100)->nullable();
             $table->string("company_tel", 16)->nullable();
             $table->string("contact_name", 16)->nullable();
             $table->string("contact_phone", 16)->nullable();
@@ -30,7 +30,6 @@ class CreateCompaniesTable extends Migration
             $table->foreign("admin_id")->references("id")
                 ->on("admin_users")->onDelete("set null");
             $table->foreign("creator")->references("id")->on("users");
-            $table->foreign("address_id")->references("id")->on("addresses");
         });
         
         Schema::table("users", function (Blueprint $table) {
