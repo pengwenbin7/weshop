@@ -174,18 +174,21 @@
     //循环数组获得距离-和公式
     for (var n in products) {
       weight = 0;
-      distance = products[n][0].distance;
-      func     = JSON.parse(products[n][0].func);
-      for (var m in products[n]) {
-        if(products[n][m].checked){
-          weight += products[n][m].number * Number(products[n][m].product.content);
-          price +=  products[n][m].number * Number(products[n][m].unit_price);
+      if(products[n].length){
+        distance = products[n][0].distance;
+        func     = JSON.parse(products[n][0].func);
+        for (var m in products[n]) {
+          if(products[n][m].checked){
+            weight += products[n][m].number * Number(products[n][m].product.content);
+            price +=  products[n][m].number * Number(products[n][m].unit_price);
+          }
+        }
+        console.log(weight);
+        if(weight){
+          fee += freight(func, weight, distance);
         }
       }
-      console.log(weight);
-      if(weight){
-        fee += freight(func, weight, distance);
-      }
+
 
 
     }
