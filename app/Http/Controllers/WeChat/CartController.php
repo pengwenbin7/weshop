@@ -92,7 +92,7 @@ class CartController extends Controller
             }
 
             $item->func = $item->product->storage->func;
-            $item->distance = Count::distance($cart->address->id,$item->product->storage->id);
+            $item->distance = Count::distance($cart->address->id,$item->product->storage->address_id);
         }
         return view("wechat.cart.show", [
             "cart" => $cart,
