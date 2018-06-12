@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WeChat;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\Storage;
 use App\Models\CartItem;
 use App\Models\PayChannel;
 use App\Models\Product;
@@ -122,17 +123,17 @@ class CartController extends Controller
         }
         $freight = 0;
         $totalPrice = 0;
-        foreach ($products as $key=>$item) {
-          $weight=0;
-          $distance =0 ;
-          $distance=Count::distance($cart->address->id,$key);
-          foreach ($item as $product) {
-              $weight += $product->content * $product->number;
-              $totalPrice += $product->number * $product->variable->unit_price;
-          }
-          $freight += Count::freight($key,$weight,$distance);
-
+        foreach ($products as $key => $item) {
+            $weight=0;
+            $distance =0 ;
+            $distance=Count::distance($cart->address->id, Storage::find($key)->address_id);
+            foreach ($item as $product) {
+                $weight += $product->content * $product->number;
+                $totalPrice += $product->number * $product->variable->unit_price;
+            }
+            $freight += Count::freight($key,$weight,$distance);
         }
+        
         $coupons = auth()->user()->coupons;
         foreach ($coupons as $key => $coupon) {
             $coupon->expire_time = $coupon->expire->toDateString();
