@@ -59,7 +59,7 @@
     @else
       <div class="s" v-show="s">
         <div class="search">
-          <input type="text" class="txt" name="keyword" value="" placeholder="请输入你的公司名，企业码">
+          <input type="text" class="txt" id="keyword" name="keyword" value="" placeholder="请输入你的公司名，企业码">
         <input type="button" class="btn-search" name="" value="搜索" @click="getCompany('aaa')">
         </div>
         <div class="row"  v-for="(item,index) in companys" @click="choseCompany(index)">
@@ -68,9 +68,6 @@
           </div>
           <div class="title">
            法人: @{{ item.OperName }}
-          </div>
-          <div class="title">
-           地址: @{{ item.Address }}
           </div>
           <div class="title">
            信用代码: @{{ item.CreditCode }}
@@ -84,9 +81,6 @@
             </div>
             <div class="title">
              法人: @{{ company.OperName }}
-            </div>
-            <div class="title">
-             地址: @{{ company.Address }}
             </div>
             <div class="title">
              信用代码: @{{ company.CreditCode }}
@@ -110,28 +104,29 @@
         companys:[],
         company:[],
          s:true,
-        q:false,
+         q:false,
 
       },
       methods:{
         getCompany:function(key){
           var _this = this;
-          axios.get('{{ route("wechat.home.company_list") }}')
-            .then(function(res){
-              console.log(res);
-              _this.companys = res.data.Result;
-              console.log(_this.company);
-            })
+          var keyword = document.querySelector("#keyword").value;
+          if(keyword){
+            axios.get('http://i.yjapi.com/ECIV4/Search?key=988eef9debf242ff97c69515a262327d&dtype=json&keyword='+keyword)
+              .then(function(res){
+                _this.companys = res.data.Result;
+              })
+          }
+
         },
         choseCompany:function(index){
           this.company = this.companys[index];
           this.q = true;
           this.s = false;
-          location.assign("#");
         },
         saveCompany:function(){
           console.log(1);
-          if(this.company.Address){
+          if(this.company.Name){
             axios.post("{{ route("wechat.home.company_store")}}",this.company)
             .then(function(res){
               console.log(res);
