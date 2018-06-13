@@ -8,16 +8,12 @@ class company extends Model
 {
 
     protected $fillable = [
-        "name", "address_id",
+        "name", "oper_name", "code",
+        "admin_id",
     ];
 
-
-    public function company()
+    public function admin()
     {
-        return $this->belongsTo("App\Models\User");
-    }
-    public function address()
-    {
-        return $this->belongsTo("App\Models\Address");
+        return $this->belongsTo("App\Models\AdminUser", "admin_id");
     }
 }

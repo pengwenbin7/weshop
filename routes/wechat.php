@@ -10,12 +10,21 @@ Route::get("product_star", "WeChat\HomeController@productStar")
     ->name("wechat.home.product_star");
 Route::get("coupon", "WeChat\HomeController@coupon")
     ->name("wechat.home.coupon");
-Route::get("company", "WeChat\HomeController@company")
-     ->name("wechat.home.company");
-Route::match(["get", "post"], "company_list", "WeChat\HomeController@companyList")
-   ->name("wechat.home.company_list");
-Route::match(["get", "post"], "company_store", "WeChat\HomeController@companyStore")
-  ->name("wechat.home.company_store");
+
+Route::resource("company", "WeChat\CompanyController", [
+    "names" => [
+        "create" => "wechat.company.create",
+        "show" => "wechat.company.show",
+        "store" => "wechat.company.store",
+        "update" => "wechat.company.update",
+        "edit" => "wechat.company.edit",
+    ],
+    "except" => [
+        "index", "destroy",
+    ],
+]);
+Route::match(["get", "post"], "company-fetch", "WeChat\CompanyController@fetch")
+    ->name("wechat.company.fetch");
 
 Route::get("logout", "Auth\WeChatAuthController@logout")
     ->name("wechat.logout");

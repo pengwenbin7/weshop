@@ -156,7 +156,7 @@ class OrderController extends Controller
         $user = auth()->user();
         if (!$user->company) {
             // 公司认证
-            return "need company";
+            return redirect()->route("wechat.company.create");
         } else {
             // 下载合同
             $html = view("wechat.print.contract", [
