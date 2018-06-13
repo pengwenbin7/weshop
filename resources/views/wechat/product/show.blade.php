@@ -186,12 +186,9 @@
           <span class="p-bname">{{ $product->brand->name }}</span>
         </div>
         <div class="item">
-          <span>单价</span>
-          @if ($product->is_ton)
-            <span class="value">￥{{ $product->price }}/吨</span>
-            @else
-              <span class="value">￥{{ $product->price }}/{{ $product->packing_unit }}</span>
-          @endif
+          <span>价格</span>
+           <span class="value">￥@{{ Number(unit_price)*number }}</span>
+
 
         </div>
          <div class="item weight clearfix">
@@ -222,12 +219,8 @@
           <span class="p-bname">{{ $product->brand->name }}</span>
         </div>
         <div class="item">
-          <span>单价</span>
-          @if ($product->is_ton)
-            <span class="value">￥{{ $product->price }}/吨</span>
-            @else
-              <span class="value">￥{{ $product->price }}/{{ $product->packing_unit }}</span>
-          @endif
+          <span>价格</span>
+          <span class="value">￥@{{ Number(unit_price)*number }}</span>
         </div>
         <div class="item weight clearfix">
           <span>库存</span>
@@ -276,7 +269,7 @@
       addr_box:false, //购物单弹窗
       server_box:false, //
       is_ton:{{ $product->is_ton }},
-
+      unit_price:{{ $product->variable->unit_price }},
     },
     computed: {
       weight: function() {

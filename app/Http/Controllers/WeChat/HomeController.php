@@ -81,36 +81,18 @@ class HomeController extends Controller
     public function companyStore(Request $request)
     {
       $user = auth()->user();
-      // get address_id  插入到user
-      $address = new Address();
-      $address->fill([
-          "province" => "上海",
-          "city" => "嘉定",
-          "code" => "1111",
-          "contact_name" => $request->OperName,
-          "contact_tel" => $request->Tel,
-          "detail" => $request->Address,
-      ]);
-      $res = $address->save();
-      if (true) {
         $company = new Company();
         $company->fill([
                 "name" => $request->Name,
-                "company_tel" => $request->product_id,
-                "address_id" => $address->id,
                 "contact_name	" => $request->OperName,
-                "contact_phone" => $request->Tel,
-                "code" => "1111",
-                "creator" => $user->id,
+                "creator" => $request->CreditCode,
         ]);
         $res2 = $company->save();
         if ($res2){
           return ["company_id" => $company->id];
         }
 
-      } else {
-          return ["err" => "保存失败"];
-      }
+
       //插入公司
 
       //更新
