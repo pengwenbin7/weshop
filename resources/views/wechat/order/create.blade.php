@@ -224,7 +224,7 @@
         var weight = this.number * this.content;
         var distance = this.distance;
         var func = JSON.parse('{!! $products->storage->func !!}');
-        this.freight =Math.floor(freight(func,weight,distance))
+        this.freight =Math.round(freight(func,weight,distance)/100)*100;
       }
     },
     mounted: function() {
@@ -255,10 +255,11 @@
 	      var _this = app;
         _this.name = res.userName;
         _this.tel = res.telNumber;
+        var address_id = null;
         _this.dist = res.provinceName + res.cityName + res.countryName + res.detailInfo;
         axios.post("{{ route("wechat.address.store") }}", res)
           .then(function(res1) {
-            _this.address_id = res1.data.address_id;
+            address_id = res1.data.address_id;
             var param ={
               from: _this.address_id,
               to: _this.p_address_id,
@@ -269,6 +270,7 @@
                   alert("你的地址有误，请重新添加");
                 }else{
                   _this.distance = res2.data;
+                  _this.address_id = address_id;
                   _this.countFreight();
                 }
 
