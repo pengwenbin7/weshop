@@ -2,7 +2,6 @@
 @section( "content")
 <div class="container">
   <div class="product">
-
     <div class="info" id="info"  v-lock>
       <div class="title">
         <div class="name">
@@ -195,6 +194,10 @@
           @endif
 
         </div>
+         <div class="item weight clearfix">
+           <span>库存</span>
+           <span class="value">{{ $product->variable->stock }}</span>
+         </div>
         <div class="item weight clearfix">
           <span>重量</span>
           <span class="value"><i ref = "productW">@{{ weight }}</i></span>
@@ -203,14 +206,13 @@
               <a class="minus" v-on:click="reduceCartNubmer()"></a>
             </p>
             <p class="btn-input">
-              <input type="tel" name="" ref="goodsNum" step="1" v-bind:value="num" v-on:blur="textCartNumber()"  @keyup="check($event)">
+              <input type="number" max="{{ $product->variable->stock }}"  name="" ref="goodsNum" step="1" v-model="number" v-on:blur="textCartNumber()"  @keyup="check($event)">
             </p>
             <p class="btn-plus">
-              <a class="plus" v-on:click="addCartNumber()"></a>
+              <a class="plus" max="{{ $product->variable->stock }}" v-on:click="addCartNumber($event)"></a>
             </p>
           </div>
         </div>
-
       </div>
       <div class="product" v-if="tonTap==1">
         <div class="item title  clearfix">
@@ -228,6 +230,10 @@
           @endif
         </div>
         <div class="item weight clearfix">
+          <span>库存</span>
+          <span class="value">{{ $product->variable->stock }}</span>
+        </div>
+        <div class="item weight clearfix">
           <span>重量</span>
           <span class="value"><i >@{{ ton_num }}</i>吨</span>
           <div class="quantity">
@@ -235,16 +241,13 @@
               <a class="minus" v-on:click="reduceCartNubmer()"></a>
             </p>
             <p class="btn-input">
-              <input type="tel" step="1" ref="goodsNum" v-bind:value="ton_num" v-on:blur="textCartNumber()"  @keyup="check($event)" >
+              <input type="number" max="{{ $product->variable->stock*$product->content/1000 }}" step="1" ref="goodsNum" v-model="ton_num" v-on:blur="textCartNumber()"  @keyup="check($event)" >
             </p>
             <p class="btn-plus">
-              <a class="plus" v-on:click="addCartNumber()"></a>
+              <a class="plus"  max="{{ $product->variable->stock*$product->content/1000 }}" v-on:click="addCartNumber($event)"></a>
             </p>
           </div>
         </div>
-
-
-
       </div>
       <div class="gb-footer">
         <div class="addtocart" v-on:click="choseAddr">
@@ -265,22 +268,21 @@
   var app = new Vue({
     el: "#app",
     data: {
-      num: {{ $product->is_ton }}?{{ 1000/$product->content }}:1,  //按包购买数量
+      number: {{ $product->is_ton }}?{{ 1000/$product->content }}:1,  //按包购买数量
       content:{{ $product->content }},
       ton_num:{{ $product->is_ton }},   //按吨购买数量
       tonTap: {{ $product->is_ton }},  //吨<-->包切换 1 为吨 0为包
       buy_box: false,  //购买按钮弹窗
       addr_box:false, //购物单弹窗
       server_box:false, //
-      stock:{{ $product->variable->stock*$product->content }},
       is_ton:{{ $product->is_ton }},
 
     },
     computed: {
       weight: function() {
-        return (this.num * this.content) <= 999.99 ?
-          this.num * this.content + "KG" :
-          this.num * this.content / 1000 + "吨"
+        return (this.number * this.content) <= 999.99 ?
+          this.number * this.content + "KG" :
+          this.number * this.content / 1000 + "吨"
       }
     },
 
@@ -318,7 +320,7 @@
         var params = {
           cart_id: id,
           product_id: "{{ $product->id }}",
-          num : _this.num
+          num : _this.number
         };
         axios.post("{{ route("wechat.cart.add_product") }}", params)
           .then(function(res) {
@@ -330,7 +332,7 @@
       },
       buyMe: function() {
         location.assign("{{ route("wechat.product.buyme") }}" +
-          "?product_id={{ $product->id }}"+"&&num="+this.num
+          "?product_id={{ $product->id }}"+"&&num="+this.number
         );
       },
       showBox: function() {
@@ -343,24 +345,60 @@
         this.server_box = false;
       },
       reduceCartNubmer: function() {
-        setNum(this, "reduce");
+        if(this.tonTap){
+         if(this.ton_num>1){
+           this.ton_num--;
+         }
+         this.number = this.ton_num * 1000/this.content;
+        }else{
+          if(this.number>1){
+            this.number--
+          }
+        }
       },
-      addCartNumber: function(a) {
-        setNum(this, "add");
+      addCartNumber: function(event) {
+        var dom = event.currentTarget
+        var max = dom.getAttribute("max");
+        if(this.tonTap){
+          if(this.ton_num+1<max){
+            this.ton_num++
+          }else{
+            alert("购买商品超出库存");
+            this.ton_num = max;
+          }
+          this.number = this.ton_num * 1000/this.content;
+        }else{
+           if(this.number<max){
+             this.number++
+        }
+      }
+
       },
       textCartNumber: function(a) {
-        setNum(this, "blur");
+        var dom = event.currentTarget
+        var max =Number(dom.max);
+        if(this.tonTap){
+          if(this.ton_num>max){
+            alert("购买商品超出库存");
+            this.ton_num = max;
+          }
+        }else{
+           if(this.number>max){
+             alert("购买商品超出库存");
+             this.number = max;
+           }
+        }
       },
       tontap: function(index) { //切换吨<-->包
         var _this = this;
         this.tonTap = index;
         //切换时同步数量
         if (index == 1) {
-          this.num = this.ton_num * 1000 / this.content;
-          this.ton_num = Math.ceil(this.num * this.content / 1000);
+          this.ton_num = this.number * this.content / 1000;
+          this.number = this.ton_num * 1000 / this.content;
         } else {
-          this.ton_num = Math.ceil(this.num * this.content / 1000);
-          this.num = this.ton_num * 1000 / this.content;
+          this.number = this.ton_num * 1000 / this.content;
+          this.ton_num = this.number * this.content / 1000;
         }
       },
       check(event){
@@ -373,69 +411,13 @@
           this.ton_num = num;
           dom.value = num;
         }else{
-          this.num =num;
+          this.number =num;
           this.ton_num = num*this.content/1000;
           dom.value = num;
         }
       }
     }
   });
-
-  function setNum(_this, mode) { // mode  方式  ： 加 -减   blur
-    // 点击加减更新 num与ton_num的值
-    var _this = _this;
-    var mode = mode;
-    var limit = _this.stock;
-    var l_num =0;//临时数字
-    l_num = _this.num;
-    var weight;
-    if (_this.tonTap == 0) {  //按包选购
-      weight = _this.num*_this.content;
-      if (mode == "reduce") {
-        if (l_num <= 1) {
-          return ;
-        } else {
-          _this.num--;
-        }
-      }else{
-        if(weight<limit){
-          if(mode=="add"){
-             _this.num++;
-          }
-        }else{
-          alert("购买数量超过库存");
-          _this.num = _this.stock/_this.content;
-          _this.ton_num = Math.floor(_this.stock/1000)
-        }
-      }
-
-    }else{
-      //按吨选购
-      weight =( _this.ton_num+1)*1000;
-      if (mode == "reduce") {
-        if (_this.ton_num <= 1) {
-          return ;
-        } else {
-          _this.ton_num--;
-          _this.num = _this.ton_num*1000/_this.content;
-        }
-      }else{
-        if(weight<limit){
-          if(mode=="add"){
-             _this.ton_num++;
-             _this.num = _this.ton_num*1000/_this.content;
-          }
-        }else{
-          alert("购买数量超过库存");
-          _this.num = _this.stock/_this.content;
-          _this.ton_num = Math.floor(_this.stock/1000)
-        }
-      }
-    }
-
-
-  }
-
 
   function serverShow() {
     var _this = app;

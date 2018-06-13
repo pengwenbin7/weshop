@@ -47,7 +47,7 @@
                   <a class="minus" v-on:click="reduceCartNubmer()"></a>
                 </p>
                 <p class="btn-input">
-                  <input type="tel" name="" ref="goodsNum" step="1" v-bind:value="number" v-on:blur="textCartNumber()" @keyup="checkipu($event)">
+                  <input type="tel" name="" ref="goodsNum" step="1" v-model="number" v-on:blur="textCartNumber()" @keyup="checkipu($event)">
                 </p>
                 <p class="btn-plus">
                   <a class="plus" v-on:click="addCartNumber()"></a>
@@ -68,7 +68,7 @@
 	</div>
   <div class="item">
         <span> 零售附加</span>
-        <span class="value "  >￥ <i id="fee"> @{{ freight }}</i></span>
+        <span class="value "  >+￥<i id="fee">@{{ freight }}</i></span>
 </div>
 	<div class="item">
           <span> 实付金额</span>
@@ -128,13 +128,13 @@
       address_id:  null,
       p_address_id:{{ $products->storage->address_id  }},
       freight: 0,
-      channel_id: 1,
       coupon_id: null,
       coupon_discount:0,
       coupon_amount:0,
       coupon_text:"选择优惠券",
       unit_price:{{$products->variable->unit_price }},
       coupons: {!! $coupons !!},
+      stock:{{ $products->variable->stock }},
       distance:0,
       coupon_box: false,
       content: {{ $products->content }},
@@ -147,6 +147,9 @@
         return this.number * this.content > 999.99 ?
           this.number * this.content / 1000 + "吨" :
           this.number * this.content + "KG"
+      },
+      number:function(){
+        return this.number<this.stock?this.number:this.stock
       }
     },
     beforeCreate: function() {
@@ -198,9 +201,10 @@
         if (_this.number <= 1) {
           return
         } else {
-          //点击减少，发送请求，成功后数量减一
-          console.log(_this.number);
           _this.number--;
+          if(!this.address_id){
+            return
+          }
           _this.countFreight();
           if(_this.coupon_amount<=(_this.number*_this.unit_price+_this.freight)){
             return
@@ -213,7 +217,18 @@
       },
       textCartNumber: function(){
         this.number = Number(this.$refs.goodsNum.value);
-        this.countFreight();
+        this.check();
+        if(this.address_id){
+          this.countFreight();
+        }
+      },
+      check: function(){
+        console.log(this.number);
+        if(this.number>this.stock){
+          alert("超出库存");
+          this.number =  this.stock;
+        }
+
       },
       checkipu(event){
         var dom = event.currentTarget
@@ -225,15 +240,21 @@
           this.ton_num = num;
           dom.value = num;
         }else{
-          this.num =num;
-          this.ton_num = num*this.content/1000;
+          this.number =num;
           dom.value = num;
         }
       },
       addCartNumber:function(){
         var _this = this;
-        _this.number++;
-        this.countFreight();
+        if(this.number>=this.stock){
+          return;
+        }else{
+          _this.number++;
+          if(!this.address_id){
+            return
+          }
+          this.countFreight();
+        }
       },
       countFreight: function() {
         var weight = this.number * this.content;
@@ -276,7 +297,7 @@
           .then(function(res1) {
             address_id = res1.data.address_id;
             var param ={
-              from: _this.address_id,
+              from: res1.data.address_id,
               to: _this.p_address_id,
             }
             axios.post("{{ route("wechat.tool.distance") }}", param)
@@ -302,7 +323,6 @@
   function pay() {
     var data = {
       address_id: app.address_id,
-      channel_id: app.channel_id,
       coupon_id: app.coupon_id,
       products: [{
         number: app.number,

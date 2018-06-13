@@ -48,7 +48,7 @@
             <p class="btn-minus">
               <a class="minus" v-on:click="reduceCartNubmer(i,index)"></a>
             </p>
-            <p class="btn-input"><input type="tel" name="" id="cart_num_2578" ref="xxx" v-bind:value="item.number" v-on:blur="textCartNumber(i,index)"   @keyup="checkipu($event)"></p>
+            <p class="btn-input"><input type="tel" name="" v-bind:max="item.stock"  ref="stock_ipu" v-model="item.number" v-on:blur="textCartNumber(i,index)"   @keyup="checkipu($event)"></p>
             <p class="btn-plus">
               <a class="plus" v-on:click="addCartNumber(i,index)"></a>
             </p>
@@ -126,12 +126,23 @@
         }
       },
       addCartNumber: function(i, a) {
-        this.products[i][a].number++;
+        var dom = this.$refs.stock_ipu[a];
+        var max = dom.max;
+        if(max>this.products[i][a].number){
+          this.products[i][a].number++;
+        }
         this.addPro(this.products[i][a].product.id,this.products[i][a].number);
         count(this);
       },
       textCartNumber: function(i, a) {
-        this.products[i][a].number = Number(this.$refs.xxx[a].value)
+        var num = Number(this.$refs.stock_ipu[a].value)?Number(this.$refs.stock_ipu[a].value):1;
+        var dom = this.$refs.stock_ipu[a];
+        var max = dom.max;
+        if(max<num){
+          num = max;
+        }
+
+        this.products[i][a].number = num;
         this.addPro(this.products[i][a].product.id,this.products[i][a].number);
         count(this);
       },
@@ -214,9 +225,6 @@
           fee += freight(func, weight, distance);
         }
       }
-
-
-
     }
     //赋值
     totalDom.innerText = price+Math.round(fee/100)*100;
