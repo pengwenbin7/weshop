@@ -29,6 +29,7 @@ class InvoiceController extends Controller
         return view("wechat.invoice.create", [
             "order_id" => $request->order_id,
             "title" => "申请开票",
+            "interfaces" => ["onMenuShareTimeline"],
         ]);
     }
 
