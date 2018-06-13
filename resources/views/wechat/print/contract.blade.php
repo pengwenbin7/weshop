@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh_CN">
   <head>
     <meta charset="UTF-8"/>
-    <title>{$order.order_sn}</title>
+    <title>{{ $order->no }}</title>
     <style>
     body {
       font-family: msyh;
@@ -31,19 +31,19 @@
       <div style="border-bottom:1px solid #222;">
 	<table align="left" style="" width="670px" height="110">
 	  <tr style="color:#000;" >
-	    <td rowspan="5" width="100px"  align="center">
-              <img  src="images/mf-logo.png" style="width:53px;"/>
+	    <td width="100px"  align="center">
+              <img  src="{{ asset("assets/img/mf-logo.png") }}" style="width:53px;"/>
 	    </td>
-	    <td colspan="3"><h4>马蜂科技（上海）有限公司</h4></td>
+	    <td><h4>马蜂科技（上海）有限公司</h4></td>
 	  </tr>
 	  <tr style="font-size:11px;line-height: 12px;color:#222;">
-	    <td colspan="3">上海市嘉定区江桥镇嘉怡路279弄147号</td>
+	    <td>上海市嘉定区江桥镇嘉怡路279弄147号</td>
 	  </tr>
 	  <tr style="font-size:11px;line-height: 12px;color:#222;">
-	    <td colspan="3">客服电话:400-9955-699 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEL:021-69000038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FAX：021-6900 0037</td>
+	    <td>客服电话:400-9955-699 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEL:021-69000038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FAX：021-6900 0037</td>
 	  </tr>
 	  <tr style="font-size:11px;line-height: 12px;color:#222;">
-	    <td colspan="3">E-mail：leo@taihaomai.com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.taihaomai.com</td>
+	    <td>E-mail：leo@taihaomai.com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.taihaomai.com</td>
 	  </tr>
 	</table>
       </div>
@@ -60,12 +60,12 @@
 	  <td colspan="2"></td>
 	</tr>
 	<tr style="line-height: 15px;">
-	  <td style="text-align: left;  ">需方：{if $company}{$company.company_name}{else}个人{/if}</td>
-	  <td style="text-align: right; ">合同编号：M{$order.order_sn}</td>
+	  <td style="text-align: left;  ">需方：{{ $user->company->name }}</td>
+	  <td style="text-align: right; ">合同编号：M{{ $order->no }}</td>
 	</tr>
 	<tr style="line-height: 15px;">
 	  <td style="text-align: left; ">供方：马蜂科技（上海）有限公司</td>
-	  <td style="text-align: right; ">签订日期：{$order.pay_time}</td>
+	  <td style="text-align: right; ">签订日期：{{ $order->created_at->toDateString() }}</td>
 	</tr>
 	<tr>
 	  <td colspan="2">
@@ -75,27 +75,29 @@
       </table>
       <table align="center" border="1" cellpadding="0" cellspacing="0" width="670" style="width: 670px;  text-align: center;">
 	<tr style="height: 200%;">
-	  <th style="height: 30px;">货号</th>
-	  <th>商品名称及型号</th>
+	  <th>名称</th>
+	  <th>型号</th>
 	  <th>生产厂商</th>
-	  <th>单价(元/包)</th>
-	  <th width="100">数量(包)</th>
+	  <th>单价</th>
+	  <th width="100">数量</th>
 	  <th>合计</th>
 	</tr>
-	{foreach from=$goods_list item=goods}
-	<tr style="height: 200%;">
-	  <td style="height: 30px;"><span class="red">{$goods.goods_sn}</span></td>
-	  <td><span class="red">{$goods.model}{$goods.goods_name}</span></td>
-	  <td><span class="red">{$brand_list[$goods.brand_id]}</span></td>
-	  <td><span class="red">{$goods.goods_price}</span></td>
-	  <td><span class="red">{$goods.goods_number}</span></td>
-	  <td><span class="red">{$goods.subtotal}</span></td>
-	</tr>
-	{/foreach}
+	@foreach ($order->orderItems as $item)
+	  <tr style="height: 200%;">
+	    <td style="height: 30px;"><span class="red">{{ $item->product_name }}</span></td>
+	    <td><span class="red">{{ $item->model }}</span></td>
+	    <td><span class="red">{{ $item->brand_name }}</span></td>
+	    <td><span class="red">{{ $item->price }}</span></td>
+	    <td><span class="red">{{ $item->number }}</span></td>
+	    <td><span class="red">{{ $item->number * $item->price }}</span></td>
+	  </tr>
+	@endforeach
 	<tr>
 	  <td colspan="2"   style="height: 30px;">合计金额（大写）</td>
-	  <td colspan="3" style="text-align: left;padding-left: 20px;">{$order.china_amount}</td>
-	  <td >￥{$order.order_amount}</td>
+	  <td colspan="3" style="text-align: left;padding-left: 20px;">
+	    {{ number2chinese(intval($order->payment->pay), true) }}
+	  </td>
+	  <td >￥{{ $order->payment->pay }}</td>
 	</tr>
       </table>
       <table style="width: 670px; " align="center">
@@ -160,15 +162,15 @@
 	  </tr>
 	  <tr style="line-height:120%;font-size: 12px;">
 	    <td style="width:50%;text-align: left;">供货单位名称：马蜂科技（上海）有限公司</td>
-	    <td style="width:50%;text-align: left;">需方单位名称：{if $company}{$company.company_name}{else}个人{/if}</td>
+	    <td style="width:50%;text-align: left;">需方单位名称：{{ $user->company->name }}</td>
 	  </tr>
 	  <tr style="line-height:120%;font-size: 12px;">
 	    <td style="width:50%;text-align: left;">联系地址：上海江桥嘉怡路279弄147号</td>
-	    <td style="width:50%;text-align: left;">地址：{$order.user_address}</td>
+	    <td style="width:50%;text-align: left;">地址：{{ $order->address->getText() }}</td>
 	  </tr>
 	  <tr style="line-height:120%;font-size: 12px;">
 	    <td style="width:50%;text-align: left;">电 话：021-69000038</td>
-	    <td style="width:50%;text-align: left;">手机号：{$order.mobile}</td>
+	    <td style="width:50%;text-align: left;">手机号：{{ $order->address->contact_tel }}</td>
 	  </tr>
 	  <tr style="line-height:120%;font-size: 12px;">
 	    <td style="width:50%;text-align: left;"> 传 真：021-69000037</td>
@@ -202,7 +204,7 @@
 
 
 	</table>
-	<img src="images/cert.png" style="width: 4cm;opacity: 0.7;margin: -2cm 0 0 0.5cm;">
+	<img src="{{ asset("assets/img/cert.png") }}" style="width: 4cm;opacity: 0.7;margin: -2cm 0 0 0.5cm;">
       </div>
     </div>
 

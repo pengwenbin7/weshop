@@ -150,40 +150,39 @@ class OrderController extends Controller
             return ["err" => "Don't allow"];
         }
     }
-
-    /**
-     * count freight
-     * 此计算结果仅仅用于前端展示
-     * request format:
-     *     int address_id
-     *     array products:
-     *               int id (product_id)
-     *               int number (product number)
-     */
-    public function countFreight(Request $request)
+    
+    public function contract(Order $order)
     {
-        $address = Address::find($request->address_id);
-        // 按发货仓库分组
-        $ss = [];
-        foreach ($request->products as $p) {
-            $product = Product::with("storage")->find($p["id"]);
-            if (strtolower($product->measure_unit) != "kg") {
-                return -1;
-            }
-            if (array_key_exists($product->storage->id, $ss)) {
-                $ss[$p->storage->id] += $product->content * $p["number"];
-            } else {
-                $ss[$product->storage->id] = $product->content * $p["number"];
-            }
+        $user = auth()->user();
+        if (!$user->company) {
+            // 公司认证
+            return "need company";
+        } else {
+            // 下载合同
+            $html = view("wechat.print.contract", [
+                "user" => $user,
+                "order" => $order,
+            ])->render();
+            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+            $pdf = new \Mpdf\Mpdf([
+                "fontDir" => array_merge($fontDirs, [
+                    public_path("storage/fonts/")
+                ]),
+                "fontdata" => $fontData + [
+                    "msyh" => [
+                        "R" => "msyh.ttf",
+                    ],
+                    "msyhbd" => [
+                        "R" => "msyhbd.ttf",
+                    ],
+                ],
+                "default_font" => "msyh",
+            ]);
+            $pdf->WriteHTML($html);
+            $pdf->Output();
         }
-
-        // 分组计算运费
-        $total = [];
-        foreach ($ss as $storage_id => $weight) {
-            $storage = Storage::with("address")->find($storage_id);
-            $distance = Count::distance($address->id, $storage->address->id);
-            $total[$storage_id] = Count::freight($storage_id, $weight, $distance);
-        }
-        return $total;
     }
 }

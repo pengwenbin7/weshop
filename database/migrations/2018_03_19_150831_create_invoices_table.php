@@ -15,12 +15,12 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger("order_id");
-            $table->string("admin_name");
+            $table->unsignedInteger("order_id")->unique();
+            $table->string("admin_name")->nullable();
             $table->boolean("status")->default(0)
                 ->comment("0: 未申请; 1： 已申请; 2: 已开票; 3: 已发出");
             $table->string("ship_no")->nullable()->comment("快递单号");
-            $table->unsignedInteger("address_id")->nullable();
+            $table->unsignedInteger("address_id");
             $table->softDeletes();
             $table->timestamps();
             $table->foreign("order_id")->references("id")->on("orders");

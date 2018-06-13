@@ -12,8 +12,6 @@ Route::get("coupon", "WeChat\HomeController@coupon")
     ->name("wechat.home.coupon");
 Route::get("company", "WeChat\HomeController@company")
      ->name("wechat.home.company");
-Route::get("invoice", "WeChat\HomeController@invoice")
-    ->name("wechat.home.invoice");
 Route::match(["get", "post"], "company_list", "WeChat\HomeController@companyList")
    ->name("wechat.home.company_list");
 Route::match(["get", "post"], "company_store", "WeChat\HomeController@companyStore")
@@ -81,6 +79,18 @@ Route::resource("order", "WeChat\OrderController", [
 Route::post("order-freight",
             "WeChat\OrderController@countFreight"
 )->name("wechat.order.count-freight");
+Route::get("contract/{order}", "WeChat\OrderController@contract")
+    ->name("wechat.contract");
+
+Route::resource("invoice", "WeChat\InvoiceController", [
+    "names" => [
+        "create" => "wechat.invoice.create",
+        "store" => "wechat.invoice.store",
+    ],
+    "except" => [
+        "index", "edit", "show", "destroy", "update",
+    ],
+]);
 
 Route::get("pay", "WeChat\PaymentController@pay")
     ->name("wechat.pay");
