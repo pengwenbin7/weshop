@@ -34,17 +34,24 @@
 	    <td width="100px"  align="center">
               <img  src="{{ asset("assets/img/mf-logo.png") }}" style="width:53px;"/>
 	    </td>
-	    <td><h4>马蜂科技（上海）有限公司</h4></td>
+	    <td>
+        <table>
+          <tr>
+            <td><h4>马蜂科技（上海）有限公司</h4></td>
+          </tr>
+          <tr style="font-size:11px;line-height: 12px;color:#222;">
+      	    <td>上海市嘉定区江桥镇嘉怡路279弄147号</td>
+      	  </tr>
+      	  <tr style="font-size:11px;line-height: 12px;color:#222;">
+      	    <td>客服电话:400-9955-699 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEL:021-69000038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FAX：021-6900 0037</td>
+      	  </tr>
+      	  <tr style="font-size:11px;line-height: 12px;color:#222;">
+      	    <td>E-mail：leo@taihaomai.com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.taihaomai.com</td>
+      	  </tr>
+        </table>
+      </td>
 	  </tr>
-	  <tr style="font-size:11px;line-height: 12px;color:#222;">
-	    <td>上海市嘉定区江桥镇嘉怡路279弄147号</td>
-	  </tr>
-	  <tr style="font-size:11px;line-height: 12px;color:#222;">
-	    <td>客服电话:400-9955-699 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEL:021-69000038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FAX：021-6900 0037</td>
-	  </tr>
-	  <tr style="font-size:11px;line-height: 12px;color:#222;">
-	    <td>E-mail：leo@taihaomai.com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://www.taihaomai.com</td>
-	  </tr>
+
 	</table>
       </div>
     </htmlpageheader>
@@ -92,6 +99,24 @@
 	    <td><span class="red">{{ $item->number * $item->price }}</span></td>
 	  </tr>
 	@endforeach
+  @if ($order->payment->freight>0)
+    <tr>
+     <td colspan="5"   style="height: 30px; text-align:left;padding-left:20px;">零售附加</td>
+     <td >{{ $order->payment->freight }}</td>
+   </tr>
+  @endif
+  @if ($order->payment->coupon_discount>0)
+    <tr>
+  	  <td colspan="5"   style="height: 30px; text-align:left;padding-left:20px;">优惠券折扣</td>
+  	  <td >-{{ $order->payment->coupon_discount }}</td>
+  	</tr>
+  @endif
+  @if ($order->payment->share_discount>0)
+    <tr>
+  	  <td colspan="5"   style="height: 30px; text-align:left;padding-left:20px;">分享折扣</td>
+  	  <td >-{{ $order->payment->share_discount }}</td>
+  	</tr>
+  @endif
 	<tr>
 	  <td colspan="2"   style="height: 30px;">合计金额（大写）</td>
 	  <td colspan="3" style="text-align: left;padding-left: 20px;">
