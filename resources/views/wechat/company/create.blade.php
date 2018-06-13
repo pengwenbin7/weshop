@@ -42,21 +42,7 @@
 @section( "content")
   <div class="container">
     <div class="company" id = "app" >
-      @if ($company)
-	<div class="company-name">
-          <div class="search">
-            {{ $company->name }}
-          </div>
-	</div>
-	<div class="row">
-          <div class="title">
-            电话: {{ $company->company_tel }}
-          </div>
-          <div class="title">
-            地址:{{ $company->address->province }}{{ $company->address->city }}
-          </div>
-	</div>
-      @else
+
 	<div class="s" v-show="s">
           <div class="search">
             <input type="text" class="txt" id="keyword" name="keyword" value="" placeholder="请输入你的公司名，企业码">
@@ -91,7 +77,6 @@
           </div>
         </div>
 
-      @endif
     </div>
 
   </div>
@@ -112,12 +97,11 @@
         var _this = this;
         var keyword = document.querySelector("#keyword").value;
         if(keyword){
-          axios.get('http://i.yjapi.com/ECIV4/Search?key=988eef9debf242ff97c69515a262327d&dtype=json&keyword='+keyword)
+          axios.get("{{ route("wechat.company.fetch") }}?keyword="+keyword)
             .then(function(res){
               _this.companys = res.data.Result;
             })
         }
-
       },
       choseCompany:function(index){
         this.company = this.companys[index];
@@ -127,7 +111,7 @@
       saveCompany:function(){
         console.log(1);
         if(this.company.Name){
-          axios.post("{{ route("wechat.home.company_store")}}",this.company)
+          axios.post("{{ route("wechat.company.store")}}",this.company)
             .then(function(res){
               console.log(res);
             })

@@ -2097,3 +2097,29 @@
 .cart-info .no-content,.cart-list .no-content{
   background-color: #f0f1f0;
 }
+.company .grid{
+  margin-top: .4rem;
+}
+.company .grid .item{
+  display: flex;
+  display: -webkit-flex;
+  padding: .2rem .4rem;
+  line-height: .6rem;
+   align-items:center;
+}
+.company .grid .item .label{
+  width: 30%;
+  text-align: left;
+   justify-content:center;
+}
+.company .grid .item .content{
+  flex: 1;
+  -webkit-flex:1;
+  text-align: right;
+}
+.company .grid .item .content img{
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 5px;
+  overflow: hidden;
+}

@@ -62,7 +62,9 @@
               <span>金额：￥{{ $order->payment->pay }}</span>
             </div>
             <div class="order-edit">
-              <span>生成合同</span>
+              <span> <a href="{{ route("wechat.contract", $order) }}">
+         	      下载合同
+         	    </a></span>
               @if($order->status === 0)
               <span class="gopay">去付款</span>
               @elseif ($order->status === 2)
