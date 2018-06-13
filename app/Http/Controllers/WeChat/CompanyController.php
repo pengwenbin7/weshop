@@ -43,16 +43,14 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
       $user = auth()->user();
-      $company = new Company();
-      $company->fill([
-              "name" => $request->Name,
-              "oper_name" => $request->OperName,
-              "code" => $request->CreditCode,
+      $company = Company::firstOrCreate([
+          "name" => $request->Name,
+          "oper_name" => $request->OperName,
+          "code" => $request->CreditCode,
       ]);
-      $res = $company->save();
-      if ($res){
-        return ["company_id" => $company->id];
-      }
+      $user->company_id = $company->id;
+      $user->save();
+      return ["store" => $company->id];
     }
 
     /**

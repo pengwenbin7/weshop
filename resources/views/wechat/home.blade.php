@@ -14,8 +14,8 @@
 	      <img src="http://m.taihaomai.com/images/logo2.png"/>
 	    </div>
 	    <div class="name">
-	      <p>马蜂科技</p>
-              <p class="tel">手机号：18949150120</p>
+	      <p>{{ $user->company->name }}</p>
+              <p class="tel">用户: {{ $user->name }}</p>
 	    </div>
 	    <div class="admin-msg">
 	      <span class="icons">
@@ -30,7 +30,7 @@
       	    </div>
       	    <div class="name">
       	      <p>公司未认证</p>
-              <p class="tel">手机号：未绑定</p>
+	      <p class="tel">用户: {{ $user->name }}</p>
       	    </div>
       	    <div class="admin-msg">
       	      <span class="icons">

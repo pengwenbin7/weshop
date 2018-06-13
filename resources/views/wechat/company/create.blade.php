@@ -113,8 +113,8 @@
         if(this.company.Name){
           axios.post("{{ route("wechat.company.store")}}",this.company)
             .then(function(res){
-              console.log(res);
-            })
+              location.assign("{{ route("wechat.company.index") }}/" + res.data.store);
+            });
         }
       }
     }
