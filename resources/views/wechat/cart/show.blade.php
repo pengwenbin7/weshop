@@ -48,7 +48,7 @@
             <p class="btn-minus">
               <a class="minus" v-on:click="reduceCartNubmer(i,index)"></a>
             </p>
-            <p class="btn-input"><input type="tel" name="" id="cart_num_2578" ref="xxx" v-bind:value="item.number" v-on:blur="textCartNumber(i,index)"   @keyup="check($event)"></p>
+            <p class="btn-input"><input type="tel" name="" id="cart_num_2578" ref="xxx" v-bind:value="item.number" v-on:blur="textCartNumber(i,index)"   @keyup="checkipu($event)"></p>
             <p class="btn-plus">
               <a class="plus" v-on:click="addCartNumber(i,index)"></a>
             </p>

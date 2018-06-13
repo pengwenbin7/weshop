@@ -47,7 +47,7 @@
                   <a class="minus" v-on:click="reduceCartNubmer()"></a>
                 </p>
                 <p class="btn-input">
-                  <input type="tel" name="" ref="goodsNum" step="1" v-bind:value="number" v-on:blur="textCartNumber()">
+                  <input type="tel" name="" ref="goodsNum" step="1" v-bind:value="number" v-on:blur="textCartNumber()" @keyup="checkipu($event)">
                 </p>
                 <p class="btn-plus">
                   <a class="plus" v-on:click="addCartNumber()"></a>
@@ -214,6 +214,21 @@
       textCartNumber: function(){
         this.number = Number(this.$refs.goodsNum.value);
         this.countFreight();
+      },
+      checkipu(event){
+        var dom = event.currentTarget
+        var num = dom.value;
+        num = num.replace(/\D/g, '');
+        num = (isNaN(num) ? 1 : num); //只能为数字
+        num = num > 0 ? num : 0;
+        if(this.tonTap==1){
+          this.ton_num = num;
+          dom.value = num;
+        }else{
+          this.num =num;
+          this.ton_num = num*this.content/1000;
+          dom.value = num;
+        }
       },
       addCartNumber:function(){
         var _this = this;
