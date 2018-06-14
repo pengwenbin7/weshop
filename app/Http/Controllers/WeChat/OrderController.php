@@ -160,7 +160,7 @@ class OrderController extends Controller
             return redirect()->route("wechat.company.create");
         } else {
             // 下载合同
-            dispath(new SendContract($user, $order));
+            dispatch(new SendContract($user, $order));
         }
     }
 }

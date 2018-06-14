@@ -51,8 +51,8 @@
 	  </span>
 	  <span class="btn-click right">
 	    @if ($order->invoice)
-	      <a>
-		已申请
+	      <a >
+		发票物流
 	      </a>
 	    @else
 	      <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
@@ -63,9 +63,15 @@
         </div>
         <div class="contract">
           <span><i>合同信息</i></span><span class="btn-click right">
-	    <a href="{{ route("wechat.contract", $order) }}">
-	      下载合同
-	    </a>
+	    @if (auth()->user()->company)
+	      <a onclick="downloadContract()">
+		下载合同
+	      </a>
+	    @else
+	      <a href="{{ route("wechat.company.create") }}">
+		下载合同
+	      </a>
+	    @endif
 	  </span>
         </div>
       </div>
@@ -88,4 +94,16 @@
     </div>
 
   </div>
+@endsection
+
+@section("script")
+  <script>
+  var downloadContract = function () {
+    var url = "{{ route('wechat.contract', $order) }}";
+    axios.get(url)
+      .then(function (res) {
+	alert("合同已通过微信消息发送，如果长时间未收到，请重试");
+      });
+  };
+  </script>
 @endsection

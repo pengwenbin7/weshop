@@ -9,14 +9,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\User;
 use App\Models\Order;
+use EasyWeChat;
+use EasyWeChat\Kernel\Messages\Image;
+use Log;
 
 class SendContract implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $user;
-    private $order;
-    
+    protected $user;
+    protected $order;
     /**
      * Create a new job instance.
      *
@@ -58,7 +60,24 @@ class SendContract implements ShouldQueue
             "default_font" => "msyh",
         ]);
         $pdf->WriteHTML($html);
-        $file = storage_path("pdfs/{$order->no}.pdf");
-        $pdf->Output($file, \Mpdf\Output\Destination::FILE);
+        $dir = storage_path("tmp/" . str_random(20));
+        // 没必要检测目录是否存在
+        mkdir($dir); 
+        $file = "{$dir}/{$this->order->no}.pdf";
+        $save = $pdf->Output($file, \Mpdf\Output\Destination::FILE);
+        $pdf = new \Spatie\PdfToImage\Pdf($file);
+        $imgs = $pdf
+              ->setOutputFormat('png')
+              ->setCompressionQuality(100)
+              ->saveAllPagesAsImages($dir);
+        // 图片上传到微信临时素材
+        $app = EasyWeChat::officialAccount();
+        foreach ($imgs as $img) {
+            $up = $app->media->uploadImage($img);
+            $image = new Image($up["media_id"]);
+            $this->user->sendMessage($image);
+        }
+        // 删除目录
+        exec("rm -rf $dir");
     }
 }

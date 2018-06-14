@@ -8,7 +8,7 @@
             头像
           </div>
           <div class="content">
-            <img src="http://m.taihaomai.com/images/logo2.png"/>
+            <img src="{{ asset("assets/img/company.png") }}"/>
           </div>
         </div>
         <div class="item">
