@@ -18,9 +18,10 @@ Route::resource("company", "WeChat\CompanyController", [
         "store" => "wechat.company.store",
         "update" => "wechat.company.update",
         "edit" => "wechat.company.edit",
+        "index" => "wechat.company.index",
     ],
     "except" => [
-        "index", "destroy",
+        "destroy",
     ],
 ]);
 Route::match(["get", "post"], "company-fetch", "WeChat\CompanyController@fetch")

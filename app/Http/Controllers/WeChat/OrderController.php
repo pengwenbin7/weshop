@@ -13,6 +13,7 @@ use App\Models\Address;
 use App\Models\Storage;
 use App\Utils\Count;
 use App\Models\Payment;
+use App\Jobs\SendContract;
 use Log;
 
 class OrderController extends Controller
@@ -159,30 +160,7 @@ class OrderController extends Controller
             return redirect()->route("wechat.company.create");
         } else {
             // 下载合同
-            $html = view("wechat.print.contract", [
-                "user" => $user,
-                "order" => $order,
-            ])->render();
-            $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-            $fontDirs = $defaultConfig['fontDir'];
-            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-            $fontData = $defaultFontConfig['fontdata'];
-            $pdf = new \Mpdf\Mpdf([
-                "fontDir" => array_merge($fontDirs, [
-                    public_path("storage/fonts/")
-                ]),
-                "fontdata" => $fontData + [
-                    "msyh" => [
-                        "R" => "msyh.ttf",
-                    ],
-                    "msyhbd" => [
-                        "R" => "msyhbd.ttf",
-                    ],
-                ],
-                "default_font" => "msyh",
-            ]);
-            $pdf->WriteHTML($html);
-            $pdf->Output();
+            dispath(new SendContract($user, $order));
         }
     }
 }
