@@ -718,6 +718,12 @@
   text-align: left;
   padding: .2rem 0
 }
+.u-photo .name p{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 90%;
+}
 .u-photo .name .tel{
   color: #888;
   font-size: .28rem;
@@ -752,13 +758,11 @@
   display: -webkit-box;
   display: -webkit-flex;
   text-align: center;
-  height: 1rem;
-  padding: .2rem .4rem;
+  padding: .3rem .4rem;
 }
 
 .grid .item.ord a {
-  height: 1rem;
-  padding: .2rem .4rem;
+  padding: .3rem .4rem;
   color: #00B945;
 }
 
@@ -770,11 +774,11 @@
 
 .grid .item a .icon {
   width: .7rem;
-  line-height: .6rem;
+  height: 30px;
 }
 
 .grid .item a .icon img {
-  width: .5rem;
+  width: 28px;
 }
 
 .grid .item a .icon:last-child {
@@ -782,11 +786,11 @@
 }
 
 .grid .item a .icon .iconfont {
-  font-size: .6rem;
+  font-size: 30px;
 }
 
 .grid .item a .icon .iconfont.icon-jinru {
-  font-size: .3rem;
+  font-size: 20px;
 }
 
 .grid .item a .txt {
@@ -794,8 +798,9 @@
   -webkit-flex: 1;
   text-align: left;
   padding: 0 .2rem;
-  line-height: .6rem;
+  height: 30px;
   font-size: 18px;
+  line-height: 30px;
 }
 
 .grid .item.ord a .txt {
@@ -1541,7 +1546,7 @@
   text-align: right;
 }
 
-.order-footer .order-edit span {
+.order-footer .order-edit a {
   display: inline-block;
   border: 1px solid #000;
   border-radius: 2px;
@@ -2111,7 +2116,7 @@
    align-items:center;
 }
 .company .grid .item .label{
-  width: 30%;
+  width: 25%;
   text-align: left;
    justify-content:center;
 }
@@ -2126,4 +2131,17 @@
   height: 1.3rem;
   border-radius: 5px;
   overflow: hidden;
+}
+.delete-company{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+  font-size: .36rem;
+  color: #fff;
+  text-align: center;
+  left: 0;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  background-color: #009b45;
 }

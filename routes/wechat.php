@@ -13,15 +13,13 @@ Route::get("coupon", "WeChat\HomeController@coupon")
 
 Route::resource("company", "WeChat\CompanyController", [
     "names" => [
+        "index" => "wechat.company.index",
         "create" => "wechat.company.create",
         "show" => "wechat.company.show",
         "store" => "wechat.company.store",
         "update" => "wechat.company.update",
         "edit" => "wechat.company.edit",
-        "index" => "wechat.company.index",
-    ],
-    "except" => [
-        "destroy",
+        "destroy" => "wechat.company.destroy",
     ],
 ]);
 Route::match(["get", "post"], "company-fetch", "WeChat\CompanyController@fetch")

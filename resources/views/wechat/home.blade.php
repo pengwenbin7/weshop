@@ -6,38 +6,38 @@
     <div class="user">
       <div class="header">
 	<div class="u-photo">
-	  @if ($user->company_id)
-            <a href="{{ route("wechat.company.show",$user->company_id) }}">
-	      <div class="photo">
-		<img src="{{ asset("assets/img/company.png") }}"/>
-	      </div>
-	      <div class="name">
-		<p class="tel">用户: {{ $user->name }}</p>
-		<p>{{ $user->company->name }}</p>
+      @if ($user->company_id)
+        <a href="{{ route("wechat.company.show",$user->company_id) }}">
+	    <div class="photo">
+	      <img src="{{ asset("assets/img/company.png") }}"/>
+	    </div>
+	    <div class="name">
+              <p class="tel">用户: {{ $user->name }}</p>
+              <p>{{ $user->company->name }}</p>
 
-	      </div>
-	      <div class="admin-msg">
-		<span class="icons">
-		  <i class="iconfont icon-jinru"></i>
-		</span>
-	      </div>
-            </a>
-          @else
-            <a href="{{ route("wechat.company.create") }}">
-              <div class="photo">
-      		<img src="http://m.taihaomai.com/images/logo2.png"/>
-      	      </div>
-      	      <div class="name">
-      		<p>公司未认证</p>
-		<p class="tel">用户: {{ $user->name }}</p>
-      	      </div>
-      	      <div class="admin-msg">
-      		<span class="icons">
-      		  <i class="iconfont icon-jinru"></i>
-      		</span>
-      	      </div>
-            </a>
-          @endif
+	    </div>
+	    <div class="admin-msg">
+	      <span class="icons">
+		<i class="iconfont icon-jinru"></i>
+	      </span>
+	    </div>
+          </a>
+        @else
+          <a href="{{ route("wechat.company.create") }}">
+            <div class="photo">
+      	     <img src="{{ asset("assets/img/company.png") }}"/>
+      	    </div>
+      	    <div class="name">
+      	      <p>公司未认证</p>
+	      <p class="tel">用户: {{ $user->name }}</p>
+      	    </div>
+      	    <div class="admin-msg">
+      	      <span class="icons">
+      		<i class="iconfont icon-jinru"></i>
+      	      </span>
+      	    </div>
+                </a>
+        @endif
 	</div>
       </div>
       <div class="grid">

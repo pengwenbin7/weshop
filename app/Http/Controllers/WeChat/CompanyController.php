@@ -25,7 +25,12 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view("wechat.company.create");
+         $user = auth()->user();
+        if($user->company_id){
+          return redirect()->route("wechat.home.index");
+        }else{
+          return view("wechat.company.create");
+        }
     }
 
     public function fetch(Request $request)
@@ -96,5 +101,9 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         //
+        $user = auth()->user();
+        $user->company_id = null;
+        $user->save();
+        return ["destroy" => $company->delete()];
     }
 }

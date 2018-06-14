@@ -8,7 +8,7 @@
             头像
           </div>
           <div class="content">
-            <img src="{{ asset("assets/img/company.png") }}"/>
+            <img src="{{ asset("assets/img/company.png") }}" />
           </div>
         </div>
         <div class="item">
@@ -21,7 +21,7 @@
         </div>
         <div class="item">
           <div class="label">
-            法人
+            企业法人
           </div>
           <div class="content">
              {{ $company->oper_name }}
@@ -40,7 +40,19 @@
   </div>
 
   </div>
+  <div class="delete-company" onclick="deleteCompany()">
+    <span>删除公司信息</span>
+  </div>
 @endsection
 @section("script")
-
+<script type="text/javascript">
+  function deleteCompany(){
+    axios.delete("{{route("wechat.company.destroy" ,$company->id)}}")
+    .then(function(res){
+      if(res.data.destroy){
+        location.assign("{{ route("wechat.home.index")}}");
+      }
+    })
+  }
+</script>
 @endsection
