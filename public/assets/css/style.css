@@ -694,7 +694,9 @@
 .user .header {
   background-color: #fff;
   height: 1.9rem;
+  font-size: .36rem;
   margin-bottom: .4rem;
+  margin-top: .4rem;
 }
 
 .u-photo {
@@ -712,7 +714,7 @@
 .u-photo .name {
   margin-left: 1.6rem;
   line-height: .5rem;
-  font-size: .42rem;
+  font-size: .36rem;
   text-align: left;
   padding: .2rem 0
 }
@@ -793,6 +795,7 @@
   text-align: left;
   padding: 0 .2rem;
   line-height: .6rem;
+  font-size: 18px;
 }
 
 .grid .item.ord a .txt {
@@ -2116,6 +2119,7 @@
   flex: 1;
   -webkit-flex:1;
   text-align: right;
+  color: #888;
 }
 .company .grid .item .content img{
   width: 1.3rem;
