@@ -86,4 +86,16 @@ Route::resource("shipment", "Admin\ShipmentController", [
     ],
 ]);
 
+Route::resource("invoice", "Admin\InvoiceController", [
+    "names" => [
+        "index" => "admin.invoice.index",
+        "show" => "admin.invoice.show",
+        "create" => "admin.invoice.create",
+        "edit" => "admin.invoice.edit",
+        "store" => "admin.invoice.store",
+        "update" => "admin.invoice.update",
+        "destroy" => "admin.invoice.destroy",
+    ],
+]);
+
 Route::get('/logout', 'AdminAuth\LoginController@logout')->name("admin.logout");

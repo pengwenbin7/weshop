@@ -50,6 +50,14 @@
       </li>
       @endif
 
+      @if (auth("admin")->user()->can("pay"))
+      <li>
+	<a href="{{ route("admin.invoice.index") }}">
+	  发票
+	</a>
+      </li>
+      @endif
+
       <li class="header">用户</li>
       <li>
 	<a href="#">
