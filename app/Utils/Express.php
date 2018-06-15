@@ -12,7 +12,7 @@ class Express
     public function fetch($no)
     {
         $requestData= json_encode([
-            "ShipperCode" => $this->fetchShipper($no),
+            "ShipperCode" => $this->fetchShipper($no)->ShipperCode,
             "LogisticCode" => $no,
         ]);
         $sign = $this->sign($requestData);
@@ -29,7 +29,7 @@ class Express
         $client = new Client();
         return json_decode($client->post(config("express.url"), $datas)
                            ->getBody()
-                           ->getContents());
+                           ->getContents(), true);
     }
 
     /**

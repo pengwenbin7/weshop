@@ -163,4 +163,5 @@ class OrderController extends Controller
             dispatch(new SendContract($user, $order));
         }
     }
+
 }
