@@ -1,7 +1,6 @@
 @extends("layouts.admin")
-
 @section("content")
-  <div class="col-md-6">
+  <div class="col-md-12">
     <div class="box box-info">
       <div class="box-header with-border">
 	<h3 class="box-title"><a href="{{ route("admin.order.index") }}">订单列表</a></h3>
@@ -61,80 +60,81 @@
           </div>
 
 	  <div class="form-group">
-            <label class="col-sm-2 control-label">付款状态</label>
-            <div class="col-sm-10">
-	      @if (auth("admin")->user()->can("pay"))
-		<select class="form-control select" name="payment_status" v-model="payment_status">
-		  <option value="{{ $order::PAY_STATUS_WAIT }}">待付款</option>
-		  <option value="{{ $order::PAY_STATUS_PART }}">部分付款</option>
-		  <option value="{{ $order::PAY_STATUS_DONE }}">完成</option>
-		  <option value="{{ $order::PAY_STATUS_REFUND }}">退款</option>
-		  <option value="{{ $order::PAY_STATUS_AFTER }}">到付</option>
-		  <option value="{{ $order::PAY_STATUS_ERROR }}">错误</option>
-		</select>
-	      @else
-		@switch ($order->payment_status)
-		@case ($order::PAY_STATUS_WAIT)
-		<input class="form-control" type="text" value="待付款" readonly>
-		@break
-		@case ($order::PAY_STATUS_PART)
-		<input class="form-control" type="text" value="部分付款" readonly>
-		@break
-		@case ($order::PAY_STATUS_DONE)
-		<input class="form-control" type="text" value="完成" readonly>
-		@break
-		@case ($order::PAY_STATUS_REFUND)
-		<input class="form-control" type="text" value="退款" readonly>
-		@break
-		@case ($order::PAY_STATUS_AFTER)
-		<input class="form-control" type="text" value="货到付款" readonly>
-		@break
-		@case ($order::PAY_STATUS_ERROR)
-		<input class="form-control" type="text" value="错误" readonly>
-		@break
-		@default
-		<input class="form-control" type="text" value="未知状态" readonly>
-		@break
-		@endswitch
-	      @endif
-	    </div>
+        <label class="col-sm-2 control-label">付款状态</label>
+        <div class="col-sm-10" v-if="canPay">
+          <div class="btn-group" v-if="payment_status==0">
+            <button type="button" @click="payAll"  class="btn btn-default" name="button">全部付款</button>
+            <div class="input-group">
+             <span class="input-group-btn">
+               <button  @click="payPart"  class="btn btn-default" type="button">部分付款</button>
+             </span>
+             <input type="text" class="form-control" placeholder="部分付款金额">
+           </div>
+          </div>
+            <button type="button"  @click="payAll"  v-else-if="payment_status==1" class="btn btn-default" name="button">全部付款</button>
+            <input class="form-control"   v-else-if="payment_status==2" type="text" value="完成" readonly>
+            <input class="form-control"  v-else-if="payment_status==3" type="text" value="退款" readonly>
+            <input class="form-control"  v-else-if="payment_status==4" type="text" value="货到付款" readonly>
+            <input class="form-control"  v-else-if="payment_status==5" type="text" value="错误" readonly>
+            <input class="form-control"  v-else type="text" value="未知状态" readonly>
+        </div>
+      	     <div class="col-sm-10" v-else>
+            		@switch ($order->payment_status)
+            		@case ($order::PAY_STATUS_WAIT)
+            		<input class="form-control" type="text" value="待付款" readonly>
+            		@break
+            		@case ($order::PAY_STATUS_PART)
+            		<input class="form-control" type="text" value="部分付款" readonly>
+            		@break
+            		@case ($order::PAY_STATUS_DONE)
+            		<input class="form-control" type="text" value="完成" readonly>
+            		@break
+            		@case ($order::PAY_STATUS_REFUND)
+            		<input class="form-control" type="text" value="退款" readonly>
+            		@break
+            		@case ($order::PAY_STATUS_AFTER)
+            		<input class="form-control" type="text" value="货到付款" readonly>
+            		@break
+            		@case ($order::PAY_STATUS_ERROR)
+            		<input class="form-control" type="text" value="错误" readonly>
+            		@break
+            		@default
+            		<input class="form-control" type="text" value="未知状态" readonly>
+            		@break
+            		@endswitch
+      	    </div>
           </div>
 
-	  <div class="form-group">
+	         <div class="form-group">
             <label class="col-sm-2 control-label">采购状态</label>
-            <div class="col-sm-10">
-	      @if (auth("admin")->user()->can("purchase") && $order->shipment_status < $order::SHIP_STATUS_PART)
-		<select class="form-control select" name="shipment_status"
-			v-model="shipment_status">
-		  <option value="{{ $order::SHIP_STATUS_WAIT }}">待采购</option>
-		  <option value="{{ $order::SHIP_STATUS_DOING }}">完成采购</option>
-		</select>
-	      @else
-		@switch ($order->shipment_status)
-		@case ($order::SHIP_STATUS_WAIT)
-		<input class="form-control" type="text" value="待采购" readonly>
-		@break
-		@case ($order::SHIP_STATUS_DOING)
-		<input class="form-control" type="text" value="完成采购" readonly>
-		@break
-		@default
-		@break
-		@endswitch
-	      @endif
+            <div class="col-sm-10" v-if="canPurchase">
+               <button type="button" v-if="shipment_status==0" @click="buyed"  class="btn btn-default" name="button">完成采购</button>
+               <input class="form-control" v-if="shipment_status>0" type="text" value="已经采购" readonly>
+             </div>
+
+	      <div class="col-sm-10" v-else>
+        		@switch ($order->shipment_status)
+        		@case ($order::SHIP_STATUS_WAIT)
+        		<input class="form-control" type="text" value="待采购" readonly>
+        		@break
+        		@case ($order::SHIP_STATUS_DOING)
+        		<input class="form-control" type="text" value="完成采购" readonly>
+        		@break
+        		@default
+        		@break
+        		@endswitch
+
 	    </div>
           </div>
 
 	  <div class="form-group">
             <label class="col-sm-2 control-label">发货状态</label>
-            <div class="col-sm-10">
-	      @if (auth("admin")->user()->can("ship") && $order->shipment_status > $order::SHIP_STATUS_WAIT && $order->shipment_status < $order::SHIP_STATUS_SURE)
-		<select class="form-control select" name="shipment_status"
-			v-model="shipment_status">
-		  <option value="{{ $order::SHIP_STATUS_DOING }}">待发货</option>
-		  <option value="{{ $order::SHIP_STATUS_PART }}">部分发货</option>
-		  <option value="{{ $order::SHIP_STATUS_DONE }}">完成发货</option>
-		</select>
-	      @else
+            <div class="col-sm-10" v-if="canShip">
+              <button type="button"  @click="shiped"  v-if="shipment_status==1" class="btn btn-default" name="button">发货</button>
+              <input class="form-control"  v-else-if="shipment_status==3" type="text" value="完成发货" readonly>
+	     </div>
+        <div class="col-sm-10" v-else>
+
 		@switch ($order->shipment_status)
 		@case ($order::SHIP_STATUS_DOING)
 		<input class="form-control" type="text" value="待发货" readonly>
@@ -152,12 +152,11 @@
 		@break
 		<input class="form-control" type="text" value="--" readonly>
 		@endswitch
-	      @endif
 	    </div>
           </div>
 
 	</div>
-	
+
 	<div class="box-footer">
 	  @if ($order->status != $order::ORDER_STATUS_IDL)
             <button type="submit" class="btn btn-info btn-block">确定</button>
@@ -175,8 +174,25 @@
   var vue = new Vue({
     el: "#app",
     data: {
+      canPay:{{ auth("admin")->user()->can("pay") }},
+      canPurchase:{{ auth("admin")->user()->can("purchase") }},
+      canShip :{{ auth("admin")->user()->can("ship") }},
       payment_status: {{ $order->payment_status }},
       shipment_status: {{ $order->shipment_status }}
+    },
+    methods:{
+      payPart:function() {
+        this.payment_status=1;
+      },
+      payAll:function() {
+        this.payment_status=2;
+      },
+      buyed:function(){
+        this.shipment_status = 1;
+      },
+      shiped:function(){
+        this.shipment_status = 3;
+      }
     }
   });
   </script>

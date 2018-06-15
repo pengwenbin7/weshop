@@ -51,10 +51,16 @@
 	  </span>
 	  <span class="btn-click right">
 	    @if ($order->invoice)
-	      <a >
-		发票物流
-	      </a>
+        @if ($order->invoice->status=2)
+          <a href="#">已开票</a>
+        @else
+          <a >
+  		        发票物流
+  	      </a>
+        @endif
+
 	    @else
+
 	      <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
 		申请开票
 	      </a>
@@ -88,7 +94,14 @@
       <div class="footer">
         <div class="item price y"><span>实付金额：{{ $order->payment->pay }}</span></div>
         <div class="item">
-          <span class="btn-click">再来一单</span>
+          @if($order->status === 0)
+            <span  class="btn-click">去付款</span>
+          @elseif ($order->status === 2)
+            <span class="green">待收货</span>
+          @elseif ($order->status === 3)
+            <span class="green">货到付款</span>
+          @endif
+
         </div>
       </div>
     </div>
