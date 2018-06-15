@@ -52,17 +52,17 @@
 	  <div class="btn-click right">
 	    @if ($order->invoice)
         @if ($order->invoice->status=2)
-          <a href="#"><button class= "btn-gray" type="button" name="button">已开票</button></a>
+          <a href="#"><input  type="button" class="btn-gray" name="button" value="已开票" /></a>
         @else
           <a >
-  		        <button type="button" name="button">发票物流</button>
+  		        <input  type="button" name="button" value="发票物流" />
   	      </a>
         @endif
 
 	    @else
 
 	      <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
-		         <button  type="button" name="button">申请开票</button>
+		         <input  type="button" name="button" value="申请开票" />
 	      </a>
 	    @endif
 	  </div>
@@ -71,11 +71,11 @@
           <span><i>合同信息</i></span><div class="btn-click right">
 	    @if (auth()->user()->company)
 	      <a onclick="downloadContract()">
-		        <button type="button" name="button">下载合同</button>
+		       <input  type="button" name="button" value="下载合同" />
 	      </a>
 	    @else
 	      <a href="{{ route("wechat.company.create") }}">
-    		<button type="button" name="button">下载合同</button>
+    		<input  type="button" name="button" value="下载合同" />
 	      </a>
 	    @endif
 	  </div>

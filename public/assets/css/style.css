@@ -1550,13 +1550,13 @@
   width: 1.4rem;
   margin-left: .2rem;
 }
-.order-footer .order-edit a button{
+.order-footer .order-edit a input{
   background: none;
   border: 1px solid #444;
   height: .6rem;
   width: 1.5rem;
 }
-.order-footer .order-edit a button.btn-pay{
+.order-footer .order-edit a input.btn-pay{
   color: #009b45;
   border-color: #009b45;
 }
@@ -1649,13 +1649,13 @@
   margin-left: .2rem;
 }
 
-.contracts .btn-click a button{
+.contracts .btn-click a input{
   background: none;
   border: 1px solid #444;
   height: .6rem;
   width: 1.5rem;
 }
-.contracts .btn-click a button.btn-gray{
+.contracts .btn-click a input.btn-gray{
   color: #888;
   border-color: #888;
 }

@@ -49,7 +49,7 @@
                   <span>{{ $orderItem->price }}</span>
                   </a>
                 </div>
-                
+
               </div>
               @endforeach
 
@@ -62,17 +62,17 @@
               <span>金额：￥{{ $order->payment->pay }}</span>
             </div>
             <div class="order-edit">
-              <a href="{{ route("wechat.contract", $order) }}" class="left">
-         	      <button type="button" name="button">下载合同</button>
+              <a href="{{ route("wechat.contract", $order) }}" >
+         	      <input  type="button" name="button" value="下载合同" />
          	    </a>
               @if($order->status === 0)
               <a class="gopay" href="{{ route("wechat.pay") }}/?order_id={{ $order->id }}">
-                <button class= "btn-pay" type="button" name="button">去付款</button>
+                <input class= "btn-pay" type="button" name="button" value="去付款" />
               </a>
               @elseif ($order->status === 2)
-              <a ><button class= "btn-pay" type="button" name="button">确认收货</button></a>
+              <a ><input class= "btn-pay" type="button" name="button" value="确认收货" /></a>
               @elseif ($order->status === 3)
-              <a ><button class= "btn-pay" type="button" name="button">确认收货</button></a>
+              <a ><input class= "btn-pay" type="button" name="button" value="确认收货" /></a>
               @endif
 
             </div>
