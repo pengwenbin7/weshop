@@ -1547,18 +1547,19 @@
 }
 
 .order-footer .order-edit a {
-  display: inline-block;
-  border: 1px solid #000;
-  border-radius: 2px;
   width: 1.4rem;
-  padding: .15rem 0;
-  line-height: 1;
-  font-size: .28rem;
-  text-align: center;
   margin-left: .2rem;
-  border-radius: 3px;
 }
-
+.order-footer .order-edit a button{
+  background: none;
+  border: 1px solid #444;
+  height: .6rem;
+  width: 1.5rem;
+}
+.order-footer .order-edit a button.btn-pay{
+  color: #009b45;
+  border-color: #009b45;
+}
 .order-footer .order-edit .gopay {
   border-color: #00B945;
   color: #00B945;
