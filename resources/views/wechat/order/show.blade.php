@@ -49,36 +49,36 @@
           <span>
 	    <i>发票信息</i>
 	  </span>
-	  <span class="btn-click right">
+	  <div class="btn-click right">
 	    @if ($order->invoice)
         @if ($order->invoice->status=2)
-          <a href="#">已开票</a>
+          <a href="#"><button class= "btn-gray" type="button" name="button">已开票</button></a>
         @else
           <a >
-  		        发票物流
+  		        <button type="button" name="button">发票物流</button>
   	      </a>
         @endif
 
 	    @else
 
 	      <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
-		申请开票
+		         <button  type="button" name="button">申请开票</button>
 	      </a>
 	    @endif
-	  </span>
+	  </div>
         </div>
         <div class="contract">
-          <span><i>合同信息</i></span><span class="btn-click right">
+          <span><i>合同信息</i></span><div class="btn-click right">
 	    @if (auth()->user()->company)
 	      <a onclick="downloadContract()">
-		下载合同
+		        <button type="button" name="button">下载合同</button>
 	      </a>
 	    @else
 	      <a href="{{ route("wechat.company.create") }}">
-		下载合同
+    		<button type="button" name="button">下载合同</button>
 	      </a>
 	    @endif
-	  </span>
+	  </div>
         </div>
       </div>
       <div class="order-info">
@@ -95,7 +95,7 @@
         <div class="item price y"><span>实付金额：{{ $order->payment->pay }}</span></div>
         <div class="item">
           @if($order->status === 0)
-            <span  class="btn-click">去付款</span>
+            <a  class="btn-click" href="{{ route("wechat.pay") }}/?order_id={{ $order->id }}">去付款</span>
           @elseif ($order->status === 2)
             <span class="green">待收货</span>
           @elseif ($order->status === 3)

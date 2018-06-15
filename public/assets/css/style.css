@@ -1571,11 +1571,11 @@
   padding: .3rem .4rem;
   background-color: #fff;
   box-shadow: 1px 1px 2px #eee;
+  align-items: center;
 }
 
 .order-address .loc {
   width: .5rem;
-  line-height: 1.2rem;
 }
 
 .order-address .address-detail {
@@ -1584,7 +1584,7 @@
 }
 
 .order-address .address-detail .tel {
-  float: right;
+  margin-left: .3rem;
 }
 
 .order-address .address-detail p {
@@ -1645,14 +1645,19 @@
 }
 
 .contracts .btn-click {
-  border: 1px solid #000;
-  height: .6rem;
   width: 1.4rem;
-  text-align: center;
-  padding: .1rem 0;
-  line-height: .4rem;
-  font-size: .26rem;
-  border-radius: 3px;
+  margin-left: .2rem;
+}
+
+.contracts .btn-click a button{
+  background: none;
+  border: 1px solid #444;
+  height: .6rem;
+  width: 1.5rem;
+}
+.contracts .btn-click a button.btn-gray{
+  color: #888;
+  border-color: #888;
 }
 
 .contracts .invoice, .contracts .contract {
