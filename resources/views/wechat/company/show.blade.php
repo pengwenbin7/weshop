@@ -50,6 +50,7 @@
     axios.delete("{{route("wechat.company.destroy" ,$company->id)}}")
     .then(function(res){
       if(res.data.destroy){
+        alert("公司删除成功");
         location.assign("{{ route("wechat.home.index")}}");
       }
     })

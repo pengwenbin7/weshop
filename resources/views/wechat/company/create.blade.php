@@ -109,11 +109,11 @@
         this.s = false;
       },
       saveCompany:function(){
-        console.log(1);
         if(this.company.Name){
           axios.post("{{ route("wechat.company.store")}}",this.company)
             .then(function(res){
-              location.assign("{{ route("wechat.company.index") }}/" + res.data.store);
+              alert("公司添加成功");
+              location.assign("{{ route("wechat.home.index") }}");
             });
         }
       }
