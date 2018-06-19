@@ -64,12 +64,14 @@
         <div class="col-sm-10" v-if="canPay">
           <div class="btn-group" v-if="payment_status==0">
             <button type="button" @click="payAll"  class="btn btn-default" name="button">全部付款</button>
+	    <!--
             <div class="input-group">
-             <span class="input-group-btn">
-               <button  @click="payPart"  class="btn btn-default" type="button">部分付款</button>
-             </span>
+              <span class="input-group-btn">
+		<button  @click="payPart"  class="btn btn-default" type="button">部分付款</button>
+              </span>
              <input type="text" class="form-control" placeholder="部分付款金额">
-           </div>
+	    </div>
+	    -->
           </div>
             <button type="button"  @click="payAll"  v-else-if="payment_status==1" class="btn btn-default" name="button">全部付款</button>
             <input class="form-control"   v-else-if="payment_status==2" type="text" value="完成" readonly>
@@ -174,24 +176,36 @@
   var vue = new Vue({
     el: "#app",
     data: {
-      canPay:{{ auth("admin")->user()->can("pay") }},
-      canPurchase:{{ auth("admin")->user()->can("purchase") }},
-      canShip :{{ auth("admin")->user()->can("ship") }},
+      canPay: {{ auth("admin")->user()->can("pay") }},
+      canPurchase: {{ auth("admin")->user()->can("purchase") }},
+      canShip: {{ auth("admin")->user()->can("ship") }},
       payment_status: {{ $order->payment_status }},
       shipment_status: {{ $order->shipment_status }}
     },
-    methods:{
-      payPart:function() {
-        this.payment_status=1;
+    methods: {
+      payPart: function() {
+        this.payment_status = 1;
       },
-      payAll:function() {
-        this.payment_status=2;
+      payAll: function() {
+	var _this = this;
+	axios.post("{{ route("order.paid", $order) }}")
+	  .then(function (res) {
+	    _this.payment_status = 2;
+	  });
       },
-      buyed:function(){
-        this.shipment_status = 1;
+      buyed: function() {
+	var _this = this;
+	axios.post("{{ route("order.purchased", $order) }}")
+	  .then(function (res) {
+            _this.shipment_status = 1;
+	  });
       },
-      shiped:function(){
-        this.shipment_status = 3;
+      shiped: function() {
+	var _this = this;
+	axios.post("{{ route("order.shiped", $order) }}")
+	  .then(function (res) {
+            _this.shipment_status = 3;
+	  });
       }
     }
   });

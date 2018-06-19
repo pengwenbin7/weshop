@@ -93,4 +93,19 @@ class InvoiceController extends Controller
     {
         //
     }
+
+    public function express(Invoice $invoice)
+    {
+        
+    }
 }
+
+
+
+
+
+
+
+
+
+

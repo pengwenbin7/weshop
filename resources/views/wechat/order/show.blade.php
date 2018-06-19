@@ -52,17 +52,17 @@
 	  <div class="btn-click right">
 	    @if ($order->invoice)
         @if ($order->invoice->status=2)
-          <a href="#"><input  type="button" class="btn-gray" name="button" value="已开票" /></a>
+          <a href="#">已开票</a>
         @else
           <a >
-  		        <input  type="button" name="button" value="发票物流" />
+  		        发票物流
   	      </a>
         @endif
 
 	    @else
 
 	      <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
-		         <input  type="button" name="button" value="申请开票" />
+		         申请开票
 	      </a>
 	    @endif
 	  </div>
@@ -71,12 +71,11 @@
           <span><i>合同信息</i></span><div class="btn-click right">
 	    @if (auth()->user()->company)
 	      <a onclick="downloadContract()">
-		       <input  type="button" name="button" value="下载合同" />
+		       下载合同
 	      </a>
 	    @else
 	      <a href="{{ route("wechat.company.create") }}">
-    		<input  type="button" name="button" value="下载合同" />
-	      </a>
+    		下载合同	      </a>
 	    @endif
 	  </div>
         </div>
@@ -86,7 +85,7 @@
         <div class="order-times">
           <p><span><i>创建时间：</i>{{ $order->created_at }}</span></p>
           <p><span><i>付款时间：</i>{{ $order->payment->pay_name }}</span></p>
-          <p><span><i>支付方式：</i>{{ $order->payment->channel_id }}</span></p>
+          <p><span><i>支付方式：</i>{{ $order->payment->channel->name }}</span></p>
           <p><span><i>发货时间：</i></span></p>
           <p><span><i>收货时间：</i>2018-01-31 09:21</span></p>
         </div>

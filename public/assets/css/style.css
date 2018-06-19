@@ -1549,18 +1549,18 @@
 .order-footer .order-edit a {
   width: 1.4rem;
   margin-left: .2rem;
+  border:1px solid #ddd;
 }
-.order-footer .order-edit a input{
-  background: none;
-  border: 1px solid #444;
-  height: .6rem;
-  width: 1.5rem;
+
+.order-footer .order-edit a.btn-gray{
+  color: #888;
+  border-color: #888;
 }
-.order-footer .order-edit a input.btn-pay{
+.order-footer .order-edit a.btn-green{
   color: #009b45;
   border-color: #009b45;
 }
-.order-footer .order-edit .gopay {
+.order-footer .order-edit a.gopay {
   border-color: #00B945;
   color: #00B945;
 }
@@ -1649,17 +1649,20 @@
   margin-left: .2rem;
 }
 
-.contracts .btn-click a input{
+.contracts .btn-click a {
   background: none;
   border: 1px solid #444;
   height: .6rem;
   width: 1.5rem;
 }
-.contracts .btn-click a input.btn-gray{
+.contracts .btn-click a.btn-gray{
   color: #888;
   border-color: #888;
 }
-
+.contracts .btn-click a.btn-green{
+  color: #009b45;
+  border-color: #009b45;
+}
 .contracts .invoice, .contracts .contract {
   line-height: .6rem;
   border-bottom: 1px solid #eee;

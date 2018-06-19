@@ -53,14 +53,14 @@
          电话: {{ $company->company_tel }}
         </div>
         <div class="title">
-         地址:{{ $company->address->province }}{{ $company->address->city }}
+          地址:{{ $company->address->province }}{{ $company->address->city }}
         </div>
       </div>
     @else
       <div class="s" v-show="s">
         <div class="search">
           <input type="text" class="txt" id="keyword" name="keyword" value="" placeholder="请输入你的公司名，企业码">
-        <input type="button" class="btn-search" name="" value="搜索" @click="getCompany('aaa')">
+          <input type="button" class="btn-search" name="" value="搜索" @click="getCompany('aaa')">
         </div>
         <div class="row"  v-for="(item,index) in companys" @click="choseCompany(index)">
           <div class="title">
