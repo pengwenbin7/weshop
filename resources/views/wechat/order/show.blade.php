@@ -29,52 +29,98 @@
         </div>
       </div>
 
-       @foreach ($products as $pss)
-      <div class="product-info">
-        <div class="p-title">
-          <div class="item title">
-            <span >商品信息</span>
+      @if ($order->shipments)
+	@foreach ($order->shipments as $shipment)
+	  <div class="item express">
+	    <span class="btn">查看物流</span>
           </div>
-          <div class="item express">
-            <span class="btn" @click="express">查看物流</span>
-          </div>
-        </div>
-        @foreach ($pss as $item)
-          <div class="product-detail clearfix">
-            <div class="item">
-              <span class="label">品名：</span>
-              <div class="info-r">
-               {{ $item->product_name }}
-              </div>
+	  @foreach ($shipment->shipmentItems as $item)
+	    <div class="product-detail clearfix">
+	      <div class="item">
+		<span class="label">品名：</span>
+		<div class="info-r">
+		  {{ $item->product_name }}
+		</div>
+	      </div>
+	      <div class="item">
+		<span class="label">型号：</span>
+		<div class="info-r">
+		  {{ $item->model }}
+		</div>
+	      </div>
+	      <div class="item">
+		<span class="label">厂家：</span>
+		<div class="info-r">
+		  {{ $item->brand_name }}
+		</div>
+	      </div>
+	      <div class="item">
+		<span class="label">数量：</span>
+		<div class="info-r">
+		  {{ $item->number }}{{ $item->packing_unit }}
+		</div>
+	      </div>
+	      <div class="item">
+		<span class="label">金额：</span>
+		<div class="info-r">
+		  ￥{{ $item->price *$item->number }}
+		</div>
+	      </div>
             </div>
-            <div class="item">
-              <span class="label">型号：</span>
-              <div class="info-r">
-               {{ $item->model }}
+	  @endforeach
+	@endforeach
+      @else
+	@foreach ($products as $pss)
+	  <div class="product-info">
+            <div class="p-title">
+              <div class="item title">
+		<span >商品信息</span>
               </div>
-            </div>
-            <div class="item">
-              <span class="label">厂家：</span>
-              <div class="info-r">
-               {{ $item->brand_name }}
+	      <!--
+              <div class="item express">
+		<span class="btn" @click='express'>查看物流</span>
               </div>
+	      -->
             </div>
-            <div class="item">
-              <span class="label">数量：</span>
-              <div class="info-r">
-               {{ $item->number }}{{ $item->packing_unit }}
+            @foreach ($pss as $item)
+              <div class="product-detail clearfix">
+		<div class="item">
+		  <span class="label">品名：</span>
+		  <div class="info-r">
+		    {{ $item->product_name }}
+		  </div>
+		</div>
+		<div class="item">
+		  <span class="label">型号：</span>
+		  <div class="info-r">
+		    {{ $item->model }}
+		  </div>
+		</div>
+		<div class="item">
+		  <span class="label">厂家：</span>
+		  <div class="info-r">
+		    {{ $item->brand_name }}
+		  </div>
+		</div>
+		<div class="item">
+		  <span class="label">数量：</span>
+		  <div class="info-r">
+		    {{ $item->number }}{{ $item->packing_unit }}
+		  </div>
+		</div>
+		<div class="item">
+		  <span class="label">金额：</span>
+		  <div class="info-r">
+		    ￥{{ $item->price *$item->number }}
+		  </div>
+		</div>
               </div>
-            </div>
-            <div class="item">
-              <span class="label">金额：</span>
-              <div class="info-r">
-               ￥{{ $item->price *$item->number }}
-              </div>
-            </div>
-          </div>
-        @endforeach
-      </div>
-    @endforeach
+            @endforeach
+	  </div>
+	@endforeach
+      @endif
+
+
       <div class="pay-info">
         <div class="item">
           <span class="label">商品总价：</span>
@@ -83,28 +129,28 @@
           </div>
         </div>
         @if ($order->payment->freight>0)
-        <div class="item">
-          <span class="label">额外附加：</span>
-          <div class="info-r">
-            +￥{{ $order->payment->freight }}
+          <div class="item">
+            <span class="label">额外附加：</span>
+            <div class="info-r">
+              +￥{{ $order->payment->freight }}
+            </div>
           </div>
-        </div>
         @endif
         @if ($order->payment->coupon_discount>0)
-        <div class="item">
-          <span class="label">优惠券：</span>
-          <div class="info-r">
-            -￥{{ $order->payment->coupon_discount }}
+          <div class="item">
+            <span class="label">优惠券：</span>
+            <div class="info-r">
+              -￥{{ $order->payment->coupon_discount }}
+            </div>
           </div>
-        </div>
         @endif
         @if ($order->payment->share_discount>0)
-        <div class="item">
-          <span class="label">分享减免：</span>
-          <div class="info-r">
-            -￥{{ $order->payment->share_discount }}
+          <div class="item">
+            <span class="label">分享减免：</span>
+            <div class="info-r">
+              -￥{{ $order->payment->share_discount }}
+            </div>
           </div>
-        </div>
         @endif
 
         <div class="item pay">
@@ -117,20 +163,20 @@
       <div class="contracts">
         <div class="invoice">
           <span>
-	           <i>发票信息</i>
+	    <i>发票信息</i>
       	  </span>
       	  <div class="btn-click right">
       	    @if ($order->invoice)
               @if ($order->invoice->status=2)
                 <a href="#">已开票</a>
               @else
-                <a >
-        		        发票物流
-        	      </a>
+                <a href="https://mp.weixin.qq.com/bizmall/expresslogistics?appid=wx0d9aa0e894066e87&orderid={{ $order->invoice->ship_no }}">
+		  发票物流
+        	</a>
               @endif
       	    @else
       	      <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
-      		         申请开票
+      		申请开票
       	      </a>
       	    @endif
       	  </div>
@@ -139,52 +185,53 @@
           <span><i>合同信息</i></span><div class="btn-click right">
     	    @if (auth()->user()->company)
     	      <a onclick="downloadContract()">
-    		       下载合同
+    		下载合同
     	      </a>
     	    @else
     	      <a href="{{ route("wechat.company.create") }}">
-        		下载合同	      </a>
+        	下载合同
+	      </a>
     	    @endif
-	       </div>
+	  </div>
         </div>
       </div>
       <div class="order-info">
         <div class="item no clearfix">
           <span class="label">订单编号：</span>
           <div class="info-r">
-           {{ $order->no }}
+            {{ $order->no }}
           </div>
         </div>
-          <div class="item clearfix">
-            <span class="label">创建时间：</span>
-            <div class="info-r">
-             {{ $order->created_at }}
-            </div>
+        <div class="item clearfix">
+          <span class="label">创建时间：</span>
+          <div class="info-r">
+            {{ $order->created_at }}
           </div>
-          <div class="item clearfix">
-            <span class="label">付款时间：</span>
-            <div class="info-r">
-             {{ $order->payment->pay_name }}
-            </div>
+        </div>
+        <div class="item clearfix">
+          <span class="label">付款时间：</span>
+          <div class="info-r">
+            {{ $order->payment->pay_name }}
           </div>
-          <div class="item clearfix">
-            <span class="label">支付方式：</span>
-            <div class="info-r">
-             {{ $order->payment->channel->name }}
-            </div>
+        </div>
+        <div class="item clearfix">
+          <span class="label">支付方式：</span>
+          <div class="info-r">
+            {{ $order->payment->channel->name }}
           </div>
-          <div class="item clearfix">
-            <span class="label">发货时间：</span>
-            <div class="info-r">
-             {{ $order->created_at }}
-            </div>
+        </div>
+        <div class="item clearfix">
+          <span class="label">发货时间：</span>
+          <div class="info-r">
+            {{ $order->created_at }}
           </div>
-          <div class="item clearfix">
-            <span class="label">收货时间：</span>
-            <div class="info-r">
-             {{ $order->created_at }}
-            </div>
+        </div>
+        <div class="item clearfix">
+          <span class="label">收货时间：</span>
+          <div class="info-r">
+            {{ $order->created_at }}
           </div>
+        </div>
 
       </div>
       <div class="footer">
@@ -272,8 +319,8 @@
       express_box:false,
     },
     methods:{
-      express:function(){
-        location.assign("{{ route("express") }}"+"?no=438094499210")
+      express: function(no) {
+	
       }
     }
   })

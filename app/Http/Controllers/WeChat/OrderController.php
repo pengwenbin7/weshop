@@ -40,16 +40,28 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $items = $order->orderItems;
         $products = [];
+        $items = $order->orderItems;
         foreach ($items as $item) {
-          // code...
-          $products[$item->storage_id][] = $item;
+            $products[$item->storage_id][] = $item;
         }
+        /*
+        if (!$order->shipments) {
+            $items = $order->orderItems;
+            foreach ($items as $item) {
+                $products[$item->storage_id][] = $item;
+            }
+        } else {
+            foreach ($order->shipments as $shipment) {
+                $products[$shipment->id] = $shipment->shipmentItems;
+            }
+        }
+        */
+        
         return view("wechat.order.show",[
-          "order" => $order,
-          "products" => $products,
-          "title" => "订单详情",
+            "order" => $order,
+            "products" => $products,
+            "title" => "订单详情",
         ]);
     }
 

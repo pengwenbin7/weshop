@@ -27,6 +27,7 @@ class CreateShipmentsTable extends Migration
             $table->string("ship_no")->nullable()->comment("物流单号");
             $table->string("contact_name", 100)->nullable();
             $table->string("contact_phone", 100)->nullable();
+            $table->string("license_plate", 32)->comment("车牌号")->nullable();
             $table->date("expect_arrive")->nullable();
             $table->date("arrive")->nullable();
             $table->foreign("order_id")->references("id")
