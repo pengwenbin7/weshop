@@ -12,7 +12,7 @@
           <a class="{{ url()->full() == route("wechat.order.index","order_status=0")? "on":"" }}" href="{{ route("wechat.order.index","order_status=0") }}">待付款</a>
         </div>
         <div class="item">
-          <a class="{{ url()->full() == route("wechat.order.index","order_status=1")? "on":"" }}" href="{{ route("wechat.order.index","order_status=1") }}">待收货</a>
+          <a class="{{ url()->full() == route("wechat.order.index","order_status=1")? "on":"" }}" href="{{ route("wechat.order.index","order_status=1") }}">已发货</a>
         </div>
       </div>
       <div class="orders">
@@ -42,26 +42,41 @@
             <div class="order-product">
             @foreach ($order->orderItems as $orderItem)
               <div class="item">
-                <div class="pro">
-                  <a href="{{ route("wechat.order.show", $order->id) }}">
-                  <span>{{ $orderItem->brand_name }} </span><span>{{ $orderItem->product_name }} </span>
-                  <span>{{ $orderItem->model }} </span><span>x{{ $orderItem->number }}</span>
-                  <span>{{ $orderItem->price }}</span>
-                  </a>
+                 <a href="{{ route("wechat.order.show", $order->id) }}">
+                <div class="pro black">
+                  <span>{{ $orderItem->product_name }} </span>
+                  <span>{{ $orderItem->model }} </span>
                 </div>
-
+                <div class="pro">
+                  <span>{{ $orderItem->brand_name }} </span><span>x{{ $orderItem->number }}</span>
+                  <span>￥{{ $orderItem->price*$orderItem->number }}</span>
+                </div>
+                 </a>
               </div>
               @endforeach
-
             </div>
-
           </div>
           </a>
           <div class="order-footer">
             <div class="order-price">
-              <span>金额：￥{{ $order->payment->pay }}</span>
+              <span>附加:￥{{ intval($order->payment->freight) }}</span>
+              <span>优惠:￥{{ intval($order->payment->coupon_discount +$order->payment->share_discount) }}</span>
+              <span>金额:￥{{ intval($order->payment->pay) }}</span>
             </div>
             <div class="order-edit">
+              @if ($order->invoice)
+              @if ($order->invoice->status=2)
+              <a href="#">已开票</a>
+              @else
+              <a href="https://mp.weixin.qq.com/bizmall/expresslogistics?appid=wx0d9aa0e894066e87&orderid={{ $order->invoice->ship_no }}">
+                发票物流
+             </a>
+              @endif
+              @else
+              <a href="{{ route("wechat.invoice.create", ["order_id " => $order->id]) }}">
+             申请开票
+                 </a>
+              @endif
               <a href="{{ route("wechat.contract", $order) }}" >
          	      下载合同
          	    </a>

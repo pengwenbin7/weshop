@@ -1474,7 +1474,6 @@
   font-size: .3rem;
   color: #888;
   text-align: right;
-  font-weight: bold;
 }
 
 .order-content {
@@ -1502,8 +1501,15 @@
   line-height: .4rem;
   flex: 1;
   -webkit-flex: 1;
-  font-size: .34rem;
+  font-size: .3rem;
   color: #888;
+}
+.order-product .pro.black {
+  line-height: .4rem;
+  flex: 1;
+  -webkit-flex: 1;
+  font-size: .3rem;
+  color: #000;
 }
 
 .order-product .pro a {
@@ -1528,35 +1534,35 @@
 }
 
 .order .order-footer {
-  line-height: .7rem;
-  padding: .25rem .4rem;
+  line-height: .6rem;
   border-top: 1px solid #eee;
-  display: flex;
-  display: -webkit-flex;
-}
 
-.order .order-footer .order-price {
-  flex: 1;
-  -webkit-flex: 1;
 }
-
-.order .order-footer .order-edit {
-  flex: 1;
-  -webkit-flex: 1;
+.order .order-footer .order-price{
+  padding: .2rem .4rem;
+  text-align: right;
+  font-size: .28rem;
+  border-bottom: 1px solid #eee;
+}
+.order .order-footer .order-price span{
+  margin-left: .1rem; 
+}
+.order-footer .order-edit{
+  padding: .2rem .4rem;
   text-align: right;
 }
-
 .order-footer .order-edit a {
   display: inline-block;
-  width: 1.5rem;
+  width: 1.8rem;
   border: 1px solid #ddd;
-  border-radius: 3px;
+  border-radius: 23px;
   padding:  0 .1rem;
   font-size: .3rem;
   text-align: center;
   height: .6rem;
   box-sizing: border-box;
   line-height: .6rem;
+  margin-left: .2rem;
 }
 
 .order-footer .order-edit a.btn-gray{
@@ -1609,6 +1615,8 @@
   padding: .3rem .4rem;
   line-height: .4rem;
   border-bottom: 1px solid #eee;
+  height: 1rem;
+
 }
 
 .product-info .p-title .title {
@@ -1619,6 +1627,7 @@
 
 .product-info .express {
   margin-left: 2rem;
+  font-size: .3rem;
 
   text-align: right;
 }
@@ -1681,9 +1690,10 @@
 .express-box .express{
   background-color: #fff;
   position: relative;
-  height: 300px;
   overflow-y: scroll;
   z-index: 999;
+  border-radius: 5px;
+  padding-bottom: .4rem;
 }
 .express-box .express .e-title{
   padding: .3rem .4rem;
@@ -1695,58 +1705,10 @@
 .express-box .express .e-info{
   padding: .3rem .4rem;
 }
-.express-box .express .item{
-  padding: .2rem 0;
-  display: flex;
-  display: -webkit-flex;
-  -webkit-flex-wrap: wrap;
-  flex-wrap: wrap;
-  position: relative;
+.express-box .e-info .txt{
+  margin-bottom: .4rem;
 }
 
-.express  .item .dot{
-  margin: 10px 15px 0 5px;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: #888;
-}
-.express  .item:first-child .text p{
-  color: #009b45;
-}
-.express  .item:first-child .dot{
-  background-color: #009b45;
-}
-.express  .item .text{
-  flex: 1;
-  -webkit-flex:1;
-}
-.express .item .text p{
-  color: #888;
-  font-size: .3rem;
-}
-.express  .item::after{
-  content: "";
-    position: absolute;
-    z-index: 1;
-    pointer-events: none;
-    background-color: #888;
-    width: 1px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    top: 33px;
-    left: 10px;
-    bottom: -17px;
-}
-.express  .item:last-child::after{
-    display: none;
-
-}
-.express  .item:first-child::after{
-    background-color: #009b45;
-
-}
 .contracts {
   padding: 0 .4rem;
   background-color: #fff;
