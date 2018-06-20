@@ -45,7 +45,6 @@ class OrderController extends Controller
         foreach ($items as $item) {
             $products[$item->storage_id][] = $item;
         }
-        /*
         if (!$order->shipments) {
             $items = $order->orderItems;
             foreach ($items as $item) {
@@ -56,7 +55,6 @@ class OrderController extends Controller
                 $products[$shipment->id] = $shipment->shipmentItems;
             }
         }
-        */
         
         return view("wechat.order.show",[
             "order" => $order,

@@ -33,10 +33,10 @@ class ShipmentCreated implements ShouldQueue
      */
     public function handle()
     {
-        $url = route("admin.shipment.show", $this->shipment);
-        $msg = '待处理的发货单【<a href="' . $url . '">查看</a>】';
+        $url = route("admin.shipment.edit", $this->shipment);
+        $msg = "<a href=\"{$url}\">新发货单【待采购】</a>";
         $ids = [];
-        Department::permission("ship")
+        Department::permission("purchase")
             ->select("id")
             ->get()
             ->each(function ($d) use (&$ids) {

@@ -19,6 +19,11 @@ class Shipment extends Model
         "expect_arrive_date",
     ];
 
+    public function order()
+    {
+        return $this->belongsTo("App\Models\Order");
+    }
+    
     public function shipmentItems()
     {
         return $this->hasMany("App\Models\ShipmentItem");

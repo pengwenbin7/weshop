@@ -7,21 +7,21 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Models\Shipment;
+use App\Models\Order;
 
-class ShipmentShipped implements ShouldQueue
+class OrderShipped implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $shipment;
+    protected $order;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Shipment $shipment)
+    public function __construct(Order $order)
     {
-        $this->shipment = $shipment;
+        $this->order = $order;
     }
 
     /**
@@ -31,6 +31,9 @@ class ShipmentShipped implements ShouldQueue
      */
     public function handle()
     {
-        
+        $user = $order->user();
+        $url = route("wechat.order.show", $order);
+        $msg = "<a href=\"{$url}\">您的订单已发货，点击查看详情</a>";
+        $user->sendMessage($msg);
     }
 }

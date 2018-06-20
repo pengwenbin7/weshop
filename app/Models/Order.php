@@ -86,6 +86,30 @@ class Order extends Model
         return $this->status == $this::ORDER_STATUS_IDL;
     }
 
+    // 暂时只判断三种状态
+    public function userStatus()
+    {
+        if ($this->status < $this::ORDER_STATUS_IDL &&
+            $this->payment_status == $this::PAY_STATUS_WAIT) {
+            return [
+                "status" => 0,
+                "detail" => "待付款",
+            ];
+        } elseif ($this->status < $this::ORDER_STATUS_IDL &&
+                  ($this->payment_status == PAY_STATUS_AFTER || $this->payment_status == PAY_STATUS_AFTER) && $this->shipment_status < $this::SHIP_STATUS_DONE) {
+            return [
+                "status" => 1,
+                "detail" => "待发货",
+            ];
+        } elseif ($this->status < $this::ORDER_STATUS_IDL &&
+                  ($this->payment_status == PAY_STATUS_AFTER || $this->payment_status == PAY_STATUS_AFTER) && $this->shipment_status >= $this::SHIP_STATUS_DONE) {
+            return [
+                "status" => 2,
+                "detail" => "已发货",
+            ];
+        } 
+    }
+
     /**
      * 运费计算
      * 当包含计量单位不为 kg 的物品时，返回 -1
@@ -139,10 +163,13 @@ class Order extends Model
             foreach ($item as $i) {
                 ShipmentItem::create([
                     "shipment_id" => $shipment->id,
-                    "product_name" => $i->product_name,
-                    "product_model" => $i->model,
-                    "brand_name" => $i->brand_name,
+                    "product_id" => $i->product_id,
                     "number" => $i->number,
+                    "price" => $i->price,
+                    "storage_id" => $i->storage_id,
+                    "product_name" => $i->product_name,
+                    "model" => $i->model,
+                    "brand_name" => $i->brand_name,
                     "packing_unit" => $i->packing_unit,
                 ]);
             }

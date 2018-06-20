@@ -130,7 +130,7 @@
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">发货状态</label>
 	    <div class="col-sm-10" v-if="canShip">
-	      <button type="button"  @click="shiped"  v-if="shipment_status == {{ $order::SHIP_STATUS_DOING }}" class="btn btn-default" name="button">发货</button>
+	      <button type="button"  @click="shipped"  v-if="shipment_status == {{ $order::SHIP_STATUS_DOING }}" class="btn btn-default" name="button">发货</button>
 	      <input class="form-control"  v-else-if="shipment_status == {{ $order::SHIP_STATUS_DONE }}" type="text" value="完成发货" readonly>
 	    </div>
 
@@ -187,22 +187,22 @@
 	axios.post("{{ route("admin.order.paid", $order) }}")
 	  .then(function (res) {
 	    if (res.data.res) {
-	      _this.payment_status = res.data.payment_status;
+	      location.reload();
 	    }
 	  });
       },
-      purchased: function() {
+      purchased: function () {
 	var _this = this;
-	axios.post("/")
+	axios.post("{{ route("admin.order.purchased", $order) }}")
 	  .then(function (res) {
-            _this.shipment_status = 1;
+            location.reload();
 	  });
       },
-      shiped: function() {
+      shipped: function () {
 	var _this = this;
-	axios.post("/")
+	axios.post("{{ route("admin.order.shipped", $order) }}")
 	  .then(function (res) {
-            _this.shipment_status = 3;
+	    location.reload();
 	  });
       }
     }

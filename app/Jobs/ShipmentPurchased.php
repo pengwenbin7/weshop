@@ -31,6 +31,20 @@ class ShipmentPurchased implements ShouldQueue
      */
     public function handle()
     {
-        //
+        $url = route("admin.shipment.edit", $this->shipment);
+        $msg = "<a href=\"{$url}\">发货单已采购【待发货】</a>";
+        $ids = [];
+        Department::permission("ship")
+            ->select("id")
+            ->get()
+            ->each(function ($d) use (&$ids) {
+                $ids[] = $d->id;
+            });
+        $work = EasyWeChat::work();
+        $work->messenger
+            ->ofAgent(env("WECHAT_WORK_AGENT_ID"))
+            ->message($msg)
+            ->toParty($ids)
+            ->send();
     }
 }

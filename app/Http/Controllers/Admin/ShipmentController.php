@@ -6,8 +6,6 @@ use App\Models\Shipment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Jobs\ShipmentPurchased;
-use App\Jobs\ShipmentShipped;
 
 class ShipmentController extends Controller
 {
@@ -69,7 +67,7 @@ class ShipmentController extends Controller
      */
     public function edit(Shipment $shipment)
     {
-        //
+        return view("admin.shipment.edit", ["shipment" => $shipment]);
     }
 
     /**
@@ -93,25 +91,5 @@ class ShipmentController extends Controller
     public function destroy(Shipment $shipment)
     {
         //
-    }
-
-    public function purchased(Shipment $shipment)
-    {
-        $shipment->purchase = 1;
-        $res = $shipment->save();
-        if ($res) {
-            dispatch(new ShipmentPurchased($shipment));
-        }
-        return ["res" => $res];
-    }
-
-    public function shipped(Shipment $shipment)
-    {
-        $shipment->status = Shipment::SHIPMENT_STATUS_DONE;
-        $res = $shipment->save();
-        if ($res) {
-            dispatch(new ShipmentShipped($shipment));
-        }
-        return ["res" => $res];
     }
 }

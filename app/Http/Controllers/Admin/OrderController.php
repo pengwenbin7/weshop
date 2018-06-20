@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Events\OrderPaidEvent;
+use App\Jobs\ShipmentPurchased;
+use App\Jobs\OrderShipped;
 
 class OrderController extends Controller
 {
@@ -108,8 +111,29 @@ class OrderController extends Controller
         $order->payment_status = Order::PAY_STATUS_DONE;
         $res = $order->save();
         if ($res) {
-            dispatch(new OrderPaid($order));
+            event(new OrderPaidEvent($order)); // 触发监听事件
         }
+        return ["res" => $res];
+    }
+
+    public function purchased(Order $order)
+    {
+        $order->shipment_status = Order::SHIP_STATUS_DOING;
+        $res = $order->save();
+        $items = $order->shipments;
+        foreach ($items as $item) {
+            $item->purchase = 1;
+            $item->save();
+            dispatch(new ShipmentPurchased($item));
+        }
+        return ["res" => $res];
+    }
+
+    public function shipped(Order $order)
+    {
+        $order->shipment_status = Order::SHIP_STATUS_DONE;
+        $res = $order->save();
+        dispatch(new OrderShipped($order));
         return ["res" => $res];
     }
 }
