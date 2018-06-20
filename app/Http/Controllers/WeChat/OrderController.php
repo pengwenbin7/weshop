@@ -14,6 +14,7 @@ use App\Models\Storage;
 use App\Utils\Count;
 use App\Models\Payment;
 use App\Jobs\SendContract;
+use App\Models\Config;
 use Log;
 
 class OrderController extends Controller
@@ -184,4 +185,24 @@ class OrderController extends Controller
         }
     }
 
+    // 订单分享
+    public function share(Order $order)
+    {
+        $payment = $order->payment;
+        if ($payment->share_discount <= 0) {
+            $payment->share_discount = floor($order->payment->pay * Config::get("order.share.discount"));
+        }
+        return ["res" => $payment->save()];
+    }
+
 }
+
+
+
+
+
+
+
+
+
+

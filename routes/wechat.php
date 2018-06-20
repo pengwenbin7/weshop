@@ -89,6 +89,9 @@ Route::post("order-freight",
 )->name("wechat.order.count-freight");
 Route::get("contract/{order}", "WeChat\OrderController@contract")
     ->name("wechat.contract");
+Route::match(["get", "post"], "order/share/{order}",
+             "WeChat\OrderController@share")
+    ->name("wechat.order.share");
 
 Route::resource("invoice", "WeChat\InvoiceController", [
     "names" => [
