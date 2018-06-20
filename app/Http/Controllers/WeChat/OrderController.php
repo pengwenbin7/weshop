@@ -40,7 +40,17 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        return view("wechat.order.show",["order" => $order, "title" => "订单详情"]);
+        $items = $order->orderItems;
+        $products = [];
+        foreach ($items as $item) {
+          // code...
+          $products[$item->storage_id][] = $item;
+        }
+        return view("wechat.order.show",[
+          "order" => $order,
+          "products" => $products,
+          "title" => "订单详情",
+        ]);
     }
 
     /**
@@ -151,7 +161,7 @@ class OrderController extends Controller
             return ["err" => "Don't allow"];
         }
     }
-    
+
     public function contract(Order $order)
     {
         $user = auth()->user();
