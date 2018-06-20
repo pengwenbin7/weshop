@@ -73,7 +73,7 @@
              </a>
               @endif
               @else
-              <a href="{{ route("wechat.invoice.create", ["order_id " => $order->id]) }}">
+              <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
              申请开票
                  </a>
               @endif

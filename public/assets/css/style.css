@@ -799,7 +799,7 @@
   text-align: left;
   padding: 0 .2rem;
   height: 30px;
-  font-size: 18px;
+  font-size: 15px;
   line-height: 30px;
 }
 
@@ -1545,7 +1545,7 @@
   border-bottom: 1px solid #eee;
 }
 .order .order-footer .order-price span{
-  margin-left: .1rem; 
+  margin-left: .1rem;
 }
 .order-footer .order-edit{
   padding: .2rem .4rem;
@@ -1553,7 +1553,7 @@
 }
 .order-footer .order-edit a {
   display: inline-block;
-  width: 1.8rem;
+  width: 1.6rem;
   border: 1px solid #ddd;
   border-radius: 23px;
   padding:  0 .1rem;

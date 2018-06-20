@@ -14,6 +14,7 @@
       display: none;
     }
     html,body{padding:0;margin:0;font-size:50px;}
+    body{position: relative;}
     .pay{font-size:.32rem}
       .pay .item{width: 100%; background-color: #fff;height: 1.6rem;padding: .3rem .4rem;}
       .pay .item .pay-t{width: 100%;line-height: .5rem;}
@@ -32,6 +33,9 @@
       .icon-huipiao{color: #c273ff;}
       .icon-xuanzhong-on{color: #3db858;}
       .icon-huodaofukuan{color: #16c2c2;}
+      .paydis{position: absolute; right: 0;top: 0;width: 2.8rem;padding: .2rem; background-color: #f30;border-radius: 3px;}
+      .paydis span{display: block;padding: .3rem;border: 1px dotted #fff; font-size: 12px; color: #fff;}
+
     </style>
     <script type="text/javascript">
     //调用微信JS api 支付
@@ -63,6 +67,9 @@
     </script>
   </head>
   <body style="background-color:#f0f1f0;">
+    <div class="paydis">
+      <span>分享订单，立即获得付款优惠见面</span>
+    </div>
     <div class="container" id="app" v-lock>
   <div class="pay">
     <div class="item">
