@@ -273,10 +273,7 @@
     },
     methods:{
       express:function(){
-        axios.get("{{ route("express") }}"+"?no=438094499210")
-          .then(function(res){
-            console.log(res);
-          })
+        location.assign("{{ route("express") }}"+"?no=438094499210")
       }
     }
   })
