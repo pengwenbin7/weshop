@@ -88,7 +88,8 @@ class OrderController extends Controller
     {
         $order->payment_status = $request->payment_status;
         $order->shipment_status = $request->shipment_status;
-        return ["update" => $order->save()];
+        $order->save();
+        return $order;
     }
 
     /**

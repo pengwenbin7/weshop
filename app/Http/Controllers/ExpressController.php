@@ -12,7 +12,7 @@ class ExpressController extends Controller
      */
     public function fetch(Request $request)
     {
-        $e = new Express();
-        return $e->fetch($request->no);
+        $url = "https://mp.weixin.qq.com/bizmall/expresslogistics?appid=wx0d9aa0e894066e87&orderid={$request->no}";
+        return redirect($url);
     }
 }
