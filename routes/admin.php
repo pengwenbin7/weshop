@@ -74,6 +74,10 @@ Route::resource("order", "Admin\OrderController", [
     ],
 ]);
 
+Route::match(["get", "post"], "order/paid/{order}",
+             "Admin\OrderController@paid")
+    ->name("admin.order.paid");
+
 Route::resource("shipment", "Admin\ShipmentController", [
     "names" => [
         "index" => "admin.shipment.index",
@@ -85,6 +89,13 @@ Route::resource("shipment", "Admin\ShipmentController", [
         "destroy" => "admin.shipment.destroy",
     ],
 ]);
+
+Route::match(["get", "post"], "shipment/shipped/{shipment}",
+             "Admin\ShipmentController@shipped")
+    ->name("admin.shipment.shipped");
+Route::match(["get", "post"], "shipment/purchased/{shipped}",
+             "Admin\ShipmentController@purchased")
+    ->name("admin.shipment.purchased");
 
 Route::resource("invoice", "Admin\InvoiceController", [
     "names" => [
