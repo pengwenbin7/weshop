@@ -152,6 +152,19 @@
       var seconds = mss % 60;
       return days + hours + minutes + "分 " + seconds + "秒 ";
     }
+    wx.ready(function () {
+      wx.onMenuShareTimeline({
+       title: "{{ $page_title ?? "分享title" }}",
+       link: "{{ url()->current() . "?rec=" . auth()->user()->rec_code }}",
+       imgUrl: "https://pic1.zhimg.com/v2-c320644d354158004e6fc91d539d0529_im.jpg",
+       success: function () {
+         alert("分享成功");
+       },
+       cancel: function () {
+         alert("取消了");
+       }
+      });
+    });
   </script>
   </body>
 </html>
