@@ -1673,7 +1673,6 @@
   margin-left: 1.4rem;
 }
 .express-box{
-  display: none;
   position: fixed;
   top: 20%;
   left: 10%;
@@ -1682,6 +1681,8 @@
 .express-box .express{
   background-color: #fff;
   position: relative;
+  height: 300px;
+  overflow-y: scroll;
   z-index: 999;
 }
 .express-box .express .e-title{
@@ -1693,22 +1694,59 @@
 }
 .express-box .express .e-info{
   padding: .3rem .4rem;
+}
+.express-box .express .item{
+  padding: .2rem 0;
   display: flex;
   display: -webkit-flex;
-}
-.express .e-info .i-status{
-  width: .5rem;
-  float: left;
-  height: 1rem;
-}
-.express .e-info .i-status i{
-  display: block;
-}
-.express .e-info .i-status i.top{
-  border-left: 1px solid #111;
-  height: 33%;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  position: relative;
 }
 
+.express  .item .dot{
+  margin: 10px 15px 0 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #888;
+}
+.express  .item:first-child .text p{
+  color: #009b45;
+}
+.express  .item:first-child .dot{
+  background-color: #009b45;
+}
+.express  .item .text{
+  flex: 1;
+  -webkit-flex:1;
+}
+.express .item .text p{
+  color: #888;
+  font-size: .3rem;
+}
+.express  .item::after{
+  content: "";
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    background-color: #888;
+    width: 1px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    top: 33px;
+    left: 10px;
+    bottom: -17px;
+}
+.express  .item:last-child::after{
+    display: none;
+
+}
+.express  .item:first-child::after{
+    background-color: #009b45;
+
+}
 .contracts {
   padding: 0 .4rem;
   background-color: #fff;

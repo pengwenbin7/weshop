@@ -36,7 +36,7 @@
             <span >商品信息</span>
           </div>
           <div class="item express">
-            <span class="btn">查看物流</span>
+            <span class="btn" @click="express">查看物流</span>
           </div>
         </div>
         @foreach ($pss as $item)
@@ -200,7 +200,7 @@
 
         </div>
       </div>
-      <div class="express-box">
+      <div class="express-box" v-if="express_box">
         <div class="mask">
         </div>
         <div class="express">
@@ -210,21 +210,43 @@
           </div>
           <div class="e-info">
             <div class="item">
-              <div class="itxt">
-                <div class="i-status">
-                  <i class="top"></i>
-                  <i class="middle"></i>
-                  <i class="bottom"></i>
-                </div>
-                <div class="text">
-                  <span>运输中。。。。</span>
-                </div>
+              <div class="dot">
               </div>
-              <div class="itxt">
-                运输中.....
+              <div class="text">
+                <p>运输中 [2012-12:12:12]</p>
+                <p>山东菏泽  你的商品已经到大山东菏泽  正在发往上海</p>
               </div>
-              <div class="itxt">
-                运输中.....
+            </div>
+            <div class="item">
+              <div class="dot">
+              </div>
+              <div class="text">
+                <p>运输中 [2012-12:12:12]</p>
+                <p>山东菏泽  你的商品已经到大山东菏泽  正在发往上海</p>
+              </div>
+            </div>
+            <div class="item">
+              <div class="dot">
+              </div>
+              <div class="text">
+                <p>运输中 [2012-12:12:12]</p>
+                <p>山东菏泽  你的商品已经到大山东菏泽  正在发往上海</p>
+              </div>
+            </div>
+            <div class="item">
+              <div class="dot">
+              </div>
+              <div class="text">
+                <p>运输中 [2012-12:12:12]</p>
+                <p>山东菏泽  你的商品已经到大山东菏泽  正在发往上海</p>
+              </div>
+            </div>
+            <div class="item">
+              <div class="dot">
+              </div>
+              <div class="text">
+                <p>运输中 [2012-12:12:12]</p>
+                <p>山东菏泽  你的商品已经到大山东菏泽  正在发往上海</p>
               </div>
             </div>
           </div>
@@ -243,5 +265,20 @@
 	alert("合同已通过微信消息发送，如果长时间未收到，请重试");
       });
   };
+
+  new Vue({
+    el:"#app",
+    data:{
+      express_box:false,
+    },
+    methods:{
+      express:function(){
+        axios.get("{{ route("express") }}"+"?no=438094499210")
+          .then(function(res){
+            console.log(res);
+          })
+      }
+    }
+  })
   </script>
 @endsection
