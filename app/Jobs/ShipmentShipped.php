@@ -7,21 +7,21 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Models\Order;
+use App\Models\Shipment;
 
-class OrderPaid implements ShouldQueue
+class ShipmentShipped implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $shipment;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    protected $order;
-    public function __construct(Order $order)
+    public function __construct(Shipment $shipment)
     {
-        $this->order = $order;
+        $this->shipment = $shipment;
     }
 
     /**
@@ -31,9 +31,6 @@ class OrderPaid implements ShouldQueue
      */
     public function handle()
     {
-        $url = route("admin.order.show", ["id" => $this->order->id]);
-        $name = $this->order->user->name;
-        $message = '<a href="' . $url . '">你的用户【' . "{$name}】的订单已付款</a>";
-        $this->order->adminUser->sendMessage($message);
+        
     }
 }

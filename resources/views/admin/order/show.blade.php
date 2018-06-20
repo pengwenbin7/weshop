@@ -186,7 +186,9 @@
 	var _this = this;
 	axios.post("{{ route("admin.order.paid", $order) }}")
 	  .then(function (res) {
-	    _this.payment_status = res.data.payment_status;
+	    if (res.data.res) {
+	      _this.payment_status = res.data.payment_status;
+	    }
 	  });
       },
       purchased: function() {

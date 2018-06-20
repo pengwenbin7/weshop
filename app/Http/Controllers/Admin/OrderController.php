@@ -102,4 +102,14 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function paid(Order $order)
+    {
+        $order->payment_status = Order::PAY_STATUS_DONE;
+        $res = $order->save();
+        if ($res) {
+            dispatch(new OrderPaid($order));
+        }
+        return ["res" => $res];
+    }
 }
