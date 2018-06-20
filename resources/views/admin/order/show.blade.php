@@ -5,43 +5,41 @@
       <div class="box-header with-border">
 	<h3 class="box-title"><a href="{{ route("admin.order.index") }}">订单列表</a></h3>
       </div>
-      <form class="form-horizontal" action="{{ route("admin.order.update", $order) }}" method="POST">
+      <div class="form-horizontal">
 	<div class="box-body">
-	  {{ csrf_field() }}
-	  {{ method_field("PUT") }}
-          <div class="form-group">
-            <label for="no" class="col-sm-2 control-label">订单号</label>
-            <div class="col-sm-10">
-              <input class="form-control" id="no" type="text" readonly value="{{ $order->no }}">
+	  <div class="form-group">
+	    <label for="no" class="col-sm-2 control-label">订单号</label>
+	    <div class="col-sm-10">
+	      <input class="form-control" id="no" type="text" readonly value="{{ $order->no }}">
             </div>
           </div>
 
 	  <div class="form-group">
-            <label class="col-sm-2 control-label">用户</label>
-            <div class="col-sm-10">
-              <input class="form-control" type="text" readonly value="{{ $order->user->name }}">
+	    <label class="col-sm-2 control-label">用户</label>
+	    <div class="col-sm-10">
+	      <input class="form-control" type="text" readonly value="{{ $order->user->name }}">
             </div>
           </div>
 
 	  <div class="form-group">
-            <label class="col-sm-2 control-label">收货地址</label>
-            <div class="col-sm-10">
+	    <label class="col-sm-2 control-label">收货地址</label>
+	    <div class="col-sm-10">
 	      <input type="text" class="form-control" value="{{ $order->address->getText() }}" readonly>
             </div>
           </div>
 
 	  <div class="form-group">
-            <label class="col-sm-2 control-label">应付金额</label>
-            <div class="col-sm-10">
-              <input class="form-control" value="{{ $order->payment->pay ?? '--' }}" readonly>
+	    <label class="col-sm-2 control-label">应付金额</label>
+	    <div class="col-sm-10">
+	      <input class="form-control" value="{{ $order->payment->pay ?? '--' }}" readonly>
 	    </div>
           </div>
 
 	  <div class="form-group">
-            <label class="col-sm-2 control-label">订单状态</label>
-            <div class="col-sm-10">
+	    <label class="col-sm-2 control-label">订单状态</label>
+	    <div class="col-sm-10">
 	      @switch ($order->status)
-              @case ($order::ORDER_STATUS_WAIT)
+	      @case ($order::ORDER_STATUS_WAIT)
 	      <input type="text" value="待处理" readonly>
 	      @break
 	      @case ($order::ORDER_STATUS_DOING)
@@ -60,113 +58,111 @@
           </div>
 
 	  <div class="form-group">
-        <label class="col-sm-2 control-label">付款状态</label>
-        <div class="col-sm-10" v-if="canPay">
-          <div class="btn-group" v-if="payment_status==0">
-            <button type="button" @click="payAll"  class="btn btn-default" name="button">全部付款</button>
-	    <!--
-            <div class="input-group">
-              <span class="input-group-btn">
+	    <label class="col-sm-2 control-label">付款状态</label>
+	    <div class="col-sm-10" v-if="canPay">
+	      <div class="btn-group" v-if="payment_status == {{ $order::PAY_STATUS_WAIT }}">
+		<button type="button" @click="payAll"  class="btn btn-default" name="button">全部付款</button>
+		<!--
+		<div class="input-group">
+		<span class="input-group-btn">
 		<button  @click="payPart"  class="btn btn-default" type="button">部分付款</button>
-              </span>
-             <input type="text" class="form-control" placeholder="部分付款金额">
-	    </div>
-	    -->
-          </div>
-            <button type="button"  @click="payAll"  v-else-if="payment_status==1" class="btn btn-default" name="button">全部付款</button>
-            <input class="form-control"   v-else-if="payment_status==2" type="text" value="完成" readonly>
-            <input class="form-control"  v-else-if="payment_status==3" type="text" value="退款" readonly>
-            <input class="form-control"  v-else-if="payment_status==4" type="text" value="货到付款" readonly>
-            <input class="form-control"  v-else-if="payment_status==5" type="text" value="错误" readonly>
-            <input class="form-control"  v-else type="text" value="未知状态" readonly>
-        </div>
-      	     <div class="col-sm-10" v-else>
-            		@switch ($order->payment_status)
-            		@case ($order::PAY_STATUS_WAIT)
-            		<input class="form-control" type="text" value="待付款" readonly>
-            		@break
-            		@case ($order::PAY_STATUS_PART)
-            		<input class="form-control" type="text" value="部分付款" readonly>
-            		@break
-            		@case ($order::PAY_STATUS_DONE)
-            		<input class="form-control" type="text" value="完成" readonly>
-            		@break
-            		@case ($order::PAY_STATUS_REFUND)
-            		<input class="form-control" type="text" value="退款" readonly>
-            		@break
-            		@case ($order::PAY_STATUS_AFTER)
-            		<input class="form-control" type="text" value="货到付款" readonly>
-            		@break
-            		@case ($order::PAY_STATUS_ERROR)
-            		<input class="form-control" type="text" value="错误" readonly>
-            		@break
-            		@default
-            		<input class="form-control" type="text" value="未知状态" readonly>
-            		@break
-            		@endswitch
+		</span>
+		<input type="text" class="form-control" placeholder="部分付款金额">
+		</div>
+		-->
+              </div>
+	      <button type="button"  @click="payAll"  v-else-if="payment_status == {{ $order::PAY_STATUS_PART }}" class="btn btn-default" name="button">全部付款</button>
+	      <input class="form-control"   v-else-if="payment_status == {{ $order::PAY_STATUS_DONE }}" type="text" value="完成" readonly>
+	      <input class="form-control"  v-else-if="payment_status == {{ $order::PAY_STATUS_REFUND }}" type="text" value="退款" readonly>
+	      <input class="form-control"  v-else-if="payment_status== {{ $order::PAY_STATUS_AFTER }}" type="text" value="货到付款" readonly>
+	      <input class="form-control"  v-else-if="payment_status == {{ $order::PAY_STATUS_ERROR }}" type="text" value="错误" readonly>
+	      <input class="form-control"  v-else type="text" value="未知状态" readonly>
+            </div>
+      	    <div class="col-sm-10" v-else>
+              @switch ($order->payment_status)
+              @case ($order::PAY_STATUS_WAIT)
+              <input class="form-control" type="text" value="待付款" readonly>
+              @break
+              @case ($order::PAY_STATUS_PART)
+              <input class="form-control" type="text" value="部分付款" readonly>
+              @break
+              @case ($order::PAY_STATUS_DONE)
+              <input class="form-control" type="text" value="完成" readonly>
+              @break
+              @case ($order::PAY_STATUS_REFUND)
+              <input class="form-control" type="text" value="退款" readonly>
+              @break
+              @case ($order::PAY_STATUS_AFTER)
+              <input class="form-control" type="text" value="货到付款" readonly>
+              @break
+              @case ($order::PAY_STATUS_ERROR)
+              <input class="form-control" type="text" value="错误" readonly>
+              @break
+              @default
+              <input class="form-control" type="text" value="未知状态" readonly>
+              @break
+              @endswitch
       	    </div>
           </div>
 
-	         <div class="form-group">
-            <label class="col-sm-2 control-label">采购状态</label>
-            <div class="col-sm-10" v-if="canPurchase">
-               <button type="button" v-if="shipment_status==0" @click="buyed"  class="btn btn-default" name="button">完成采购</button>
-               <input class="form-control" v-if="shipment_status>0" type="text" value="已经采购" readonly>
-             </div>
+	  <div class="form-group">
+	    <label class="col-sm-2 control-label">采购状态</label>
+	    <div class="col-sm-10" v-if="canPurchase">
+	      <button type="button" v-if="shipment_status == {{ $order::SHIP_STATUS_WAIT }}" @click="purchased"  class="btn btn-default" name="button">完成采购</button>
+	      <input class="form-control" v-if="shipment_status > {{ $order::SHIP_STATUS_WAIT }}" type="text" value="已经采购" readonly>
+            </div>
 
-	      <div class="col-sm-10" v-else>
-        		@switch ($order->shipment_status)
-        		@case ($order::SHIP_STATUS_WAIT)
-        		<input class="form-control" type="text" value="待采购" readonly>
-        		@break
-        		@case ($order::SHIP_STATUS_DOING)
-        		<input class="form-control" type="text" value="完成采购" readonly>
-        		@break
-        		@default
-        		@break
-        		@endswitch
+	    <div class="col-sm-10" v-else>
+              @switch ($order->shipment_status)
+              @case ($order::SHIP_STATUS_WAIT)
+              <input class="form-control" type="text" value="待采购" readonly>
+              @break
+              @case ($order::SHIP_STATUS_DOING)
+              <input class="form-control" type="text" value="完成采购" readonly>
+              @break
+              @default
+              @break
+              @endswitch
 
 	    </div>
           </div>
 
 	  <div class="form-group">
-            <label class="col-sm-2 control-label">发货状态</label>
-            <div class="col-sm-10" v-if="canShip">
-              <button type="button"  @click="shiped"  v-if="shipment_status==1" class="btn btn-default" name="button">发货</button>
-              <input class="form-control"  v-else-if="shipment_status==3" type="text" value="完成发货" readonly>
-	     </div>
-        <div class="col-sm-10" v-else>
+	    <label class="col-sm-2 control-label">发货状态</label>
+	    <div class="col-sm-10" v-if="canShip">
+	      <button type="button"  @click="shiped"  v-if="shipment_status == {{ $order::SHIP_STATUS_DOING }}" class="btn btn-default" name="button">发货</button>
+	      <input class="form-control"  v-else-if="shipment_status == {{ $order::SHIP_STATUS_DONE }}" type="text" value="完成发货" readonly>
+	    </div>
 
-		@switch ($order->shipment_status)
-		@case ($order::SHIP_STATUS_DOING)
-		<input class="form-control" type="text" value="待发货" readonly>
-		@break
-		@case ($order::SHIP_STATUS_PART)
-		<input class="form-control" type="text" value="部分发货" readonly>
-		@break
-		@case ($order::SHIP_STATUS_DONE)
-		<input class="form-control" type="text" value="完成发货" readonly>
-		@break
-		@case ($order::SHIP_STATUS_SURE)
-		<input class="form-control" type="text" value="确认收货" readonly>
-		@break
-		@default
-		@break
-		<input class="form-control" type="text" value="--" readonly>
-		@endswitch
+	    <div class="col-sm-10" v-else>
+	      @switch ($order->shipment_status)
+	      @case ($order::SHIP_STATUS_DOING)
+	      <input class="form-control" type="text" value="待发货" readonly>
+	      @break
+	      @case ($order::SHIP_STATUS_PART)
+	      <input class="form-control" type="text" value="部分发货" readonly>
+	      @break
+	      @case ($order::SHIP_STATUS_DONE)
+	      <input class="form-control" type="text" value="完成发货" readonly>
+	      @break
+	      @case ($order::SHIP_STATUS_SURE)
+	      <input class="form-control" type="text" value="确认收货" readonly>
+	      @break
+	      @default
+	      @break
+	      <input class="form-control" type="text" value="--" readonly>
+	      @endswitch
 	    </div>
           </div>
 
 	</div>
 
 	<div class="box-footer">
-	  @if ($order->status != $order::ORDER_STATUS_IDL)
-            <button type="submit" class="btn btn-info btn-block">确定</button>
-	  @else
-	    <span class="btn btn-default btn-block">订单无效</button>
+	  @if ($order->status == $order::ORDER_STATUS_IDL)
+	    <span class="btn btn-default btn-block">订单无效</span>
 	  @endif
 	</div>
-      </form>
+      </div>
     </div>
   </div>
 @endsection
@@ -188,21 +184,21 @@
       },
       payAll: function() {
 	var _this = this;
-	axios.post("{{ route("order.paid", $order) }}")
+	axios.post("{{ route("admin.order.paid", $order) }}")
 	  .then(function (res) {
-	    _this.payment_status = 2;
+	    _this.payment_status = res.data.payment_status;
 	  });
       },
-      buyed: function() {
+      purchased: function() {
 	var _this = this;
-	axios.post("{{ route("order.purchased", $order) }}")
+	axios.post("/")
 	  .then(function (res) {
             _this.shipment_status = 1;
 	  });
       },
       shiped: function() {
 	var _this = this;
-	axios.post("{{ route("order.shiped", $order) }}")
+	axios.post("/")
 	  .then(function (res) {
             _this.shipment_status = 3;
 	  });
