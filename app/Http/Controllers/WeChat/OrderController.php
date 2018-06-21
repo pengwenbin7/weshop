@@ -56,7 +56,7 @@ class OrderController extends Controller
                 $products[$shipment->id] = $shipment->shipmentItems;
             }
         }
-        
+
         return view("wechat.order.show",[
             "order" => $order,
             "products" => $products,
@@ -196,13 +196,3 @@ class OrderController extends Controller
     }
 
 }
-
-
-
-
-
-
-
-
-
-

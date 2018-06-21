@@ -6,7 +6,7 @@
 </style>
 @section( "content")
 <div class="container" id="app">
-  <div class="order"  v-lock>
+  <div class="order">
     <div class="address">
       <div class="a-info">
         <div class="name">

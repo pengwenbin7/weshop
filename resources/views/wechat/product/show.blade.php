@@ -2,18 +2,16 @@
 @section( "content")
 <div class="container">
   <div class="product">
-    <div class="info" id="info"  v-lock>
+    <div class="info" id="info"  v-cloak>
       <div class="title">
         <div class="name">
           <h1><span>{{ $product->name }}&nbsp;&nbsp;{{ $product->model }}</span></h1>
           <h2>{{ $product->brand->name }}</h2>
         </div>
         <div :class="star?'collect on':'collect'" v-on:click="collect(star)"  >
-          <span class="icons" > <i class="iconfont icon-shoucang"></i></span>
+          <span class="icons" > <i class="iconfont icon-shoucang"></i><br/>收藏</span>
         </div>
       </div>
-
-
       <div class="i-info clearfix" >
         <p>
           @if ($product->is_ton)
@@ -21,18 +19,11 @@
           @else
              <del>历史价格￥@{{ parseFloat(old_price) }}/{{ $product->packing_unit }}</del>
           @endif
-
           <span>{{ $product->pack() }}</span>&nbsp;&nbsp;
           <span>发货地：{{ $product->address }}</span>
         </p>
         <div class="i-price">
-          @if ($product->is_ton)
-            <p class="y">￥{{ $product->price }}/吨</p>
-          @else
-            <p class="y">￥{{ $product->price }}/{{ $product->packing_unit }}</p>
-          @endif
-
-          <p></p>
+          <p class="y">￥{{ $product->price }}</p>
         </div>
       </div>
     </div>
@@ -179,24 +170,22 @@
       <div class="product" v-if="tonTap==0">
         <div class="item title  clearfix">
           <span class="p-name">
-                        {{ $product->name }}&nbsp;&nbsp; {{ $product->model }}
-                    </span>
+               {{ $product->name }}&nbsp;&nbsp; {{ $product->model }}
+          </span>
         </div>
         <div class="item title  clearfix">
           <span class="p-bname">{{ $product->brand->name }}</span>
         </div>
-        <div class="item">
-          <span>价格</span>
-           <span class="value">￥@{{ Number(unit_price)*number }}</span>
-
-
+        <div class="item price">
+          <span>价格:</span>
+           <span class="value y">￥@{{ Number(unit_price)*number }}</span>
         </div>
-         <div class="item weight clearfix">
-           <span>库存</span>
-           <span class="value">{{ $product->variable->stock }}</span>
+         <div class="item  clearfix">
+           <span>库存:</span>
+           <span class="value">{{ $product->stock }}</span>
          </div>
-        <div class="item weight clearfix">
-          <span>重量</span>
+        <div class="item  clearfix">
+          <span>重量:</span>
           <span class="value"><i ref = "productW">@{{ weight }}</i></span>
           <div class="quantity">
             <p class="btn-minus">
@@ -210,24 +199,27 @@
             </p>
           </div>
         </div>
+        <div class="item clearfix">
+          <span class="value tips">采购@{{ top }}免零售附加费</span>
+        </div>
       </div>
       <div class="product" v-if="tonTap==1">
         <div class="item title  clearfix">
           <span class="p-name">{{ $product->name }}&nbsp;&nbsp; {{ $product->model }}</span>
         </div>
-        <div class="item title  clearfix">
+        <div class="item title">
           <span class="p-bname">{{ $product->brand->name }}</span>
         </div>
+        <div class="item price">
+          <span>价格:</span>
+          <span class="value y">￥@{{ Number(unit_price)*number }}</span>
+        </div>
         <div class="item">
-          <span>价格</span>
-          <span class="value">￥@{{ Number(unit_price)*number }}</span>
+          <span>库存:</span>
+          <span class="value">{{ $product->stock }}</span>
         </div>
-        <div class="item weight clearfix">
-          <span>库存</span>
-          <span class="value">{{ $product->variable->stock }}</span>
-        </div>
-        <div class="item weight clearfix">
-          <span>重量</span>
+        <div class="item clearfix">
+          <span>重量:</span>
           <span class="value"><i >@{{ ton_num }}</i>吨</span>
           <div class="quantity">
             <p class="btn-minus">
@@ -240,6 +232,9 @@
               <a class="plus"  max="{{ $product->variable->stock*$product->content/1000 }}" v-on:click="addCartNumber($event)"></a>
             </p>
           </div>
+        </div>
+        <div class="item clearfix">
+          <span class="value tips">采购@{{ top }}免零售附加费</span>
         </div>
       </div>
       <div class="gb-footer">
@@ -270,6 +265,7 @@
       server_box:false, //
       is_ton:{{ $product->is_ton }},
       unit_price:{{ $product->variable->unit_price }},
+      top : '',
     },
     computed: {
       weight: function() {
@@ -278,16 +274,17 @@
           this.number * this.content / 1000 + "吨"
       }
     },
-
+    mounted:function(){
+     var func = JSON.parse('{!! $product->storage->func !!}');
+     this.top = func.area.pop().up / 1000 + "吨";
+   },
     methods: {
       createCart: function() {
         var $this = this;
         wx.openAddress({
           success: function(res) {
-            axios.post(
-              "{{ route("wechat.address.store") }}",
-              res
-            ).then(function(res) {
+            axios.post("{{ route("wechat.address.store") }}",res)
+            .then(function(res) {
               var url = "{{ route("wechat.cart.store") }}";
               var d = {
                 address_id: res.data.address_id
@@ -340,12 +337,12 @@
       reduceCartNubmer: function() {
         if(this.tonTap){
          if(this.ton_num>1){
-           this.ton_num--;
+           this.ton_num = Math.ceil(this.ton_num) - 1;
          }
          this.number = this.ton_num * 1000/this.content;
         }else{
           if(this.number>1){
-            this.number--
+            this.number = Math.ceil(this.number) - 1;
           }
         }
       },

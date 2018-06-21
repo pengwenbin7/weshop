@@ -2,7 +2,7 @@
 
 @section( "content")
 
-<div class="container" id="app" v-lock>
+<div class="container" id="app" v-cloak>
   <div class="cart-info">
 
     <div class="cart-info-header">
@@ -10,10 +10,10 @@
         <span>选购单<small>(已添加{{ count($cart->cartItems) }}件商品)</small></span>
       </div>
       <div class="icon">
-        <i class="iconfont icon-del"></i>
+        <a href="{{ route("wechat.product.index") }}">继续选购</a>
       </div>
     </div>
-    <div class="products" v-for="(pitem,i) in products" v-cloak>
+    <div class="products" v-for="(pitem,i) in products">
       <div class="product" v-for="(item,index) in pitem">
         <div class="p-check">
           <input type="checkbox" v-bind:id="'check'+i+index" name="goods_checked[]" v-on:change="check(i,index)" v-bind:checked="item.checked">
@@ -27,7 +27,7 @@
             </p>
             <p class="p-bname">
               <span>@{{ item.brand_name }}</span>
-              <span>重量<i >@{{  Number(item.product.content)*item.number | tonC }}</i></span>
+              <span>重量:<i >@{{  Number(item.product.content)*item.number | tonC }}</i></span>
             </p>
           </div>
 
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    @if (!count($cart->cartItems))
+    @if (!$cart->cartItems->count())
     <div class="no-content" >
       <span><i class="iconfont icon-dingdan1"></i></span>
       <br>

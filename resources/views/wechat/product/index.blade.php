@@ -11,7 +11,7 @@
     </div>
     <div class="cat-nav" ref="left">
       <ul id="cat_nav">
-        <li v-for="(item,index) in items" @click="show(item.id)"  :class="active==item.id ? 'item on':'item'" v-cloak>
+        <li v-for="(item,index) in items" @click="show(item.id)"  :class="active==item.id ? 'item on':'item'">
         <div>
           <span class="c-name">@{{ item.name }}</span>
         </div>
@@ -31,12 +31,10 @@
               </p>
               <p class="p-bname">
                 <span>@{{ product.brand_name }}</span>
-                <span class="p-stock" v-if="product.is_ton">库存:@{{ product.stock }}吨</span>
-                <span class="p-stock" v-else>库存:@{{ product.stock }}@{{ product.packing_unit }}</span>
+                <span class="p-stock">库存:@{{ product.stock }}</span>
               </p>
               <p class="pirce">
-                <span class="y" v-if="product.is_ton"><i>￥</i>@{{ product.price }}/吨</span>
-                <span class="y" v-if="!product.is_ton"><i>￥</i>@{{ product.price }}/@{{ product.packing_unit }}</span>
+                <span class="y" ><i>￥</i>@{{ product.price }}</span>
                 <span class="right">@{{ product.address }}</span>
               </p>
             </div>
@@ -45,7 +43,6 @@
         <div class="" v-on:click="more" id="more" v-if="more_box">
           <img src="{{ asset(" assets/img/timg.gif ") }}" width="25" alt="" style="float:left"> <span>正在加载....</span>
         </div>
-
       </div>
     </div>
   </div>

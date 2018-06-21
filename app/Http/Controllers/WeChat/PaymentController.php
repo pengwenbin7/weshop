@@ -171,6 +171,6 @@ class PaymentController extends Controller
       $order = Order::find($request->order_id);
       $type  = $request->type;
       $user = Auth()->user();
-      return view("wechat.pay.offline",["order" => $order,"user" => $user, "type" => $type ]);
+      return view("wechat.pay.offline",["order" => $order,"user" => $user, "type" => $type, "title" => "付款方式" ]);
     }
 }

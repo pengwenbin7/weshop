@@ -35,6 +35,9 @@
     .icon-huodaofukuan{color: #16c2c2;}
     .paydis{position: absolute; right: 0;top: 0;width: 2.8rem;padding: .2rem; background-color: #f30;border-radius: 3px;}
     .paydis span{display: block;padding: .3rem;border: 1px dotted #fff; font-size: 12px; color: #fff;}
+    .share{position: fixed;bottom: 1.4rem; right: .5rem; width: 4rem;background-color: #666;border-radius: 100px;height: .8rem;font-size: .3rem;padding: .2rem;box-sizing: border-box;}
+    .share .close{width: .5rem;float: left;line-height: .4rem;font-size: .6rem;color: #fff;border-right: 1px solid #fff;}
+    .share .s-info{margin-left: .5rem; text-align: center;color: #fff;line-height: .4rem;}
 
     </style>
     <script type="text/javascript">
@@ -74,7 +77,7 @@
 	<span>分享已减{{ intval($order->payment->share_discount) }}元</span>
       @endif
     </div>
-    <div class="container" id="app" v-lock>
+    <div class="container" id="app" v-cloak>
       <div class="pay">
 	<div class="item">
 	  <div class="pay-t">
@@ -89,10 +92,10 @@
             <div class="item" v-on:click="setChannel(item.id)" v-bind:class="item.id==active?'on':''" >
 
               <div class="icon">
-		<i class="iconfont icon-weixinzhifu" v-if="item.id==1"></i>
-		<i class="iconfont icon-duigongzhuanzhang" v-if="item.id==2"></i>
-		<i class="iconfont icon-huipiao" v-if="item.id==3"></i>
-		<i class="iconfont icon-huodaofukuan" v-if="item.id==4"></i>
+            		<i class="iconfont icon-weixinzhifu" v-if="item.id==1"></i>
+            		<i class="iconfont icon-duigongzhuanzhang" v-if="item.id==2"></i>
+            		<i class="iconfont icon-huipiao" v-if="item.id==3"></i>
+            		<i class="iconfont icon-huodaofukuan" v-if="item.id==4"></i>
               </div>
               <div class="pay-title" >
 		<p class="title">@{{ item.name }}</p>
@@ -105,6 +108,14 @@
 
 	  </div>
 	</div>
+      </div>
+      <div class="share">
+        <div class="close">
+          <span>×</span>
+        </div>
+        <div class="s-info">
+           <span>分享订单获得减免</span>
+        </div>
       </div>
       <div class="footer" v-if="!out_time">
 	<span v-if="active==1"  onclick="callpay()">确认支付</span>

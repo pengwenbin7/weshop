@@ -1,10 +1,9 @@
 @extends( "layouts.wechat2")
 @section( "content")
-  <div class="container" id="app" v-lock>
+  <div class="container" id="app" v-cloak>
     <div class="order">
-
       <div class="address">
-	<div class="a-info" v-on:click="selectAddress" >
+        <div class="a-info" v-on:click="selectAddress">
           <p v-if="!address_id">点击选择地址</p>
           <div class="name" v-if="address_id">
             <span class="user-name">@{{ name }}</span>
@@ -12,36 +11,31 @@
           </div>
           <div class="a-dist" v-if="address_id">
             <span>
-              @{{ dist }}</span>
+                    @{{ dist }}</span>
           </div>
-	</div>
-	<div class="right-arrow">
+        </div>
+        <div class="right-arrow">
           <i class="iconfont icon-jinru"></i>
-	</div>
+        </div>
       </div>
       <div class="products">
-	<div class="product">
-    <div class="p-info">
-      <div class="num clearfix">
-        <span>品名：<i class="black"> {{ $products->name }}</i></span>
-      </div>
-      <div class="num clearfix">
-        <span>型号：<i class="black">  {{ $products->model }}</i></span>
-      </div>
-      <div class="num clearfix">
-        <span>厂商：<i class="black">  {{ $products->brand->name }}</i></span>
-      </div>
+        <div class="product">
+          <div class="p-info">
+            <div class="num clearfix">
+              <span>品名：<i class="black"> {{ $products->name }}</i></span>
+            </div>
+            <div class="num clearfix">
+              <span>型号：<i class="black">  {{ $products->model }}</i></span>
+            </div>
+            <div class="num clearfix">
+              <span>厂商：<i class="black">  {{ $products->brand->name }}</i></span>
+            </div>
 
-      <div class="pirce">
-        <span>单价：
-
-          <i class="black" >￥@{{ unit_price }}</i>
-        </span>
-      </div>
-           <div class="num clearfix">
-              {{-- <span>数量：<i class="black">@{{ number }}包</i><i class="black">25KG</i></span> --}}
-              <span>重量：</span>
-              <i class="black">@{{ weight }}</i>
+            <div class="num clearfix">
+              <span>价格：<i class="black y" >￥{{ $products->price }}</i></span>
+            </div>
+            <div class="num clearfix">
+              <span>重量：<i class="black">@{{ weight }}</i></span>
               <div class="quantity">
                 <p class="btn-minus">
                   <a class="minus" v-on:click="reduceCartNubmer()"></a>
@@ -54,45 +48,45 @@
                 </p>
               </div>
             </div>
-
-
           </div>
-	</div>
+        </div>
       </div>
       <div class="grid">
-
-	<div class="item" >
-	  <span> 优惠券</span>
-    <span class="value disable" v-if="!(coupons.length&&address_id) "><i>暂无可用优惠券</i></span>
-	  <span class="value y" @click="show('coupon')"  v-if="coupons.length&&address_id "><i>@{{ coupon_text }}</i> <i class="iconfont icon-zhankai"></i></span>
-	</div>
-  <div class="item">
+       <div class="item" >
+    	  <span> 优惠券</span>
+        <span class="value disable" v-if="!(coupons.length&&address_id) ">
+          <i>暂无可用优惠券</i>
+        </span>
+    	  <span class="value y" @click="show('coupon')"  v-if="coupons.length&&address_id ">
+          <i>@{{ coupon_text }}</i>
+          <i class="iconfont icon-zhankai"></i>
+        </span>
+    	</div>
+      <div class="item">
         <span> 零售附加</span>
-        <span class="value "  >+￥<i id="fee">@{{ freight }}</i></span>
-</div>
-	<div class="item">
-          <span> 实付金额</span>
-          <span class="value disable"  v-if="!address_id">选择地址后显示价格</span>
-          <span class="value y" v-if="address_id">@{{ number*unit_price+freight-coupon_discount }}</span>
-	</div>
-
+        <span class="value"  >+￥<i id="fee">@{{ freight }}</i></span>
+      </div>
+       <div class="item">
+        <span> 实付金额</span>
+        <span class="value disable"  v-if="!address_id">选择地址后显示价格</span>
+        <span class="value y" v-if="address_id">@{{ number*unit_price+freight-coupon_discount }}</span>
+       </div>
       </div>
     </div>
     <div class="flexbox" v-if="coupon_box">
       <div class="mask" @click="hideBox()"></div>
       <div class="coupon-list">
-	<div class="tit">优惠券<small>(@{{ coupons.length }}张)</small></div>
-
-	<div class="coupons">
+         <div class="tit">优惠券<small>(@{{ coupons.length }}张)</small></div>
+         <div class="coupons">
           <div v-bind:class="coupon.amount>=(number*unit_price+freight)?'item on':'item'" v-for="(coupon,index) in coupons" v-on:click="chooseCoupon(index)">
             <div class="c-h">
               <div class="ch-price">
-		<span>￥@{{ parseInt(coupon.discount) }}</span>
+                <span>￥@{{ parseInt(coupon.discount) }}</span>
               </div>
               <div class="ch-info">
-		<p class="title">
+                <p class="title">
                   @{{ coupon.description }}</p>
-		<p>有效期至：
+                  <p>有效期至：
                   @{{ coupon.expire_time }}</p>
               </div>
             </div>
@@ -100,15 +94,15 @@
               <div class="circle"></div>
               <div class="circle-r"></div>
               <div class="cf-desc">
-		<p>满
+                <p>满
                   @{{ parseInt(coupon.amount) }}元可用</p>
               </div>
             </div>
           </div>
-	</div>
-	<div class="no-use" @click="hideBox('coupon')">
+        </div>
+        <div class="no-use" @click="hideBox('coupon')">
           <span>不使用优惠券</span>
-	</div>
+        </div>
       </div>
     </div>
   </div>
@@ -288,7 +282,7 @@
   function oAddress(){
     wx.openAddress({
       success: function(res) {
-	      var _this = app;
+        var _this = app;
         _this.name = res.userName;
         _this.tel = res.telNumber;
         var address_id = null;

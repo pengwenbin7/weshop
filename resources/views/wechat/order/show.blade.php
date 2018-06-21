@@ -2,7 +2,7 @@
 
 @section( "content")
   <div class="container">
-    <div class="order-detail" id="app"  v-lock>
+    <div class="order-detail" id="app"  v-cloak>
 
       <div class="order-header">
 	<div class="order-number">
@@ -257,7 +257,7 @@
 
 	</div>
       </div>
-      <div class="express-box" v-if="express_box" v-lock>
+      <div class="express-box" v-if="express_box" v-cloak>
 	<div class="mask" @click="express_box=false">
 	</div>
 	<div class="express">

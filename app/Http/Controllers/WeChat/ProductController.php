@@ -39,11 +39,11 @@ class ProductController extends Controller
         foreach ($products as  $product) {
           $product->brand_name = $product->brand->name;
           if($product->is_ton){
-              $product->stock = $product->variable->stock * $product->content /1000;
-              $product->price = $product->variable->unit_price * 1000 / $product->content;
+              $product->stock = $product->variable->stock * $product->content /1000 . "吨";
+              $product->price = $product->variable->unit_price * 1000 / $product->content ."/吨";
           }else{
-              $product->stock = $product->variable->stock;
-              $product->price = floatval($product->variable->unit_price);
+              $product->stock = $product->variable->stock . $product->packing_unit;
+              $product->price = floatval($product->variable->unit_price) . "/" . $product->packing_unit;
           }
           $product->address = str_replace(array('省', '市'), array('', ''), $product->storage->address->province);
         }
@@ -85,10 +85,10 @@ class ProductController extends Controller
           $product->star = !$star;
           $product->address = str_replace(array('省', '市'), array('', ''), $product->storage->address->province);
           if($product->is_ton){
-              $product->stock = $product->variable->stock * $product->content /1000;
-              $product->price = $product->variable->unit_price * 1000 / $product->content;
+              $product->stock = $product->variable->stock * $product->content /1000 . "吨";
+              $product->price = $product->variable->unit_price * 1000 / $product->content . "/吨";
           }else{
-              $product->stock = $product->variable->stock;
+              $product->stock = $product->variable->stock .  $product->packing_unit;
               $product->price = floatval($product->variable->unit_price);
           }
           $product->prices=json_encode($product->prices);
@@ -99,6 +99,11 @@ class ProductController extends Controller
     {
         $data["products"] = Product::find($request->product_id);
         $data["products"]->number = $request->num;
+        if($data["products"]->is_ton ){
+          $data["products"]->price = $data["products"]->variable->unit_price * 1000 / $data["products"]->content . "/吨";
+        }else{
+          $data["products"]->price = $data["products"]->variable->unit_price . "/" . $data["products"]->packing_unit;
+        }
         $data["payChannels"] = PayChannel::get();
         $data["user"] = auth()->user();
         $data["price"] = Product::find($request->product_id)
@@ -110,6 +115,7 @@ class ProductController extends Controller
         }
         $data["coupons"] = json_encode($coupons);
         $data["interfaces"] = ["getLocation"];
+        $data["title"] = "创建订单";
         return view("wechat.order.create", $data);
     }
 }

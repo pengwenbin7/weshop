@@ -22,11 +22,11 @@ class IndexController extends Controller
         $products = ProductVariable::with("product")->orderBy("buy","desc")->limit(10)->get();
         foreach ($products as $product) {
           if($product->product->is_ton){
-            $product->stock = $product->stock * $product->product->content/1000;
-            $product->product->price = $product->unit_price * 1000 / $product->product->content;
+            $product->stock = $product->stock * $product->product->content/1000 . "吨";
+            $product->product->price = $product->unit_price * 1000 / $product->product->content . "/吨";
           }else{
-            $product->stock = $product->stock;
-            $product->product->price = floatval($product->unit_price);
+            $product->stock = $product->stock . $product->product->packing_unit;
+            $product->product->price = floatval($product->unit_price) . "/" . $product->product->packing_unit;
           }
           $product->product->address = str_replace(array('省', '市'), array('', ''), $product->product->storage->address->province);
         }

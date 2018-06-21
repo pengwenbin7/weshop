@@ -41,7 +41,7 @@
 </style>
 @section( "content")
   <div class="container">
-    <div class="company" id = "app" >
+    <div class="company" id = "app" v-cloak>
 
 	<div class="s" v-show="s">
           <div class="search">
@@ -60,7 +60,7 @@
             </div>
           </div>
         </div>
-        <div class="q" v-show="q"  v-lock>
+        <div class="q" v-show="q">
           <div class="row"  >
             <div class="title">
               名字: @{{ company.Name }}

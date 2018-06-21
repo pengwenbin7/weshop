@@ -74,7 +74,7 @@
           </div>
         </div>
         </div>
-        <div class="q" v-show="q"  v-lock>
+        <div class="q" v-show="q"  v-cloak>
           <div class="row"  >
             <div class="title">
              名字: @{{ company.Name }}
