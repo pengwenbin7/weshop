@@ -96,18 +96,23 @@ class Order extends Model
                 "detail" => "待付款",
             ];
         } elseif ($this->status < $this::ORDER_STATUS_IDL &&
-                  ($this->payment_status == PAY_STATUS_AFTER || $this->payment_status == PAY_STATUS_AFTER) && $this->shipment_status < $this::SHIP_STATUS_DONE) {
+                  ($this->payment_status == $this::PAY_STATUS_AFTER || $this->payment_status == $this::PAY_STATUS_AFTER) && $this->shipment_status < $this::SHIP_STATUS_DONE) {
             return [
                 "status" => 1,
                 "detail" => "待发货",
             ];
         } elseif ($this->status < $this::ORDER_STATUS_IDL &&
-                  ($this->payment_status == PAY_STATUS_AFTER || $this->payment_status == PAY_STATUS_AFTER) && $this->shipment_status >= $this::SHIP_STATUS_DONE) {
+                  ($this->payment_status == $this::PAY_STATUS_AFTER || $this->payment_status == $this::PAY_STATUS_AFTER) && $this->shipment_status >= $this::SHIP_STATUS_DONE) {
             return [
                 "status" => 2,
                 "detail" => "已发货",
             ];
-        } 
+        } else {
+            return [
+                "status" => -1,
+                "detail" => "失效",
+            ];
+        }
     }
 
     /**

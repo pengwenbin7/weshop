@@ -166,9 +166,12 @@ class PaymentController extends Controller
     {
         return $payment->delete();
     }
-    public function payOffline(Request $request, Payment $payment)
+    public function payOffline(Request $request)
     {
       $order = Order::find($request->order_id);
+      $payment = $order->payment;
+      $payment->channel_id = $request->channel_id;
+      $payment->save();
       $type  = $request->type;
       $user = Auth()->user();
       return view("wechat.pay.offline",["order" => $order,"user" => $user, "type" => $type ]);

@@ -9,6 +9,8 @@ use EasyWeChat;
 use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
+use EasyWeChat\Kernel\Messages\Voice;
+use App\Models\User;
 
 class ServerController extends Controller
 {
@@ -16,13 +18,19 @@ class ServerController extends Controller
     {
         $app = EasyWeChat::officialAccount();
         $app->server->push(function($message){
+            $openid = $message["FromUserName"];
+            $users = User::where("openid", "=", $openid)->get();
+            if ($users->isEmpty()) {
+                // register user
+            }
+            $user = $users->first();
             switch ($message["MsgType"]) {
             case "text":
-                $url = url("/wechat/search/{$message['Content']}");
+                $url = route("wechat.search", ["keyword" => $message['Content']]);
                 $items = [
                     new NewsItem([
-                        'title'       => "测试标题",
-                        'description' => "图文测试$url",
+                        'title'       => "搜索结果-太好买",
+                        'description' => "点击查看搜索结果",
                         'url'         => $url,
                         'image'       => "",
                     ]),
@@ -37,8 +45,18 @@ class ServerController extends Controller
                     break;
                 }
                 break;
+            case "image":
+                $msg = "你的用户【{$user->name}】给你发了一张<a href=\"{$message["PicUrl"]}\">图片</a>";
+                $user->admin->sendMessage($msg);
+                return new Text("您的消息已经转发给客服");
+                break;
+            case "voice":
+                $voice = new Voice($message["MediaId"]);
+                $user->admin->sendMessage($voice);
+                return new Text("您的消息已经转发给客服");
+                break;
             default:
-                return json_encode($message, JSON_UNESCAPED_UNICODE);
+                return new Text("您可在此直接输入文字搜索产品，也可以发送图片和声音给客服");
                 break;
             }
         });

@@ -108,9 +108,21 @@
       </div>
       <div class="footer" v-if="!out_time">
 	<span v-if="active==1"  onclick="callpay()">确认支付</span>
-	<span v-if="active==2"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=2">确认</a></span>
-	<span v-if="active==3"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=3">确认</a></span>
-	<span v-if="active==4"><a href="{{route("wechat.pay.offline")}}/?order_id={{ $order->id }}&&type=4">确认</a></span>
+	<span v-if="active==2">
+	  <a href="{{ route("wechat.pay.offline", ["order_id" => $order->id, "type" => 2, "channel_id" => 2]) }}">
+	    确定
+	  </a>
+	</span>
+	<span v-if="active==3">
+	  <a href="{{ route("wechat.pay.offline", ["order_id" => $order->id, "type" => 3, "channel_id" => 3]) }}">
+	    确定
+	  </a>
+	</span>
+	<span v-if="active==4">
+	  <a href="{{ route("wechat.pay.offline", ["order_id" => $order->id, "type" => 4, "channel_id" => 4]) }}">
+	    确定
+	  </a>
+	</span>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

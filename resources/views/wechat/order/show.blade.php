@@ -176,11 +176,11 @@
       	  </span>
           <div class="btn-click right">
             @if ($order->invoice)
-              @if ($order->invoice->status=2)
+              @if ($order->invoice->status == 2)
 		<a href="#">已开票</a>
-              @else
-		<a href="https://mp.weixin.qq.com/bizmall/expresslogistics?appid=wx0d9aa0e894066e87&orderid={{ $order->invoice->ship_no }}">
-		  发票物流
+              @elseif ($order->invoice->status == 3)
+		<a href="http://ucmp.sf-express.com/service/weixin/activity/wx_b2sf_order?p1={{ $order->invoice->ship_no }}">
+		发票物流
         	</a>
               @endif
             @else
