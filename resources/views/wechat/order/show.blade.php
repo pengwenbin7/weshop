@@ -9,14 +9,7 @@
           <span>订单号： {{ $order->no }}</span>
 	</div>
 	<div class="order-status">
-          @if($order->status === 0)
-            <span class="green">待付款</span>
-          @elseif ($order->status === 2)
-            <span class="green">待收货</span>
-          @elseif ($order->status === 3)
-            <span class="green">货到付款</span>
-          @endif
-
+     <span class="green">{{ $order->userStatus()["detail"] }}</span>
 	</div>
       </div>
       <div class="order-address">

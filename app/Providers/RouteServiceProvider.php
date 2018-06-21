@@ -58,7 +58,7 @@ n     * In addition, it is set as the URL generator's root namespace.
     protected function mapWechatRoutes()
     {
         Route::middleware(["web", "wechat.auth"])
-            ->domain("weshop.mafkj.com")
+            // ->domain("weshop.mafkj.com")
             ->namespace($this->namespace)
             ->group(base_path("routes/wechat.php"));
     }
@@ -66,9 +66,9 @@ n     * In addition, it is set as the URL generator's root namespace.
     protected function mapAdminRoutes()
     {
         Route::group([
-            "domain" => "admin.mafkj.com",
+            // "domain" => "admin.mafkj.com",
             'middleware' => ['web', 'admin'],
-            //"prefix" => "admin",
+            "prefix" => "admin",
             'namespace' => $this->namespace,
         ], function ($router) {
             require base_path('routes/admin.php');
