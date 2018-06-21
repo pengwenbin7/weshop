@@ -59,39 +59,40 @@
 		<span>金额:￥{{ intval($order->payment->pay) }}</span>
               </div>
               <div class="order-edit">
-		@if ($order->invoice)
-		  @if ($order->invoice->status == 2)
-		    <a href="#">已开票</a>
-		  @else
-		    <a href="http://ucmp.sf-express.com/service/weixin/activity/wx_b2sf_order?p1={{ $order->invoice->ship_no }}">
-		      发票物流
-		    </a>
-		  @endif
-		@else
-		  <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
-		    申请开票
+                @if ($order->userStatus()["status"] < 0)
+                  <a href="#">
+                    重新下单
                   </a>
-		@endif
-		@if (auth()->user()->company)
-		  <a onclick="downloadContract('{{ route("wechat.contract", $order) }}')">
-    		    下载合同
-    		  </a>
-		@else
-		  <a href="{{ route("wechat.company.create") }}">
-        	    下载合同
-		  </a>
-		@endif
+                @elseif($order->userStatus()["status"] == 0)
+                  <a class="gopay btn-green" href="{{ route("wechat.pay", ["order_id" => $order->id]) }}">
+                     去付款
+                  </a>
+                 @else
+              		@if ($order->invoice)
+              		  @if ($order->invoice->status == 2)
+              		    <a href="#">已开票</a>
+              		  @else
+              		    <a href="http://ucmp.sf-express.com/service/weixin/activity/wx_b2sf_order?p1={{ $order->invoice->ship_no }}">
+              		      发票物流
+              		    </a>
+              		  @endif
+              		@else
+              		  <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
+              		    申请开票
+                                </a>
+              		@endif
+              		@if (auth()->user()->company)
+              		  <a onclick="downloadContract('{{ route("wechat.contract", $order) }}')">
+                  		    下载合同
+                  		  </a>
+              		@else
+              		  <a href="{{ route("wechat.company.create") }}">
+                      	    下载合同
+              		  </a>
+              		@endif
 
-		@if($order->status === 0)
-		  <a class="gopay btn-green" href="{{ route("wechat.pay", ["order_id" => $order->id]) }}">
-                    去付款
-		  </a>
-		@elseif ($order->status === 2)
-		  <a class="btn-green">确认收货</a>
-		@elseif ($order->status === 3)
-		  <a class="btn-green">确认收货</a>
-		@endif
 
+                  @endif
               </div>
             </div>
             </div>
