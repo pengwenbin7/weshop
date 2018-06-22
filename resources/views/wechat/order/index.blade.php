@@ -21,7 +21,7 @@
                 <div class="order-header">
                   <div class="order-number">
                     <span class="icon-order">
-                                    <i class="iconfont icon-dingdan1"></i>
+                        <i class="iconfont icon-dingdan1"></i>
                     </span>
                     {{ $order->no }}
                   </div>
@@ -57,8 +57,8 @@
               </div>
               <div class="order-edit">
                 @if ($order->userStatus()["status"] < 0)
-                  <a class= "gray" >
-                    失效
+                  <a onclick="orderDelete('{{ route("wechat.order.destroy", $order->id) }}')" class= "gray" >
+                    删除订单
                   </a>
                 @elseif($order->userStatus()["status"] == 0)
                   <a class="gopay btn-green" href="{{ route("wechat.pay", ["order_id" => $order->id]) }}">
@@ -123,5 +123,17 @@
         alert("合同已通过微信消息发送，如果长时间未收到，请重试");
       });
   };
+  function orderDelete(url){
+    axios.delete(url)
+      .then(function(res){
+        console.log(res.data.err);
+        if(res.data.destroy){
+          alert("删除成功");
+          location.reload();
+        }else{
+          alert("删除失败");
+        }
+      })
+  }
   </script>
 @endsection

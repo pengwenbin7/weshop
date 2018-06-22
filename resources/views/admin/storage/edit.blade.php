@@ -77,7 +77,7 @@
               </div>
             </div>
             <div class="form-group">
-              <input v-model="code" type="hidden" name="code" required>
+              <input v-model="code" type="hidden" name="code" value="{{ $address->code }}" required>
               <label class="col-sm-2 control-label">地区</label>
               <div class="col-sm-10">
                 <div class="col-sm-4">
@@ -213,7 +213,6 @@
         axios.get("/region/children")
           .then(function(res) {
             $this.provinces = res.data;
-            console.log( $this.provinces);
           });
 
         axios.get("/region/children/" + this.province)
@@ -227,9 +226,10 @@
             $this.districts = res.data;
             // 判断是否还有第三级
             if (!res.data.length) {
-              $this.code = $this.city;
+
+              console.log($this);
             } else {
-              $this.code = null;
+             
             }
           });
       }
