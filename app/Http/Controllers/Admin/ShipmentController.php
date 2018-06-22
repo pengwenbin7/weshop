@@ -92,4 +92,18 @@ class ShipmentController extends Controller
     {
         //
     }
+
+    public function purchased(Request $request, Shipment $shipment)
+    {
+        return [
+            "res" => $shipment->purchased($request->cost),
+        ];
+    }
+
+    public function shipped(Request $request, Shipment $shipment)
+    {
+        return [
+            "res" => $shipment->shipped($request->freight),
+        ];
+    }
 }

@@ -10,3 +10,6 @@ clean:
 	php artisan migrate:fresh
 	php artisan view:clear
 	php artisan cache:clear
+
+back:
+	mysqldump -u root weshop -t brands categories products product_categories product_details product_prices product_variables storages > database/backup/product-`date +%Y%m%d`.sql

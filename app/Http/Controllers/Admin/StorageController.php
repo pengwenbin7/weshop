@@ -150,14 +150,14 @@ class StorageController extends Controller
         $address->district = $district;
         $address->code = $request->code;
         $address->detail = $request->detail;
-        $res = $address->save();
+        $address->save();
 
         $storage->name = $request->name;
         $storage->brand_id = $request->brand_id;
         $storage->active = $request->input("active", true);
         $storage->description = $request->input("description", null);
-        $res = $res && $storage->save();
-        return ["update" => $res];
+        $storage->save();
+        return redirect()->route("admin.storage.index");
     }
 
     /**

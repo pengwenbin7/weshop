@@ -16,11 +16,9 @@
           <span class="c-name">@{{ item.name }}</span>
         </div>
         </li>
-
       </ul>
     </div>
     <div class="goods-list">
-
       <div class="products" ref="right" id="products">
         <div class="product" v-for="product in products">
           <a @click="linkTo('{{ route("wechat.product.index") }}',product.id)">
@@ -41,7 +39,7 @@
           </a>
         </div>
         <div class="" v-on:click="more" id="more" v-if="more_box">
-          <img src="{{ asset(" assets/img/timg.gif ") }}" width="25" alt="" style="float:left"> <span>正在加载....</span>
+          <img src="{{ asset("assets/img/timg.gif") }}" width="25" alt="" style="float:left"> <span>正在加载....</span>
         </div>
       </div>
     </div>

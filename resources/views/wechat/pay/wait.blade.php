@@ -15,7 +15,7 @@
     }
     html,body{padding:0;margin:0;font-size:50px;}
     body{position: relative;}
-    .pay{font-size:.32rem}
+    .pay{font-size:.32rem;margin-top:.4rem;}
     .pay .item{width: 100%; background-color: #fff;height: 1.6rem;padding: .3rem .4rem;}
     .pay .item .pay-t{width: 100%;line-height: .5rem;}
     .pay .item .pay-t i{font-size: .4rem;font-weight: bold;}

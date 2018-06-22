@@ -116,24 +116,4 @@ class OrderController extends Controller
         return ["res" => $res];
     }
 
-    public function purchased(Order $order)
-    {
-        $order->shipment_status = Order::SHIP_STATUS_DOING;
-        $res = $order->save();
-        $items = $order->shipments;
-        foreach ($items as $item) {
-            $item->purchase = 1;
-            $item->save();
-            dispatch(new ShipmentPurchased($item));
-        }
-        return ["res" => $res];
-    }
-
-    public function shipped(Order $order)
-    {
-        $order->shipment_status = Order::SHIP_STATUS_DONE;
-        $res = $order->save();
-        dispatch(new OrderShipped($order));
-        return ["res" => $res];
-    }
 }

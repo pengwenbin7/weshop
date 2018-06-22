@@ -32,6 +32,7 @@ class CreateShipmentsTable extends Migration
             $table->string("license_plate", 32)->comment("车牌号")->nullable();
             $table->date("expect_arrive")->nullable();
             $table->date("arrive")->nullable();
+            $table->timestamp("ship_time")->nullable();
             $table->foreign("order_id")->references("id")
                 ->on("orders");
             $table->timestamps();
