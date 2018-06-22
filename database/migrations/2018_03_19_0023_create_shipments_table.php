@@ -16,12 +16,14 @@ class CreateShipmentsTable extends Migration
         Schema::create("shipments", function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("order_id");
-            $table->unsignedDecimal("freight", 10, 2)
-                ->default(0)->comment("商户运费");
-            $table->boolean("status")->default(0)
-                ->comment("0-未发出，1-已发出,2-已到达");
             $table->boolean("purchase")->default(0)
                 ->comment("采购状态");
+            $table->boolean("status")->default(0)
+                ->comment("发货状态");
+            $table->unsignedDecimal("cost", 10, 2)
+                ->default(0)->comment("采购成本");
+            $table->unsignedDecimal("freight", 10, 2)
+                ->default(0)->comment("运费");            
             $table->string("from_address")->comment("发货地");
             $table->string("to_address")->comment("收货地");
             $table->string("ship_no")->nullable()->comment("物流单号");

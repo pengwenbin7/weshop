@@ -12,11 +12,6 @@ use Log;
 
 class Order extends Model
 {
-    // 订单状态
-    const ORDER_STATUS_WAIT = 0; // 待处理
-    const ORDER_STATUS_DOING = 1; // 处理中
-    const ORDER_STATUS_DONE = 2; // 完成
-    const ORDER_STATUS_IDL = 3; // 无效
     // 付款状态
     const PAY_STATUS_WAIT = 0; // 待付款
     const PAY_STATUS_PART = 1; // 部分付款
@@ -24,17 +19,12 @@ class Order extends Model
     const PAY_STATUS_REFUND = 3; // 退款
     const PAY_STATUS_AFTER = 4;  // 到付
     const PAY_STATUS_ERROR = 5; // 错误
-    // 发货状态
-    const SHIP_STATUS_WAIT = 0;  // 待采购
-    const SHIP_STATUS_DOING = 1;  // 待发货
-    const SHIP_STATUS_PART = 2;  // 部分发货
-    const SHIP_STATUS_DONE = 3;  // 发货完成
-    const SHIP_STATUS_SURE = 4;  // 确认收货
     // 退货状态
     const REFUND_STATUS_NULL = 0;  // 未申请
     const REFUND_STATUS_ASK = 1;  // 申请退货
-    const REFUND_STATUS_DOING = 2; // 等待退货
-    const REFUND_STATUS_DONE = 3;  // 已退货
+    const REFUND_STATUS_ALLOW = 2; // 允许退货
+    const REFUND_STATUS_REJECT = 3;  // 拒绝退货
+    const REFUND_STATUS_DONE = 4;  // 已退货
     
     public function orderItems()
     {
@@ -83,36 +73,75 @@ class Order extends Model
 
     public function canRemove()
     {
-        return $this->status == $this::ORDER_STATUS_IDL;
+        return $this->active == 0;
     }
 
-    // 暂时只判断三种状态
+    // 订单状态
     public function userStatus()
     {
-        if ($this->status < $this::ORDER_STATUS_IDL &&
-            $this->payment_status == $this::PAY_STATUS_WAIT) {
-            return [
-                "status" => 0,
-                "detail" => "待付款",
-            ];
-        } elseif ($this->status < $this::ORDER_STATUS_IDL &&
-                  ($this->payment_status == $this::PAY_STATUS_AFTER || $this->payment_status == $this::PAY_STATUS_AFTER) && $this->shipment_status < $this::SHIP_STATUS_DONE) {
-            return [
+        // 活动状态
+        $activeString = $this->active ? "正常" : "失效";
+        $status["active"] = [
+            "status" => $this->active,
+            "detail" => $activeString,
+        ];
+        
+        // 付款状态
+        switch ($this->payment_status) {
+        case $this::PAY_STATUS_WAIT:
+            $payString = "未付款";
+            break;
+        case $this::PAY_STATUS_PART:
+            $payString = "部分付款";
+            break;
+        case $this::PAY_STATUS_DONE:
+            $payString = "完成";
+            break;
+        case $this::PAY_STATUS_REFUND:
+            $payString = "退款";
+            break;
+        case $this::PAY_STATUS_AFTER:
+            $payString = "到付";
+            break;
+        case $this::PAY_STATUS_ERROR:
+            $payString = "错误";
+            break;
+        default:
+            $payString = "未知";
+            break;
+        }
+        $status["pay"] = [
+            "status" => $this->payment_status,
+            "detail" => $payString,
+        ];
+        
+        // 采购状态
+        $shipment = $this->shipment;
+        if ($shipment && $shipment->purchase) {
+            $status["purchase"] = [
                 "status" => 1,
-                "detail" => "待发货",
+                "detail" => "已采购",
             ];
-        } elseif ($this->status < $this::ORDER_STATUS_IDL &&
-                  ($this->payment_status == $this::PAY_STATUS_AFTER || $this->payment_status == $this::PAY_STATUS_AFTER) && $this->shipment_status >= $this::SHIP_STATUS_DONE) {
-            return [
-                "status" => 2,
+        } else {
+            $status["purchase"] = [
+                "status" => 0,
+                "detail" => "未采购",
+            ];
+        }
+        
+        // 发货状态
+        if ($shipment && $shipment->status) {
+            $status["ship"] = [
+                "status" => 1,
                 "detail" => "已发货",
             ];
         } else {
-            return [
-                "status" => -1,
-                "detail" => "失效",
+            $status["ship"] = [
+                "status" => 0,
+                "detail" => "未发货",
             ];
         }
+        return $status;
     }
 
     /**
@@ -161,6 +190,7 @@ class Order extends Model
         foreach ($items as $storage_id => $item) {
             $shipment = Shipment::firstOrCreate([
                 "order_id" => $this->id,
+                "purchase" => 0,
                 "status" => 0,
                 "from_address" => Address::find($storage_id)->getText(),
                 "to_address" => $this->address->getText(),

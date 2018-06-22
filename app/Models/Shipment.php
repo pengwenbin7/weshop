@@ -7,16 +7,12 @@ use Illuminate\Notifications\Notifiable;
 
 class Shipment extends Model
 {
-    const SHIPMENT_STATUS_WAIT = 0;
-    const SHIPMENT_STATUS_DOING = 1;
-    const SHIPMENT_STATUS_DONE = 2;
-    const SHIPMENT_STATUS_CANCEL = 3;
-
     protected $fillable = [
-        "order_id", "freight", "status",
+        "order_id", "purchase",
+        "status", "freight",
         "from_address", "to_address",
-        "ship_no", "contact_name", "contact_phone",
-        "expect_arrive_date",
+        "ship_no", "contact_name", 
+        "contact_phone", "expect_arrive_date",
     ];
 
     public function order()
