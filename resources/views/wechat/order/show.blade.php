@@ -234,7 +234,7 @@
     <div class="footer">
       <div class="item price y"><span>实付金额：{{ $order->payment->pay }}</span></div>
       <div class="item">
-          @if ( $order->userStatus()["status"] > 0)
+          @if ( $order->userStatus()["status"] < 0)
           <a class="gray">失效</a>
           @elseif ($order->userStatus()["status"] == 0)
            <a class="btn-click" href="{{ route("wechat.pay") }}/?order_id={{ $order->id }}">去付款</a>
