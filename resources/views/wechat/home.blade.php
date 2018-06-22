@@ -12,9 +12,8 @@
 	      <img src="{{ asset("assets/img/company.png") }}"/>
 	    </div>
 	    <div class="name">
-              <p class="tel">用户: {{ $user->name }}</p>
-              <p>{{ $user->company->name }}</p>
-
+          <p class="tel">用户: {{ $user->name }}</p>
+          <p>{{ $user->company->name }}</p>
 	    </div>
 	    <div class="admin-msg">
 	      <span class="icons">
@@ -28,8 +27,8 @@
       	     <img src="{{ asset("assets/img/company.png") }}"/>
       	    </div>
       	    <div class="name">
+              <p class="tel">用户: {{ $user->name }}</p>
       	      <p>公司未认证</p>
-	      <p class="tel">用户: {{ $user->name }}</p>
       	    </div>
       	    <div class="admin-msg">
       	      <span class="icons">
