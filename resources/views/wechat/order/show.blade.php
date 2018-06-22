@@ -221,13 +221,7 @@
       <div class="item clearfix">
         <span class="label">发货时间：</span>
         <div class="info-r">
-
-        </div>
-      </div>
-      <div class="item clearfix">
-        <span class="label">收货时间：</span>
-        <div class="info-r">
-
+           {{ $order->shipments->first()->updated_at ?? "" }}
         </div>
       </div>
     </div>
