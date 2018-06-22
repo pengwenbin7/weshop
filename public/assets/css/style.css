@@ -1783,9 +1783,13 @@
   box-shadow: 1px 1px 2px #eee;
   color: #888;
 }
-.order-info .no{
+.order-info .item{
+  font-size: .3rem;
+}
+.order-info .item.no{
   color: #000;
   margin-bottom: .2rem;
+  font-size: .34rem;
 }
 .order-info .order-number {
   margin-bottom: .2rem;

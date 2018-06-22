@@ -1,10 +1,9 @@
 @extends("layouts.wechat2")
-
 @section("content")
   @if (count($orders)||(url()->full() !== route("wechat.order.index")))
     <div class="container">
       <div class="order-list" id="app">
-	<div class="taps">
+        <div class="taps">
           <div class="item">
             <a class="{{ url()->full() == route("wechat.order.index")? "on":"" }}" href="{{ route("wechat.order.index") }}">全部订单</a>
           </div>
@@ -14,49 +13,47 @@
           <div class="item">
             <a class="{{ url()->full() == route("wechat.order.index","order_status=1")? "on":"" }}" href="{{ route("wechat.order.index","order_status=1") }}">已发货</a>
           </div>
-	</div>
-	<div class="orders">
-	  @foreach ($orders as $order)
+        </div>
+          <div class="orders">
+            @foreach ($orders as $order)
             <div class="order">
               <a href="{{ route("wechat.order.show", $order) }}">
-		<div class="order-header">
-		  <div class="order-number">
-		    <span class="icon-order">
-                      <i class="iconfont icon-dingdan1"></i>
-		    </span>
-		    {{ $order->no }}
-		  </div>
-
-		  <div class="order-status">
-		    <span class="green">{{ $order->userStatus()["detail"] }}</span>
-		  </div>
-		</div>
+                <div class="order-header">
+                  <div class="order-number">
+                    <span class="icon-order">
+                                    <i class="iconfont icon-dingdan1"></i>
+                    </span>
+                    {{ $order->no }}
+                  </div>
+                  <div class="order-status">
+                    <span class="green">{{ $order->userStatus()["detail"] }}</span>
+                  </div>
+                </div>
               </a>
-
               <div class="order-content">
-		<div class="order-product">
-		  @foreach ($order->orderItems as $orderItem)
-		    <div class="item">
+                <div class="order-product">
+                  @foreach ($order->orderItems as $orderItem)
+                    <div class="item">
                       <a href="{{ route("wechat.order.show", $order) }}">
-			<div class="pro black">
-			  <span>{{ $orderItem->product_name }} </span>
-			  <span>{{ $orderItem->model }} </span>
-			</div>
-			<div class="pro">
-			  <span>{{ $orderItem->brand_name }} </span><span>x{{ $orderItem->number }}</span>
-			  <span>￥{{ $orderItem->price * $orderItem->number }}</span>
-			</div>
+                        <div class="pro black">
+                          <span>{{ $orderItem->product_name }} </span>
+                          <span>{{ $orderItem->model }} </span>
+                        </div>
+                        <div class="pro">
+                          <span>{{ $orderItem->brand_name }} </span><span>x{{ $orderItem->number }}</span>
+                          <span>￥{{ $orderItem->price * $orderItem->number }}</span>
+                        </div>
                       </a>
-		    </div>
-		  @endforeach
-		</div>
+                    </div>
+                  @endforeach
+                </div>
               </div>
             </a>
             <div class="order-footer">
               <div class="order-price">
-		<span>附加:￥{{ intval($order->payment->freight) }}</span>
-		<span>优惠:￥{{ intval($order->payment->coupon_discount + $order->payment->share_discount) }}</span>
-		<span>金额:￥{{ intval($order->payment->pay) }}</span>
+                <span>附加:￥{{ intval($order->payment->freight) }}</span>
+                <span>优惠:￥{{ intval($order->payment->coupon_discount + $order->payment->share_discount) }}</span>
+                <span>金额:￥{{ intval($order->payment->pay) }}</span>
               </div>
               <div class="order-edit">
                 @if ($order->userStatus()["status"] < 0)
@@ -90,17 +87,13 @@
                       	    下载合同
               		  </a>
               		@endif
-
-
                   @endif
               </div>
             </div>
             </div>
           @endforeach
-
-	</div>
+        </div>
       </div>
-
     </div>
   @else
     <div class="no-content">
