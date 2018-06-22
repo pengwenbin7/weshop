@@ -57,8 +57,8 @@
               </div>
               <div class="order-edit">
                 @if ($order->userStatus()["status"] < 0)
-                  <a href="#">
-                    重新下单
+                  <a class= "gray" >
+                    失效
                   </a>
                 @elseif($order->userStatus()["status"] == 0)
                   <a class="gopay btn-green" href="{{ route("wechat.pay", ["order_id" => $order->id]) }}">
