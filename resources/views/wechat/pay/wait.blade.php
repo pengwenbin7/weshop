@@ -33,10 +33,12 @@
     .icon-huipiao{color: #c273ff;}
     .icon-xuanzhong-on{color: #3db858;}
     .icon-huodaofukuan{color: #16c2c2;}
-    .paydis{position: absolute; right: 0;top: 0;width: 2.8rem;padding: .2rem; background-color: #f30;border-radius: 3px;}
-    .paydis span{display: block;padding: .3rem;border: 1px dotted #fff; font-size: 12px; color: #fff;}
+    .paydis{position: absolute; right: 0;top: .2rem;width: 2.8rem;padding: .2rem; background-color: #f30;border-radius: 3px;}
+    .paydis i{display: block;height: .2rem;width: 4px; background-color: #f00; position: absolute;right: .4rem;top: -0.2rem;}
+    .paydis span{display: block;padding: .2rem;line-height:.3rem;  border: 1px dotted #fff; font-size: 12px; color: #fff;}
     .share{position: fixed;bottom: 1.4rem; right: .5rem; width: 4rem;background-color: #666;border-radius: 100px;height: .8rem;font-size: .3rem;padding: .2rem;box-sizing: border-box;}
-    .share .close{width: .5rem;float: left;line-height: .4rem;font-size: .6rem;color: #fff;border-right: 1px solid #fff;}
+    .share .close{width: .5rem;float: left;height: .4rem;line-height: .4rem;font-size: .5rem;color: #fff;border-right: 1px solid #fff;}
+    .share .close span{display: block; line-height: .4rem; }
     .share .s-info{margin-left: .5rem; text-align: center;color: #fff;line-height: .4rem;}
 
     </style>
@@ -70,14 +72,16 @@
     </script>
   </head>
   <body style="background-color:#f0f1f0;">
-    <div class="paydis">
-      @if ($order->payment->share_discount <= 0)
-	<span>分享订单，立减{{  intval($order->payment->pay * App\Models\Config::get("order.share.discount")) }}元</span>
-      @else
-	<span>分享已减{{ intval($order->payment->share_discount) }}元</span>
-      @endif
-    </div>
+
     <div class="container" id="app" v-cloak>
+      <div class="paydis" v-show="share&&out_time">
+        <i></i>
+        @if ($order->payment->share_discount <= 0)
+  	<span>点击分享订单，立减{{  intval($order->payment->pay * App\Models\Config::get("order.share.discount")) }}元</span>
+        @else
+  	<span>分享已减{{ intval($order->payment->share_discount) }}元</span>
+        @endif
+      </div>
       <div class="pay">
 	<div class="item">
 	  <div class="pay-t">
@@ -109,15 +113,15 @@
 	  </div>
 	</div>
       </div>
-      <div class="share">
-        <div class="close">
+      <div class="share"  v-show="share&&out_time">
+        <div class="close" @click="share=false">
           <span>×</span>
         </div>
         <div class="s-info">
            <span>分享订单获得减免</span>
         </div>
       </div>
-      <div class="footer" v-if="!out_time">
+      <div class="footer" v-if="out_time">
 	<span v-if="active==1"  onclick="callpay()">确认支付</span>
 	<span v-if="active==2">
 	  <a href="{{ route("wechat.pay.offline", ["order_id" => $order->id, "type" => 2, "channel_id" => 2]) }}">
@@ -145,7 +149,8 @@
         items: {!! $pay_channel !!},
         active: 1,
         expire:"",
-        out_time:"",
+        out_time:false,
+        share:true,
       },
       mounted () {
         countdown(this)
@@ -170,9 +175,11 @@
       if(mss<=1){
         clearInterval(time);
         //订单超时
-        app.out_time=true;
+        app.out_time=false;
         return "订单超时";
 
+      }else{
+        app.out_time=true;
       }
       var days = parseInt(mss / (60 * 60 * 24))?parseInt(mss / (60 * 60 * 24))+"天 ":"";
       var hours = parseInt((mss % ( 60 * 60 * 24)) / (60 * 60))?parseInt((mss % ( 60 * 60 * 24)) / (60 * 60))+"时 ":"";
