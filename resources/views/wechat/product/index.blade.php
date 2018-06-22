@@ -16,7 +16,6 @@
           <span class="c-name">@{{ item.name }}</span>
         </div>
         </li>
-
       </ul>
     </div>
     <div class="goods-list">

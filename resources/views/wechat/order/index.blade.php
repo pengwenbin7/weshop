@@ -64,6 +64,15 @@
                   <a class="gopay btn-green" href="{{ route("wechat.pay", ["order_id" => $order->id]) }}">
                      去付款
                   </a>
+                  @if (auth()->user()->company)
+              		  <a onclick="downloadContract('{{ route("wechat.contract", $order) }}')">
+                  		    下载合同
+                  		  </a>
+              		@else
+              		  <a href="{{ route("wechat.company.create") }}">
+                      	    下载合同
+              		  </a>
+              		@endif
                  @else
               		@if ($order->invoice)
               		  @if ($order->invoice->status == 2)
