@@ -62,23 +62,11 @@
 		    <td>{{ $order->adminUser->name }}</td>
 		    <td>{{ $order->created_at }}</td>
 		    <td>
-		      @switch ($order->status)
-		      @case ($order::ORDER_STATUS_WAIT)
-		      待处理
-		      @break
-		      @case ($order::ORDER_STATUS_DOING)
-		      处理中
-		      @break
-		      @case ($order::ORDER_STATUS_DONE)
-		      完成
-		      @break
-		      @case ($order::ORDER_STATUS_IDL)
-		      无效
-		      @break
-		      @default
-		      --
-		      @break
-		      @endswitch
+		      @if ($order->acitve)
+			有效
+		      @else
+			无效
+		      @endif
 		    </td>
 		    <td>
 		      @switch ($order->payment_status)
@@ -106,33 +94,18 @@
 		      @endswitch
 		    </td>
 		    <td>
-		      @switch ($order->shipment_status)
-		      @case ($order::SHIP_STATUS_WAIT)
-		      待采购
-		      @break
-		      @default
-		      采购完成
-		      @break
-		      @endswitch
+		      @if ($order->shipment && $order->shipment->status)
+			已完成
+		      @else
+			未采购
+		      @endif
 		    </td>
 		    <td>
-		      @switch ($order->shipment_status)
-		      @case ($order::SHIP_STATUS_DOING)
-		      待发货
-		      @break
-		      @case ($order::SHIP_STATUS_PART)
-		      部分发货
-		      @break
-		      @case ($order::SHIP_STATUS_DONE)
-		      发货完成
-		      @break
-		      @case ($order::SHIP_STATUS_SURE)
-		      确认收货
-		      @break
-		      @default
-		      --
-		      @break
-		      @endswitch
+		      @if ($order->shipment && $order->shipment->status)
+			已发货
+		      @else
+			未发货
+		      @endif
 		    </td>
 		    <td><a href="{{ route("admin.order.show", ["id" => $order->id]) }}">详细</a></td>
 		  </tr>

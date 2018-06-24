@@ -111,9 +111,7 @@ class OrderController extends Controller
         $order->address_id = $request->address_id;
         $order->coupon_id = $request->input("coupon_id", null);
         $order->tax_id = $request->input("tax_id", null);
-        $order->status = Order::ORDER_STATUS_WAIT;
         $order->payment_status = Order::PAY_STATUS_WAIT;
-        $order->shipment_status = Order::SHIP_STATUS_WAIT;
         $order->refund_status = Order::REFUND_STATUS_NULL;
         $order->admin_id = $user->admin_id;
         // save order
