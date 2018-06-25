@@ -38,22 +38,11 @@
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">订单状态</label>
 	    <div class="col-sm-10">
-	      @switch ($order->status)
-	      @case ($order::ORDER_STATUS_WAIT)
-	      <input type="text" value="待处理" readonly>
-	      @break
-	      @case ($order::ORDER_STATUS_DOING)
-	      <input type="text" value="处理中" readonly>
-	      @break
-	      @case ($order::ORDER_STATUS_DONE)
-	      <input type="text" value="完成" readonly>
-	      @break
-	      @case ($order::ORDER_STATUS_IDL)
-	      <input type="text" value="无效" readonly>
-	      @break
-	      @deafult
-	      @break
-	      @endswitch
+	      @if ($order->active)
+		有效
+	      @else
+		无效
+	      @endif
 	    </div>
           </div>
 
@@ -107,58 +96,30 @@
 
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">采购状态</label>
-	    <div class="col-sm-10" v-if="canPurchase">
-	      <button type="button" v-if="shipment_status == {{ $order::SHIP_STATUS_WAIT }}" @click="purchased"  class="btn btn-default" name="button">完成采购</button>
-	      <input class="form-control" v-if="shipment_status > {{ $order::SHIP_STATUS_WAIT }}" type="text" value="已经采购" readonly>
+	    <div class="col-sm-10">
+	      @if ($order->shipment && $order->shipment->purchase)
+		已采购
+	      @else
+		未采购
+	      @endif
             </div>
-
-	    <div class="col-sm-10" v-else>
-              @switch ($order->shipment_status)
-              @case ($order::SHIP_STATUS_WAIT)
-              <input class="form-control" type="text" value="待采购" readonly>
-              @break
-              @case ($order::SHIP_STATUS_DOING)
-              <input class="form-control" type="text" value="完成采购" readonly>
-              @break
-              @default
-              @break
-              @endswitch
-
-	    </div>
-          </div>
+	  </div>
 
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">发货状态</label>
-	    <div class="col-sm-10" v-if="canShip">
-	      <button type="button"  @click="shipped"  v-if="shipment_status == {{ $order::SHIP_STATUS_DOING }}" class="btn btn-default" name="button">发货</button>
-	      <input class="form-control"  v-else-if="shipment_status == {{ $order::SHIP_STATUS_DONE }}" type="text" value="完成发货" readonly>
-	    </div>
-
-	    <div class="col-sm-10" v-else>
-	      @switch ($order->shipment_status)
-	      @case ($order::SHIP_STATUS_DOING)
-	      <input class="form-control" type="text" value="待发货" readonly>
-	      @break
-	      @case ($order::SHIP_STATUS_PART)
-	      <input class="form-control" type="text" value="部分发货" readonly>
-	      @break
-	      @case ($order::SHIP_STATUS_DONE)
-	      <input class="form-control" type="text" value="完成发货" readonly>
-	      @break
-	      @case ($order::SHIP_STATUS_SURE)
-	      <input class="form-control" type="text" value="确认收货" readonly>
-	      @break
-	      @default
-	      @break
-	      <input class="form-control" type="text" value="--" readonly>
-	      @endswitch
+	    <div class="col-sm-10">
+	      @if ($order->shipment && $order->shipment->status)
+		已发货
+	      @else
+		未发货
+	      @endif
 	    </div>
           </div>
 
 	</div>
 
 	<div class="box-footer">
-	  @if ($order->status == $order::ORDER_STATUS_IDL)
+	  @if (!$order->active)
 	    <span class="btn btn-default btn-block">订单无效</span>
 	  @endif
 	</div>
@@ -173,10 +134,7 @@
     el: "#app",
     data: {
       canPay: {{ auth("admin")->user()->can("pay") }},
-      canPurchase: {{ auth("admin")->user()->can("purchase") }},
-      canShip: {{ auth("admin")->user()->can("ship") }},
-      payment_status: {{ $order->payment_status }},
-      shipment_status: {{ $order->shipment_status }}
+      payment_status: {{ $order->payment_status }}
     },
     methods: {
       payPart: function() {
@@ -189,20 +147,6 @@
 	    if (res.data.res) {
 	      location.reload();
 	    }
-	  });
-      },
-      purchased: function () {
-	var _this = this;
-	axios.post("{{ route("admin.order.purchased", $order) }}")
-	  .then(function (res) {
-            location.reload();
-	  });
-      },
-      shipped: function () {
-	var _this = this;
-	axios.post("{{ route("admin.order.shipped", $order) }}")
-	  .then(function (res) {
-	    location.reload();
 	  });
       }
     }

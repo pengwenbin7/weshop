@@ -71,6 +71,14 @@ class User extends Authenticatable
       return $this->belongsTo("App\Models\Company");
     }
 
+    /**
+     * 关注注册
+     */
+    public static function subRegister($message)
+    {
+        \Log::info($message);
+    }
+
     public function sendMessage($msg)
     {
         $app = EasyWeChat::officialAccount();

@@ -41,6 +41,7 @@ class ServerController extends Controller
             case "event":
                 switch ($message["Event"]) {
                 case "subscribe":
+                    User::subRegister($message);
                     return new Text("感谢关注！");
                     break;
                 }

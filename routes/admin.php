@@ -74,16 +74,16 @@ Route::resource("order", "Admin\OrderController", [
     ],
 ]);
 
-Route::match(["get", "post"], "order/paid/{order}",
+Route::post("order/paid/{order}",
              "Admin\OrderController@paid")
     ->name("admin.order.paid");
 
-Route::match(["get", "post"], "shipment/purchased/{shipment}",
+Route::post("shipment/purchased/{shipment}",
              "Admin\ShipmentController@purchased")
     ->name("admin.shipment.purchased");
 
-Route::match(["get", "post"], "shipment/shipped/{shipment}",
-             "Admin\ShipmentController@shipped")
+Route::post("shipment/shipped/{shipment}",
+            "Admin\ShipmentController@shipped")
     ->name("admin.shipment.shipped");
 
 Route::resource("shipment", "Admin\ShipmentController", [

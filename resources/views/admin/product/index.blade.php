@@ -59,7 +59,6 @@
 		    <td>{{ $item->category()->name }}</td>
 		    <td>{{ $item->storage->name }}</td>
 
-
 		    <td>
 		      @if ($item->is_ton)
 			

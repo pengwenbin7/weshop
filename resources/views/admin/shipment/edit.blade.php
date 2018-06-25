@@ -23,7 +23,7 @@
 	    <label class="col-sm-2 control-label">采购状态</label>
 	    <div class="col-sm-10">
 	      <input class="form-control" readonly
-		      value="{{ $shipment->purchase? "已采购": "未采购"; }}">
+		      value="{{ $shipment->purchase? "已采购": "未采购" }}">
             </div>
 	  </div>
 
@@ -31,7 +31,7 @@
 	    <label class="col-sm-2 control-label">发货状态</label>
 	    <div class="col-sm-10">
 	      <input class="form-control" readonly
-		      value="{{ $shipment->status? "已发货": "未发货"; }}">
+		      value="{{ $shipment->status? "已发货": "未发货" }}">
             </div>
 	  </div>
 
@@ -82,57 +82,73 @@
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">预计到达</label>
 	    <div class="col-sm-10">
-	      <input name="expect_arrive" class="form-control" value="{{ $shipment->expect_arrive }}" type="date">
+	      <input name="expect_arrive" class="form-control" value="{{ $shipment->expect_arrive }}" type="date" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
             </div>
 	  </div>
 
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">发货时间</label>
 	    <div class="col-sm-10">
-	      <input class="form-control" value="{{ $shipment->ship_time->toDateTimeString() }}" readonly>
+	      <input class="form-control" value="{{ $shipment->ship_time }}" readonly>
             </div>
 	  </div>
-	  
-	</div>
-
-	@if (auth("admin")->user()->can("ship"))
-	<div class="box-footer">
-	    <input type="submit" class="btn btn-info btn-block" value="保存">
-	</div>
-	@endif
-      </form>
-
-      @if (auth("admin")->user()->can("purchase"))
-	<form class="form-horizontal" action="{{ route("admin.shipment.purchased", $shipment) }}" method="POST">
-	  <div class="form-group">
-	    <label class="col-sm-2 control-label">采购成本</label>
-	    <div class="col-sm-10">
-	      <input class="form-control" name="freight" type="number"
-		      required value="{{ $shipment->freight }}">
-            </div>
-	  </div>
-	  @if (!$shipment->purchase)
-	    <input type="submit" class="btn btn-info btn-block" value="完成采购">
+	  @if (auth("admin")->user()->can("ship"))
+	    <div class="box-footer">
+	      <input type="submit" class="btn btn-info btn-block" value="保存">
+	    </div>
 	  @endif
-	</form>
-      @endif
+	</div>
+      </form>
+    </div>
 
-      @if (auth("admin")->user()->can("ship"))
+    @if (auth("admin")->user()->can("purchase"))
+      <div class="box box-info">
+	<div class="box-header with-border">
+	  <h3 class="box-title">完成采购</h3>
+	</div>
 	<form class="form-horizontal" action="{{ route("admin.shipment.purchased", $shipment) }}" method="POST">
-	  <div class="form-group">
-	    <label class="col-sm-2 control-label">运费</label>
-	    <div class="col-sm-10">
-	      <input class="form-control" name="freight" type="number"
-		      required value="{{ $shipment->freight }}">
-            </div>
+	  {{ csrf_field() }}
+	  <div class="box-body">
+	    <div class="form-group">
+	      <label class="col-sm-2 control-label">采购成本</label>
+	      <div class="col-sm-10">
+		<input class="form-control" name="cost" type="number"
+			required value="{{ $shipment->cost }}">
+              </div>
+	    </div>
+	  </div>
+	  <div class="box-footer">
+	    @if (!$shipment->purchase)
+	      <input type="submit" class="btn btn-info btn-block" value="完成采购">
+	    @endif
+	  </div>
+	</form>
+      </div>
+    @endif
+
+    @if (auth("admin")->user()->can("ship") && $shipment->purchase)
+      <div class="box box-info">
+	<div class="box-header with-border">
+	  <h3 class="box-title">完成发货</h3>
+	</div>
+	<form class="form-horizontal" action="{{ route("admin.shipment.shipped", $shipment) }}" method="POST">
+	  {{ csrf_field() }}
+	  <div class="box-body">
+	    <div class="form-group">
+	      <label class="col-sm-2 control-label">运费</label>
+	      <div class="col-sm-10">
+		<input class="form-control" name="freight" type="number"
+			required value="{{ $shipment->freight }}">
+              </div>
+	    </div>
 	  </div>
 	  @if (!$shipment->ship)
-	    <input type="submit" class="btn btn-info btn-block" value="完成发货">
+	    <div class="box-footer">
+	      <input type="submit" class="btn btn-info btn-block" value="完成发货">
+	    </div>
 	  @endif
 	</form>
-      @endif
-
-
-    </div>
+      </div>
+    @endif
   </div>
 @endsection

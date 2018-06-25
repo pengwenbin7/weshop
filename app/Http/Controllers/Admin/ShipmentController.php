@@ -95,15 +95,13 @@ class ShipmentController extends Controller
 
     public function purchased(Request $request, Shipment $shipment)
     {
-        return [
-            "res" => $shipment->purchased($request->cost),
-        ];
+        $shipment->purchased($request->cost);
+        return redirect()->route("admin.shipment.edit", $shipment);
     }
 
     public function shipped(Request $request, Shipment $shipment)
     {
-        return [
-            "res" => $shipment->shipped($request->freight),
-        ];
+        $shipment->shipped($request->freight);
+        return redirect()->route("admin.shipment.edit", $shipment);
     }
 }

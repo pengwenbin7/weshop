@@ -12,4 +12,4 @@ clean:
 	php artisan cache:clear
 
 back:
-	mysqldump -u root weshop -t brands categories products product_categories product_details product_prices product_variables storages > database/backup/product-`date +%Y%m%d`.sql
+	mysqldump -u root weshop -t brands addresses storages categories products product_categories product_details product_prices product_variables > database/backup/product-`date +%Y%m%d`.sql

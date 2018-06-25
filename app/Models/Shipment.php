@@ -35,6 +35,7 @@ class Shipment extends Model
     public function purchased($cost)
     {
         $this->cost = $cost;
+        $this->purchase = true;
         dispatch(new ShipmentPurchased($this));
         return $this->save();
     }
@@ -46,6 +47,7 @@ class Shipment extends Model
         }
         $this->freight = $freight;
         $this->ship_time = Carbon::now();
+        $this->status = true;
         dispatch(new ShipmentShipped($this));
         return $this->save();
     }
