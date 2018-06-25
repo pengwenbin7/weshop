@@ -26,7 +26,19 @@
                     {{ $order->no }}
                   </div>
                   <div class="order-status">
-                    <span class="green">{{ json_encode($order->userStatus()) }}</span>
+                    @if ($order->userStatus()["active"]["status"] == 1)
+                      @if ($order->userStatus()["pay"]["status"] == 0)
+                       <span class="green">{{  $order->userStatus()["pay"]["detail"] }}</span>
+                      @else
+                        @if ($order->userStatus()["ship"]["status"] == 0)
+                          <span class="green">{{  $order->userStatus()["ship"]["detail"] }}</span>
+                        @else
+                          <span class="green">{{  $order->userStatus()["ship"]["detail"] }}</span>
+                        @endif
+                      @endif
+                    @else
+                      <span class="green">{{  $order->userStatus()["active"]["detail"] }}</span>
+                    @endif
                   </div>
                 </div>
               </a>
@@ -56,46 +68,60 @@
                 <span>金额:￥{{ intval($order->payment->pay) }}</span>
               </div>
               <div class="order-edit">
-                @if (!$order->active)
+                @if ($order->userStatus()["active"]["status"] == 1)
+                  @if ($order->userStatus()["pay"]["status"] == 0)
+                    <a class="gopay btn-green" href="{{ route("wechat.pay", ["order_id" => $order->id]) }}">
+                      去付款
+                    </a>
+                    @if (auth()->user()->company)
+                	    <a onclick="downloadContract('{{ route("wechat.contract", $order) }}')">
+                        下载合同
+                      </a>
+                	  @else
+                	    <a href="{{ route("wechat.company.create") }}">
+                        下载合同
+                	    </a>
+                	  @endif
+                  @else
+                    @if ($order->userStatus()["ship"]["status"] == 0)
+                      @if (auth()->user()->company)
+                  	    <a onclick="downloadContract('{{ route("wechat.contract", $order) }}')">
+                          下载合同
+                        </a>
+                  	  @else
+                  	    <a href="{{ route("wechat.company.create") }}">
+                          下载合同
+                  	    </a>
+                  	  @endif
+                    @else
+                      @if (auth()->user()->company)
+                  	    <a onclick="downloadContract('{{ route("wechat.contract", $order) }}')">
+                          下载合同
+                        </a>
+                  	  @else
+                  	    <a href="{{ route("wechat.company.create") }}">
+                          下载合同
+                  	    </a>
+                  	  @endif
+                      @if ($order->invoice)
+                  	    @if ($order->invoice->status == 2)
+                  	      <a href="#">已开票</a>
+                  	    @else
+                  	      <a href="http://ucmp.sf-express.com/service/weixin/activity/wx_b2sf_order?p1={{ $order->invoice->ship_no }}">
+                  		发票物流
+                  	      </a>
+                  	    @endif
+                  	  @else
+                  	    <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
+                  	      申请开票
+                        </a>
+                  	  @endif
+                    @endif
+                  @endif
+                @else
                   <a onclick="orderDelete('{{ route("wechat.order.destroy", $order->id) }}')" class= "gray" >
                     删除订单
                   </a>
-                @elseif($order->userStatus()["pay"]["status"] == 0)
-                  <a class="gopay btn-green" href="{{ route("wechat.pay", ["order_id" => $order->id]) }}">
-                    去付款
-                  </a>
-                  @if (auth()->user()->company)
-              	    <a onclick="downloadContract('{{ route("wechat.contract", $order) }}')">
-                      下载合同
-                    </a>
-              	  @else
-              	    <a href="{{ route("wechat.company.create") }}">
-                      下载合同
-              	    </a>
-              	  @endif
-                @else
-              	  @if ($order->invoice)
-              	    @if ($order->invoice->status == 2)
-              	      <a href="#">已开票</a>
-              	    @else
-              	      <a href="http://ucmp.sf-express.com/service/weixin/activity/wx_b2sf_order?p1={{ $order->invoice->ship_no }}">
-              		发票物流
-              	      </a>
-              	    @endif
-              	  @else
-              	    <a href="{{ route("wechat.invoice.create", ["order_id" => $order->id]) }}">
-              	      申请开票
-                    </a>
-              	  @endif
-              	  @if (auth()->user()->company)
-              	    <a onclick="downloadContract('{{ route("wechat.contract", $order) }}')">
-                      下载合同
-                    </a>
-              	  @else
-              	    <a href="{{ route("wechat.company.create") }}">
-                      下载合同
-              	    </a>
-              	  @endif
                 @endif
               </div>
             </div>
