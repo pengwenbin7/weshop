@@ -2,8 +2,8 @@
 @section( "content")
   <div class="container" id="app" v-cloak>
     <div class="order">
-      <div class="address">
-        <div class="a-info" v-on:click="selectAddress">
+      <div class="address"  v-on:click="selectAddress">
+        <div class="a-info">
           <p v-if="!address_id">点击选择地址</p>
           <div class="name" v-if="address_id">
             <span class="user-name">@{{ name }}</span>
