@@ -28,7 +28,7 @@
     .group .item .pay-title p.title{font-size: .32rem;font-weight: bold;}
     .footer{width:100%; position: absolute;bottom: 0;height: 1.2rem;line-height: 1.2rem;background-color: #00b945;}
     .footer span{display: block;width: 100%;text-align: center;font-weight: bold;color: #fff;letter-spacing: 2px;font-size: .34rem;}
-    .footer span a{color: #fff;}
+    .footer span a{color: #fff;display: block;}
     .icon-duigongzhuanzhang{color: #3bb6ff;}
     .icon-huipiao{color: #c273ff;}
     .icon-xuanzhong-on{color: #3db858;}
@@ -92,25 +92,35 @@
 	  </div>
 	</div>
 	<div class="group">
-	  <div v-for="item in items">
-            <div class="item" v-on:click="setChannel(item.id)" v-bind:class="item.id==active?'on':''" >
-
+	  @foreach($pay_channel as $item)
+	  @if(Auth()->user()->is_vip >= $item->is_vip)
+	  <div >
+            <div class="item" v-on:click="setChannel('{{ $item->id }}')"  >
               <div class="icon">
-            		<i class="iconfont icon-weixinzhifu" v-if="item.id==1"></i>
-            		<i class="iconfont icon-duigongzhuanzhang" v-if="item.id==2"></i>
-            		<i class="iconfont icon-huipiao" v-if="item.id==3"></i>
-            		<i class="iconfont icon-huodaofukuan" v-if="item.id==4"></i>
+                @if($item->id == 1)
+                <i class="iconfont icon-weixinzhifu"></i>
+                @elseif($item->id == 2)
+                <i class="iconfont icon-duigongzhuanzhang"></i>
+                @elseif($item->id == 3)
+                <i class="iconfont icon-huipiao"></i>
+                @else
+                <i class="iconfont icon-huodaofukuan"></i>
+                @endif
               </div>
               <div class="pay-title" >
-		<p class="title">@{{ item.name }}</p>
+		<p class="title">{{ $item->name }}</p>
               </div>
 
               <div class="icon">
-		<i v-bind:class="active==item.id?'iconfont icon-xuanzhong-on':'iconfont icon-xuanzhong' "></i>
+               
+		<i v-bind:class="active=='{{$item->id}}'?'iconfont icon-xuanzhong-on':'iconfont icon-xuanzhong' "></i>
+		 
               </div>
             </div>
 
 	  </div>
+	  @endif
+	  @endforeach
 	</div>
       </div>
       <div class="share"  v-show="share&&out_time">
@@ -122,18 +132,18 @@
         </div>
       </div>
       <div class="footer" v-if="out_time">
-	<span v-if="active==1"  onclick="callpay()">确认支付</span>
-	<span v-if="active==2">
+	<span v-if="active == 1"  onclick="callpay()">确认支付</span>
+	<span v-if="active == 2">
 	  <a href="{{ route("wechat.pay.offline", ["order_id" => $order->id, "type" => 2, "channel_id" => 2]) }}">
 	    确定
 	  </a>
 	</span>
-	<span v-if="active==3">
+	<span v-if="active == 3">
 	  <a href="{{ route("wechat.pay.offline", ["order_id" => $order->id, "type" => 3, "channel_id" => 3]) }}">
 	    确定
 	  </a>
 	</span>
-	<span v-if="active==4">
+	<span v-if="active==4 && is_vip == 1">
 	  <a href="{{ route("wechat.pay.offline", ["order_id" => $order->id, "type" => 4, "channel_id" => 4]) }}">
 	    确定
 	  </a>
@@ -151,6 +161,7 @@
         expire:"",
         out_time:false,
         share:true,
+        is_vip:"{{ Auth()->user()->is_vip }}",
       },
       mounted () {
         countdown(this)

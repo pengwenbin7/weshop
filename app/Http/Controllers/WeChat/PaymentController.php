@@ -36,7 +36,7 @@ class PaymentController extends Controller
         return view("wechat.pay.wait", [
             "json" => $json,
             "order" => $order,
-            "pay_channel" => json_encode($pay_channel),
+            "pay_channel" => $pay_channel,
         ]);
     }
 
