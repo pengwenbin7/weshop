@@ -186,14 +186,26 @@
                 @endif
               </div>
             </div>
-
-
-	  </div>
-
+	         </div>
         @else
           @if ($order->userStatus()["ship"]["status"] == 0)
             <div class="contracts">
-
+              <div class="contracts">
+                <div class="contract">
+                  <span><i>合同信息</i></span>
+                  <div class="btn-click right">
+                    @if (auth()->user()->company)
+                      <a onclick="downloadContract()">
+                        下载合同
+                      </a>
+                    @else
+                      <a href="{{ route("wechat.company.create") }}">
+                        下载合同
+                      </a>
+                    @endif
+                  </div>
+                </div>
+              </div>
               <div class="invoice">
                 <span>
                   <i>发票信息</i>
