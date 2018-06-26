@@ -29,7 +29,7 @@ class CompanyController extends Controller
         if($user->company_id){
           return redirect()->route("wechat.home.index");
         }else{
-          return view("wechat.company.create");
+          return view("wechat.company.create" , ["title" => "我的公司" ] );
         }
     }
 

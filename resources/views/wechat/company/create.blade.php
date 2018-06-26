@@ -1,44 +1,4 @@
 @extends( "layouts.wechat2")
-<style media="screen">
-.company .search{
-  background-color: #FFF;
-  display: flex;
-  display: -webkit-flex;
-  margin-top: .4rem;
-  margin-bottom: .4rem;
-  padding: .2rem .4rem;
-}
-.company .search .txt{
-  flex: 1;
-  -webkit-flex:1;
-}
-.company .search .btn-search{
-  float:right;
-  height: .6rem;
-  width: 2rem;
-  background: none;
-  text-align: right;
-}
-.company .row{
-  background-color: #fff;
-  margin-bottom: .2rem;
-  padding: .4rem;
-}
-.company-name{
-  margin-bottom: .4rem;
-}
-.company .q .btn{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  line-height: 1.2rem;
-  background-color: #009b45;
-  color: #fff;
-  letter-spacing: 3px;
-}
-</style>
 @section( "content")
   <div class="container">
     <div class="company" id = "app" v-cloak>
