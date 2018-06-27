@@ -178,14 +178,6 @@
       },
       changeProvince: function() {
         var $this = this;
-<<<<<<< HEAD
-=======
-        axios.get("/region/children")
-          .then(function(res) {
-            $this.provinces = res.data;
-          });
-
->>>>>>> 71997d99948d7a6c537176cce67f9a39d53ac267
         axios.get("/region/children/" + this.province)
           .then(function(res) {
             $this.cities = res.data;
