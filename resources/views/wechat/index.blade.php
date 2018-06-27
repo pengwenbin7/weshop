@@ -25,7 +25,7 @@
           <span>热卖</span>
 	</div>
 	@foreach($products as $product)
-	  @if ($product->active)
+	  @if ($product->product->active)
 	    <div class="product">
               <a href="{{ route("wechat.product.show", $product->product->id) }}">
 		<div class="prop">
