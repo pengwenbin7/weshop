@@ -60,6 +60,10 @@ Route::resource("product", "Admin\ProductController", [
     ],
 ]);
 
+Route::match(["get", "post"], "product/modifying",
+    "Admin\ProductController@modifying")
+    ->name("admin.product.modifying");
+
 Route::get("order/mine", "Admin\OrderController@mine")
     ->name("admin.order.mine");
 Route::resource("order", "Admin\OrderController", [
