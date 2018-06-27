@@ -57,7 +57,33 @@
               </div>
             </div>
             @elseif($type==4)
-            收到货物确认付款
+              <div class="payul">
+                <div class="pay-way">
+                  <div class="pay-value">
+                    <span class="y">付款金额：<i>{{ $order->payment->pay }}</i></span>
+                  </div>
+                  <div class="pay-name">
+                    <span>收到货物后请将回执单</span>
+                  </div>
+                  <div class="pay-accout">
+                    <span>照片发送到公众号。</span>
+                  </div>
+                  <div class="accout-name">
+                    <span>电话：13601950978</span>
+                  </div>
+                </div> <!---->
+                  <div class="payul-tips">
+                    <p>收到货物后请及时付款，具体支付方式联系销售专员。</p>
+                    <p>有任何疑问请联系您的售后专员。</p>
+                    <p class="green">{{ $user->admin->name }}：{{ $user->admin->mobile }}</p>
+        	    <p><a href="tel:4009955699">客服电话：400-9955-699</a></p>
+                  </div>
+                  <div class="block">
+                    <a href="{{ route("wechat.order.show" , $order->id) }}" class="to-order">
+                                  查看订单
+                        </a>
+                      </div>
+                    </div>
             @endif
     </div>
 @endsection
