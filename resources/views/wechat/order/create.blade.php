@@ -269,11 +269,11 @@
     console.log(func, weight, distance);
     func.area.forEach(function(e, index, array) {
       if (e.low <= weight && weight < e.up) {
-        freight = e.factor * distance + e.const;
+        freight = e.factor * distance * weight / 1000 + e.const;
         return
       }
     });
-    return freight ? freight : func.other.factor * distance + func.other.const;
+    return freight ? freight : func.other.factor * distance * weight / 1000 + func.other.const;
   }
 
   wx.ready(function() {
