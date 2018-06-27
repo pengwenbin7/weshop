@@ -23,6 +23,7 @@ class IndexController extends Controller
                   ->orderBy("buy","desc")
                   ->limit(20)
                   ->get();
+        for ($i = 0; $i < $products->length(); $i++) 
         foreach ($products as $product) {
           if($product->product->is_ton){
             $product->stock = $product->stock * $product->product->content/1000 . "吨";
