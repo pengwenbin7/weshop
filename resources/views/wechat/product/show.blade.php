@@ -128,7 +128,7 @@
           </div>
           <div class="sb-desc">
             <h3>假一赔十</h3>
-            <p>太好买所有非原厂原包商品，假一赔十。</p>
+            <p>非原厂原包商品，假一赔十。</p>
           </div>
         </div>
         <div class="item">

@@ -21,7 +21,7 @@
     <div class="payul-tips">
       <p>太好买需确认收款后才能安排发货。请注意信息提示。有任何疑问请联系您的售后专员。</p>
       <p class="green">{{ $user->admin->name }}：{{ $user->admin->mobile }}</p>
-      <p>客服电话：6888888888888</p>
+      <p><a href="tel:4009955699">客服电话：400-9955-699</a></p>
     </div>
     <div class="block">
       <a href="{{ route("wechat.order.show" , $order->id) }}" class="to-order">
@@ -48,7 +48,7 @@
           <div class="payul-tips">
             <p>太好买需确认收款后才能安排发货。请注意信息提示。有任何疑问请联系您的售后专员。</p>
             <p class="green">{{ $user->admin->name }}：{{ $user->admin->mobile }}</p>
-            <p>客服电话：6888888888888</p>
+	    <p><a href="tel:4009955699">客服电话：400-9955-699</a></p>
           </div>
           <div class="block">
             <a href="{{ route("wechat.order.show" , $order->id) }}" class="to-order">
