@@ -168,59 +168,64 @@
         </div>
       </div>
       <div class="product" v-if="tonTap==0">
-        <div class="item title  clearfix">
-          <span class="p-name">
-               {{ $product->name }}&nbsp;&nbsp; {{ $product->model }}
-          </span>
+        <div class="title">
+          <p><span >{{ $product->name }}</span><span>{{ $product->model }}</span> </p>
+          <p><span >{{ $product->brand->name }}</span></p>
         </div>
-        <div class="item title  clearfix">
-          <span class="p-bname">{{ $product->brand->name }}</span>
-        </div>
-        <div class="item price">
-          <span>价格:</span>
-           <span class="value y">￥@{{ Number(unit_price)*number }}</span>
-        </div>
-         <div class="item  clearfix">
-           <span>库存:</span>
-           <span class="value">{{ $product->stock }}</span>
-         </div>
-        <div class="item  clearfix">
-          <span>重量:</span>
-          <span class="value"><i ref = "productW">@{{ weight }}</i></span>
-          <div class="quantity">
-            <p class="btn-minus">
-              <a class="minus" v-on:click="reduceCartNubmer()"></a>
-            </p>
-            <p class="btn-input">
-              <input type="number" max="{{ $product->variable->stock }}"  name="" ref="goodsNum" step="1" v-model="number" v-on:blur="textCartNumber()"  @keyup="check($event)">
-            </p>
-            <p class="btn-plus">
-              <a class="plus" max="{{ $product->variable->stock }}" v-on:click="addCartNumber($event)"></a>
-            </p>
-          </div>
-        </div>
-        <div class="item clearfix">
-          <span class="value tips">采购@{{ top }}免零售附加费</span>
-        </div>
-      </div>
-      <div class="product" v-if="tonTap==1">
-        <div class="item title  clearfix">
-          <span class="p-name">{{ $product->name }}&nbsp;&nbsp; {{ $product->model }}</span>
-        </div>
-        <div class="item title">
-          <span class="p-bname">{{ $product->brand->name }}</span>
-        </div>
-        <div class="item price">
-          <span>价格:</span>
+
+        <div class="item">
+          <span>金额:</span>
           <span class="value y">￥@{{ Number(unit_price)*number }}</span>
         </div>
         <div class="item">
           <span>库存:</span>
           <span class="value">{{ $product->stock }}</span>
         </div>
-        <div class="item clearfix">
-          <span>重量:</span>
-          <span class="value"><i >@{{ ton_num }}</i>吨</span>
+
+        <div class="inputarea clearfix">
+          <div class="i-left">
+            <p><span>重量:</span><span class="value">@{{ weight }}</span></p>
+            <p><span class="tip">采购@{{ top }}免零售附加费</span></p>
+          </div>
+
+          <div class="quantity">
+            <p class="btn-minus">
+              <a class="minus" v-on:click="reduceCartNubmer()"></a>
+            </p>
+            <p class="btn-input">
+              <input type="number" max="{{ $product->variable->stock }}" step="1" ref="goodsNum" v-model="number" v-on:blur="textCartNumber()"  @keyup="check($event)" >
+            </p>
+            <p class="btn-plus">
+              <a class="plus"  max="{{ $product->variable->stock }}" v-on:click="addCartNumber($event)"></a>
+            </p>
+          </div>
+        </div>
+
+
+
+      </div>
+      <div class="product" v-if="tonTap==1">
+        <div class="title">
+          <p><span >{{ $product->name }}</span><span>{{ $product->model }}</span> </p>
+          <p><span >{{ $product->brand->name }}</span></p>
+        </div>
+
+        <div class="item">
+          <span>金额:</span>
+          <span class="value y">￥@{{ Number(unit_price)*number }}</span>
+        </div>
+        <div class="item">
+          <span>库存:</span>
+          <span class="value">{{ $product->stock }}</span>
+        </div>
+
+
+        <div class="inputarea clearfix">
+          <div class="i-left">
+            <p><span>重量:</span><span class="value">@{{ ton_num }}吨</span></p>
+            <p><span class="tip">采购@{{ top }}免零售附加费</span></p>
+          </div>
+
           <div class="quantity">
             <p class="btn-minus">
               <a class="minus" v-on:click="reduceCartNubmer()"></a>
@@ -233,9 +238,7 @@
             </p>
           </div>
         </div>
-        <div class="item clearfix">
-          <span class="value tips">采购@{{ top }}免零售附加费</span>
-        </div>
+
       </div>
       <div class="gb-footer">
         <div class="addtocart" v-on:click="choseAddr">
