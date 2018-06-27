@@ -29,7 +29,11 @@ class ProductController extends Controller
             ->where("keyword", "like", "%$name%")
             ->orderBy("id", "desc")
             ->paginate($limit);
-        return view("admin.product.index", ["products" => $products,'name'=>$name,'limit'=>$limit]);
+        return view("admin.product.index", [
+                    "products" => $products,
+                    'name' => $name,
+                    'limit' => $limit
+        ]);
     }
 
     /**
@@ -125,7 +129,8 @@ class ProductController extends Controller
             "brands" => Brand::select("id", "name")->get(),
         ]);
     }
-//修改价格和库存
+    
+    //修改价格和库存
     public function modifying(Request $request)
     {
         if (!empty($request->number) && !empty($request->id)) {   //修改库存
@@ -146,14 +151,12 @@ class ProductController extends Controller
             if(!empty($user) && $user->unit_price != $request->price){
                 $variable->product_id=$cust->id;
                 $variable->unit_price=$user->unit_price;
-                $variable->created_at=date('Y-m-d H:i:s',time());
-                $variable->updated_at=date('Y-m-d H:i:s',time());
                 DB::beginTransaction();
                 try{
                     $variable->save();
                     $user->update(['unit_price'=>$content]);
                     DB::commit();
-                    return response()->json(['status'=>'ok','info'=>"修改成功！",'un_price'=>$content]);
+                    return ['status' => 'ok', 'info' => "修改成功！", 'un_price' => $content];
                     //中间逻辑代码
                     DB::commit();
                 }catch (\Exception $e) {
@@ -165,7 +168,7 @@ class ProductController extends Controller
                 return response()->json(['status'=>'error','msg'=>"修改失败！"]);
             }
         }
-        return response()->json(['status'=>'error','msg'=>"修改失败！"]);
+        return ['status'=>'error','msg'=>"修改失败！"];
     }
 
     /**
