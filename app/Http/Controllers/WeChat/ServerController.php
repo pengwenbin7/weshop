@@ -32,7 +32,7 @@ class ServerController extends Controller
                         'title'       => "搜索结果-太好买",
                         'description' => "点击查看搜索结果",
                         'url'         => $url,
-                        'image'       => asset("assets/img/search_result.png"),
+                        'image'       => asset("assets/img/search.jpg"),
                     ]),
                 ];
                 $news = new News($items);
