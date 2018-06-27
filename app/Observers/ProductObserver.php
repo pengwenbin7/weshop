@@ -23,7 +23,14 @@ class ProductObserver
             $product->measure_unit,
             $product->packing_unit,
         ];
-        $product->unique_code = dechex(sprintf("%u", crc32(implode("", $arr))));
+        $code = dechex(sprintf("%u", crc32(implode("", $arr))));
+        
+        if (Product::where("unique_code", "=", $code)->get()->isNotEmpty()) {
+            return false;
+        } else {
+            $product->unique_code = $code;
+        }
+                           
     }
 
     public function saved(Product $product)

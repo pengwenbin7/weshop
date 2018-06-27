@@ -14,22 +14,22 @@
 	<div class="row">
 	  <div class="col-sm-6">
 	    <div class="dataTables_length">
-			<form action="{{ url()->current() }}">
-	      <label>
-		每页
-		<select name="limit" class="form-control input-sm">
-		  <option value="10">10</option>
-		  <option value="25">25</option>
-		  <option value="50">50</option>
-		  <option value="100">100</option>
-		</select>
-		条
-	      </label>
-	      <label>
-		<input class="form-control input-sm" name="name" value="{{ $name }}" placeholder="" type="search">
-		<button>搜索</button>
-	      </label>
-			</form>
+	      <form action="{{ url()->current() }}">
+		<label>
+		  每页
+		  <select name="limit" class="form-control input-sm">
+		    <option value="10">10</option>
+		    <option value="25">25</option>
+		    <option value="50">50</option>
+		    <option value="100">100</option>
+		  </select>
+		  条
+		</label>
+		<label>
+		  <input class="form-control input-sm" name="name" value="{{ $name }}" placeholder="" type="search">
+		  <button>搜索</button>
+		</label>
+	      </form>
 	    </div>
 	  </div>
 	</div>
@@ -62,22 +62,22 @@
 		    <td>{{ $item->model }}</td>
 		    <td>{{ $item->category()->name }}</td>
 		    <td>{{ $item->storage->name }}</td>
-			<td>{{ $item->content }}-{{ $item->measure_unit }}</td>
-			<td>{{ $item->packing_unit }}</td>
+		    <td>{{ $item->content }}-{{ $item->measure_unit }}</td>
+		    <td>{{ $item->packing_unit }}</td>
 		    <td ondblclick="stock({{ $item->variable->id }})">
-                <input type="number" disabled="true" onblur="onclnum({{ $item->variable->id }},{{ $item->variable }})" style="width:100%;height:100%;border:none" value="{{ $item->variable->stock }}" id="number{{ $item->variable->id }}">
+                      <input type="number" disabled="true" onblur="onclnum({{ $item->variable->id }},{{ $item->variable }})" style="width:100%;height:100%;border:none" value="{{ $item->variable->stock }}" id="number{{ $item->variable->id }}">
 		    </td>
 		    <td id="un{{ $item->id }}">
-                {{ $item->variable->unit_price }}
-			</td>
+                      {{ $item->variable->unit_price }}
+		    </td>
 		    <td ondblclick="myprice({{ $item->id }})">
-			  @if ($item->is_ton)
+		      @if ($item->is_ton)
 
-             <input type="number" disabled="true" onblur="onprice({{ $item->id }},{{ $item->variable->unit_price }})" style="width:100%;height:100%;border:none" value="{{ round($item->variable->unit_price * 1000 / $item->content,2) }}" id="price{{ $item->id }}">
+			<input type="number" disabled="true" onblur="onprice({{ $item->id }},{{ $item->variable->unit_price }})" style="width:100%;height:100%;border:none" value="{{ round($item->variable->unit_price * 1000 / $item->content,2) }}" id="price{{ $item->id }}">
 
-			  @else
-				  --
-			  @endif
+		      @else
+			--
+		      @endif
 		    </td>
 		    <td>
 		      @if ($item->active)
@@ -109,56 +109,56 @@
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
   <script>
-      var number=0;
-      function stock(obj){
-          $("#number"+obj).attr("disabled", false);
-          number = $("#number"+obj).val();
-      }
-      var fprice=0;
-      function myprice(obj){
-          $("#price"+obj).attr("disabled", false);
-          fprice = $("#price"+obj).val();
-      }
-      //修改库存
-      function onclnum(obj,item)
-	  {
-	      var number = $('#number'+obj).val();
-	      var onurl = "{{ route('admin.product.modifying') }}";
-		  var data = {id:obj,number:number,item:JSON.stringify(item)};
-	      axios.post(onurl,data)
-			  .then(function (res) {
-			      if(res.status == 200){
-                      var p = res.data;
-                      if(p.status == 'ok'){
-                      }else{
-                         $('#number'+obj).val(number);
-                      }
-				  }else{
-                      $('#number'+obj).val(number);
-				  }
-                  $("#number"+obj).attr("disabled", true);
-          })
-	  }
-	  //修改价格
-      function onprice(obj,un_price)
-      {
-          var price = $('#price'+obj).val();//吨价
-          var onurl = "{{ route('admin.product.modifying') }}";
-          var data = {id:obj,price:price,un_price:un_price};
-          axios.post(onurl,data)
-              .then(function (res) {
-                  if(res.status == 200){
-                      var p = res.data;
-                      if(p.status == 'ok'){
-                          $('#un'+obj).text(p.un_price);
-                      }else{
-                          $('#price'+obj).val(fprice);
-                      }
-                  }else{
-                      $('#price'+obj).val(fprice);
-                  }
-                  $("#price"+obj).attr("disabled", true);
-              })
-      }
+  var number=0;
+  function stock(obj){
+    $("#number"+obj).attr("disabled", false);
+    number = $("#number"+obj).val();
+  }
+  var fprice=0;
+  function myprice(obj){
+    $("#price"+obj).attr("disabled", false);
+    fprice = $("#price"+obj).val();
+  }
+  //修改库存
+  function onclnum(obj,item)
+  {
+    var number = $('#number'+obj).val();
+    var onurl = "{{ route('admin.product.modifying') }}";
+    var data = {id:obj,number:number,item:JSON.stringify(item)};
+    axios.post(onurl,data)
+      .then(function (res) {
+	if(res.status == 200){
+          var p = res.data;
+          if(p.status == 'ok'){
+          }else{
+            $('#number'+obj).val(number);
+          }
+	}else{
+          $('#number'+obj).val(number);
+	}
+        $("#number"+obj).attr("disabled", true);
+      })
+  }
+  //修改价格
+  function onprice(obj,un_price)
+  {
+    var price = $('#price'+obj).val();//吨价
+    var onurl = "{{ route('admin.product.modifying') }}";
+    var data = {id:obj,price:price,un_price:un_price};
+    axios.post(onurl,data)
+      .then(function (res) {
+        if(res.status == 200){
+          var p = res.data;
+          if(p.status == 'ok'){
+            $('#un'+obj).text(p.un_price);
+          }else{
+            $('#price'+obj).val(fprice);
+          }
+        }else{
+          $('#price'+obj).val(fprice);
+        }
+        $("#price"+obj).attr("disabled", true);
+      })
+  }
   </script>
 @endsection

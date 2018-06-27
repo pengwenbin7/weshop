@@ -19,7 +19,11 @@ class IndexController extends Controller
             "chooseImage", "previewImage",
             "uploadImage", "downloadImage",
         ];
-        $products = ProductVariable::with("product")->orderBy("buy","desc")->limit(10)->get();
+        $products = ProductVariable::with("product")
+                  ->where("active", "=", 1)
+                  ->orderBy("buy","desc")
+                  ->limit(10)
+                  ->get();
         foreach ($products as $product) {
           if($product->product->is_ton){
             $product->stock = $product->stock * $product->product->content/1000 . "吨";
