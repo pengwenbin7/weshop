@@ -127,12 +127,13 @@
 	</div>
       </div>
       <div class="share"  v-show="share&&out_time">
-        <div class="close" @click="share=false">
-          <span>×</span>
+        <div class="mask" @click="share=false">
         </div>
         <div class="s-info">
-           <span>分享订单获得减免</span>
+          <i class="iconfont icon-shouzhi"></i><br/>
+           <span>点击此处分享</span>
         </div>
+        <div class="close"  @click="share=false"><i class="iconfont icon-tianjia"></i></div>
       </div>
       <div class="footer" v-if="out_time">
 	<span v-if="active == 1"  onclick="callpay()">确认支付</span>
@@ -163,7 +164,7 @@
         active: 1,
         expire:"",
         out_time:false,
-        share:true,
+        share:false,
         is_vip:"{{ Auth()->user()->is_vip }}",
       },
       mounted () {
