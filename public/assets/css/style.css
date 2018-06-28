@@ -1723,6 +1723,7 @@
   top: 20%;
   left: 10%;
   width: 80%;
+  z-index: 2;
 }
 .express-box .express{
   background-color: #fff;
@@ -1823,24 +1824,24 @@
   font-size: .3rem;
 }
 
-.order-detail .footer {
+.order-detail.footer {
   padding: .3rem .4rem;
   height: 1.2rem;
   box-shadow: none;
   border-top: 1px solid #eee;
 }
 
-.order-detail .footer .item {
+.order-detail.footer .item {
   text-align: right;
   line-height: .6rem;
 }
 
-.order-detail .footer .item.price {
+.order-detail.footer .item.price {
   text-align: left;
   font-weight: bold;
 }
 
-.order-detail .footer .item .btn-click {
+.order-detail.footer .item .btn-click {
   display: inline-block;
   border: 1px solid #000;
   height: .6rem;

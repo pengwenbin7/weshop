@@ -17,4 +17,9 @@ class ShipmentItem extends Model
     {
         return $this->belongsTo("App\Models\Shipment");
     }
+
+    public function storage()
+    {
+        return $this->belongsTo("App\Models\Storage");
+    }
 }

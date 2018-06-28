@@ -14,6 +14,7 @@ use App\Models\Category;
 use App\Models\Storage;
 use App\Events\ProductPriceChangedEvent;
 use Illuminate\Support\Facades\DB;
+
 class ProductController extends Controller
 {
     /**

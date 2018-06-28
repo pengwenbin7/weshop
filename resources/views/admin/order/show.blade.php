@@ -7,6 +7,23 @@
       </div>
       <div class="form-horizontal">
 	<div class="box-body">
+
+	  <div class="form-group">
+	    <label class="col-sm-2 control-label">产品明细</label>
+	    <div class="col-sm-10">
+	      @foreach ($order->orderItems as $item)
+		<ul>
+		  <li>品名：{{ $item->product_name }}</li>
+		  <li>型号：{{ $item->model }}</li>
+		  <li>品牌：{{ $item->brand_name }}</li>
+		  <li>数量：{{ $item->number }} {{ $item->packing_unit }}</li>
+		  <li>单价：{{ $item->price }}</li>
+		  <li>仓库：{{ $item->storage->name }}</li>
+		</ul>
+	      @endforeach
+	    </div>
+	  </div>
+
 	  <div class="form-group">
 	    <label for="no" class="col-sm-2 control-label">订单号</label>
 	    <div class="col-sm-10">
