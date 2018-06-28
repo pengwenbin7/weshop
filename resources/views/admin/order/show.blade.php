@@ -97,22 +97,14 @@
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">采购状态</label>
 	    <div class="col-sm-10">
-	      @if ($order->shipment && $order->shipment->purchase)
-		已采购
-	      @else
-		未采购
-	      @endif
+	      {{ $order->userStatus()["purchase"]["status"] }}
             </div>
 	  </div>
 
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">发货状态</label>
 	    <div class="col-sm-10">
-	      @if ($order->shipment && $order->shipment->status)
-		已发货
-	      @else
-		未发货
-	      @endif
+	      {{ $order->userStatus()["ship"]["status"] }}
 	    </div>
           </div>
 
