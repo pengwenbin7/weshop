@@ -6,7 +6,7 @@
     <div class="box-header">
       <h3 class="box-title">产品列表</h3>
       <h3 class="box-title">
-	<a href="{{ route("admin.product.create") }}">添加</a>
+	<a href="{{ route("admin.product.create","limit=".$limit ."&name=".$name) }}">添加</a>
       </h3>
     </div>
     <div class="box-body">
@@ -17,12 +17,12 @@
 	      <form action="{{ url()->current() }}">
 		<label>
 		  每页
-		  <select name="limit" class="form-control input-sm">
-		    <option value="10">10</option>
-		    <option value="25">25</option>
-		    <option value="50">50</option>
-		    <option value="100">100</option>
-		  </select>
+            <select name="limit" class="form-control input-sm">
+                <option value="10" {{ $limit == 10 ? 'selected':'' }}>10</option>
+                <option value="25" {{ $limit == 25 ? 'selected':'' }}>25</option>
+                <option value="50" {{ $limit == 50 ? 'selected':'' }}>50</option>
+                <option value="100" {{ $limit == 100 ? 'selected':'' }}>100</option>
+            </select>
 		  条
 		</label>
 		<label>

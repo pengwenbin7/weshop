@@ -41,8 +41,10 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $data["limit"] = $request->input("limit", '');
+        $data["name"] = $request->input("name", '');
         $data["categories"] = Category::all();
         $data["brands"] = Brand::all();
         $data["storages"] = Storage::all();
@@ -57,6 +59,11 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        /*
+         * 搜索参数 limit 显示条数 name搜索参数
+         */
+        $name = $request->sname;
+        $limit = $request->limit;
         $product = new Product();
         $product->locale_id = $request->input("locale_id", 1);
         $product->name = $request->name;
@@ -68,7 +75,7 @@ class ProductController extends Controller
         $product->packing_unit = $request->packing_unit;
         $product->sort_order = $request->input("sort_order", 1000);
         $product->active = $request->active;
-        
+
         if (!$product->save()) {
             return ["err" => "save product error"];
         }
@@ -78,21 +85,21 @@ class ProductController extends Controller
             "product_id" => $product->id,
             "unit_price" => $request->unit_price,
         ]);
-        
+
         // save product category
         ProductCategory::create([
             "product_id" => $product->id,
             "category_id" => $request->input("category_id"),
             "is_primary" => 1,
         ]);
-        
+
         // save product variable
         ProductVariable::create([
             "product_id" => $product->id,
             "unit_price" => $request->unit_price,
             "stock" => $request->input("stock", 0),
         ]);
-        
+
         $detail = $request->input("detail", false);
         if ($detail) {
             ProductDetail::create([
@@ -100,8 +107,8 @@ class ProductController extends Controller
                 "content" => $detail,
             ]);
         }
-        
-        return redirect()->route("admin.product.index");
+
+        return redirect()->route("admin.product.index",['name' => $name,'limit' => $limit]);
     }
 
     /**
