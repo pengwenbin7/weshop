@@ -97,14 +97,14 @@
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">采购状态</label>
 	    <div class="col-sm-10">
-	      {{ $order->userStatus()["purchase"]["status"] }}
+	      {{ $order->userStatus()["purchase"]["detail"] }}
             </div>
 	  </div>
 
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">发货状态</label>
 	    <div class="col-sm-10">
-	      {{ $order->userStatus()["ship"]["status"] }}
+	      {{ $order->userStatus()["ship"]["detail"] }}
 	    </div>
           </div>
 
