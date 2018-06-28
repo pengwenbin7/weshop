@@ -7,6 +7,23 @@
       </div>
       <div class="form-horizontal">
 	<div class="box-body">
+
+	  <div class="form-group">
+	    <label class="col-sm-2 control-label">订单明细</label>
+	    <div class="col-sm-10">
+	      @foreach ($order->orderItems as $item)
+		<ul>
+		  <li>品名：<a href="{{ route('admin.product.show', $item->product_id) }}">{{ $item->product_name }}</a></li>
+		  <li>型号：{{ $item->model }}</li>
+		  <li>品牌：{{ $item->brand_name }}</li>
+		  <li>数量：{{ $item->number }} {{ $item->packing_unit }}</li>
+		  <li>单价：{{ $item->price }}</li>
+		  <li>仓库：<a href="{{ route('admin.storage.show', $item->storage_id) }}">{{ $item->storage->name }}</a></li>
+		</ul>
+	      @endforeach
+	    </div>
+	  </div>
+
 	  <div class="form-group">
 	    <label for="no" class="col-sm-2 control-label">订单号</label>
 	    <div class="col-sm-10">
