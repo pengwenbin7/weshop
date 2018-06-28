@@ -41,7 +41,6 @@ class OrderPaidListener
             ]);
         }
 
-        $order->status = Order::ORDER_STATUS_DOING;        
         $order->save();
         $canShip = [Order::PAY_STATUS_DONE, Order::PAY_STATUS_AFTER,
                     Order::PAY_STATUS_PART];
