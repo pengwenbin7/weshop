@@ -94,18 +94,10 @@
 		      @endswitch
 		    </td>
 		    <td>
-		      @if ($order->shipment && $order->shipment->status)
-			已完成
-		      @else
-			未采购
-		      @endif
+		      {{ $order->userStatus()["purchase"]["detail"] }}
 		    </td>
 		    <td>
-		      @if ($order->shipment && $order->shipment->status)
-			已发货
-		      @else
-			未发货
-		      @endif
+		      {{ $order->userStatus()["ship"]["detail"] }}
 		    </td>
 		    <td><a href="{{ route("admin.order.show", ["id" => $order->id]) }}">详细</a></td>
 		  </tr>

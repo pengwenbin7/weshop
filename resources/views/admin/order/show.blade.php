@@ -7,6 +7,23 @@
       </div>
       <div class="form-horizontal">
 	<div class="box-body">
+
+	  <div class="form-group">
+	    <label class="col-sm-2 control-label">订单明细</label>
+	    <div class="col-sm-10">
+	      @foreach ($order->orderItems as $item)
+		<ul>
+		  <li>品名：{{ $item->product_name }}</li>
+		  <li>型号：{{ $item->model }}</li>
+		  <li>品牌：{{ $item->brand_name }}</li>
+		  <li>数量：{{ $item->number }} {{ $item->packing_unit }}</li>
+		  <li>单价：{{ $item->price }}</li>
+		  <li>仓库：{{ $item->storage->name }}</li>
+		</ul>
+	      @endforeach
+	    </div>
+	  </div>
+
 	  <div class="form-group">
 	    <label for="no" class="col-sm-2 control-label">订单号</label>
 	    <div class="col-sm-10">
@@ -97,22 +114,14 @@
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">采购状态</label>
 	    <div class="col-sm-10">
-	      @if ($order->shipment && $order->shipment->purchase)
-		已采购
-	      @else
-		未采购
-	      @endif
+	      {{ $order->userStatus()["purchase"]["detail"] }}
             </div>
 	  </div>
 
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">发货状态</label>
 	    <div class="col-sm-10">
-	      @if ($order->shipment && $order->shipment->status)
-		已发货
-	      @else
-		未发货
-	      @endif
+	      {{ $order->userStatus()["ship"]["detail"] }}
 	    </div>
           </div>
 

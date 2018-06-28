@@ -26,7 +26,7 @@ class Shipment extends Model
     {
         return $this->belongsTo("App\Models\Order");
     }
-    
+
     public function shipmentItems()
     {
         return $this->hasMany("App\Models\ShipmentItem");

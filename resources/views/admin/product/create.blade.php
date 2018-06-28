@@ -132,6 +132,8 @@
             </div>
 	  </div>
 	</div>
+		  <input type="hidden" value="{{ $limit }}" name="limit">
+		  <input type="hidden" value="{{ $name }}" name="sname">
 	<div class="box-footer">
 	  <button type="submit" class="btn btn-info btn-block">确定</button>
 	</div>

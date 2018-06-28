@@ -119,11 +119,36 @@ class Order extends Model
 
         $shipments = $this->shipments;
         $shipped = 0;
+        $purchased = 0;
         $total = 0;
         foreach ($shipments as $s) {
+            $purchased += $s->purchase;
             $shipped += $s->status;
             $total++;
         }
+        
+        if (0 == $purchased) {
+            $status["purchase"] = [
+                "status" => 0,
+                "detail" => "未采购",
+            ];
+        } elseif ($purchased > 0 && $purchased < $total) {
+            $status["purchase"] = [
+                "status" => 1,
+                "detail" => "部分采购",
+            ];            
+        } elseif ($purchased == $total) {
+            $status["purchase"] = [
+                "status" => 2,
+                "detail" => "完成采购",
+            ];            
+        } else {
+            $status["ship"] = [
+                "status" => -1,
+                "detail" => "未知",
+            ];            
+        }
+        
         if (0 == $shipped) {
             $status["ship"] = [
                 "status" => 0,
