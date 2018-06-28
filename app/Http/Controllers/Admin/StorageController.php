@@ -156,6 +156,9 @@ class StorageController extends Controller
         $storage->brand_id = $request->brand_id;
         $storage->active = $request->input("active", true);
         $storage->description = $request->input("description", null);
+        $func = $request->func ??
+              Config::where("key", "=", "storage.func")->first()->value;
+        $storage->func = $request->input("func", $func);
         $storage->save();
         return redirect()->route("admin.storage.index");
     }

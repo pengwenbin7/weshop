@@ -62,7 +62,7 @@
 		    <td>{{ $order->adminUser->name }}</td>
 		    <td>{{ $order->created_at }}</td>
 		    <td>
-		      @if ($order->acitve)
+		      @if ($order->active)
 			有效
 		      @else
 			无效
