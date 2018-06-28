@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Shipment;
 use App\Models\Department;
+use EasyWeChat;
 
 class ShipmentPurchased implements ShouldQueue
 {
