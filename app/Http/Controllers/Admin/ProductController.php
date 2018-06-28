@@ -108,7 +108,7 @@ class ProductController extends Controller
             ]);
         }
 
-        return redirect()->route("admin.product.index",['name' => $name,'limit' => $limit]);
+        return redirect()->route("admin.product.index", ['name' => $name, 'limit' => $limit]);
     }
 
     /**
