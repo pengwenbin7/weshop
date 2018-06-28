@@ -220,6 +220,7 @@
 
       wx.onMenuShareAppMessage({
         title: "太好买化工品交易平台-厂家直销，优惠多多",
+        desc: '太好买太好买太好买太好买太好买太好买太好买太好买太好买', // 分享描述
         link: "{{ route("wechat.index", ["rec" => auth()->user()->rec_code]) }}",
         imgUrl: "{{asset("assets/img/logo.png")}}",
           success: function () {
