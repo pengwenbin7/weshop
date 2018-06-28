@@ -11,12 +11,12 @@
 	<div class="box-body">
 	  @foreach ($shipment->shipmentItems as $item)
 	    <ul>
-	      <li>品名：<a href="{{ route('admin.product.show', $item->product_id) }}">{{ $item->product_name }}</a></li>
+	      <li>品名：{{ $item->product_name }}</li>
 	      <li>型号：{{ $item->model }}</li>
 	      <li>品牌：{{ $item->brand_name }}</li>
 	      <li>数量：{{ $item->number }} {{ $item->packing_unit }}</li>
 	      <li>单价：{{ $item->price }}</li>
-	      <li>仓库：<a href="{{ route('admin.storage.show', $item->storage_id) }}">{{ $item->storage->name }}</a></li>
+	      <li>仓库：{{ $item->storage->name }}</li>
 	    </ul>
 	  @endforeach
 

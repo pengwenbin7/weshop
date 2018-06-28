@@ -27,11 +27,6 @@ class Shipment extends Model
         return $this->belongsTo("App\Models\Order");
     }
 
-    public function storage()
-    {
-        return $this->belongsTo("App\Models\Storage");
-    }
-    
     public function shipmentItems()
     {
         return $this->hasMany("App\Models\ShipmentItem");
