@@ -76,7 +76,9 @@ class Order extends Model
         return $this->active == 0;
     }
 
-    // 订单状态
+    /**
+     * 订单状态 + 付款状态 + 发货状态
+     */
     public function userStatus()
     {
         // 活动状态
@@ -114,33 +116,36 @@ class Order extends Model
             "status" => $this->payment_status,
             "detail" => $payString,
         ];
-        
-        // 采购状态
-        $shipment = $this->shipment;
-        if ($shipment && $shipment->purchase) {
-            $status["purchase"] = [
-                "status" => 1,
-                "detail" => "已采购",
-            ];
-        } else {
-            $status["purchase"] = [
-                "status" => 0,
-                "detail" => "未采购",
-            ];
+
+        $shipments = $this->shipments;
+        $shipped = 0;
+        $total = 0;
+        foreach ($shipments as $s) {
+            $shipped += $s->status;
+            $total++;
         }
-        
-        // 发货状态
-        if ($shipment && $shipment->status) {
-            $status["ship"] = [
-                "status" => 1,
-                "detail" => "已发货",
-            ];
-        } else {
+        if (0 == $shipped) {
             $status["ship"] = [
                 "status" => 0,
                 "detail" => "未发货",
             ];
+        } elseif ($shipped > 0 && $shipped < $total) {
+            $status["ship"] = [
+                "status" => 1,
+                "detail" => "部分发货",
+            ];            
+        } elseif ($shipped == $total) {
+            $status["ship"] = [
+                "status" => 2,
+                "detail" => "已发货",
+            ];            
+        } else {
+            $status["ship"] = [
+                "status" => -1,
+                "detail" => "未知",
+            ];            
         }
+        
         return $status;
     }
 
