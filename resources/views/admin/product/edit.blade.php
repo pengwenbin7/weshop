@@ -8,7 +8,7 @@
   <div class="col-md-6">
     <div class="box box-info">
       <div class="box-header with-border">
-	<h3 class="box-title"><a href="{{ route("admin.product.index") }}">产品列表</a></h3>
+	<h3 class="box-title"><a href="{{ route("admin.product.index",['name' => $name,'limit' => $limit]) }}">产品列表</a></h3>
 	<h3 class="box-title">编辑</h3>
       </div>
       <form class="form-horizontal" action="{{ route("admin.product.update", $product) }}" method="POST">
@@ -167,6 +167,8 @@
 	      </textarea>
             </div>
 	  </div>
+		<input type="hidden" value="{{ $limit }}" name="limit">
+		<input type="hidden" value="{{ $name }}" name="sname">
 	</div>
 	<div class="box-footer">
 	  <button type="submit" class="btn btn-info btn-block">确定</button>

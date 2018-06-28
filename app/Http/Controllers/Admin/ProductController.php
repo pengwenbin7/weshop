@@ -107,7 +107,6 @@ class ProductController extends Controller
                 "content" => $detail,
             ]);
         }
-
         return redirect()->route("admin.product.index",['name' => $name,'limit' => $limit]);
     }
 
@@ -128,9 +127,11 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Request $request,Product $product)
     {
         return view("admin.product.edit", [
+            "name" => $request->name,
+            "limit" => $request->limit,
             "product" => $product,
             "categories" => Category::select("id", "name")->get(),
             "brands" => Brand::select("id", "name")->get(),
@@ -145,9 +146,9 @@ class ProductController extends Controller
             $variable->stock = $request->number;
             $is_null = $variable->update();
             if(!empty($is_null)){
-                return response()->json(['status'=>'info','msg'=>"修改成功！"]);
+                return ['status'=>'info','msg'=>"修改成功！"];
             }else{
-                return response()->json(['status'=>'error','msg'=>"修改失败！"]);
+                return ['status'=>'error','msg'=>"修改失败！"];
             }
         }
         if (!empty($request->price) && !empty($request->id) && !empty($request->un_price)) { //修改价格
@@ -169,10 +170,10 @@ class ProductController extends Controller
                 }catch (\Exception $e) {
                     //接收异常处理并回滚
                     DB::rollBack();
-                    return response()->json(['status'=>'error','msg'=>"修改失败！"]);
+                    return ['status'=>'error','msg'=>"修改失败！"];
                 }
             }else{
-                return response()->json(['status'=>'error','msg'=>"修改失败！"]);
+                return ['status'=>'error','msg'=>"修改失败！"];
             }
         }
         return ['status'=>'error','msg'=>"修改失败！"];
@@ -188,6 +189,8 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         // update product
+        $name = $request->sname;
+        $limit = $request->limit;
         $product->locale_id = $request->input("locale_id", 1);
         $product->name = $request->name;
         $product->brand_id = $request->brand_id;
@@ -233,8 +236,7 @@ class ProductController extends Controller
             $detail->content = $request->detail;
             $detail->save();
         }
-
-        return redirect()->route("admin.product.index");
+        return redirect()->route("admin.product.index",['name' => $name,'limit' => $limit]);
     }
 
     /**

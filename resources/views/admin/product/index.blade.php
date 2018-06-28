@@ -6,7 +6,7 @@
     <div class="box-header">
       <h3 class="box-title">产品列表</h3>
       <h3 class="box-title">
-	<a href="{{ route("admin.product.create","limit=".$limit ."&name=".$name) }}">添加</a>
+	<a href="{{ route("admin.product.create",['limit' => $limit, 'name' => $name]) }}">添加</a>
       </h3>
     </div>
     <div class="box-body">
@@ -87,7 +87,7 @@
 		      @endif
 		    </td>
 		    <td>
-		      <a href="{{ route("admin.product.edit", $item) }}">编辑</a>
+		      <a href="{{ route("admin.product.edit", ['item' => $item, 'limit' => $limit, 'name' => $name]) }}">编辑</a>
 		      &nbsp;|&nbsp;
 		      <a href="{{ route("admin.product.show", $item) }}">详细</a>
 		    </td>
