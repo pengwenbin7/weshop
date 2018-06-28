@@ -9,7 +9,7 @@
 	<div class="box-body">
 
 	  <div class="form-group">
-	    <label class="col-sm-2 control-label">订单明细</label>
+	    <label class="col-sm-2 control-label">产品明细</label>
 	    <div class="col-sm-10">
 	      @foreach ($order->orderItems as $item)
 		<ul>
