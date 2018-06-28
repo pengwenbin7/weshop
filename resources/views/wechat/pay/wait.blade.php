@@ -205,7 +205,7 @@
     wx.ready(function () {
       wx.onMenuShareTimeline({
       	title: "太好买化工品交易平台-厂家直销，优惠多多",
-      	link: "{{ route("wechat.index", ["rec" => auth()->user()->rec_code]) }}",
+      	link: "{{ route("wechat.product.show",$order->orderItems->first()->product_id) }}",
       	imgUrl: "{{asset("assets/img/logo.png")}}",
       	success: function () {
           axios.post("{{ route("wechat.order.share", $order) }}")
@@ -220,8 +220,7 @@
 
       wx.onMenuShareAppMessage({
         title: "太好买化工品交易平台-厂家直销，优惠多多",
-        desc: '太好买太好买太好买太好买太好买太好买太好买太好买太好买', // 分享描述
-        link: "{{ route("wechat.index", ["rec" => auth()->user()->rec_code]) }}",
+        link: "{{ route("wechat.product.show",$order->orderItems->first()->product_id) }}",
         imgUrl: "{{asset("assets/img/logo.png")}}",
           success: function () {
               // 用户确认分享后执行的回调函数
