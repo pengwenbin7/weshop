@@ -40,7 +40,7 @@
 		<span>商品信息</span>
               </div>
               <div class="item express">
-		<span class="btn" @click='express'  data-express="{'name':'张三','tel':'18949150120','licence_plate':'沪A-88888'}">查看物流</span>
+		<span class="btn" @click='express'  data-express="{'name':'{{ $shipment->name }}','tel':'{{ $shipment->contact_phone }}','licence_plate':'{{ $shipment->licence_plate }}'}">查看物流</span>
               </div>
 	    </div>
 	    @foreach ($shipment->shipmentItems as $item)
@@ -190,7 +190,6 @@
         @else
           @if ($order->userStatus()["ship"]["status"] == 0)
             <div class="contracts">
-              <div class="contracts">
                 <div class="contract">
                   <span><i>合同信息</i></span>
                   <div class="btn-click right">
@@ -205,7 +204,6 @@
                     @endif
                   </div>
                 </div>
-              </div>
               <div class="invoice">
                 <span>
                   <i>发票信息</i>
@@ -324,6 +322,9 @@
 	  @endif
 	</div>
       </div>
+
+
+
       <div class="express-box" v-if="express_box" v-cloak>
 	<div class="mask" @click="express_box=false">
 	</div>
@@ -340,11 +341,14 @@
               <p>车牌：
 		@{{ licence_plate }}</p>
             </div>
+             @if (auth()->user()->admin)
             <p>有疑问请联系销售专员</p>
             <p class="green"> {{ auth()->user()->admin->name }}： <a href="tel:{{ auth()->user()->admin->mobile }}"></a> {{ auth()->user()->admin->mobile }}</p>
+             @endif
           </div>
 	</div>
       </div>
+
     </div>
   </div>
 @endsection
