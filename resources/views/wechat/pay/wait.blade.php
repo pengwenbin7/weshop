@@ -34,7 +34,7 @@
     .icon-huipiao{color: #c273ff;}
     .icon-xuanzhong-on{color: #3db858;}
     .icon-huodaofukuan{color: #16c2c2;}
-    .share{position: fixed;bottom: 1.4rem; left: 50%; margin-left: -0.3rem; width: 100%;font-size: .3rem;}
+    .share{position: fixed;bottom: 1.4rem; left: 50%; margin-left: -0.3rem; width: 100%;z-index: 11;font-size: .3rem;}
     .share .mask {position: fixed;top: 0;bottom: 0;left: 0;right: 0;background: rgba(0, 0, 0, .6);}
     .share .close i{font-size: .6rem;color: #fff;position: relative;z-index: 2; transform:rotate(45deg);display: inline-block;}
     .share .s-info{position: fixed; right: 3%;top: .4rem;font-size: .4rem; margin-left: .5rem; text-align: right;;color: #fff;}
