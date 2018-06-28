@@ -204,18 +204,30 @@
     }
     wx.ready(function () {
       wx.onMenuShareTimeline({
-	title: "分享title",
-	link: "{{ route("wechat.index", ["rec" => auth()->user()->rec_code]) }}",
-	imgUrl: "https://pic1.zhimg.com/v2-c320644d354158004e6fc91d539d0529_im.jpg",
-	success: function () {
+      	title: "太好买化工品交易平台-厂家直销，优惠多多",
+      	link: "{{ route("wechat.index", ["rec" => auth()->user()->rec_code]) }}",
+      	imgUrl: "{{asset("assets/img/logo.png")}}",
+      	success: function () {
           axios.post("{{ route("wechat.order.share", $order) }}")
-	    .then(function (res) {
-	      location.reload();
-	    });
-	},
-	cancel: function () {
-          alert("取消了");
-	}
+    	    .then(function (res) {
+    	      location.reload();
+    	    });
+	       },
+      	cancel: function () {
+                alert("取消了");
+      	}
+      });
+
+      wx.onMenuShareAppMessage({
+        title: "太好买化工品交易平台-厂家直销，优惠多多",
+        link: "{{ route("wechat.index", ["rec" => auth()->user()->rec_code]) }}",
+        imgUrl: "{{asset("assets/img/logo.png")}}",
+          success: function () {
+              // 用户确认分享后执行的回调函数
+          },
+          cancel: function () {
+              // 用户取消分享后执行的回调函数
+          }
       });
     });
     </script>
