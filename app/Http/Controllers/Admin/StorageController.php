@@ -159,6 +159,7 @@ class StorageController extends Controller
         $func = $request->func ??
               Config::where("key", "=", "storage.func")->first()->value;
         $storage->func = $request->input("func", $func);
+        // return $storage->func;
         $storage->save();
         return redirect()->route("admin.storage.index");
     }
