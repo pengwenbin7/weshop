@@ -190,7 +190,8 @@
       is_ton: {{ $product->is_ton }},
       content: "{{ $product->content }}",
       packing_unit: "{{ $product->packing_unit }}",
-      unit_price: "{{ $product->variable->unit_price }}"
+      unit_price: "{{ $product->variable->unit_price }}",
+      ton_price: ""
     },
     computed: {
       is_ton: function () {
@@ -198,9 +199,6 @@
       },
       factor: function () {
 	return this.is_ton? (1000 / this.content): 0;
-      },
-      ton_price: function () {
-	return this.unit_price * this.factor;
       },
       unit_price: function () {
 	return this.ton_price / this.factor;
