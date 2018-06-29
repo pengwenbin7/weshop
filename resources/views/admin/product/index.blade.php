@@ -102,7 +102,7 @@
     </div>
     <div class="box-footer">
       <div class="row">
-	{{ $products->appends(["limit" => $limit, "name" => $name])->links() }}
+		  <div class="col-sm-6">{{ $products->appends(["limit" => $limit, "name" => $name])->links() }}<div style="height:100%;lone-height:100%"> 总共：{{ $line_num }}</div></div>
       </div>
     </div>
   </div>
