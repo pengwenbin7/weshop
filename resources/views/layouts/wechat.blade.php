@@ -22,6 +22,7 @@
     <a href="{{ route("wechat.logout") }}">logout</a>
     </nav> -->
     @yield("content")
+    <a href="#">{{ auth()->user()->is_subscribe }}</a>
     @if(auth()->user()->is_subscribe < 1)
     <div class="subscribe" onclick="showSubscribeBox()">
       点击关注<br>了解更多
