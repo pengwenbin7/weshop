@@ -38,6 +38,14 @@
 	}
       });
     });
+    function showSubscribeBox (){
+      var box = document.querySelector("#subscribe_box");
+      box.style.display = "block";
+    }
+    function closeSubscribeBox (){
+      var box = document.querySelector("#subscribe_box");
+      box.style.display = "none";
+    }
     </script>
     @yield("script")
   </body>
