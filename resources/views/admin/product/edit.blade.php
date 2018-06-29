@@ -121,7 +121,7 @@
 	      <div class="input-group">
 		<div class="input-group-addon">￥</div>
 		<input type="number" class="form-control" name="unit_price"
-			min="0" step="0.01" required value="{{ $product->variable->unit_price }}">
+			min="0" step="0.01" required v-model="unit_price">
 	      </div>
 	    </div>
 	  </div>
@@ -189,7 +189,8 @@
       measure_unit: "{{ $product->measure_unit }}",
       ton_price: {{ $product->is_ton }},
       content: "{{ $product->content }}",
-      packing_unit: "{{ $product->packing_unit }}"
+      packing_unit: "{{ $product->packing_unit }}",
+      unit_price: "{{ $product->variable->unit_price }}"
     },
     computed: {
       is_ton: function () {
