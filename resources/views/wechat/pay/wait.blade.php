@@ -4,8 +4,8 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>收银台</title>
-    <link rel="stylesheet" href ="{{asset("assets/css/reset.css")}}" >
-    <link rel="stylesheet" href =" {{asset("assets/font/iconfont.css")}}">
+    <link rel="stylesheet" href ="{{ asset("assets/css/reset.css") }}" >
+    <link rel="stylesheet" href =" {{ asset("assets/font/iconfont.css") }}">
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
@@ -206,7 +206,7 @@
       wx.onMenuShareTimeline({
       	title: "太好买化工品交易平台-厂家直销，优惠多多",
       	link: "{{ route("wechat.product.show",$order->orderItems->first()->product_id) }}",
-      	imgUrl: "{{asset("assets/img/logo.png")}}",
+      	imgUrl: "{{ asset("assets/img/logo.png") }}",
       	success: function () {
           axios.post("{{ route("wechat.order.share", $order) }}")
     	    .then(function (res) {
@@ -220,8 +220,8 @@
 
       wx.onMenuShareAppMessage({
         title: "太好买化工品交易平台-厂家直销，优惠多多",
-        link: "{{ route("wechat.product.show",$order->orderItems->first()->product_id) }}",
-        imgUrl: "{{asset("assets/img/logo.png")}}",
+        link: "{{ route("wechat.product.show", $order->orderItems->first()->product_id) }}",
+        imgUrl: "{{ asset("assets/img/logo.png") }}",
           success: function () {
               // 用户确认分享后执行的回调函数
           },

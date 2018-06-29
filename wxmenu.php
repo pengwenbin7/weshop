@@ -3,29 +3,19 @@
 $buttons = [
     [
         "type" => "view",
-        "name" => "home",
+        "name" => "找货",
         "url"  => "http://weshop.mafkj.com/wechat"
 
     ],
     [
-        "name"       => "菜单",
-        "sub_button" => [
-            [
-                "type" => "click",
-                "name" => "今日歌曲",
-                "key"  => "V1001_TODAY_MUSIC"
-            ],
-            [
-                "type" => "view",
-                "name" => "视频",
-                "url"  => "http://v.qq.com/"
-            ],
-            [
-                "type" => "click",
-                "name" => "赞一下我们",
-                "key" => "V1001_GOOD"
-            ],
-        ],
+	    "type" => "view",
+	    "name" => "订单",
+	    "url" => "http://weshop.mafkj.com/wechat/order",
+    ],
+    [
+	    "type" => "click",
+	    "name" => "分享",
+	    "key" => "share",
     ],
 ];
 
