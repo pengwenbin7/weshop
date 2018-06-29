@@ -4,8 +4,8 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>收银台</title>
-    <link rel="stylesheet" href ="{{asset("assets/css/reset.css")}}" >
-    <link rel="stylesheet" href =" {{asset("assets/font/iconfont.css")}}">
+    <link rel="stylesheet" href ="{{ asset("assets/css/reset.css") }}" >
+    <link rel="stylesheet" href =" {{ asset("assets/font/iconfont.css") }}">
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
@@ -15,10 +15,11 @@
     }
     html,body{padding:0;margin:0;font-size:50px;}
     body{position: relative;}
-    .pay{font-size:.32rem;margin-top:.4rem;}
-    .pay .item{width: 100%; background-color: #fff;height: 1.6rem;padding: .3rem .4rem;}
-    .pay .item .pay-t{width: 100%;line-height: .5rem;}
+    .pay{font-size:.32rem;margin-top:.4rem; }
+    .pay .item{width: 100%; background-color: #fff;padding: .3rem .4rem;display: flex;display: -webkit-flex;}
+    .pay .item .pay-t{width: 2rem;line-height: .5rem;}
     .pay .item .pay-t i{font-size: .4rem;font-weight: bold;}
+    .pay .item .share-tip span{background-color: #ff4f53;padding: .07rem .3rem;color: #fff;font-size: .26rem;}
     .pay .item .pay-limit{width: 100%; line-height: .4rem;font-size: .28rem;color: #888;}
     .group{margin-top: .4rem;}
     .group .item {display: flex;display: -webkit-flex;height: 1.3rem;padding: .25rem .4rem;line-height: .8rem;border-bottom: 1px solid #eee;}
@@ -33,14 +34,11 @@
     .icon-huipiao{color: #c273ff;}
     .icon-xuanzhong-on{color: #3db858;}
     .icon-huodaofukuan{color: #16c2c2;}
-    .paydis{position: absolute; right: 0;top: .2rem;width: 2.8rem;padding: .2rem; background-color: #f30;border-radius: 3px;}
-    .paydis i{display: block;height: .2rem;width: 4px; background-color: #f00; position: absolute;right: .4rem;top: -0.2rem;}
-    .paydis span{display: block;padding: .2rem;line-height:.3rem;  border: 1px dotted #fff; font-size: 12px; color: #fff;}
-    .share{position: fixed;bottom: 1.4rem; right: .5rem; width: 4rem;background-color: #666;border-radius: 100px;height: .8rem;font-size: .3rem;padding: .2rem;box-sizing: border-box;}
-    .share .close{width: .5rem;float: left;height: .4rem;line-height: .4rem;font-size: .5rem;color: #fff;border-right: 1px solid #fff;}
-    .share .close span{display: block; line-height: .4rem; }
-    .share .s-info{margin-left: .5rem; text-align: center;color: #fff;line-height: .4rem;}
-
+    .share{position: fixed;bottom: 1.4rem; left: 50%; margin-left: -0.3rem; width: 100%;z-index: 11;font-size: .3rem;}
+    .share .mask {position: fixed;top: 0;bottom: 0;left: 0;right: 0;background: rgba(0, 0, 0, .6);}
+    .share .close i{font-size: .6rem;color: #fff;position: relative;z-index: 2; transform:rotate(45deg);display: inline-block;}
+    .share .s-info{position: fixed; right: 3%;top: .4rem;font-size: .4rem; margin-left: .5rem; text-align: right;;color: #fff;}
+    .share .s-info i{font-size: .6rem;display: block;}
     </style>
     <script type="text/javascript">
     //调用微信JS api 支付
@@ -76,21 +74,26 @@
     <div class="container" id="app" v-cloak>
       <div class="paydis" v-show="share&&out_time">
         <i></i>
-        @if ($order->payment->share_discount <= 0)
-  	<span>点击分享订单，立减{{  intval($order->payment->pay * App\Models\Config::get("order.share.discount")) }}元</span>
-        @else
-  	<span>分享已减{{ intval($order->payment->share_discount) }}元</span>
-        @endif
+
       </div>
       <div class="pay">
-	<div class="item">
-	  <div class="pay-t">
-            <span>需支付：<i class="y">￥{{ $order->payment->pay  }}</i></span>
-	  </div>
-	  <div class="pay-limit">
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;剩余支付时间：@{{ expire }}</p>
-	  </div>
-	</div>
+        <div class="item">
+          <div class="pay-t">
+              <span>需支付：</span>
+          </div>
+          <div class="pay-limit">
+            <p><i class="y">￥{{ $order->payment->pay  }}</i></p>
+            <p>剩余支付时间：@{{ expire }}</p>
+            <p class = "share-tip">
+              @if ($order->payment->share_discount <= 0)
+        	       <span @click="share=true">分享此单立减{{ intval($order->payment->pay * App\Models\Config::get("order.share.discount")) }}元</span>
+              @else
+        	       <span>分享已减{{ intval($order->payment->share_discount) }}元</span>
+              @endif
+            </p>
+          </div>
+        </div>
+
 	<div class="group">
 	  @foreach($pay_channel as $item)
 	  @if(Auth()->user()->is_vip >= $item->is_vip)
@@ -112,9 +115,9 @@
               </div>
 
               <div class="icon">
-               
+
 		<i v-bind:class="active=='{{$item->id}}'?'iconfont icon-xuanzhong-on':'iconfont icon-xuanzhong' "></i>
-		 
+
               </div>
             </div>
 
@@ -124,12 +127,13 @@
 	</div>
       </div>
       <div class="share"  v-show="share&&out_time">
-        <div class="close" @click="share=false">
-          <span>×</span>
+        <div class="mask" @click="share=false">
         </div>
         <div class="s-info">
-           <span>分享订单获得减免</span>
+          <i class="iconfont icon-shouzhi"></i><br/>
+           <span>点击此处分享</span>
         </div>
+        <div class="close"  @click="share=false"><i class="iconfont icon-tianjia"></i></div>
       </div>
       <div class="footer" v-if="out_time">
 	<span v-if="active == 1"  onclick="callpay()">确认支付</span>
@@ -160,7 +164,7 @@
         active: 1,
         expire:"",
         out_time:false,
-        share:true,
+        share:false,
         is_vip:"{{ Auth()->user()->is_vip }}",
       },
       mounted () {
@@ -200,18 +204,30 @@
     }
     wx.ready(function () {
       wx.onMenuShareTimeline({
-	title: "分享title",
-	link: "{{ route("wechat.index", ["rec" => auth()->user()->rec_code]) }}",
-	imgUrl: "https://pic1.zhimg.com/v2-c320644d354158004e6fc91d539d0529_im.jpg",
-	success: function () {
+      	title: "太好买化工品交易平台-厂家直销，优惠多多",
+      	link: "{{ route("wechat.product.show",$order->orderItems->first()->product_id) }}",
+      	imgUrl: "{{ asset("assets/img/logo.png") }}",
+      	success: function () {
           axios.post("{{ route("wechat.order.share", $order) }}")
-	    .then(function (res) {
-	      location.reload();
-	    });
-	},
-	cancel: function () {
-          alert("取消了");
-	}
+    	    .then(function (res) {
+    	      location.reload();
+    	    });
+	       },
+      	cancel: function () {
+                alert("取消了");
+      	}
+      });
+
+      wx.onMenuShareAppMessage({
+        title: "太好买化工品交易平台-厂家直销，优惠多多",
+        link: "{{ route("wechat.product.show", $order->orderItems->first()->product_id) }}",
+        imgUrl: "{{ asset("assets/img/logo.png") }}",
+          success: function () {
+              // 用户确认分享后执行的回调函数
+          },
+          cancel: function () {
+              // 用户取消分享后执行的回调函数
+          }
       });
     });
     </script>

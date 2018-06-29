@@ -139,7 +139,7 @@
       </div>
       @if ($order->payment->freight>0)
       <div class="item">
-        <span class="label">额外附加：</span>
+        <span class="label">零售附加：</span>
         <div class="info-r">
           +￥{{ $order->payment->freight }}
         </div>
