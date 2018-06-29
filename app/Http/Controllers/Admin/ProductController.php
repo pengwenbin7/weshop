@@ -30,7 +30,9 @@ class ProductController extends Controller
             ->where("keyword", "like", "%$name%")
             ->orderBy("id", "desc")
             ->paginate($limit);
+        $line_num = $products -> total();
         return view("admin.product.index", [
+                    "line_num" => $line_num,
                     "products" => $products,
                     'name' => $name,
                     'limit' => $limit
