@@ -22,6 +22,9 @@
     <a href="{{ route("wechat.logout") }}">logout</a>
     </nav> -->
     @yield("content")
+    <div class="subscribe">
+      点击关注了解更多
+    </div>
     <div class="footer">
       <div class="item  {{ url()->current() == route("wechat.index")? "on":"" }}">
         <a href="{{ route("wechat.index") }}">

@@ -200,7 +200,7 @@
 
               console.log($this);
             } else {
-             
+
             }
             $this.district = null;
           });

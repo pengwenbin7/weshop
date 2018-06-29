@@ -232,14 +232,16 @@
   }
   //计算费用
   function freight(func, weight, distance) {
+    console.log(weight,distance);
     var fee = 0;
     func.area.forEach(function(e, index, array) {
       if (e.low <= weight && weight < e.up) {
-        fee = e.factor * distance + e.const;
+        fee = e.factor * distance * weight + Number(e.const) ;
         return
       }
     });
-    return fee ? fee : func.other.factor * distance + func.other.const;
+    console.log(fee);
+    return fee ? fee : func.other.factor * distance * weight + Number(func.other.const);
   }
   function checkall(_this) {
     var products = _this.products;
