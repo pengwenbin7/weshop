@@ -237,7 +237,9 @@ class ProductController extends Controller
             $detail->content = $request->detail;
             $detail->save();
         }
-        return redirect()->route("admin.product.index",['name' => $name,'limit' => $limit]);
+        return redirect()->route("admin.product.index",[
+            'name' => $name, 'limit' => $limit
+        ]);
     }
 
     /**

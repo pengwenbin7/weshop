@@ -190,9 +190,9 @@ class Order extends Model
                 return -1;
             }
             if (in_array($product->storage->id, $storages)) {
-                $storages[$product->storage->id] += $product->count * $item->number;
+                $storages[$product->storage->id] += $product->content * $item->number;
             } else {
-                $storages[$product->storage->id] = $product->count * $item->number;
+                $storages[$product->storage->id] = $product->content * $item->number;
             }
         }
         

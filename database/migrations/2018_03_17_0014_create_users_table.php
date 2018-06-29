@@ -32,12 +32,17 @@ class CreateUsersTable extends Migration
             $table->string("subscribe_time")->nullable();
             $table->unsignedInteger("company_id")->nullable();
             $table->unsignedInteger("admin_id")->nullable();
+            $table->unsignedInteger("last_address")->nullable();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
             $table->foreign("admin_id")
                 ->references("id")
                 ->on("admin_users")
+                ->onDelete("set null");
+            $table->foreign("last_address")
+                ->references("id")
+                ->on("addresses")
                 ->onDelete("set null");
         });
     }

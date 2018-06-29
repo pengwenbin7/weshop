@@ -96,7 +96,7 @@
 
 	<div class="group">
 	  @foreach($pay_channel as $item)
-	  @if(Auth()->user()->is_vip >= $item->is_vip)
+	    @if(auth()->user()->is_vip >= $item->is_vip)
 	  <div >
             <div class="item" v-on:click="setChannel('{{ $item->id }}')"  >
               <div class="icon">
@@ -156,7 +156,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script type="text/javascript">
-    wx.config({!! app("wechat.official_account")->jssdk->buildConfig(["onMenuShareTimeline"], false) !!});
+    wx.config({!! app("wechat.official_account")->jssdk->buildConfig(["onMenuShareTimeline", "onMenuShareAppMessage"], false) !!});
     var app = new Vue({
       el: '#app',
       data: {
@@ -165,7 +165,7 @@
         expire:"",
         out_time:false,
         share:false,
-        is_vip:"{{ Auth()->user()->is_vip }}",
+        is_vip:"{{ auth()->user()->is_vip }}",
       },
       mounted () {
         countdown(this)
@@ -204,8 +204,8 @@
     }
     wx.ready(function () {
       wx.onMenuShareTimeline({
-      	title: "太好买化工品交易平台-厂家直销，优惠多多",
-      	link: "{{ route("wechat.product.show",$order->orderItems->first()->product_id) }}",
+      	title: "太好买化工品交易平台-厂家直销，优惠多多",	
+link: "{{ route("wechat.product.show", ["id" => $order->orderItems->first()->product_id, "rec_code" => auth()->user()->rec_code]) }}",
       	imgUrl: "{{ asset("assets/img/logo.png") }}",
       	success: function () {
           axios.post("{{ route("wechat.order.share", $order) }}")
@@ -220,7 +220,7 @@
 
       wx.onMenuShareAppMessage({
         title: "太好买化工品交易平台-厂家直销，优惠多多",
-        link: "{{ route("wechat.product.show", $order->orderItems->first()->product_id) }}",
+        link: "{{ route("wechat.product.show", ["id" => $order->orderItems->first()->product_id, "rec_code" => auth()->user()->rec_code]) }}",
         imgUrl: "{{ asset("assets/img/logo.png") }}",
           success: function () {
               // 用户确认分享后执行的回调函数

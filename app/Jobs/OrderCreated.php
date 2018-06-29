@@ -31,6 +31,11 @@ class OrderCreated implements ShouldQueue
      */
     public function handle()
     {
+        // 记录收货地址
+        $user = $this->order->user;
+        $user->last_address = $this->order->address_id;
+        $user->save();
+        
         // 下单计数
         $this->order->orderItems->each(function ($item) {
             $variable = $item->product->variable;

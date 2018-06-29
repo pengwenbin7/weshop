@@ -62,10 +62,17 @@ class User extends Authenticatable
     {
         return $this->belongsTo("App\Models\AdminUser");
     }
+
+    public function lastAddress()
+    {
+        return $this->belongsTo("App\Models\Address", "last_address");
+    }
+    
     public function stars()
     {
         return $this->belongsToMany("App\Models\Product", "product_stars", "user_id", "product_id");
     }
+    
     public function company()
     {
       return $this->belongsTo("App\Models\Company");

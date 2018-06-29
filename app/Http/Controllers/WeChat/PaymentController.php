@@ -173,7 +173,7 @@ class PaymentController extends Controller
       $payment->channel_id = $request->channel_id;
       $payment->save();
       $type  = $request->type;
-      $user = Auth()->user();
+      $user = auth()->user();
       return view("wechat.pay.offline",["order" => $order,"user" => $user, "type" => $type, "title" => "付款方式" ]);
     }
 }
