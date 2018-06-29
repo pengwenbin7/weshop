@@ -14,6 +14,9 @@
     input:required, select:required, textarea:required {
       border-color: #EE7777;
     }
+    [v-cloak] {
+      display: none;
+    }
     </style>
     @yield("style")
   </head>
@@ -21,7 +24,7 @@
     <div class="wrapper">
       @include("layouts.common.header")
       @include("layouts.common.sidebar")
-      <div class="content-wrapper" id="app">
+      <div class="content-wrapper" id="app" >
 	<!-- Main content -->
 	<section class="content container-fluid">
 	  @yield('content')

@@ -1,7 +1,7 @@
 @extends("layouts.admin")
 
 @section("content")
-  <div class="col-md-12">
+  <div class="col-md-12" v-cloak>
     <div class="box box-info">
       <div class="box-header with-border">
 	<h3 class="box-title"><a href="{{ route("admin.storage.index") }}">仓库列表</a></h3>
@@ -135,8 +135,30 @@
       code: {{ $address->code }},
       fee:{!! $storage->func !!},
     },
-    mounted: function() {
+    beforeMount: function () {
+      this.$nextTick(function () {
+        var $this = this;
+        axios.get("/region/children")
+          .then(function(res) {
+            $this.provinces = res.data;
+          });
 
+        axios.get("/region/children/" + this.province)
+          .then(function(res) {
+            $this.cities = res.data;
+          });
+
+        axios.get("/region/children/" + this.city)
+          .then(function(res) {
+            $this.districts = res.data;
+            // 判断是否还有第三级
+            if (!res.data.length) {
+              console.log($this);
+            } else {
+
+            }
+          });
+      })
     },
     methods: {
       check:function(){
@@ -208,31 +230,6 @@
       changeDistrict: function() {
         this.code = this.district;
       },
-    },
-    mounted: function() {
-      var $this = this;
-      axios.get("/region/children")
-        .then(function(res) {
-          $this.provinces = res.data;
-        });
-
-      axios.get("/region/children/" + this.province)
-        .then(function(res) {
-          $this.cities = res.data;
-          $this.districts = [];
-        });
-
-      axios.get("/region/children/" + this.city)
-        .then(function(res) {
-          $this.districts = res.data;
-          // 判断是否还有第三级
-          if (!res.data.length) {
-
-            console.log($this);
-          } else {
-
-          }
-        });
     }
 
   });
