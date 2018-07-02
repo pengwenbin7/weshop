@@ -42,9 +42,6 @@ class ServerController extends Controller
             case "event":
                 switch ($message["Event"]) {
                 case "subscribe":
-                    echo "<pre>";
-                    print_r($message);
-                    exit;
                     User::subRegister($message);
                     return new Text("感谢关注！");
                     break;
@@ -58,9 +55,11 @@ class ServerController extends Controller
                             'title'       => "邀请好友至“太好买”下单，领取现金红包！",
                             'description' => "详情进【链接】",
                             'url'         => $url,
-                            'image'       => $img,
+                            'image'       => '',
                         ]),
                     ];
+                    $img_ = "<img src=$img>";
+                    $user->admin->sendMessage($img_); //图片发送
                     $news = new News($items);
                     return $news;
                     break;
@@ -84,4 +83,6 @@ class ServerController extends Controller
         });
         return $app->server->serve();
     }
+
+
 }
