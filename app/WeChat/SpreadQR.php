@@ -24,4 +24,19 @@ class SpreadQR
         Storage::put($f, $content);
         return Storage::url($f);
     }
+
+    /*
+     * 获取二维码
+     */
+    public static function orgcode(string $code)
+    {
+        $app = EasyWeChat::officialAccount();
+        $result = $app->qrcode->forever($code);
+        $url = $app->qrcode->url($result["ticket"]);
+        $content = file_get_contents($url);
+        $f = "qr/{$code}.jpg";
+        Storage::put($f, $content);
+        return Storage::url($f);
+    }
+
 }
