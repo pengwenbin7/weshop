@@ -22,9 +22,26 @@
     <a href="{{ route("wechat.logout") }}">logout</a>
     </nav> -->
     @yield("content")
-    <div class="subscribe">
-      点击关注了解更多
+    <a href="#">{{ auth()->user()->is_subscribe }}</a>
+    @if(auth()->user()->is_subscribe < 1)
+    <div class="subscribe" onclick="showSubscribeBox()">
+      点击关注<br>了解更多
     </div>
+    <div class="subscribe-box" id="subscribe_box">
+      <div class="item">
+        <p class="tit">需关注后才能选购</p>
+        <img src="{{ asset("assets/img/qrcode.png") }}" alt="">
+        <p>[长按二维码，关注公众号]</p>
+      </div>
+      <div class="item">
+        <p class="other">其他方式</p>
+        <p class="desc">打开微信，搜索“太好买”公众号关注即可。</p>
+      </div>
+      <div class="subscribe-close" onclick="closeSubscribeBox()">
+        <i class="iconfont icon-tianjia"></i>
+      </div>
+    </div>
+  @endif
     <div class="footer">
       <div class="item  {{ url()->current() == route("wechat.index")? "on":"" }}">
         <a href="{{ route("wechat.index") }}">
@@ -55,17 +72,25 @@
     wx.config({!! app("wechat.official_account")->jssdk->buildConfig($interfaces ?? [], false) !!});
     wx.ready(function () {
       wx.onMenuShareTimeline({
-	title: "{{ $page_title ?? "分享title" }}",
-	link: "{{ url()->current() . "?rec=" . auth()->user()->rec_code }}",
-	imgUrl: "https://pic1.zhimg.com/v2-c320644d354158004e6fc91d539d0529_im.jpg",
-	success: function () {
-	  alert("分享成功");
-	},
-	cancel: function () {
-	  alert("取消了");
-	}
+      	title: "{{ $page_title ?? "分享title" }}",
+      	link: "{{ url()->current() . "?rec=" . auth()->user()->rec_code }}",
+      	imgUrl: "https://pic1.zhimg.com/v2-c320644d354158004e6fc91d539d0529_im.jpg",
+      	success: function () {
+      	  alert("分享成功");
+      	},
+      	cancel: function () {
+      	  alert("取消了");
+      	}
       });
     });
+    function showSubscribeBox (){
+      var box = document.querySelector("#subscribe_box");
+      box.style.display = "block";
+    }
+    function closeSubscribeBox (){
+      var box = document.querySelector("#subscribe_box");
+      box.style.display = "none";
+    }
     </script>
     @yield("script")
   </body>

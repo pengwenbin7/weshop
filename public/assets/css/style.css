@@ -373,6 +373,29 @@
   font-weight: normal;
   line-height: 0.8rem;
 }
+/* 关注 */
+.subscribe{position: fixed;width: 1.6rem;font-size: .25rem; top: 3rem; right: 0;background-color: #ff782f;padding: .2rem;padding-left: .4rem;border-top-left-radius:  100px;border-bottom-left-radius: 100px;color: #fff;line-height: .3rem;}
+.subscribe-box{display: none;position: fixed;top: 0;height: 100%;background-color: #fff;z-index: 111; text-align: center;padding:0 .4rem;}
+.subscribe-box p{font-size: .32rem; }
+.subscribe-box .item{padding: .8rem 0;}
+.subscribe-box .item:first-child{border-bottom: 1px solid #ddd;}
+.subscribe-box p.tit{color: #009b45;font-size: .5rem;text-align: center;font-weight: bold;}
+.subscribe-box img{width: 60%;}
+.subscribe-box .item .other{
+  font-size: .4rem;
+  line-height: .8rem;
+  text-align: left;
+  color: #888;
+}
+.subscribe-box .item .desc{
+  text-align: left;
+}
+.subscribe-box .subscribe-close i{
+  font-size: .6rem;
+  display: inline-block;
+  transform: rotate(45deg);
+  color: #666;
+}
 
 /*购物车*/
 
