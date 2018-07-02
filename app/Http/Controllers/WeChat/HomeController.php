@@ -18,9 +18,6 @@ class HomeController extends Controller
     public function waiter()
     {
         $user = auth()->user();
-        echo "<pre>";
-        print_r($user);
-        exit;
         return view("wechat.home.waiter", ["user" => $user, "title" => "客服"]);
     }
 
