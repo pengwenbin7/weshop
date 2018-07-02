@@ -47,9 +47,7 @@ class ServerController extends Controller
                     break;
                 //分享
                 case "CLICK":
-                    $url = "http://mp.weixin.qq.com/s?__biz=MzIzODY1MjUyNA==&mid=100000699&idx=1&
-                    sn=aed691ad9bae87df98f30d818d5b947f&
-                    chksm=69375eb85e40d7ae812971ce445dbe6a146ff824322e2e815dee9dd0002d2875b23bda67fc6b#rd";
+                    $url = "http://mp.weixin.qq.com/s?__biz=MzIzODY1MjUyNA==&mid=100000699&idx=1&sn=aed691ad9bae87df98f30d818d5b947f&chksm=69375eb85e40d7ae812971ce445dbe6a146ff824322e2e815dee9dd0002d2875b23bda67fc6b#rd";
                     $span = new SpreadQR;
                     $img = $span->orgcode(substr(md5(time()), 0, 8));
                     $items = [
