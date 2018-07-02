@@ -220,28 +220,25 @@
             price +=  products[n][m].number * Number(products[n][m].unit_price);
           }
         }
-        console.log(weight);
         if(weight){
           fee += freight(func, weight, distance);
         }
       }
     }
     //赋值
-    totalDom.innerText = price+Math.round(fee/100)*100;
-    domFee.innerText = Math.round(fee/100)*100;
+    totalDom.innerText = price + fee;
+    domFee.innerText = fee;
   }
   //计算费用
   function freight(func, weight, distance) {
-    console.log(weight,distance);
     var fee = 0;
     func.area.forEach(function(e, index, array) {
       if (e.low <= weight && weight < e.up) {
-        fee = e.factor * distance * weight + Number(e.const) ;
+        fee = Math.round((e.factor * distance * weight + Number(e.const)) / 100) * 100;
         return
       }
     });
-    console.log(fee);
-    return fee ? fee : func.other.factor * distance * weight + Number(func.other.const);
+    return fee ? fee : Math.round((func.other.factor * distance * weight + Number(func.other.const)) / 100) * 100;
   }
   function checkall(_this) {
     var products = _this.products;
