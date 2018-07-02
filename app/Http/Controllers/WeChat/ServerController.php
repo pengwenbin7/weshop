@@ -57,6 +57,8 @@ class ServerController extends Controller
                             'url'         => $url,
                             'image'       => "",
                         ]),
+                    ];
+                     $itemp = [
                         new NewsItem([
                             'title'       => "",
                             'description' => "",
@@ -66,7 +68,7 @@ class ServerController extends Controller
                     ];
 //                    $img_ = "<img src=$img>";
 //                    User::sendMessage($img_); //图片发送
-                    $news = new News($items);
+                    $news = new News([$items,$itemp]);
                     return $news;
                     break;
                 }
