@@ -83,9 +83,6 @@ class User extends Authenticatable
      */
     public static function subRegister($message)
     {
-        echo "<pre>";
-        print_r($message);
-        exit;
         \Log::info($message);
     }
 
