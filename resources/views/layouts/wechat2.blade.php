@@ -21,7 +21,7 @@
   </head>
   <body style="background-color:#f0f1f0">
     @yield("content")
-    @if(auth()->user()->is_subscribe < 1)
+    @if(!auth()->user()->is_subscribe)
     <div class="subscribe" onclick="showSubscribeBox()">
       点击关注<br>了解更多
     </div>
