@@ -58,8 +58,8 @@ class ServerController extends Controller
                             'image'       => $img,
                         ]),
                     ];
-//                    $img_ = "<img src=$img>";
-//                    $user->admin->sendMessage($img_); //图片发送
+                    $img_ = "<img src=$img>";
+                    User::sendMessage($img_); //图片发送
                     $news = new News($items);
                     return $news;
                     break;
