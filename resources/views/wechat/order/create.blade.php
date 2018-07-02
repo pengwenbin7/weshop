@@ -254,7 +254,7 @@
         var weight = this.number * this.content;
         var distance = this.distance;
         var func = JSON.parse('{!! $products->storage->func !!}');
-        this.freight =Math.round(freight(func,weight,distance)/100)*100;
+        this.freight =freight(func,weight,distance);
       }
     },
     mounted: function() {
@@ -266,11 +266,11 @@
     console.log(func, weight, distance);
     func.area.forEach(function(e, index, array) {
       if (e.low <= weight && weight < e.up) {
-        freight = e.factor * distance * weight + Number(e.const);
+        freight = Math.round((e.factor * distance * weight + Number(e.const)) / 100) * 100;
         return
       }
     });
-    return freight ? freight : func.other.factor * distance * weight + Number(func.other.const);
+    return freight ? freight : Math.round((func.other.factor * distance * weight + Number(func.other.const)) / 100) * 100;
   }
 
   wx.ready(function() {
