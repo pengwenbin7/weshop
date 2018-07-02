@@ -38,6 +38,23 @@ class ServerController extends Controller
                 $news = new News($items);
                 return $news;
                 break;
+            //代码测试开始
+
+            case "click":
+                $url = route("wechat.search", ["keyword" => $message['Content']]);
+                $items = [
+                    new NewsItem([
+                        'title'       => "搜索结果-太好买",
+                        'description' => "点击查看搜索结果",
+                        'url'         => $url,
+                        'image'       => ''//asset("assets/img/search.jpg"),
+                    ]),
+                ];
+                $news = new News($items);
+                return $news;
+                break;
+
+            //代码测试结束
             case "event":
                 switch ($message["Event"]) {
                 case "subscribe":
