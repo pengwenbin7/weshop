@@ -86,7 +86,7 @@
             <p>剩余支付时间：@{{ expire }}</p>
             <p class = "share-tip">
               @if ($order->payment->share_discount <= 0)
-        	       <span @click="share=true">分享此单立减{{ intval($order->payment->pay * App\Models\Config::get("order.share.discount")) }}元</span>
+        	       <span @click="share=true">分享至朋友圈立减{{ intval($order->payment->pay * App\Models\Config::get("order.share.discount")) }}元</span>
               @else
         	       <span>分享已减{{ intval($order->payment->share_discount) }}元</span>
               @endif
@@ -204,7 +204,7 @@
     }
     wx.ready(function () {
       wx.onMenuShareTimeline({
-      	title: "太好买化工品交易平台-厂家直销，优惠多多",	
+      	title: "太好买化工品交易平台-厂家直销，优惠多多",
 link: "{{ route("wechat.product.show", ["id" => $order->orderItems->first()->product_id, "rec_code" => auth()->user()->rec_code]) }}",
       	imgUrl: "{{ asset("assets/img/logo.png") }}",
       	success: function () {
