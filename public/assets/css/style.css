@@ -374,7 +374,7 @@
   line-height: 0.8rem;
 }
 /* 关注 */
-.subscribe{position: fixed;width: 1.6rem;font-size: .25rem; top: 3rem; right: 0;background-color: #ff782f;padding: .2rem;padding-left: .4rem;border-top-left-radius:  100px;border-bottom-left-radius: 100px;color: #fff;line-height: .3rem;}
+.subscribe{position: fixed;font-size: .25rem; top: 3rem; right: 0;background-color: #ff782f;padding: .2rem;padding-left: .4rem;border-top-left-radius:  100px;border-bottom-left-radius: 100px;color: #fff;line-height: .3rem;}
 .subscribe-box{display: none;position: fixed;top: 0;height: 100%;background-color: #fff;z-index: 111; text-align: center;padding:0 .4rem;}
 .subscribe-box p{font-size: .32rem; }
 .subscribe-box .item{padding: .8rem 0;}

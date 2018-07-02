@@ -324,9 +324,13 @@
           });
       },
       buyMe: function() {
+        if({{ auth()->user()->is_subscribe }}){
         location.assign("{{ route("wechat.product.buyme") }}" +
           "?product_id={{ $product->id }}"+"&&num="+this.number
         );
+      }else{
+        document.querySelector("#subscribe_box").style.display = "block";
+      }
       },
       showBox: function() {
         this.buy_box = true;
