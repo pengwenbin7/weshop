@@ -280,7 +280,12 @@
       }
     }
     if (param.length) {
-      location.assign("{{ route("wechat.cart.buyall") }}" + "?cart_id=" + app.cart_id + "&&products=" + JSON.stringify(param));
+      if({{ auth()->user()->is_subscribe }}){
+        location.assign("{{ route("wechat.cart.buyall") }}" + "?cart_id=" + app.cart_id + "&&products=" + JSON.stringify(param));
+      }else{
+        document.querySelector("#subscribe_box").style.display = "block";
+      }
+
     }
   }
 </script>
