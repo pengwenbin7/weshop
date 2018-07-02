@@ -55,6 +55,12 @@ class ServerController extends Controller
                             'title'       => "邀请好友至“太好买”下单，领取现金红包！",
                             'description' => "详情进【链接】",
                             'url'         => $url,
+                            'image'       => "",
+                        ]),
+                        new NewsItem([
+                            'title'       => "",
+                            'description' => "",
+                            'url'         => "",
                             'image'       => $img,
                         ]),
                     ];
