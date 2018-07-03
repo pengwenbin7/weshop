@@ -108,7 +108,7 @@ class User extends Authenticatable
     {
         return dechex(sprintf("%u", crc32($this->id)));
     }
-
+    
     // 确定管理员 id
     public function generateAdmin()
     {
@@ -138,9 +138,21 @@ class User extends Authenticatable
             $admin = Admin::permission("cs")->get()->random();
         }
         
-        return $admin->id;
+        return $admin;
     }
-
+    
+    public function getShareImg()
+    {
+        if ($this->share_img) {
+            return $this->share_img;
+        } else {
+            $img = $this->generateShareImg();
+            $this->share_img = img;
+            $this->save();
+            return $img;
+        }
+    }
+    
     /**
      * 生成分享二维码
      */

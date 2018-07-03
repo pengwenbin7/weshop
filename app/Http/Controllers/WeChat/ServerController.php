@@ -56,7 +56,8 @@ class ServerController extends Controller
                             'image'       => '',
                         ]),
                     ];
-                    return new News($items);
+                    $user->sendMessage(new News($items));
+                    $user->sendMessage(new Image($user->getShareImg()));
                     break;
                 }
                 break;
