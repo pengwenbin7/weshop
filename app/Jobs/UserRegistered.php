@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\User;
 use App\Utils\AdminMessage;
+use App\WeChat\SpreadQR;
 
 class UserRegistered implements ShouldQueue
 {
@@ -33,5 +34,7 @@ class UserRegistered implements ShouldQueue
     public function handle()
     {
         AdminMessage::userRegistered($this->user);
+        $this->user->share_img = $this->user->generateShareImg();
+        $this->user->save();
     }
 }

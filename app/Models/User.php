@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use EasyWeChat;
+use App\WeChat\SpreadQR;
 
 class User extends Authenticatable
 {
@@ -86,6 +87,7 @@ class User extends Authenticatable
         $app = EasyWeChat::officialAccount();
         $user = $app->user->get($openId);
         return static::create([
+            "openid" => $openId,
             "is_subscribe" => $user["subscribe"],
             "name" => $user["nickname"],
             "is_vip" => 0,
@@ -99,5 +101,54 @@ class User extends Authenticatable
         $app = EasyWeChat::officialAccount();
         $app->customer_service->message($msg)->to($this->openid)->send();
     }
-    
+
+    // 生成唯一推广码
+    public function generateCode()
+    {
+        return dechex(sprintf("%u", crc32($this->id)));
+    }
+
+    // 确定管理员 id
+    public function generateAdmin()
+    {
+        $from = $user->rec_from;
+        // 有人推广
+        if ($from) {
+            // 来自业务员的推广
+            if ("A" == $from[0]) {
+                $admins = Admin::where("rec_code", "=", $from)->get();
+                // 此业务员已离职
+                if ($admins->isEmpty()) {
+                    $admin = Admin::permission("cs")->get()->random();
+                } else {
+                    $admin = $admins->first();
+                }
+            } else { // 来自用户的推广
+                $us = User::where("rec_code", "=", $from)->get();
+                if ($us->isEmpty()) { // 不存在的推广码
+                    $admin = Admin::permission("cs")->get()->random();
+                } else {
+                    $u = $us->first();
+                    $admin = $u->admin;
+                }
+            }
+        } else {
+            // 搜索关注的用户，随机分配一个
+            $admin = Admin::permission("cs")->get()->random();
+        }
+        
+        return $admin->id;
+    }
+
+    /**
+     * 生成分享二维码
+     */
+    public function generateShareImg()
+    {
+        if (!$this->rec_code) {
+            $this->rec_code = $this->generateCode();
+        }
+        $code = $this->rec_code;
+        return SpreadQR::foreverMedia($code);
+    }
 }
