@@ -1,11 +1,11 @@
 @extends("layouts.admin")
 
 @section("style")
-  
+
 @endsection
 
 @section("content")
-  <div class="col-md-6">
+  <div class="col-md-12">
     <div class="box box-info">
       <div class="box-header with-border">
 	<h3 class="box-title"><a href="{{ route("admin.product.index",['name' => $name,'limit' => $limit]) }}">产品列表</a></h3>
@@ -110,11 +110,11 @@
 	      <div class="input-group">
 		<div class="input-group-addon">￥</div>
 		<input type="number" class="form-control"
-			min="0" step="0.01" v-model="ton_price">
+			min="0" step="0.01" :value="unit_price * factor" @keyup="check">
 	      </div>
 	    </div>
 	  </div>
-	  
+
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">单价</label>
 	    <div class="col-sm-4">
@@ -149,7 +149,7 @@
 	      @endif
             </div>
 	  </div>
-	  
+
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">排序</label>
 	    <div class="col-sm-4">
@@ -190,8 +190,7 @@
       is_ton: {{ $product->is_ton }},
       content: "{{ $product->content }}",
       packing_unit: "{{ $product->packing_unit }}",
-      unit_price: "{{ $product->variable->unit_price }}",
-      ton_price: ""
+      unit_price:"{{ $product->variable->unit_price }}",
     },
     computed: {
       is_ton: function () {
@@ -200,19 +199,21 @@
       factor: function () {
 	return this.is_ton? (1000 / this.content): 0;
       },
-      unit_price: function () {
-	return this.ton_price / this.factor;
-      }
+
     },
     methods: {
       brandChange: function () {
-	this.brand_changed = 1;
-	var $this = this;
-	var url = "{{ route("admin.storage.index", ["api" => 1]) }}" + "&brand_id=" + this.brand;
-	axios.get(url)
-	  .then(function (res) {
-	    $this.storages = res.data;
-	  });
+    	this.brand_changed = 1;
+    	var $this = this;
+    	var url = "{{ route("admin.storage.index", ["api" => 1]) }}" + "&brand_id=" + this.brand;
+    	axios.get(url)
+    	  .then(function (res) {
+    	    $this.storages = res.data;
+    	  });
+      },
+      check: function(e){
+        var el = e.currentTarget;
+        this.unit_price = el.value / this.factor;
       }
     }
   });
