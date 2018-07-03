@@ -188,7 +188,7 @@ class OrderController extends Controller
     {
         $payment = $order->payment;
         if ($payment->share_discount <= 0) {
-            $payment->share_discount = floor($order->payment->pay * Config::get("order.share.discount"));
+            $payment->share_discount = $payment->pay > 20000 ? 200 : 50;
         }
         return ["res" => $payment->save()];
     }
