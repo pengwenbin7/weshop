@@ -72,8 +72,8 @@ class ServerController extends Controller
                             'url'         => $url,
                             'image'       => '',
                         ]);
-                    $image = new Image($img);
-                    return new News([$news1, $image]);
+                    $news2 = new sendImage($img);
+                    return new News([$news1, $news2]);
                     break;
                 }
                 break;
