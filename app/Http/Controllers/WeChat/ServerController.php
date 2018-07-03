@@ -73,7 +73,7 @@ class ServerController extends Controller
                             'image'       => '',
                         ]);
                     $news2 = new sendImage($img);
-                    return new News([$news1, $news2]);
+                    return new News($news1, $news2);
                     break;
                 }
                 break;
