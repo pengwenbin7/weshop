@@ -11,6 +11,7 @@ use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Voice;
 use App\Models\User;
+use App\WeChat\SpreadQR;
 
 class ServerController extends Controller
 {
@@ -46,17 +47,25 @@ class ServerController extends Controller
                     break;
                 //分享
                 case "CLICK":
-                    $url = "http://mp.weixin.qq.com/s?__biz=MzIzODY1MjUyNA==
-                    &mid=100000699&idx=1&sn=aed691ad9bae87df98f30d818d5b947f&
-                    chksm=69375eb85e40d7ae812971ce445dbe6a146ff824322e2e815dee9dd0002d2875b23bda67fc6b#rd";
+                    $url = "http://mp.weixin.qq.com/s?__biz=MzIzODY1MjUyNA==&mid=100000699&idx=1&sn=aed691ad9bae87df98f30d818d5b947f&chksm=69375eb85e40d7ae812971ce445dbe6a146ff824322e2e815dee9dd0002d2875b23bda67fc6b#rd";
+                    $span = new SpreadQR;
+                    $img = $span->orgcode(substr(md5(time()), 0, 8));
                     $items = [
                         new NewsItem([
                             'title'       => "邀请好友至“太好买”下单，领取现金红包！",
                             'description' => "详情进【链接】",
                             'url'         => $url,
-                            'image'       => ''//asset("assets/img/search.jpg"),
+                            'image'       => "",
+                        ]),
+                        new NewsItem([
+                            'title'       => "",
+                            'description' => "",
+                            'url'         => "",
+                            'image'       => $img,
                         ]),
                     ];
+//                    $img_ = "<img src=$img>";
+//                    User::sendMessage($img_); //图片发送
                     $news = new News($items);
                     return $news;
                     break;
@@ -80,4 +89,6 @@ class ServerController extends Controller
         });
         return $app->server->serve();
     }
+
+
 }
