@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use EasyWeChat;
 use App\WeChat\SpreadQR;
+use App\Models\AdminUser as Admin;
 
 class User extends Authenticatable
 {
@@ -111,7 +112,7 @@ class User extends Authenticatable
     // 确定管理员 id
     public function generateAdmin()
     {
-        $from = $user->rec_from;
+        $from = $this->rec_from;
         // 有人推广
         if ($from) {
             // 来自业务员的推广
