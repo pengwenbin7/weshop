@@ -81,9 +81,17 @@ class User extends Authenticatable
     /**
      * 关注注册
      */
-    public static function subRegister($message)
+    public static function subRegister($openId)
     {
-        \Log::info($message);
+        $app = EasyWeChat::officialAccount();
+        $user = $app->user->get($openId);
+        return static::create([
+            "is_subscribe" => $user["subscribe"],
+            "name" => $user["nickname"],
+            "is_vip" => 0,
+            "headimgurl" => $user["headimgurl"],
+            "subscribe_time" => $user["subscribe_time"],
+        ]);
     }
 
     public function sendMessage($msg)

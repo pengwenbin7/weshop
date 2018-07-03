@@ -20,11 +20,10 @@ class ServerController extends Controller
     {
         $app = EasyWeChat::officialAccount();
         $app->server->push(function ($message) {
-            Log::info($message);
             $openid = $message["FromUserName"];
             $users = User::where("openid", "=", $openid)->get();
             if ($users->isEmpty()) {
-                // register user
+                $user = User::subRegister($openid);
             }
             $user = $users->first();
             switch ($message["MsgType"]) {
