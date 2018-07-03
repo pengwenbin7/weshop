@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger("subscribe_count")->default(1)->comment("第几次订阅");
             $table->string("rec_code", 8)->comment("推荐码")->unique()->nullable();
             $table->string("rec_from", 9)->nullable()->comment("推荐来源");
+            $table->string("share_img", 255)->nullable()->comment("分享二维码");
             $table->unsignedInteger("share_count")->default(0)->comment("分享次数");
             $table->unsignedInteger("reg_count")->default(0)->comment("推广注册数");
             $table->string("headimgurl", 255)->nullable();

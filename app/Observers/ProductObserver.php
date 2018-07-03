@@ -25,8 +25,8 @@ class ProductObserver
         ];
         $code = dechex(sprintf("%u", crc32(implode("", $arr))));
         
-        if (Product::where("unique_code", "=", $code)->get()->isNotEmpty()) {
-            return false;
+        if (Product::where("unique_code", "=", $code)->get()->count() > 1) {
+            throw new \Exception("product unique code can't repeat");
         } else {
             $product->unique_code = $code;
         }
