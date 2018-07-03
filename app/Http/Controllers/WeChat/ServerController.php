@@ -50,8 +50,8 @@ class ServerController extends Controller
                     $url = "http://mp.weixin.qq.com/s?__biz=MzIzODY1MjUyNA==&mid=100000699&idx=1&sn=aed691ad9bae87df98f30d818d5b947f&chksm=69375eb85e40d7ae812971ce445dbe6a146ff824322e2e815dee9dd0002d2875b23bda67fc6b#rd";
                     $items = [
                         new NewsItem([
-                            'title'       => "邀请好友至“太好买”下单，领取现金红包！",
-                            'description' => "详情进【链接】",
+                            'title'       => "分享下方二维码，邀请好友下单领取现金奖励！",
+                            'description' => "点击查看详情→→→",
                             'url'         => $url,
                             'image'       => '',
                         ]),
