@@ -12,17 +12,18 @@ use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Voice;
 use App\Models\User;
 use App\WeChat\SpreadQR;
+use EasyWeChat\Kernel\Messages\Image;
 
 class ServerController extends Controller
 {
     public function serve()
     {
         $app = EasyWeChat::officialAccount();
-        $app->server->push(function($message){
+        $app->server->push(function ($message) {
             $openid = $message["FromUserName"];
             $users = User::where("openid", "=", $openid)->get();
             if ($users->isEmpty()) {
-                // register user
+                $user = User::subRegister($openid);
             }
             $user = $users->first();
             switch ($message["MsgType"]) {
@@ -66,14 +67,15 @@ class ServerController extends Controller
 //                    ];
 //                    $news = new News($items);
 //                    return $news;
-                    $news1 = new NewsItem([
-                            'title'       => "邀请好友至“太好买”下单，领取现金红包！",
-                            'description' => "详情进【链接】",
-                            'url'         => $url,
-                            'image'       => '',
-                        ]);
-                    $news2 = new sendImage($img);
-                    return new News($news1, $news2);
+//                    $news1 = new NewsItem([
+//                            'title'       => "邀请好友至“太好买”下单，领取现金红包！",
+//                            'description' => "详情进【链接】",
+//                            'url'         => $url,
+//                            'image'       => '',
+//                        ]);
+//                    $news2 = new sendImage($img);
+                    $image = new Image($img);
+                    return new News($image);
                     break;
                 }
                 break;
