@@ -18,7 +18,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        "openid", "name", "phone", "password", "rec_code",
+        "openid", "name", "phone",
+        "password", "rec_code", "rec_from",
+        "is_subscribe", "headimgurl", "subscribe_time",
     ];
 
     /**
@@ -91,7 +93,6 @@ class User extends Authenticatable
             "openid" => $openId,
             "is_subscribe" => $user["subscribe"],
             "name" => $user["nickname"],
-            "is_vip" => 0,
             "headimgurl" => $user["headimgurl"],
             "subscribe_time" => $user["subscribe_time"],
             "rec_from" => $from,
