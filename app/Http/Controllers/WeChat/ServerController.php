@@ -66,16 +66,14 @@ class ServerController extends Controller
 //                    ];
 //                    $news = new News($items);
 //                    return $news;
-
-
                     $news1 = new NewsItem([
-                        'title'       => "邀请好友至“太好买”下单，领取现金红包！",
-                        'description' => "详情进【链接】",
-                        'url'         => $url,
-                        'image'       => '',
-                    ]);
-                    $news2 = new NewsItem($img);
-                    return new News([$news1, $news2]);
+                            'title'       => "邀请好友至“太好买”下单，领取现金红包！",
+                            'description' => "详情进【链接】",
+                            'url'         => $url,
+                            'image'       => '',
+                        ]);
+                    $image = new Image($img);
+                    return new News([$news1, $image]);
                     break;
                 }
                 break;
