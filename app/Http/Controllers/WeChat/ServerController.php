@@ -12,13 +12,15 @@ use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Messages\Voice;
 use App\Models\User;
 use App\WeChat\SpreadQR;
+use EasyWeChat\Kernel\Messages\Image;
 
 class ServerController extends Controller
 {
     public function serve()
     {
         $app = EasyWeChat::officialAccount();
-        $app->server->push(function($message){
+        $app->server->push(function ($message) {
+            Log::info($message);
             $openid = $message["FromUserName"];
             $users = User::where("openid", "=", $openid)->get();
             if ($users->isEmpty()) {
