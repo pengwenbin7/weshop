@@ -75,10 +75,9 @@
       	link: "{{ url()->current() . "?rec=" . auth()->user()->rec_code }}",
 	imgUrl: "{{ asset("assets/img/logo.png") }}",
       	success: function () {
-      	  alert("分享成功");
+	  // 用户分享数　+1 ...
       	},
       	cancel: function () {
-      	  alert("取消了");
       	}
       });
 
