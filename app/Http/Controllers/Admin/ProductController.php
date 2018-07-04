@@ -27,8 +27,10 @@ class ProductController extends Controller
     {
         $limit = $request->input("limit", 15);
         $name = $request->input("name", '');
+        $active = $request->input("active", '');
         $products = Product::with(["variable", "detail", "brand", "storage"])
             ->where("keyword", "like", "%$name%")
+            ->whereIn('active', [$active ? $active:0,1])
             ->orderBy("id", "desc")
             ->paginate($limit);
         $line_num = $products -> total();
