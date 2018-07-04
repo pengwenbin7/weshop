@@ -81,6 +81,17 @@
 		    </option>
 		  @endif
 		@endforeach
+		@foreach ($commonStorages as $storage)
+		  @if ($storage->id == $product->storage_id)
+		    <option value="{{ $storage->id }}" selected>
+		      {{ $storage->name }}
+		    </option>
+		  @else
+		    <option value="{{ $storage->id }}">
+		      {{ $storage->name }}
+		    </option>
+		  @endif
+		@endforeach
 	      </select>
             </div>
 	  </div>
@@ -205,7 +216,7 @@
       brandChange: function () {
     	this.brand_changed = 1;
     	var $this = this;
-	var url = "{!! route("admin.storage.index") !!}" + "?api=1&limit=100000&common=1&brand_id=" + this.brand;
+	var url = "{!! route("admin.storage.index") !!}" + "?api=1&limit=100000&brand_id=" + this.brand;
     	axios.get(url)
     	  .then(function (res) {
     	    $this.storages = res.data;

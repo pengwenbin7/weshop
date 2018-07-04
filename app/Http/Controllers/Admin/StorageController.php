@@ -21,14 +21,10 @@ class StorageController extends Controller
     {
         $limit = $request->input("limit", 15);
         $brand_id = $request->input("brand_id", false);
-        $common = $request->input("common", false);
         $key = $request->input("key", false);
         $storages = Storage::
                   when($brand_id, function ($query) use ($brand_id) {
                       return $query->where("brand_id", "=", $brand_id);
-                  })
-                  ->when($common, function ($query) {
-                      return $query->orWhere("is_common", "=", 1);
                   })
                   ->when($key, function ($query) use ($key) {
                       return $query->where("name", "like", "%$key%");
