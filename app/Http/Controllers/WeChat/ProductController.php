@@ -27,15 +27,15 @@ class ProductController extends Controller
         $pcs = ProductCategory::where("category_id", "=", $id)
              ->where("is_primary", "=", 1)
              ->select("product_id")
-             ->get();
+             ->paginate($limit);
         $ids = [];
-        $arr = $pcs->toArray();//["data"]
+        $arr = $pcs->toArray()["data"];
         foreach ($arr as $i) {
             $ids[] = $i["product_id"];
         }
         $products = Product::whereIn("id", $ids)
                   ->where("active", "=", 1)
-                  ->paginate($limit);
+                  ->get();
         foreach ($products as  $product) {
           $product->brand_name = $product->brand->name;
           if($product->is_ton){
