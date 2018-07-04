@@ -30,13 +30,11 @@ class ServerController extends Controller
                     } else {
                         $from = null;
                     }
-                    Log::info("Sub From: $from");
                 }
                 $user = User::subRegister($openid, $from);
             } else {
                 $user = $users->first();
             }
-            Log::info($user);
             switch ($message["MsgType"]) {
             case "text":
                 $url = route("wechat.search", ["keyword" => $message['Content']]);
