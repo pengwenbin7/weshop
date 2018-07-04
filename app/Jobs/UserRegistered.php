@@ -33,8 +33,9 @@ class UserRegistered implements ShouldQueue
      */
     public function handle()
     {
-        AdminMessage::userRegistered($this->user);
         $this->user->share_img = $this->user->generateShareImg();
         $this->user->save();
+        $msg = "你有一个新的客户【{$this->user->name}】";
+        $this->user->admin->sendMessage($msg);
     }
 }
