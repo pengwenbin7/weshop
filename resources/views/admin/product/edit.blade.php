@@ -205,7 +205,7 @@
       brandChange: function () {
     	this.brand_changed = 1;
     	var $this = this;
-    	var url = "{{ route("admin.storage.index", ["api" => 1]) }}" + "&brand_id=" + this.brand;
+	var url = "{!! route("admin.storage.index") !!}" + "?api=1&limit=100000&common=1&brand_id=" + this.brand;
     	axios.get(url)
     	  .then(function (res) {
     	    $this.storages = res.data;

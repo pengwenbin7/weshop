@@ -28,7 +28,7 @@ class StorageController extends Controller
                       return $query->where("brand_id", "=", $brand_id);
                   })
                   ->when($common, function ($query) {
-                      return $query->orWhere("common", "=", 1);
+                      return $query->orWhere("is_common", "=", 1);
                   })
                   ->when($key, function ($query) use ($key) {
                       return $query->where("name", "like", "%$key%");
