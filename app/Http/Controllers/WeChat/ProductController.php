@@ -17,7 +17,6 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-
         $categories = Category::all();
         $firstCategoryId = $categories->first()->id;
         $id = $request->input("id", $firstCategoryId);
@@ -25,10 +24,10 @@ class ProductController extends Controller
         $limit = $request->input("limit", 15);
 
         // get products' id of the category
-        $pcs = ProductCategory::where("category_id", "=", 1)
+        $pcs = ProductCategory::where("category_id", "=", $id)
              ->where("is_primary", "=", 1)
              ->select("product_id")
-             ->get();
+             ->paginate($limit);
         $ids = [];
         $arr = $pcs->toArray()["data"];
         foreach ($arr as $i) {
@@ -36,7 +35,7 @@ class ProductController extends Controller
         }
         $products = Product::whereIn("id", $ids)
                   ->where("active", "=", 1)
-                  ->paginate($limit);
+                  ->get();
         foreach ($products as  $product) {
           $product->brand_name = $product->brand->name;
           if($product->is_ton){
