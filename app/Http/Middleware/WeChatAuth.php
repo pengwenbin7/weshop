@@ -34,7 +34,7 @@ class WeChatAuth
                 auth()->login(Cache::pull($request->token), true);
             } else {
                 $appid = env("WECHAT_OFFICIAL_ACCOUNT_APPID");
-                $state = "STATE";
+                $state = $request->input("rec", null);
                 $target = urlencode($request->fullUrl());
                 $callback = env("WECHAT_OFFICIAL_ACCOUNT_OAUTH_CALLBACK");
                 $scope = env("WECHAT_OFFICIAL_ACCOUNT_OAUTH_SCOPES");
@@ -51,6 +51,9 @@ class WeChatAuth
                 ]);
             }
         }
+        $request->query->add([
+            "something" => "xxxaaaxxx",
+        ]);
         return $next($request);
     }
 }
