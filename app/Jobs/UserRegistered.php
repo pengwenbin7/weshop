@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\User;
 use App\Models\AdminUser;
-use App\WeChat\SpreadQR;
 
 class UserRegistered implements ShouldQueue
 {
@@ -36,6 +35,7 @@ class UserRegistered implements ShouldQueue
         $this->user->share_img = $this->user->generateShareImg();
         $this->user->save();
         $msg = "你有一个新的客户【{$this->user->name}】";
-        $this->user->admin->sendMessage($msg);
+        $admin = AdminUser::find($this->user->admin_id);
+        $admin->sendMessage($msg);
     }
 }

@@ -23,13 +23,12 @@ class ServerController extends Controller
             $openid = $message["FromUserName"];
             $users = User::where("openid", "=", $openid)->get();
             if ($users->isEmpty()) {
+                $from = null;
                 if ($message["MsgType"] == "event" && $message["Event"] == "subscribe") {
                     $key = $message["EventKey"];
                     if ($key && starts_with($key, "qrscene_")) {
                         $from = str_after($key, "_");
-                    } else {
-                        $from = null;
-                    }
+                    } 
                 }
                 $user = User::subRegister($openid, $from);
             } else {
