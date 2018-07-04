@@ -44,16 +44,7 @@ class WeChatAuth
                      "&response_type=code&scope={$scope}&state={$state}#wechat_redirect";
                 return redirect($url);
             }
-        } else {
-            if (!$request->has("rec")) {
-                $request->query->add([
-                    "rec" => auth()->user()->rec_code,
-                ]);
-            }
         }
-        $request->query->add([
-            "something" => "xxxaaaxxx",
-        ]);
         return $next($request);
     }
 }
