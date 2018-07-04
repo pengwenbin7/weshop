@@ -32,6 +32,6 @@ class UserObserver
             "expire" => Carbon::now()->addYear(1),
             "description" => "感谢关注",
         ]);
-        dispatch(new UserRegistered($user));
+        dispatch(new UserRegistered(User::find($user->id)));
     }
 }
