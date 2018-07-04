@@ -21,18 +21,22 @@ class StorageController extends Controller
     {
         $limit = $request->input("limit", 15);
         $brand_id = $request->input("brand_id", false);
+        $common = $request->input("common", false);
         $key = $request->input("key", false);
         $storages = Storage::
                   when($brand_id, function ($query) use ($brand_id) {
                       return $query->where("brand_id", "=", $brand_id);
+                  })
+                  ->when($common, function ($query) {
+                      return $query->orWhere("common", "=", 1);
                   })
                   ->when($key, function ($query) use ($key) {
                       return $query->where("name", "like", "%$key%");
                   })
                   ->paginate($limit);
         $brands = Brand::select("id", "name")->get();
-        return $request->has("api")?
-            $storages->items():
+        return $request->has("api") ?
+            $storages->items() :
             view("admin.storage.index", [
                 "storages" => $storages,
                 "brand_id" => $brand_id,
