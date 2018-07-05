@@ -49,7 +49,7 @@ class PaymentController extends Controller
             $price = $product->variable->unit_price . "元/" . $product->packing_unit;
         }
 
-        $share_title = "我在太好买采购的" . $name . "只要" .$price . "，你也来看看吧。"
+        $share_title = "我在太好买采购的" . $name . "只要" .$price . "，你也来看看吧。";
         return view("wechat.pay.wait", [
             "json" => $json,
             "share_title" => $share_title,
