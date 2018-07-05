@@ -22,16 +22,24 @@ class PaymentController extends Controller
     public function pay(Request $request)
     {
         $order = Order::find($request->order_id);
-        $result = $this->payment->order->unify([
-            'body' => '微信支付订单',
-            'out_trade_no' => $order->no,
-            'total_fee' => intval($order->payment->pay) * 100,
-            //'total_fee' => 1,
-            'trade_type' => 'JSAPI',
-            'openid' => auth()->user()->openid,
-        ]);
+        if ($order->payment->prepay_id) {
+            $prepayId = $order->payment->prepay_id;
+        } else {
+            $result = $this->payment->order->unify([
+                'body' => '微信支付订单',
+                'out_trade_no' => $order->no,
+                'total_fee' => intval($order->payment->pay) * 100,
+                //'total_fee' => 1,
+                'trade_type' => 'JSAPI',
+                'openid' => auth()->user()->openid,
+            ]);
+            $prepayId = $result["prepay_id"];
+            $payment = $order->payment;
+            $payment->prepay_id = $prepayId;
+            $payment->save();
+        }
         $jssdk = $this->payment->jssdk;
-        $json = $jssdk->bridgeConfig($result["prepay_id"]);
+        $json = $jssdk->bridgeConfig($prepayId);
         $pay_channel = PayChannel::all();
         return view("wechat.pay.wait", [
             "json" => $json,
@@ -168,12 +176,12 @@ class PaymentController extends Controller
     }
     public function payOffline(Request $request)
     {
-      $order = Order::find($request->order_id);
-      $payment = $order->payment;
-      $payment->channel_id = $request->channel_id;
-      $payment->save();
-      $type  = $request->type;
-      $user = auth()->user();
-      return view("wechat.pay.offline",["order" => $order,"user" => $user, "type" => $type, "title" => "付款方式" ]);
+        $order = Order::find($request->order_id);
+        $payment = $order->payment;
+        $payment->channel_id = $request->channel_id;
+        $payment->save();
+        $type  = $request->type;
+        $user = auth()->user();
+        return view("wechat.pay.offline",["order" => $order,"user" => $user, "type" => $type, "title" => "付款方式" ]);
     }
 }
