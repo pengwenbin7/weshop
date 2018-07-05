@@ -65,7 +65,7 @@
         console.log(this.products);
         this.active = this.items[0].id;
         //获得主体部分高度
-        var total = "{{ $pcs->lastPage() }}";
+        var total = "{{ $pcs }}";
         if (total = 1) {
           this.more_box = false;
         }
@@ -92,7 +92,7 @@
         var _this = this;
         axios.get("{{ route("wechat.product.index") }}" + "?page=1&&id=" + id)
           .then(function(res) {
-            _this.total = res.data.pcs.last_page;
+            _this.total = res.data.pcs;
             if (_this.total == 1) {
               _this.more_box = false
             } else {
