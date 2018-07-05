@@ -49,11 +49,6 @@ class ProductController extends Controller
         }
         $pcs = $products ->lastPage();
         $products = $products->toArray()["data"];
-//        echo
-//        echo  "<pre>";
-//        print_r(json_encode($products));
-//        exit;
-
 
         if ($request->has("id")) {
             return [
