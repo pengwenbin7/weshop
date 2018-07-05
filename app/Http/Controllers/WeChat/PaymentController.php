@@ -41,9 +41,20 @@ class PaymentController extends Controller
         $jssdk = $this->payment->jssdk;
         $json = $jssdk->bridgeConfig($prepayId);
         $pay_channel = PayChannel::all();
+        $product = $order->orderItems->first()->product;
+        $name = $product->brand->name ." ". $product->model ." ". $product->name;
+        if($product->is_ton){
+            $price = $product->variable->unit_price * 1000 / $product->content . "元/吨";
+        }else{
+            $price = $product->variable->unit_price . "元/" . $product->packing_unit;
+        }
+
+        $share_title = "我在太好买采购的" . $name . "只要" .$price . "，你也来看看吧。"
         return view("wechat.pay.wait", [
             "json" => $json,
+            "share_title" => $share_title,
             "order" => $order,
+
             "pay_channel" => $pay_channel,
         ]);
     }
