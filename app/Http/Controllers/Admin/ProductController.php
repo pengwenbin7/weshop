@@ -25,18 +25,19 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $limit = $request->input("limit", 15);
+        $limit = $request->input("limit", 25);
         $name = $request->input("name", '');
         $active = $request->input("active", '');
         $products = Product::with(["variable", "detail", "brand", "storage"])
             ->where("keyword", "like", "%$name%")
-            ->whereIn('active', [$active ? $active:0,1])
+            ->whereIn('active', [$active == 0 || $active == 1 ? $active:0,1])
             ->orderBy("id", "desc")
             ->paginate($limit);
         $line_num = $products -> total();
         return view("admin.product.index", [
                     "line_num" => $line_num,
                     "products" => $products,
+                    'active' => $active,
                     'name' => $name,
                     'limit' => $limit
         ]);
