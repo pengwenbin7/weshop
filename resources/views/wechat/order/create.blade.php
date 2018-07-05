@@ -286,6 +286,7 @@
         _this.dist = res.provinceName + res.cityName + res.countryName + res.detailInfo;
         axios.post("{{ route("wechat.address.store") }}", res)
           .then(function(res1) {
+            alert(JSON.stringify(res1))
             address_id = res1.data.address_id;
             var param ={
               from: res1.data.address_id,
@@ -293,6 +294,7 @@
             }
             axios.post("{{ route("wechat.tool.distance") }}", param)
               .then(function(res2) {
+                alert(JSON.stringify(res2))
                 if(res2.data<0){
                   alert("你的地址有误，请重新添加");
                 }else{
