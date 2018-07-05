@@ -68,9 +68,31 @@
 		<option v-for="option in storages" v-bind:value="option.id">
 		  @{{ option.name }}
 		</option>
+		@foreach ($commonStorages as $storage)
+		  @if ($storage->id == $product->storage_id)
+		    <option value="{{ $storage->id }}" selected>
+		      {{ $storage->name }}
+		    </option>
+		  @else
+		    <option value="{{ $storage->id }}">
+		      {{ $storage->name }}
+		    </option>
+		  @endif
+		@endforeach
 	      </select>
 	      <select v-else class="form-control select" name="storage_id" required>
 		@foreach ($product->brand->storages as $storage)
+		  @if ($storage->id == $product->storage_id)
+		    <option value="{{ $storage->id }}" selected>
+		      {{ $storage->name }}
+		    </option>
+		  @else
+		    <option value="{{ $storage->id }}">
+		      {{ $storage->name }}
+		    </option>
+		  @endif
+		@endforeach
+		@foreach ($commonStorages as $storage)
 		  @if ($storage->id == $product->storage_id)
 		    <option value="{{ $storage->id }}" selected>
 		      {{ $storage->name }}
@@ -167,8 +189,8 @@
 	      </textarea>
             </div>
 	  </div>
-		<input type="hidden" value="{{ $limit }}" name="limit">
-		<input type="hidden" value="{{ $name }}" name="sname">
+	  <input type="hidden" value="{{ $limit }}" name="limit">
+	  <input type="hidden" value="{{ $name }}" name="sname">
 	</div>
 	<div class="box-footer">
 	  <button type="submit" class="btn btn-info btn-block">确定</button>
@@ -205,7 +227,7 @@
       brandChange: function () {
     	this.brand_changed = 1;
     	var $this = this;
-    	var url = "{{ route("admin.storage.index", ["api" => 1]) }}" + "&brand_id=" + this.brand;
+	var url = "{!! route("admin.storage.index") !!}" + "?api=1&limit=100000&brand_id=" + this.brand;
     	axios.get(url)
     	  .then(function (res) {
     	    $this.storages = res.data;

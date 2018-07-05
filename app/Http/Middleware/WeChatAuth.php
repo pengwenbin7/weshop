@@ -34,7 +34,7 @@ class WeChatAuth
                 auth()->login(Cache::pull($request->token), true);
             } else {
                 $appid = env("WECHAT_OFFICIAL_ACCOUNT_APPID");
-                $state = "STATE";
+                $state = $request->input("rec", null);
                 $target = urlencode($request->fullUrl());
                 $callback = env("WECHAT_OFFICIAL_ACCOUNT_OAUTH_CALLBACK");
                 $scope = env("WECHAT_OFFICIAL_ACCOUNT_OAUTH_SCOPES");
@@ -43,12 +43,6 @@ class WeChatAuth
                      "?appid={$appid}&redirect_uri={$redirect}" .
                      "&response_type=code&scope={$scope}&state={$state}#wechat_redirect";
                 return redirect($url);
-            }
-        } else {
-            if (!$request->has("rec")) {
-                $request->query->add([
-                    "rec" => auth()->user()->rec_code,
-                ]);
             }
         }
         return $next($request);

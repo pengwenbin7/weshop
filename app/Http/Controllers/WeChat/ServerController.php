@@ -23,9 +23,17 @@ class ServerController extends Controller
             $openid = $message["FromUserName"];
             $users = User::where("openid", "=", $openid)->get();
             if ($users->isEmpty()) {
-                $user = User::subRegister($openid);
+                $from = null;
+                if ($message["MsgType"] == "event" && $message["Event"] == "subscribe") {
+                    $key = $message["EventKey"];
+                    if ($key && starts_with($key, "qrscene_")) {
+                        $from = str_after($key, "_");
+                    } 
+                }
+                $user = User::subRegister($openid, $from);
+            } else {
+                $user = $users->first();
             }
-            $user = $users->first();
             switch ($message["MsgType"]) {
             case "text":
                 $url = route("wechat.search", ["keyword" => $message['Content']]);
@@ -43,39 +51,22 @@ class ServerController extends Controller
             case "event":
                 switch ($message["Event"]) {
                 case "subscribe":
-                    User::subRegister($message);
                     return new Text("感谢关注！");
                     break;
                 //分享
                 case "CLICK":
                     $url = "http://mp.weixin.qq.com/s?__biz=MzIzODY1MjUyNA==&mid=100000699&idx=1&sn=aed691ad9bae87df98f30d818d5b947f&chksm=69375eb85e40d7ae812971ce445dbe6a146ff824322e2e815dee9dd0002d2875b23bda67fc6b#rd";
-                    $span = new SpreadQR;
-                    $img = $span->orgcode(substr(md5(time()), 0, 8));
-//                    $items = [
-//                        new NewsItem([
-//                            'title'       => "邀请好友至“太好买”下单，领取现金红包！",
-//                            'description' => "详情进【链接】",
-//                            'url'         => $url,
-//                            'image'       => '',
-//                        ]),
-//                        new NewsItem([
-//                            'title'       => "",
-//                            'description' => "",
-//                            'url'         => '',
-//                            'image'       => $img,
-//                        ]),
-//                    ];
-//                    $news = new News($items);
-//                    return $news;
-//                    $news1 = new NewsItem([
-//                            'title'       => "邀请好友至“太好买”下单，领取现金红包！",
-//                            'description' => "详情进【链接】",
-//                            'url'         => $url,
-//                            'image'       => '',
-//                        ]);
-//                    $news2 = new sendImage($img);
-                    $image = new Image($img);
-                    return new News($image);
+                    $items = [
+                        new NewsItem([
+                            'title'       => "分享下方二维码，邀请好友下单领取现金奖励！",
+                            'description' => "点击查看详情→→→",
+                            'url'         => $url,
+                            'image'       => '',
+                        ]),
+                    ];
+                    $user->sendMessage(new News($items));
+                    $user->sendMessage(new Image($user->getShareImg()));
+                    return "success";
                     break;
                 }
                 break;

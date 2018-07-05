@@ -27,8 +27,10 @@ class ProductController extends Controller
     {
         $limit = $request->input("limit", 15);
         $name = $request->input("name", '');
+        $active = $request->input("active", '');
         $products = Product::with(["variable", "detail", "brand", "storage"])
             ->where("keyword", "like", "%$name%")
+            ->whereIn('active', [$active ? $active:0,1])
             ->orderBy("id", "desc")
             ->paginate($limit);
         $line_num = $products -> total();
@@ -51,7 +53,8 @@ class ProductController extends Controller
         $data["name"] = $request->input("name", '');
         $data["categories"] = Category::all();
         $data["brands"] = Brand::all();
-        $data["storages"] = Storage::all();
+        $data["commonStorages"] = Storage::select("id", "name")
+                                ->where("is_common", "=", 1)->get();
         return view("admin.product.create", $data);
     }
 
@@ -139,6 +142,7 @@ class ProductController extends Controller
             "product" => $product,
             "categories" => Category::select("id", "name")->get(),
             "brands" => Brand::select("id", "name")->get(),
+            "commonStorages" => Storage::select("id", "name")->where("is_common", "=", 1)->get(),
         ]);
     }
     

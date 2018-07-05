@@ -31,8 +31,8 @@ class StorageController extends Controller
                   })
                   ->paginate($limit);
         $brands = Brand::select("id", "name")->get();
-        return $request->has("api")?
-            $storages->items():
+        return $request->has("api") ?
+            $storages->items() :
             view("admin.storage.index", [
                 "storages" => $storages,
                 "brand_id" => $brand_id,

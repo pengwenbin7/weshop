@@ -57,7 +57,7 @@ n     * In addition, it is set as the URL generator's root namespace.
 
     protected function mapWechatRoutes()
     {
-        Route::middleware(["web", "wechat.auth"])
+        Route::middleware(["web", "wechat.oauth", "wechat.register"])
             ->domain("weshop.mafkj.com")
             ->namespace($this->namespace)
             ->group(base_path("routes/wechat.php"));

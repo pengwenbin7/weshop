@@ -23,10 +23,10 @@ class PaymentController extends Controller
     {
         $order = Order::find($request->order_id);
         $result = $this->payment->order->unify([
-            'body' => '微信支付测试订单',
+            'body' => '微信支付订单',
             'out_trade_no' => $order->no,
-            //'total_fee' => intval($order->payment->pay) * 100,
-            'total_fee' => 1,
+            'total_fee' => intval($order->payment->pay) * 100,
+            //'total_fee' => 1,
             'trade_type' => 'JSAPI',
             'openid' => auth()->user()->openid,
         ]);
