@@ -16,6 +16,8 @@ class CreatePaymentsTable extends Migration
         Schema::create("payments", function (Blueprint $table) {
             $table->increments("id");
             $table->unsignedInteger("order_id");
+            $table->string("prepay_id", 64)->nullable()
+                ->comment("微信预支付ｉｄ");
             $table->unsignedTinyInteger("channel_id");
             $table->unsignedDecimal("total", 10, 2)->comment("总价");
             $table->unsignedDecimal("tax", 10, 2)->default(0)->comment("税");
