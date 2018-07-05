@@ -14,7 +14,7 @@
 	<div class="row">
 	  <div class="col-sm-6">
 	    <div class="dataTables_length">
-	      <form action="{{ url()->current() }}">
+	      <form action="{{ url()->current() }}" id="form-start">
 		<label>
 		  每页
 		  <select name="limit" class="form-control input-sm">
@@ -27,6 +27,7 @@
 		</label>
 		<label>
 		  <input class="form-control input-sm" name="name" value="{{ $name }}" placeholder="" type="search">
+		  <input type="hidden" name="active" value="" id="active">
 		  <button>搜索</button>
 		</label>
 	      </form>
@@ -49,7 +50,9 @@
 		  <th style="width:80px">库存</th>
 		  <th>价格</th>
 		  <th style="width:80px">吨价</th>
-		  <th>上架</th>
+			<th style="width:120px">上架&nbsp;&nbsp;
+				是<input type="radio" name="ol" onclick="selstr(true)" {{ $active == 1 ? 'checked':'' }}>&nbsp;&nbsp;
+				否<input type="radio" name="ol" onclick="selstr(false)" {{ $active == 1 ? '':'checked' }}></th>
 		  <th>操作</th>
 		</tr>
 	      </thead>
@@ -79,7 +82,7 @@
 			--
 		      @endif
 		    </td>
-		    <td>
+		    <td style="text-align:center">
 		      @if ($item->active)
 			是
 		      @else
@@ -102,7 +105,7 @@
     </div>
     <div class="box-footer">
       <div class="row">
-		  <div class="col-sm-6">{{ $products->appends(["limit" => $limit, "name" => $name])->links() }}<div style="height:100%;lone-height:100%"> 总共：{{ $line_num }}</div></div>
+		  <div class="col-sm-6">{{ $products->appends(["limit" => $limit, "name" => $name,'active' => $active])->links() }}<div style="height:100%;lone-height:100%"> 总共：{{ $line_num }}</div></div>
       </div>
     </div>
   </div>
@@ -119,6 +122,18 @@
     $("#price"+obj).attr("disabled", false);
     fprice = $("#price"+obj).val();
   }
+  function selstr(obj)
+  {
+      if(obj){
+          $('#active').val(1);
+          $('#form-start').submit();
+	  }else{
+          $('#active').val(0);
+          $('#form-start').submit();
+	  }
+
+  }
+
   //修改库存
   function onclnum(obj,item)
   {
