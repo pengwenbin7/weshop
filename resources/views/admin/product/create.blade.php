@@ -51,6 +51,11 @@
 	    <label class="col-sm-2 control-label">仓库</label>
 	    <div class="col-sm-10">
 	      <select class="form-control select2" name="storage_id" required>
+		@foreach ($commonStorages as $storage)
+		  <option value="{{ $storage->id }}">
+		    {{ $storage->name }}
+		  </option>
+		@endforeach
 		<option v-for="option in storages" v-bind:value="option.id">
 		  @{{ option.name }}
 		</option>
@@ -87,7 +92,7 @@
 	      </div>
 	    </div>
 	  </div>
-	  
+
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">单价</label>
 	    <div class="col-sm-4">
@@ -98,7 +103,7 @@
 	      </div>
 	    </div>
 	  </div>
-	  
+
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">库存</label>
 	    <div class="col-sm-4">
@@ -132,8 +137,8 @@
             </div>
 	  </div>
 	</div>
-		  <input type="hidden" value="{{ $limit }}" name="limit">
-		  <input type="hidden" value="{{ $name }}" name="sname">
+	<input type="hidden" value="{{ $limit }}" name="limit">
+	<input type="hidden" value="{{ $name }}" name="sname">
 	<div class="box-footer">
 	  <button type="submit" class="btn btn-info btn-block">确定</button>
 	</div>
@@ -168,7 +173,7 @@
     methods: {
       brandChange: function () {
 	var $this = this;
-	var url = "{{ route("admin.storage.index", ["api" => 1]) }}" + "&brand_id=" + this.brand;
+	var url = "{!! route("admin.storage.index") !!}" + "?api=1&limit=100000&brand_id=" + this.brand;
 	axios.get(url)
 	  .then(function (res) {
 	    $this.storages = res.data;

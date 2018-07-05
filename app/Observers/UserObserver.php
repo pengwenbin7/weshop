@@ -3,11 +3,9 @@
 namespace App\Observers;
 
 use App\Models\User;
-use App\Models\AdminUser as Admin;
 use App\Models\Coupon;
 use Carbon\Carbon;
 use App\Jobs\UserRegistered;
-use App\WeChat\SpreadQR;
 
 class UserObserver
 {

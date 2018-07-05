@@ -54,7 +54,8 @@ class ProductController extends Controller
         $data["name"] = $request->input("name", '');
         $data["categories"] = Category::all();
         $data["brands"] = Brand::all();
-        $data["storages"] = Storage::all();
+        $data["commonStorages"] = Storage::select("id", "name")
+                                ->where("is_common", "=", 1)->get();
         return view("admin.product.create", $data);
     }
 
@@ -142,6 +143,7 @@ class ProductController extends Controller
             "product" => $product,
             "categories" => Category::select("id", "name")->get(),
             "brands" => Brand::select("id", "name")->get(),
+            "commonStorages" => Storage::select("id", "name")->where("is_common", "=", 1)->get(),
         ]);
     }
     

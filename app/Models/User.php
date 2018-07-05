@@ -99,6 +99,25 @@ class User extends Authenticatable
         ]);
     }
 
+    /**
+     * 网页注册
+     */
+    public static function webRegister($user, $from)
+    {
+        $app = EasyWeChat::officialAccount();
+        // 判断是否关注
+        $info = $app->user->get($user->getId());
+        $info["subscribe"];
+        return static::create([
+            "openid" => $user->getId(),
+            "is_subscribe" => $info["subscribe"],
+            "name" => $user->getName(),
+            "headimgurl" => $user->getAvatar(),
+            "subscribe_time" => $info["subscribe_time"] ?? null,
+            "rec_from" => $from,
+        ]);
+    }
+
     public function sendMessage($msg)
     {
         $app = EasyWeChat::officialAccount();

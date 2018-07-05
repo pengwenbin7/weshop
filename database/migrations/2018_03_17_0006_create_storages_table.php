@@ -22,6 +22,8 @@ class CreateStoragesTable extends Migration
             $table->json("func");
             $table->text("description")->nullable();
             $table->boolean("active")->default(true);
+            $table->boolean("is_common")->default(false)
+                ->comment("是否为通用仓库");
             $table->timestamps();
             $table->foreign("locale_id")->references("id")->on("locales");
             $table->foreign("address_id")->references("id")->on("addresses");
