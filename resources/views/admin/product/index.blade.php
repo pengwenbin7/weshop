@@ -27,7 +27,7 @@
 		</label>
 		<label>
 		  <input class="form-control input-sm" name="name" value="{{ $name }}" placeholder="" type="search">
-		  <input type="hidden" name="active" value="" id="active">
+		  <input type="hidden" name="active" value="{{ $active }}" id="active">
 		  <button>搜索</button>
 		</label>
 	      </form>
