@@ -43,7 +43,7 @@ class Count
              "&key=" . env("LBS_AMAP_COM_KEY");
         $res = json_decode(file_get_contents($url));
         if ($res->errcode) {
-            Log::error("{$res->errmsg}: {$res->errdetail}");
+            Log::error($res);
             return -1;
         } else {
             //　这里不需要很精确，取第一个即可
