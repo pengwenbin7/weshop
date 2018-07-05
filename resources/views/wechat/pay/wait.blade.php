@@ -204,8 +204,8 @@
     }
     wx.ready(function () {
       wx.onMenuShareTimeline({
-      	title: "太好买化工品交易平台-厂家直销，优惠多多",
-link: "{{ route("wechat.product.show", ["id" => $order->orderItems->first()->product_id, "rec_code" => auth()->user()->rec_code]) }}",
+      	title: "我在太好买采购的{{ $order->orderItems->first()->product->brand->name }}{{ $order->orderItems->first()->product->model }}{{ $order->orderItems->first()->product->name }}只要{{ $order->orderItems->first()->product->variable->unit_price * 1000 / $order->orderItems->first()->product->content }}/每吨，你也来看看吧",
+        link: "{{ route("wechat.product.show", ["id" => $order->orderItems->first()->product_id, "rec_code" => auth()->user()->rec_code]) }}",
       	imgUrl: "{{ asset("assets/img/logo.png") }}",
       	success: function () {
           axios.post("{{ route("wechat.order.share", $order) }}")
