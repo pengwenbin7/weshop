@@ -41,12 +41,12 @@ class Count
              "&origin={$origin}&destination={$destination}" .
              "&key=" . env("LBS_AMAP_COM_KEY");
         $res = json_decode(file_get_contents($url));
-        if ($res->errcode) {
-            Log::error(json_encode($res, JSON_UNESCAPED_UNICODE));
+        if (!$res->status) {
+            Log::error($res->info);
             return -1;
         } else {
             //　这里不需要很精确，取第一个即可
-            $distance = intval(($res->data->route->paths)[0]->distance);
+            $distance = intval(($res->route->paths)[0]->distance);
             // 写入本地缓存
             AddressDistance::create([
                 "from" => $from->id,
