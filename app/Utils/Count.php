@@ -37,9 +37,8 @@ class Count
         
         $origin = "{$from->lng},{$from->lat}";
         $destination = "{$to->lng},{$to->lat}";
-        $url = "http://restapi.amap.com/v4/direction/truck?parameters" .
+        $url = "http://restapi.amap.com/v3/direction/driving?parameters" .
              "&origin={$origin}&destination={$destination}" .
-             "&size=4" .
              "&key=" . env("LBS_AMAP_COM_KEY");
         $res = json_decode(file_get_contents($url));
         if ($res->errcode) {
