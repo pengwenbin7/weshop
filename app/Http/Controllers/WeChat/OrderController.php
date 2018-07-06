@@ -197,7 +197,7 @@ class OrderController extends Controller
             //'total_fee' => 1,
             'trade_type' => 'JSAPI',
             'openid' => auth()->user()->openid,
-            'prepayId' => $order->payment->prepay_id,
+            'prepay_id' => $order->payment->prepay_id,
         ]);
         $prepayId = $result["prepay_id"];
         $payment = $order->payment;

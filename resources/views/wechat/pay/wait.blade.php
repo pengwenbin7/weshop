@@ -210,6 +210,7 @@
       	success: function () {
           axios.post("{{ route("wechat.order.share", $order) }}")
     	    .then(function (res) {
+            alert(JSON.stringify(res));
     	      location.reload();
     	    });
 	       },
