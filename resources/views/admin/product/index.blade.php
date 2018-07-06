@@ -19,9 +19,9 @@
 		  每页
 		  <select name="limit" class="form-control input-sm">
 		    <option value="10" {{ $limit == 10 ? 'selected':'' }}>10</option>
-                    <option value="25" {{ $limit == 25 ? 'selected':'' }}>25</option>
-                    <option value="50" {{ $limit == 50 ? 'selected':'' }}>50</option>
-                    <option value="100" {{ $limit == 100 ? 'selected':'' }}>100</option>
+			<option value="25" {{ $limit == 25 ? 'selected':'' }}>25</option>
+			<option value="50" {{ $limit == 50 ? 'selected':'' }}>50</option>
+			<option value="100" {{ $limit == 100 ? 'selected':'' }}>100</option>
 		  </select>
 		  条
 		</label>
@@ -39,7 +39,7 @@
 	    <table class="table table-bordered table-striped dataTable table-hover table-condensed" role="grid">
 	      <thead>
 		<tr>
-		  <th>序号1</th>
+		  <th>序号</th>
 		  <th>名字</th>
 		  <th>品牌</th>
 		  <th>型号</th>
@@ -59,7 +59,7 @@
 	      <tbody>
 		@foreach ($products as $item)
 		  <tr role="row">
-		    <td>{{ $item->id }}</td>
+		    <td>{{ $serial++ }}</td>
 		    <td>{{ $item->name }}</td>
 		    <td>{{ $item->brand->name }}</td>
 		    <td>{{ $item->model }}</td>

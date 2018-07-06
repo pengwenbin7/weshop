@@ -11,20 +11,22 @@
 	<div class="row">
 	  <div class="col-sm-6">
 	    <div class="dataTables_length">
+			<form action="{{ url()->current() }}">
 	      <label>
 		每页
-		<select name="" class="form-control input-sm">
-		  <option value="10">10</option>
-		  <option value="25">25</option>
-		  <option value="50">50</option>
-		  <option value="100">100</option>
+		<select name="limit" class="form-control input-sm">
+			<option value="10" {{ $limit == 10 ? 'selected':'' }}>10</option>
+			<option value="25" {{ $limit == 25 ? 'selected':'' }}>25</option>
+			<option value="50" {{ $limit == 50 ? 'selected':'' }}>50</option>
+			<option value="100" {{ $limit == 100 ? 'selected':'' }}>100</option>
 		</select>
 		条
 	      </label>
 	      <label>
-		<input class="form-control input-sm" type="search">
+		<input class="form-control input-sm" value="{{ $name }}" name="name" type="search">
 		<button>搜索</button>
 	      </label>
+			</form>
 	    </div>
 	  </div>
 	</div>
@@ -33,7 +35,7 @@
 	    <table class="table table-bordered table-striped dataTable table-hover table-condensed" role="grid">
 	      <thead>
 		<tr>
-		  <th>id</th>
+		  <th>序号</th>
 		  <th>用户</th>
 		  <th>金额</th>
 		  <th>业务</th>
@@ -48,7 +50,7 @@
 	      <tbody>
 		@foreach ($orders as $order)
 		  <tr role="row">
-		    <td>{{ $order->id }}</td>
+		    <td>{{ $serial++ }}</td>
 		    <td>
 		      {{ $order->user->name }}
 		    </td>
@@ -107,6 +109,7 @@
 	  </div>
 	</div>
 	<div class="row">
+		<div class="col-sm-6">{{ $orders->appends(["limit" => $limit, "name" => $name])->links() }}<div style="height:100%;lone-height:100%"> 总共：{{ $line_num }}</div></div>
 	</div>
       </div>
     </div>

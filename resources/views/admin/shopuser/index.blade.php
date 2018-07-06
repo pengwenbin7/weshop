@@ -49,7 +49,7 @@
 	      <tbody>
 		@foreach ($user as $item)
 		  <tr role="row">
-		    <td>{{ $item->id }}</td>
+		    <td>{{ $serial++ }}</td>
 		    <td>{{ $item->name }}</td>
 		    <td>{{ $item->integral }}</td>
 		    <td>{{ $item->admin->name }}</td>

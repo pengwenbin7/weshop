@@ -27,14 +27,20 @@ class ProductController extends Controller
     {
         $limit = $request->input("limit", 25);
         $name = $request->input("name", '');
+        $page = $request->input("page", '');
         $active = $request->input("active", '');
         $products = Product::with(["variable", "detail", "brand", "storage"])
             ->where("keyword", "like", "%$name%")
-            ->whereIn('active', [$active == 0 || $active == 1 ? $active:0,1])
+            ->whereIn('active', [$active ? $active:0,1])
             ->orderBy("id", "desc")
             ->paginate($limit);
+        $serial = 1;
+        if(!empty($page) && $page != 1){
+            $serial = $page * $limit - $limit + 1;
+        }
         $line_num = $products -> total();
         return view("admin.product.index", [
+                    "serial" => $serial,
                     "line_num" => $line_num,
                     "products" => $products,
                     'active' => $active,

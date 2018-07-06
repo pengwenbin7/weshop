@@ -25,6 +25,9 @@ class Order extends Model
     const REFUND_STATUS_ALLOW = 2; // 允许退货
     const REFUND_STATUS_REJECT = 3;  // 拒绝退货
     const REFUND_STATUS_DONE = 4;  // 已退货
+    protected $fillable = [
+        "user_id", "admin_id"
+    ];
     
     public function orderItems()
     {

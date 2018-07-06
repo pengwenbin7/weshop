@@ -21,6 +21,7 @@ class StorageController extends Controller
     {
         $limit = $request->input("limit", 15);
         $brand_id = $request->input("brand_id", false);
+        $page = $request->input("page", '');
         $key = $request->input("key", false);
         $storages = Storage::
                   when($brand_id, function ($query) use ($brand_id) {
@@ -31,9 +32,16 @@ class StorageController extends Controller
                   })
                   ->paginate($limit);
         $brands = Brand::select("id", "name")->get();
+        $serial = 1;
+        if(!empty($page) && $page != 1){
+            $serial = $page * $limit - $limit + 1;
+        }
+        $line_num = $storages -> total();
         return $request->has("api") ?
             $storages->items() :
             view("admin.storage.index", [
+                "serial" => $serial,
+                "line_num" => $line_num,
                 "storages" => $storages,
                 "brand_id" => $brand_id,
                 "key" => $key,

@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Events\OrderPaidEvent;
 use App\Jobs\ShipmentPurchased;
 use App\Jobs\OrderShipped;
+use App\Models\User;
 
 class OrderController extends Controller
 {
@@ -18,21 +19,50 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        $limit = $request->input("limit", 25);
+        $name = $request->input("name", '');
+        $page = $request->input("page", '');
         $condition = null;
         $orders = Order::with(["orderItems", "payment", "shipments"])
+                ->where("admin_id", "like", "%$name%")
                 ->orderBy("id", "desc")
-                ->get();
-        return view("admin.order.index", ["orders" => $orders]);
+                ->paginate($limit);
+        $serial = 1;
+        if(!empty($page) && $page != 1){
+            $serial = $page * $limit - $limit + 1;
+        }
+        $line_num = $orders -> total();
+        return view("admin.order.index", [
+            "serial" => $serial,
+            "line_num" => $line_num,
+            'name' => $name,
+            "orders" => $orders,
+            'limit' => $limit
+        ]);
     }
 
     public function mine(Request $request)
     {
+        $limit = $request->input("limit", 25);
+        $name = $request->input("name", '');
+        $page = $request->input("page", '');
         $condition = null;
         $orders = Order::with(["orderItems", "payment", "shipments"])
                 ->where("admin_id", "=", auth("admin")->user()->id)
                 ->orderBy("updated_at", "desc")
-                ->get();
-        return view("admin.order.index", ["orders" => $orders]);
+                ->paginate($limit);
+        $serial = 1;
+        if(!empty($page) && $page != 1){
+            $serial = $page * $limit - $limit + 1;
+        }
+        $line_num = $orders -> total();
+        return view("admin.order.index", [
+            "serial" => $serial,
+            "line_num" => $line_num,
+            'name' => $name,
+            "orders" => $orders,
+            'limit' => $limit
+        ]);
     }
 
     /**

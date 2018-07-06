@@ -37,7 +37,7 @@
 	    <table class="table table-bordered table-striped dataTable" role="grid">
 	      <thead>
 		<tr>
-		  <th>id</th>
+		  <th>序号</th>
 		  <th>名称</th>
 		  <th>品牌</th>
 		  <th>地址</th>
@@ -47,7 +47,7 @@
 	      <tbody>
 		@foreach ($storages as $item)
 		  <tr role="row">
-		    <td>{{ $item->id }}</td>
+		    <td>{{ $serial++ }}</td>
 		    <td>{{ $item->name }}</td>
 		    <td>{{ $item->brand->name }}</td>
 		    <td>{{ $item->address->getText() }}</td>
@@ -71,7 +71,7 @@
 	<div class="row">
 	  {{ $storages->appends([
 	     "limit" => $limit, "brand_id" => $brand_id, "key" => $key,
-	     ])->links() }}
+	     ])->links() }}<div style="height:100%;lone-height:100%"> 总共：{{ $line_num }}</div>
 	</div>
       </div>
     </div>
