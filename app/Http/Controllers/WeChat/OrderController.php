@@ -190,19 +190,6 @@ class OrderController extends Controller
         if ($payment->share_discount <= 0) {
             $payment->share_discount = $payment->pay > 20000 ? 200 : 50;
         }
-        $result = $this->payment->order->unify([
-            'body' => '微信支付订单',
-            'out_trade_no' => $order->no,
-            'total_fee' => intval($order->payment->pay) * 100,
-            //'total_fee' => 1,
-            'trade_type' => 'JSAPI',
-            'openid' => auth()->user()->openid,
-            'prepay_id' => $order->payment->prepay_id,
-        ]);
-        return ["res" => $result];
-        $prepayId = $result["prepay_id"];
-        $payment = $order->payment;
-        $payment->prepay_id = $prepayId;
         return ["res" => $payment->save()];
     }
 
