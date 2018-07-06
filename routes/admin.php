@@ -113,5 +113,9 @@ Route::resource("invoice", "Admin\InvoiceController", [
         "destroy" => "admin.invoice.destroy",
     ],
 ]);
+//我的用户
+Route::get('/meuser', 'Admin\MeuserController@index')->name("admin.meuser.index");
+//所有用户
+Route::get('/shopuser', 'Admin\ShopuserController@index')->name("admin.shopuser.index");
 
 Route::get('/logout', 'AdminAuth\LoginController@logout')->name("admin.logout");
