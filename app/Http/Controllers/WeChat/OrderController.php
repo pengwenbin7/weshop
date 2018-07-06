@@ -199,6 +199,7 @@ class OrderController extends Controller
             'openid' => auth()->user()->openid,
             'prepay_id' => $order->payment->prepay_id,
         ]);
+        return ["res" => $result];
         $prepayId = $result["prepay_id"];
         $payment = $order->payment;
         $payment->prepay_id = $prepayId;
