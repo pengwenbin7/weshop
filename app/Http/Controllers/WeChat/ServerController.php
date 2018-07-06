@@ -51,8 +51,18 @@ class ServerController extends Controller
             case "event":
                 switch ($message["Event"]) {
                 case "subscribe":
-                    return new Text("感谢关注！");
-                    break;
+//                    return new Text("太好买2.0版正式上线！众多功能等您解锁！");
+//                    break;
+                        $items = [
+                            new NewsItem([
+                                'title'       => "太好买2.0版正式上线！众多功能等您解锁！",
+                                'description' => "",
+                                'url'         => "https://mp.weixin.qq.com/s/pHrUHED79n8uwDN6n4UvPA",
+                                'image'       => ''//asset("assets/img/search.jpg"),
+                            ]),
+                        ];
+                        $news = new News($items);
+                        return $news;
                 //分享
                 case "CLICK":
                     $url = "http://mp.weixin.qq.com/s?__biz=MzIzODY1MjUyNA==&mid=100000699&idx=1&sn=aed691ad9bae87df98f30d818d5b947f&chksm=69375eb85e40d7ae812971ce445dbe6a146ff824322e2e815dee9dd0002d2875b23bda67fc6b#rd";

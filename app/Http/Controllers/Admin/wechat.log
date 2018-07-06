@@ -1,0 +1,2 @@
+[2018-07-06 16:25:17] NULL.DEBUG: Request received: {"method":"GET","uri":"http://admin.mafkj.com/ceshi","content-type":null,"content":""} 
+[2018-07-06 16:25:17] NULL.DEBUG: Server response created: {"content":"success"} 

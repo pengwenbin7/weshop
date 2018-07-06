@@ -118,4 +118,7 @@ Route::get('/meuser', 'Admin\MeuserController@index')->name("admin.meuser.index"
 //所有用户
 Route::get('/shopuser', 'Admin\ShopuserController@index')->name("admin.shopuser.index");
 
+//测试
+//Route::get("/ceshi", "Admin\CeshiController@index")->name("admin.ceshi.index");
+
 Route::get('/logout', 'AdminAuth\LoginController@logout')->name("admin.logout");
