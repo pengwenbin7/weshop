@@ -19,7 +19,7 @@
     .pay .item{width: 100%; background-color: #fff;padding: .3rem .4rem;display: flex;display: -webkit-flex;}
     .pay .item .pay-t{width: 2rem;line-height: .5rem;}
     .pay .item .pay-t i{font-size: .4rem;font-weight: bold;}
-    .pay .item .share-tip span{background-color: #ff4f53;display: inline-block;box-sizing: border-box;padding: .07rem .3rem;color: #fff;font-size: .26rem;}
+    .pay .item .share-tip span{display: none;background-color: #ff4f53;display: inline-block;box-sizing: border-box;padding: .07rem .3rem;color: #fff;font-size: .26rem;}
     .pay .item .pay-limit{width: 100%; line-height: .4rem;font-size: .28rem;color: #888;}
     .group{margin-top: .4rem;}
     .group .item {display: flex;display: -webkit-flex;height: 1.3rem;padding: .25rem .4rem;line-height: .8rem;border-bottom: 1px solid #eee;}
