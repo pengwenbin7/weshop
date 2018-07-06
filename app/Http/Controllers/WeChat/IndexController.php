@@ -39,7 +39,7 @@ class IndexController extends Controller
             "interfaces" => $interfaces,
             "products" => $products,
             "hot_search" => $hot_search->hotSearch(),
-            "title" => "首页",
+            "title" => "太好买－首页",
         ]);
     }
 }
