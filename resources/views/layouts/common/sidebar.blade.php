@@ -62,14 +62,14 @@
 
       <li class="header">用户</li>
       <li>
-	<a href="#">
+	<a href="{{ route("admin.meuser.index") }}">
 	  我的用户
 	</a>
       </li>
 
       @if (auth("admin")->user()->can("user"))
 	<li>
-	  <a href="#">
+	  <a href="{{ route("admin.shopuser.index") }}">
 	    商城用户
 	  </a>
 	</li>
