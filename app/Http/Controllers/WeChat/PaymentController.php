@@ -193,6 +193,7 @@ class PaymentController extends Controller
     {
         return $payment->delete();
     }
+    
     public function payOffline(Request $request)
     {
         $order = Order::find($request->order_id);
@@ -202,5 +203,21 @@ class PaymentController extends Controller
         $type  = $request->type;
         $user = auth()->user();
         return view("wechat.pay.offline",["order" => $order,"user" => $user, "type" => $type, "title" => "付款方式" ]);
+    }
+
+    public function test()
+    {
+        $result = $this->payment->order->unify([
+            'body' => '微信支付测试',
+            'out_trade_no' => time(),
+            'total_fee' => 1,
+            'trade_type' => 'JSAPI',
+            'openid' => auth()->user()->openid,
+        ]);
+        $jssdk = $this->payment->jssdk;
+        $json = $jssdk->bridgeConfig($result["prepay_id"]);
+        return view("wechat.pay.test", [
+            "json" => $json,
+        ]);
     }
 }
