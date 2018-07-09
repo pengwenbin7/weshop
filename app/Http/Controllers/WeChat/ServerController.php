@@ -28,7 +28,7 @@ class ServerController extends Controller
                     $key = $message["EventKey"];
                     if ($key && starts_with($key, "qrscene_")) {
                         $from = str_after($key, "_");
-                    } 
+                    }
                 }
                 $user = User::subRegister($openid, $from);
             } else {
