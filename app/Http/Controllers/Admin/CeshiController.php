@@ -22,10 +22,11 @@ class CeshiController extends Controller
 
         $app = EasyWeChat::officialAccount();
         //群发消息
-        $myuser = User::pluck('openid');
-        $users = $app->user->select(["obOoJwa_IRu2_WqJ3i0a4gQCBc8I","obOoJwa-Wsr3k4JYjIK2OY0bMFS0"]);
+        $tags = $app->user_tag->list();
+//        $myuser = User::pluck('openid');
+//        $users = $app->user->select(["obOoJwa_IRu2_WqJ3i0a4gQCBc8I","obOoJwa-Wsr3k4JYjIK2OY0bMFS0"]);
         echo "<pre>";
-        print_r($users);
+        print_r($tags);
     }
     //设置与发送模板信息
     public function index1(){
