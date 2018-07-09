@@ -42,24 +42,24 @@ class ProductPriceChangedListener
                     'touser' => $item,
                     'template_id' => 'PNgBiNoPOvZvQSnU5vl984bRKo08oAhDV24ftnssbzo',
                     'url' => route("wechat.product.show",$event->product->id),
-//                    'data' => [
-//                        'first' => '',
-//                        'keyword1' => $Variable->unit_price,
-////                        'keyword2' => '',
-//                        'keyword2' => $event->product->model,
-//                        'keyword3' => $event->product->name,//
-//                        'remark' => '',
-//                    ],
-                    $data = [
-                        "first" => $event->product->name.":价格调整。",
-                        "keyword1" => "太好买",
-                        "keyword2" => $Variable->unit_price,
-                        "keyword3" => $event->product->model,
-                        "keyword4" => $event->product->updated_at,
-                        "remark" => [
-                            "value" => "",//马蜂科技",
-                        ],
+                    'data' => [
+                        'first' => $event->product->name.":价格调整。",
+                        'keyword1' => "太好买",
+                        'keyword2' => $Variable->unit_price,
+                        'keyword3' => $event->product->model,
+                        'keyword4' => $event->product->name,//
+                        'remark' => '',
                     ],
+//                    $data = [
+//                        "first" => $event->product->name.":价格调整。",
+//                        "keyword1" => "太好买",
+//                        "keyword2" => $Variable->unit_price,
+//                        "keyword3" => $event->product->model,
+//                        "keyword4" => $event->product->updated_at,
+//                        "remark" => [
+//                            "value" => "",//马蜂科技",
+//                        ],
+//                    ],
 
                 ]);
             }
