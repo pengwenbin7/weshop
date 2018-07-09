@@ -21,23 +21,23 @@ class CeshiController extends Controller
     {
 
         $app = EasyWeChat::officialAccount();
-//        $user = $app->user->get('obOoJwWpxqeAPWmN5UNjQOgZZlJM');
-//        print_r($user);
-//        exit;
+        $user = $app->user->get('obOoJwWpxqeAPWmN5UNjQOgZZlJM');
+        print_r($user);
+        exit;
         //通过模板消息发送降价信息
-        $sss = $app->template_message->sendSubscription([
-            'touser' => 'obOoJwWpxqeAPWmN5UNjQOgZZlJM',
-            'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
-            'url' => 'https://easywechat.org',
-            'scene' => 1000,
-            'data' => [
-                'first' => array('value' => urlencode('我在测试'),'color' => "#743A3A"),
-                'prodict' => array('value' => urlencode('我在测试2'),'color' => "#FF0000"),
-                'price' => array('value' => urlencode('1000'),'color' => "#0000FF"),
-                'price' => array('value' => urlencode(date('Y-m-d H:i:s',time())),'color' => "#0000FF"),
-            ],
-        ]);
-        print_r($sss);
+//        $sss = $app->template_message->sendSubscription([
+//            'touser' => 'obOoJwWpxqeAPWmN5UNjQOgZZlJM',
+//            'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
+//            'url' => 'https://easywechat.org',
+//            'scene' => 1000,
+//            'data' => [
+//                'first' => array('value' => urlencode('我在测试'),'color' => "#743A3A"),
+//                'prodict' => array('value' => urlencode('我在测试2'),'color' => "#FF0000"),
+//                'price' => array('value' => urlencode('1000'),'color' => "#0000FF"),
+//                'price' => array('value' => urlencode(date('Y-m-d H:i:s',time())),'color' => "#0000FF"),
+//            ],
+//        ]);
+//        print_r($sss);
 //        return "success";
     }
     //设置与发送模板信息
