@@ -30,24 +30,15 @@ class CeshiController extends Controller
             'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
             'url' => 'https://easywechat.org',
             'data' => [
-                'key1' => '我在测试',
-                'key2' => '我在测试2',
+                'first' => '我在测试',
+                'keyword1' => '我在测试2',
+                'keyword2' => '我在测试2',
+                'keyword3' => '我在测试2',
+                'keyword4' => '我在测试2',
+                'remark' => '请点击查看详情......',
             ],
         ]);
-//        $sss = $app->template_message->sendSubscription([
-//            'touser' => 'obOoJwWpxqeAPWmN5UNjQOgZZlJM',
-//            'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
-//            'url' => 'https://easywechat.org',
-//            'scene' => 1000,
-//            'data' => [
-//                'first' => array('value' => urlencode('我在测试'),'color' => "#743A3A"),
-//                'prodict' => array('value' => urlencode('我在测试2'),'color' => "#FF0000"),
-//                'price' => array('value' => urlencode('1000'),'color' => "#0000FF"),
-//                'price' => array('value' => urlencode(date('Y-m-d H:i:s',time())),'color' => "#0000FF"),
-//            ],
-//        ]);
         print_r($sss);
-//        return "success";
     }
     //设置与发送模板信息
     public function index1(){
