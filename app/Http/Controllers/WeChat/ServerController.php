@@ -58,7 +58,7 @@ class ServerController extends Controller
                                 'title'       => "太好买2.0版正式上线！众多功能等您解锁！",
                                 'description' => "",
                                 'url'         => "https://mp.weixin.qq.com/s/pHrUHED79n8uwDN6n4UvPA",
-                                'image'       => ''//asset("assets/img/search.jpg"),
+                                'image'       => 'asset("assets/img/search.jpg")',
                             ]),
                         ];
                         $news = new News($items);

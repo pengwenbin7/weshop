@@ -17,7 +17,7 @@ use Session;
 
 class CeshiController extends Controller
 {
-    public function index2(Request $request)
+    public function index(Request $request)
     {
 
         $app = EasyWeChat::officialAccount();
@@ -41,7 +41,7 @@ class CeshiController extends Controller
 //        return "success";
     }
     //设置与发送模板信息
-    public function index(){
+    public function index1(){
         //获取access_token
         $access_token = $this->getaccess_token();
         //这里是在模板里修改相应的变量
@@ -92,7 +92,7 @@ class CeshiController extends Controller
             curl_close($ch);
             $data = json_decode($data,true);
             Session::put('tocken',$data['access_token']);
-            Session::put('tocken_time',time()+7000);
+            Session::put('tocken_time',time()+2000);
             return $data['access_token'];
         }
     }

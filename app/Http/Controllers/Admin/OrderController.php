@@ -23,12 +23,12 @@ class OrderController extends Controller
         $name = $request->input("name", '');
         $page = $request->input("page", '');
         $condition = null;
-        $orders = Order::with(["orderItems", "payment", "shipments"])
+        $orders = Order::with(["orderItems", "payment", "shipments", "address"])
                 ->where("admin_id", "like", "%$name%")
                 ->orderBy("id", "desc")
                 ->paginate($limit);
         $serial = 1;
-        if(!empty($page) && $page != 1){
+        if (!empty($page) && $page != 1) {
             $serial = $page * $limit - $limit + 1;
         }
         $line_num = $orders -> total();
@@ -47,7 +47,7 @@ class OrderController extends Controller
         $name = $request->input("name", '');
         $page = $request->input("page", '');
         $condition = null;
-        $orders = Order::with(["orderItems", "payment", "shipments"])
+        $orders = Order::with(["orderItems", "payment", "shipments", "address"])
                 ->where("admin_id", "=", auth("admin")->user()->id)
                 ->orderBy("updated_at", "desc")
                 ->paginate($limit);
@@ -105,7 +105,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        $orders = Order::with(["orderItems", "payment", "shipments"])
+        $orders = Order::with(["orderItems", "payment", "shipments", "address"])
                 ->find($order->id);
         return $orders;
     }

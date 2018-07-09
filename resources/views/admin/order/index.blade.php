@@ -36,7 +36,8 @@
 	      <thead>
 		<tr>
 		  <th>序号</th>
-		  <th>用户</th>
+		  <th>昵称</th>
+		  <th>姓名</th>
 		  <th>金额</th>
 		  <th>业务</th>
 		  <th>下单时间</th>
@@ -53,6 +54,9 @@
 		    <td>{{ $serial++ }}</td>
 		    <td>
 		      {{ $order->user->name }}
+		    </td>
+		    <td>
+			  {{ $order->address->contact_name }}
 		    </td>
 		    <td>
 		      @if ($order->payment)
