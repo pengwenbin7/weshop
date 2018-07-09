@@ -179,6 +179,7 @@ class ProductController extends Controller
                     $variable->save();
                     $user->update(['unit_price'=>$content]);
                     DB::commit();
+                    event(new ProductPriceChangedEvent($cust));
                     return ['status' => 'ok', 'info' => "修改成功！", 'un_price' => $content];
                     //中间逻辑代码
                     DB::commit();

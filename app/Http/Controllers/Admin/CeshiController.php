@@ -21,24 +21,11 @@ class CeshiController extends Controller
     {
 
         $app = EasyWeChat::officialAccount();
-//        $user = $app->user->get('obOoJwWpxqeAPWmN5UNjQOgZZlJM');
-//        print_r($user);
-//        exit;
-        //通过模板消息发送降价信息
-        $sss = $app->template_message->send([
-            'touser' => 'obOoJwWpxqeAPWmN5UNjQOgZZlJM',
-            'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
-            'url' => 'https://easywechat.org',
-            'data' => [
-                'first' => '我在测试',
-                'keyword1' => '我在测试2',
-                'keyword2' => '我在测试2',
-                'keyword3' => '我在测试2',
-                'keyword4' => '我在测试2',
-                'remark' => '请点击查看详情......',
-            ],
-        ]);
-        print_r($sss);
+        //群发消息
+        $myuser = User::pluck('openid');
+        $users = $app->user->select($myuser);
+        echo "<pre>";
+        print_r($users);
     }
     //设置与发送模板信息
     public function index1(){
