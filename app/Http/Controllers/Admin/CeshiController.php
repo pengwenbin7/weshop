@@ -22,8 +22,8 @@ class CeshiController extends Controller
 
         $users = User::where("openid", "=", "obOoJwWpxqeAPWmN5UNjQOgZZlJM")->get();
         $user = $users->first();
-        echo "<pre>";
-        print_r($user);
+//        echo "<pre>";
+//        print_r($user);
         echo $user->sendMessage(new Image($user->getShareImg()));
 //        $app = EasyWeChat::officialAccount();
 //        //群发消息
