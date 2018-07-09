@@ -121,7 +121,7 @@ class User extends Authenticatable
     public function sendMessage($msg)
     {
         $app = EasyWeChat::officialAccount();
-        $app->customer_service->message($msg)->to($this->openid)->send();
+        return $app->customer_service->message($msg)->to($this->openid)->send();
     }
 
     // 生成唯一推广码
