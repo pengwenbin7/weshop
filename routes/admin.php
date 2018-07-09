@@ -115,8 +115,17 @@ Route::resource("invoice", "Admin\InvoiceController", [
 ]);
 //我的用户
 Route::get('/meuser', 'Admin\MeuserController@index')->name("admin.meuser.index");
-//所有用户
-Route::get('/shopuser', 'Admin\ShopuserController@index')->name("admin.shopuser.index");
+
+//所有用户资源路由
+Route::resource("shopuser", "Admin\ShopuserController", [
+    "names" => [
+        "index" => "admin.shopuser.index",
+        "create" => "admin.shopuser.create",
+    ],
+]);
+Route::match(["get", "post"], "shopuser/modifying",
+    "Admin\ShopuserController@modifying")
+    ->name("admin.shopuser.modifying");
 
 //测试
 Route::get("/ceshi", "Admin\CeshiController@index")->name("admin.ceshi.index");

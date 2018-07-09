@@ -40,16 +40,39 @@ class ProductPriceChangedListener
             foreach ($myuser['data']['openid'] as $item) {
                 $app->template_message->send([
                     'touser' => $item,
-                    'template_id' => 'dkre4KgP3XtbMIEzv62Q3LestflHWmBYD1F4Rh8mZ2g',
+                    'template_id' => 'PNgBiNoPOvZvQSnU5vl984bRKo08oAhDV24ftnssbzo',
                     'url' => route("wechat.product.show",$event->product->id),
-                    'data' => [
-                        'first' => '',
-                        'keyword1' => $Variable->unit_price,
-//                        'keyword2' => '',
-                        'keyword2' => $event->product->model,
-                        'keyword3' => $event->product->name,// $event->product->updated_at
-                        'remark' => '',
+//                    'data' => [
+//                        'first' => '',
+//                        'keyword1' => $Variable->unit_price,
+////                        'keyword2' => '',
+//                        'keyword2' => $event->product->model,
+//                        'keyword3' => $event->product->name,//
+//                        'remark' => '',
+//                    ],
+                    $data = [
+                        "first" => [
+                            "value" => $event->product->name.":价格调整。",
+                            "color" => "#2030A0",
+                        ],
+                        "keyword1" => [
+                            "value" => "太好买",
+                        ],
+                        "keyword2" => [
+                            "value" => $Variable->unit_price,
+                        ],
+                        "keyword3" => [
+                            "value" => $event->product->model,
+                            "color" => "#2030A0",
+                        ],
+                        "keyword4" => [
+                            "value" => $event->product->updated_at,
+                        ],
+                        "remark" => [
+                            "value" => "",//马蜂科技",
+                        ],
                     ],
+
                 ]);
             }
         }
