@@ -40,7 +40,7 @@ class ProductPriceChangedListener
             foreach ($myuser['data']['openid'] as $item) {
                 $app->template_message->send([
                     'touser' => $item,
-                    'template_id' => 'PNgBiNoPOvZvQSnU5vl984bRKo08oAhDV24ftnssbzo',
+                    'template_id' => 'dkre4KgP3XtbMIEzv62Q3LestflHWmBYD1F4Rh8mZ2g',
                     'url' => route("wechat.product.show",$event->product->id),
                     'data' => [
                         'first' => '',
