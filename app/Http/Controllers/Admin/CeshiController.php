@@ -23,7 +23,7 @@ class CeshiController extends Controller
         $app = EasyWeChat::officialAccount();
         //群发消息
         $tags = $app->user_tag->list();//降价消息推送    109
-        $app->user_tag->usersOfTag($tags['tags'][6], $nextOpenId = '');
+        $app->user_tag->usersOfTag(109, $nextOpenId = '');
 //        $myuser = User::pluck('openid');
 //        $users = $app->user->select(["obOoJwa_IRu2_WqJ3i0a4gQCBc8I","obOoJwa-Wsr3k4JYjIK2OY0bMFS0"]);
         echo "<pre>";
