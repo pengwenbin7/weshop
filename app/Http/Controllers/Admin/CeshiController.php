@@ -21,9 +21,26 @@ class CeshiController extends Controller
     {
 
         $app = EasyWeChat::officialAccount();
-        $user = $app->user->get('obOoJwWpxqeAPWmN5UNjQOgZZlJM');
-        print_r($user);
-        exit;
+//        $user = $app->user->get('obOoJwWpxqeAPWmN5UNjQOgZZlJM');
+//        print_r($user);
+//        exit;
+
+        $template_id = 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q';
+        $url = 'https://easywechat.org';
+        $open_id = 'obOoJwWpxqeAPWmN5UNjQOgZZlJM';
+
+        $data = array(
+            "first"=>'同学你好,你的教师发布了一个新的班级公告',
+            "keyword1"=>'',
+            "keyword2"=>'',
+            "remark"=>'请及时查看班级公告',
+        );
+        $sss = $app->uses($template_id)->withUrl($url)->andData($data)->andReceiver($open_id)->send();
+        print_r($sss);
+
+
+
+
         //通过模板消息发送降价信息
 //        $sss = $app->template_message->sendSubscription([
 //            'touser' => 'obOoJwWpxqeAPWmN5UNjQOgZZlJM',
