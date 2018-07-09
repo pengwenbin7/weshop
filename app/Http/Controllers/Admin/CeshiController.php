@@ -14,12 +14,22 @@ use App\Models\User;
 use App\WeChat\SpreadQR;
 use EasyWeChat\Kernel\Messages\Image;
 use Session;
+use App\Models\ProductVariable;
+use App\Models\Brand;
 
 class CeshiController extends Controller
 {
     public function index(Request $request)
     {
-
+        $Brand = Brand::find(1);
+//        $Variable_max = ProductVariable::where(['product_id' => 100])
+//            ->where('id', '<>', 99)
+//            ->orderBy("id", "desc")
+//            ->first();
+//        echo "<pre>";
+        echo $Brand->name;
+        print_r($Brand);
+        exit;
         $users = User::where("openid", "=", "obOoJwWpxqeAPWmN5UNjQOgZZlJM")->get();
         $user = $users->first();
 //        echo "<pre>";
