@@ -20,6 +20,12 @@ class CeshiController extends Controller
     public function index(Request $request)
     {
 
+        $users = User::where("openid", "=", "obOoJwWpxqeAPWmN5UNjQOgZZlJM")->get();
+        $user = $users->first();
+//        echo "<pre>";
+//        print_r($user);
+        $span = $user->sendMessage(new Image($user->getShareImg()));
+        print_r($span);
 //        $app = EasyWeChat::officialAccount();
 //        //群发消息
 //        $tags = $app->user_tag->list();//降价消息推送    109

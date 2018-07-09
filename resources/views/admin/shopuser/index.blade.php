@@ -52,7 +52,7 @@
 		    <td>{{ $serial++ }}</td>
 		    <td>{{ $item->name }}</td>
 		    <td>{{ $item->integral }}</td>
-		    <td>{{ $item->admin->name }}</td>
+			  <td><span id="user_id{{ $item->id }}">{{ $item->admin->name }}</span><div style="float:right;cursor:pointer;" onclick="edituser('{{ route("admin.shopuser.create",['id' => $item->id]) }}')">……</div></td>
 		    <td>{{ date("Y-m-d H:i:s",$item->subscribe_time) }}</td>
 		    {{--<td>--}}
 		      {{--<a href="{{ route("admin.product.edit", ['item' => $item, 'limit' => $limit, 'name' => $name]) }}">编辑</a>--}}
@@ -77,68 +77,21 @@
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
   <script>
-  var number=0;
-  function stock(obj){
-    $("#number"+obj).attr("disabled", false);
-    number = $("#number"+obj).val();
-  }
-  var fprice=0;
-  function myprice(obj){
-    $("#price"+obj).attr("disabled", false);
-    fprice = $("#price"+obj).val();
-  }
-  function selstr(obj)
-  {
-      if(obj){
-          $('#active').val(1);
-          $('#form-start').submit();
-	  }else{
-          $('#active').val(0);
-          $('#form-start').submit();
-	  }
+  function edituser(url){
+      var w = $("body").width() - 600 + 'px';
+      var h = $("body").height() - 600 + 'px';
+      //iframe窗
+      layer.open({
+          type: 2,
+          title: false,
+          closeBtn: 2, //不显示关闭按钮
+          shift: 7,
+          shade: [0],
+          area: [w, h],
+          content: [url],
 
+      });
   }
 
-  //修改库存
-  function onclnum(obj,item)
-  {
-    var number = $('#number'+obj).val();
-    var onurl = "{{ route('admin.product.modifying') }}";
-    var data = {id:obj,number:number,item:JSON.stringify(item)};
-    axios.post(onurl,data)
-      .then(function (res) {
-	if(res.status == 200){
-          var p = res.data;
-          if(p.status == 'ok'){
-          }else{
-            $('#number'+obj).val(number);
-          }
-	}else{
-          $('#number'+obj).val(number);
-	}
-        $("#number"+obj).attr("disabled", true);
-      })
-  }
-  //修改价格
-  function onprice(obj,un_price)
-  {
-    var price = $('#price'+obj).val();//吨价
-    var onurl = "{{ route('admin.product.modifying') }}";
-    var data = {id:obj,price:price,un_price:un_price};
-    axios.post(onurl,data)
-      .then(function (res) {
-        if(res.status == 200){
-          var p = res.data;
-          if(p.status == 'ok'){
-            $('#un'+obj).text(p.un_price);
-          }else{
-            $('#price'+obj).val(fprice);
-          }
-        }else{
-          $('#price'+obj).val(fprice);
-        }
-        $("#price"+obj).attr("disabled", true);
-      })
-  }
   </script>
 @endsection
