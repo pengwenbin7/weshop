@@ -25,7 +25,8 @@ class CeshiController extends Controller
         $tags = $app->user_tag->list();//降价消息推送    109
         $myuser = $app->user_tag->usersOfTag(109, $nextOpenId = '');
 //        if (isset($myuser['data']['openid'])) {
-//            foreach($myuser['data']['openid'] as $item) {
+            foreach($myuser['data']['openid'] as $item) {
+                echo $item;
 //                echo $myuser['data']['openid'][$item];
 //                $app->template_message->send([
 //                    'touser' => "'".$myuser['data']['openid'][$item]."'",
@@ -40,13 +41,14 @@ class CeshiController extends Controller
 //                        'remark' => '',
 //                    ],
 //                ]);
-//            }
+            }
 //        }
 //        $myuser = User::pluck('openid');
 //        $users = $app->user->select(["obOoJwa_IRu2_WqJ3i0a4gQCBc8I","obOoJwa-Wsr3k4JYjIK2OY0bMFS0"]);
         echo "<pre>";
         print_r($myuser);
-        print_r($myuser['data']);
+        print_r($myuser['data']['openid']);
+        echo $myuser['data']['openid'][0];
     }
     //设置与发送模板信息
     public function index1(){
