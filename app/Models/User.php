@@ -84,6 +84,26 @@ class User extends Authenticatable
 
     /**
      * 关注注册
+     * info format: [
+         "subscribe" => 1,
+         "openid" => "obOoJxxx",
+         "nickname" => "知足",
+         "sex" => 2,
+         "language" => "zh_CN",
+         "city" => "宁波",
+         "province" => "浙江",
+         "country" => "中国",
+         "headimgurl" => "http://thOh/132",
+         "subscribe_time" => 1530161190,
+         "remark" => "",
+         "groupid" => 108,
+         "tagid_list" => [
+             108,
+         ],
+         "subscribe_scene" => "ADD_SCENE_QR_CODE",
+         "qr_scene" => 0,
+         "qr_scene_str" => "Aa25b31c1",
+     ]
      */
     public static function subRegister($openId, $from)
     {
@@ -95,7 +115,7 @@ class User extends Authenticatable
             "name" => $user["nickname"],
             "headimgurl" => $user["headimgurl"],
             "subscribe_time" => $user["subscribe_time"],
-            "rec_from" => $from,
+            "rec_from" => $from ?? $user["qr_scene_str"],
         ]);
     }
 
