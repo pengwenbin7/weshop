@@ -12,6 +12,16 @@ class Payment extends Model
         "share_discount", "pay_discount", "pay",
         "paid", "pay_time",
     ];
+
+    public function getStartAttribute($value)
+    {
+        return Carbon::parse($value);
+    }
+
+    public function getExpireAttribute($value)
+    {
+	    return Carbon::parse($value);
+    }
     
     public function coupon()
     {

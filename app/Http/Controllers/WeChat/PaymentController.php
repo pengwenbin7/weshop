@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use EasyWeChat;
 use App\Events\OrderPaidEvent;
 use Auth;
+use Carbon\Carbon;
 use Log;
 
 class PaymentController extends Controller
@@ -22,9 +23,13 @@ class PaymentController extends Controller
     public function pay(Request $request)
     {
         $order = Order::find($request->order_id);
-        if ($order->payment->prepay_id) {
+        $payment = $order->payment;
+        $now = Carbon::now();
+        if ($payment->prepay_id && $payment->expire->gt($now)) {
             $prepayId = $order->payment->prepay_id;
         } else {
+            $start = $now->format("YmdHis");
+            $expire = $now->addHour(2)->format("YmdHis");
             $result = $this->payment->order->unify([
                 'body' => '微信支付订单',
                 'out_trade_no' => $order->no,
@@ -32,10 +37,13 @@ class PaymentController extends Controller
                 //'total_fee' => 1,
                 'trade_type' => 'JSAPI',
                 'openid' => auth()->user()->openid,
+                'time_start' => $start,
+                'time_expire' => $expire,
             ]);
             $prepayId = $result["prepay_id"];
-            $payment = $order->payment;
             $payment->prepay_id = $prepayId;
+            $payment->start = $start;
+            $payment->expire = $expire;
             $payment->save();
         }
         $jssdk = $this->payment->jssdk;

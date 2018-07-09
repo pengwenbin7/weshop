@@ -18,6 +18,10 @@ class CreatePaymentsTable extends Migration
             $table->unsignedInteger("order_id");
             $table->string("prepay_id", 64)->nullable()
                 ->comment("微信预支付ｉｄ");
+            $table->string("start", 14)->nullable()
+                ->comment("预付开始时间:YmdHis");
+            $table->string("expire", 14)->nullable()
+                ->comment("预付结束时间:YmdHis");
             $table->unsignedTinyInteger("channel_id");
             $table->unsignedDecimal("total", 10, 2)->comment("总价");
             $table->unsignedDecimal("tax", 10, 2)->default(0)->comment("税");
