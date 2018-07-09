@@ -19,6 +19,7 @@ class CreateCouponsTable extends Migration
             $table->unsignedDecimal("discount", 10, 2);
             $table->unsignedDecimal("amount", 10, 2);
             $table->timestamp("expire")->nullable();
+            $table->boolean("is_used")->default(false);
             $table->unsignedInteger("from_admin")->nullable();
             $table->string("description", 255)->nullable();
             $table->timestamps();
