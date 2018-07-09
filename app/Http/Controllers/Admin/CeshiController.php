@@ -26,8 +26,9 @@ class CeshiController extends Controller
         $myuser = $app->user_tag->usersOfTag(109, $nextOpenId = '');
         if (isset($myuser['data']['openid'])) {
             foreach($myuser['data']['openid'] as $item) {
+                echo $myuser['data']['openid'][$item];
                 $app->template_message->send([
-                    'touser' => $myuser['data']['openid'][$item],
+                    'touser' => "'".$myuser['data']['openid'][$item]."'",
                     'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
                     'url' => '',
                     'data' => [
