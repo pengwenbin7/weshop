@@ -21,15 +21,28 @@ class CeshiController extends Controller
 {
     public function index(Request $request)
     {
-        $Brand = Brand::find(1);
-//        $Variable_max = ProductVariable::where(['product_id' => 100])
-//            ->where('id', '<>', 99)
+//        $Variable = ProductVariable::where(['product_id' => 100])
 //            ->orderBy("id", "desc")
 //            ->first();
-//        echo "<pre>";
-        echo $Brand->name;
-        print_r($Brand);
-        exit;
+//        $Variable_max = ProductVariable::where(['product_id' => 100])
+//            ->where('id', '<>', $Variable->id)
+//            ->orderBy("id", "desc")
+//            ->first();
+//        $Brand = Brand::find(1);
+//        $price = round($Variable->unit_price * 1000 / 25,2);
+//        $price_max = round($Variable_max->unit_price * 1000 / 25,2);
+//        $mypeice = '';
+//        if($price > $price_max){
+//            $mypeice = "价格上调".round($price - $price_max,2)."元/吨";
+//        }else{
+//            $mypeice = "价格下跌".round($price_max - $price,2)."元/吨";
+//        }
+//        echo $mypeice;
+//        exit;
+//        $Brand = Brand::find(1);
+//        echo $Brand->name;
+//        print_r($Brand);
+//        exit;
         $users = User::where("openid", "=", "obOoJwWpxqeAPWmN5UNjQOgZZlJM")->get();
         $user = $users->first();
 //        echo "<pre>";

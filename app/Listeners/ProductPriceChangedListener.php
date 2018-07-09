@@ -43,9 +43,9 @@ class ProductPriceChangedListener
         $price_max = round($Variable_max->unit_price * 1000 / $event->content,2);
         $mypeice = '';
         if($price > $price_max){
-            $mypeice = "价格上调".round($price - $price_max,2);
+            $mypeice = "价格上调".round($price - $price_max,2)."元/吨";
         }else{
-            $mypeice = "价格下跌".round($price_max - $price,2);
+            $mypeice = "价格下跌".round($price_max - $price,2)."元/吨";
         }
         $app = EasyWeChat::officialAccount();
          //查询分组推送用户openid
