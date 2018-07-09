@@ -20,27 +20,27 @@ class CeshiController extends Controller
     public function index(Request $request)
     {
 
-        $app = EasyWeChat::officialAccount();
-        //群发消息
-        $tags = $app->user_tag->list();//降价消息推送    109
-        $myuser = $app->user_tag->usersOfTag(109, $nextOpenId = '');
-        if (isset($myuser['data']['openid'])) {
-            foreach ($myuser['data']['openid'] as $item) {
-                $app->template_message->send([
-                    'touser' => $item,
-                    'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
-                    'url' => '',
-                    'data' => [
-                        'first' => '',
-                        'keyword1' => 2222,
-                        'keyword2' => '',
-                        'keyword3' => 3333,
-                        'keyword4' => '',
-                        'remark' => '',
-                    ],
-                ]);
-            }
-        }
+//        $app = EasyWeChat::officialAccount();
+//        //群发消息
+//        $tags = $app->user_tag->list();//降价消息推送    109
+//        $myuser = $app->user_tag->usersOfTag(109, $nextOpenId = '');
+//        if (isset($myuser['data']['openid'])) {
+//            foreach ($myuser['data']['openid'] as $item) {
+//                $app->template_message->send([
+//                    'touser' => $item,
+//                    'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
+//                    'url' => '',
+//                    'data' => [
+//                        'first' => '',
+//                        'keyword1' => 2222,
+//                        'keyword2' => '',
+//                        'keyword3' => 3333,
+//                        'keyword4' => '',
+//                        'remark' => '',
+//                    ],
+//                ]);
+//            }
+//        }
 
     }
     //设置与发送模板信息
