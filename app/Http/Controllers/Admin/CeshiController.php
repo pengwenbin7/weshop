@@ -24,24 +24,16 @@ class CeshiController extends Controller
 //        $user = $app->user->get('obOoJwWpxqeAPWmN5UNjQOgZZlJM');
 //        print_r($user);
 //        exit;
-
-        $template_id = 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q';
-        $url = 'https://easywechat.org';
-        $open_id = 'obOoJwWpxqeAPWmN5UNjQOgZZlJM';
-
-        $data = array(
-            "first"=>'同学你好,你的教师发布了一个新的班级公告',
-            "keyword1"=>'',
-            "keyword2"=>'',
-            "remark"=>'请及时查看班级公告',
-        );
-        $sss = $app->uses($template_id)->withUrl($url)->andData($data)->andReceiver($open_id)->send();
-        print_r($sss);
-
-
-
-
         //通过模板消息发送降价信息
+        $sss = $app->template_message->send([
+            'touser' => 'obOoJwWpxqeAPWmN5UNjQOgZZlJM',
+            'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
+            'url' => 'https://easywechat.org',
+            'data' => [
+                'key1' => '我在测试',
+                'key2' => '我在测试2',
+            ],
+        ]);
 //        $sss = $app->template_message->sendSubscription([
 //            'touser' => 'obOoJwWpxqeAPWmN5UNjQOgZZlJM',
 //            'template_id' => 'HPp3ZBtebtk99VZYOGpLRqU7whRKqTlToI7Rq9bLP0Q',
@@ -54,7 +46,7 @@ class CeshiController extends Controller
 //                'price' => array('value' => urlencode(date('Y-m-d H:i:s',time())),'color' => "#0000FF"),
 //            ],
 //        ]);
-//        print_r($sss);
+        print_r($sss);
 //        return "success";
     }
     //设置与发送模板信息
