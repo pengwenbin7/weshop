@@ -120,7 +120,6 @@ class User extends Authenticatable
 
     public function sendMessage($msg)
     {
-        return $msg.",,,,,,,".$this->openid;
         $app = EasyWeChat::officialAccount();
         return $app->customer_service->message($msg)->to($this->openid)->send();
     }
