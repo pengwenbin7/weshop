@@ -44,10 +44,10 @@ class ProductPriceChangedListener
                     'url' => route("wechat.product.show",$event->product->id),
                     'data' => [
                         'first' => '',
-                        'keyword1' => $Variable->unit_price,
+                        'keyword3' => $Variable->unit_price,
 //                        'keyword2' => '',
                         'keyword2' => $event->product->model,
-                        'keyword3' => $event->product->name,// $event->product->updated_at
+                        'keyword1' => $event->product->name,// $event->product->updated_at
                         'remark' => '',
                     ],
                 ]);
