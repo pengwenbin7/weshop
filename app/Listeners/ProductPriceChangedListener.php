@@ -58,15 +58,9 @@ class ProductPriceChangedListener
                     'url' => route("wechat.product.show",$event->product->id),
                     'data' => [
                         'first' => $event->product->model."+".$event->product->name."价格调整。",  //蓝色
-                        'keyword1' =>  [
-                            "value" => $Brand->name,
-                            "color" => "#2030A0",
-                        ],//$Brand->name, //科幕钛白
+                        'keyword1' =>  $Brand->name,//科幕钛白
                         'keyword2' => $mypeice,//吨价 价格上调   价格下跌
-                        'keyword3' => [
-                            "value" => "最新报价".$price."元/吨",
-                            "color" => "#2030A0",
-                        ],// "最新报价".$price."元/吨", //最新报价 1000元/吨
+                        'keyword3' =>"最新报价".$price."元/吨",//最新报价 1000元/吨
                         'keyword4' => $event->product->updated_at,//
                         'remark' => '',
                     ],
