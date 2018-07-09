@@ -34,7 +34,7 @@
     </script>
   </head>
   <body>
-    <h1>支付测试-1分</h1>
+    <button on-click="callpay">点击支付1分</button>
   </body>
     <script type="text/javascript">
     wx.config({!! app("wechat.official_account")->jssdk->buildConfig(["onMenuShareTimeline", "onMenuShareAppMessage"], false) !!});
