@@ -51,23 +51,11 @@ class ProductPriceChangedListener
 //                        'remark' => '',
 //                    ],
                     $data = [
-                        "first" => [
-                            "value" => $event->product->name.":价格调整。",
-                            "color" => "#2030A0",
-                        ],
-                        "keyword1" => [
-                            "value" => "太好买",
-                        ],
-                        "keyword2" => [
-                            "value" => $Variable->unit_price,
-                        ],
-                        "keyword3" => [
-                            "value" => $event->product->model,
-                            "color" => "#2030A0",
-                        ],
-                        "keyword4" => [
-                            "value" => $event->product->updated_at,
-                        ],
+                        "first" => $event->product->name.":价格调整。",
+                        "keyword1" => "太好买",
+                        "keyword2" => $Variable->unit_price,
+                        "keyword3" => $event->product->model,
+                        "keyword4" => $event->product->updated_at,
                         "remark" => [
                             "value" => "",//马蜂科技",
                         ],
