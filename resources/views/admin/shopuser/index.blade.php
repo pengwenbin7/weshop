@@ -113,40 +113,44 @@
               coll[i].checked = false;
       }
   }
-  function userall(url){
-      pobj = document.getElementsByName("userid");
-      checkg_val = [];
-      for (f in pobj){
-          if(pobj[f].checked)
-              checkg_val.push(pobj[f].value);
-      }
-      //过滤批量数据中特殊字符
-      for(var i = 0 ;i<checkg_val.length;i++)
-      {
-          if(checkg_val[i] == "on" || typeof(checkg_val[i]) == "undefined")
-          {
-              checkg_val.splice(i,1);
-              i= i-1;
+  function userall(obj){
+      layer.confirm('确认进行批量修改？', {
+          btn: ['是','否'] //按钮
+      }, function(){
+          layer.closeAll();
+          pobj = document.getElementsByName("userid");
+          checkg_val = [];
+          for (f in pobj){
+              if(pobj[f].checked)
+                  checkg_val.push(pobj[f].value);
           }
-      }
-      var group = checkg_val;
-      if(group == ''){
-          return layer.msg("请选择要修改的用户！");
-	  }
-	  return;
-      var url = url+"?id="+group;
-      var w = $("body").width() - 600 + 'px';
-      var h = $("body").height() - 600 + 'px';
-      //iframe窗
-      layer.open({
-          type: 2,
-          title: false,
-          closeBtn: 2, //不显示关闭按钮
-          shift: 7,
-          shade: [0],
-          area: [w, h],
-          content: [url],
+          //过滤批量数据中特殊字符
+          for(var i = 0 ;i<checkg_val.length;i++)
+          {
+              if(checkg_val[i] == "on" || typeof(checkg_val[i]) == "undefined")
+              {
+                  checkg_val.splice(i,1);
+                  i= i-1;
+              }
+          }
+          var group = checkg_val;
+          if(group == ''){
+              return layer.msg("请选择要修改的用户！");
+          }
+          var url = obj+"?id="+group;
+          var w = $("body").width() - 600 + 'px';
+          var h = $("body").height() - 600 + 'px';
+          //iframe窗
+          layer.open({
+              type: 2,
+              title: false,
+              closeBtn: 2, //不显示关闭按钮
+              shift: 7,
+              shade: [0],
+              area: [w, h],
+              content: [url],
 
+          });
       });
   }
 

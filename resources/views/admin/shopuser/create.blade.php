@@ -132,7 +132,16 @@
                       if (res.status == 200) {
                           var p = res.data;
                           if (p.status == 'ok') {
-                              parent.document.getElementById("user_id"+id).innerHTML = name;
+                              //数组
+                              var arr = id.split(",");
+                              for (p in arr) {
+                                  parent.document.getElementById("user_id"+arr[p]).innerHTML = name;
+                              }
+                              var coll = parent.document.getElementsByName("userid");
+                              parent.document.getElementById("user_check").checked = false;
+                              for (var i = 0; i < coll.length; i++) {
+                                  coll[i].checked = false;
+							  }
                               var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                               parent.layer.close(index);
                           } else {

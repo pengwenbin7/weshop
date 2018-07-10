@@ -45,8 +45,6 @@ class ShopuserController extends Controller
     public function create(Request $request)
     {
             $id = $request->input("id", '');
-            echo $id;
-            exit;
             $limit = $request->input("limit", 25);
             $name = $request->input("name", '');
             $page = $request->input("page", '');
@@ -77,13 +75,20 @@ class ShopuserController extends Controller
     public function modifying(Request $request)
     {
         $id = $request->input("id", ''); //用户id
+        $id = explode(',',$id);
         $admin_id = $request->input("admin_id", '');  //业务员id
-        $user = User::where('id', $id) ->first();
-        $user->admin_id = $admin_id;
-        $span = $user->save();
-        if (!empty($span)) {
+        \DB::beginTransaction();
+        try{
+            \DB::table('users')
+                ->whereIn("id", $id)
+                ->update(['admin_id' => $admin_id]);
+            \DB::table('orders')
+                ->whereIn("user_id", $id)
+                ->update(['admin_id' => $admin_id]);
+            \DB::commit();
             return ['status' => "ok"];
-        } else {
+        } catch (\Exception $e){
+            \DB::rollback();//事务回滚
             return ['status' => "error"];
         }
     }
