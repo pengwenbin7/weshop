@@ -78,7 +78,7 @@ class ProductPriceChangedListener
                         ],
                         'keyword3' => [
                             "value" => "最新报价".$price."元/吨",
-                            "color" => "#2030A0",
+                            "color" => $color,//"#2030A0",
                         ],
                         'keyword4' => date('Y-m-d',time()),
                         'remark' => '',
