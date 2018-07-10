@@ -67,7 +67,7 @@ class LoginController extends Controller
     {
         $credentials = $request->only("mobile", "password");
         if (Auth::guard("admin")->attempt($credentials)) {
-            return redirect()->route("admin.index");
+            return redirect()->to(session("auth.target.url", route("admin.index")));
         } else {
             return view('admin.auth.login', ["error" => "账号密码错误"]);
         }
@@ -75,19 +75,20 @@ class LoginController extends Controller
 
     public function callback(Request $request)
     {
+        dd(session("auth.target.url", "NOT FOUND"));
         $code = $request->code;
-        $redirect = $request->state;
         $app = EasyWeChat::work();
         $accessToken = $app->access_token;
         $token = $accessToken->getToken()["access_token"];
         $url = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token={$token}&code={$code}";
         $info = json_decode(file_get_contents($url));
-        $uid = AdminUser::where("userid", "=", $info->UserId)->first()->id;
-        if (str_contains($redirect, "?")) {
-            $redirect = "{$redirect}&uid={$uid}";
+        $us = AdminUser::where("userid", "=", $info->UserId)->get();
+        if ($us->isNotEmpty()) {
+            $user = $us->first();
+            auth("admin")->login($user);
+            return redirect()->to(session("auth.target.url", route("admin.index")));
         } else {
-            $redirect = "{$redirect}?uid={$uid}";
+            return "尚未完成注册";
         }
-        return redirect($redirect);
     }
 }
