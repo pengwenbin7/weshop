@@ -36,6 +36,7 @@
 	      <thead>
 		<tr>
 		  <th>序号</th>
+		  <th>订单号</th>
 		  <th>昵称</th>
 		  <th>姓名</th>
 		  <th>金额</th>
@@ -52,6 +53,7 @@
 		@foreach ($orders as $order)
 		  <tr role="row">
 		    <td>{{ $serial++ }}</td>
+		    <td>{{ $order->no }}</td>
 		    <td>
 		      {{ $order->user->name }}
 		    </td>

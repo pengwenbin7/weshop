@@ -49,10 +49,13 @@ class ProductPriceChangedListener
         $price = round($Variable->unit_price * 1000 / $event->product->content,2);
         $price_max = round($Variable_max->unit_price * 1000 / $event->product->content,2);
         $mypeice = '';
+        $color = '';
         if($price > $price_max){
             $mypeice = "价格上调".round($price - $price_max,2)."元/吨";
+            $color = '#E80000';
         }else{
             $mypeice = "价格下跌".round($price_max - $price,2)."元/吨";
+            $color = '#00FF00';
         }
         $app = EasyWeChat::officialAccount();
          //查询分组推送用户openid
@@ -69,7 +72,10 @@ class ProductPriceChangedListener
                             "value" => $Brand->name,
                             "color" => "#2030A0",
                         ],
-                        'keyword2' => $mypeice,
+                        'keyword2' => [
+                            "value" => $mypeice,
+                            "color" => $color,
+                        ],
                         'keyword3' => [
                             "value" => "最新报价".$price."元/吨",
                             "color" => "#2030A0",

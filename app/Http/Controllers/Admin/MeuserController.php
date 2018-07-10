@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Address;
 
 class MeuserController extends Controller
 {
@@ -20,7 +21,7 @@ class MeuserController extends Controller
         $page = $request->input("page", '');
         //获取业务员id
         $admin_user = auth("admin")->user()->id;
-        $user = User::with(["admin"])
+        $user = User::with(["admin","lastAddress"])
             ->where("name", "like", "%$name%")
             ->where("admin_id", "=", $admin_user)
             ->orderBy("id", "desc")

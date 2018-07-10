@@ -19,7 +19,7 @@ class ShopuserController extends Controller
         $limit = $request->input("limit", 25);
         $name = $request->input("name", '');
         $page = $request->input("page", '');
-        $user = User::with(["admin"])
+        $user = User::with(["admin","lastAddress"])
             ->where("name", "like", "%$name%")
             ->orderBy("id", "desc")
             ->paginate($limit);
@@ -45,6 +45,8 @@ class ShopuserController extends Controller
     public function create(Request $request)
     {
             $id = $request->input("id", '');
+            echo $id;
+            exit;
             $limit = $request->input("limit", 25);
             $name = $request->input("name", '');
             $page = $request->input("page", '');

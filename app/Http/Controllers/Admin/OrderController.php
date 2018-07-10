@@ -25,6 +25,7 @@ class OrderController extends Controller
         $condition = null;
         $orders = Order::with(["orderItems", "payment", "shipments", "address"])
                 ->where("admin_id", "like", "%$name%")
+//                ->whereRaw("concat(`no`,`name`,`contact_name`) like '%".$name."%'")
                 ->orderBy("id", "desc")
                 ->paginate($limit);
         $serial = 1;

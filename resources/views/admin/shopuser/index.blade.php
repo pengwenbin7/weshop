@@ -32,6 +32,13 @@
 	      </form>
 	    </div>
 	  </div>
+		<div class="col-sm-4" style="">
+		</div>
+		<div class="col-sm-1" style="">
+			<div class="input-group">
+			    <button class="btn btn-sm btn-primary" onclick="userall('{{ route("admin.shopuser.create") }}')">选择业务员</button>
+			</div>
+		</div>
 	</div>
 	<div class="row">
 	  <div class="col-sm-12 table-responsive">
@@ -40,10 +47,13 @@
 		<tr>
 		  <th>序号</th>
 		  <th>用户名称</th>
+		  <th>用户姓名</th>
+		  <th>用户电话</th>
+		  <th>用户地址</th>
 		  <th>积分</th>
 		  <th>业务员</th>
 		  <th>关注时间</th>
-		  {{--<th>操作</th>--}}
+		  <th style="text-align:center">全部<input type="checkbox" id="user_check" onclick="user_check()"></th>
 		</tr>
 	      </thead>
 	      <tbody>
@@ -51,14 +61,13 @@
 		  <tr role="row">
 		    <td>{{ $serial++ }}</td>
 		    <td>{{ $item->name }}</td>
+		    <td>{{ isset($item->lastAddress->contact_name) ? $item->lastAddress->contact_name:''}}</td>
+		    <td>{{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}</td>
+		    <td>{{ isset($item->lastAddress->province) ? $item->lastAddress->province:''}}</td>
 		    <td>{{ $item->integral }}</td>
 			  <td><span id="user_id{{ $item->id }}">{{ $item->admin->name }}</span><div style="float:right;cursor:pointer;" onclick="edituser('{{ route("admin.shopuser.create",['id' => $item->id]) }}')">……</div></td>
 		    <td>{{ date("Y-m-d H:i:s",$item->subscribe_time) }}</td>
-		    {{--<td>--}}
-		      {{--<a href="{{ route("admin.product.edit", ['item' => $item, 'limit' => $limit, 'name' => $name]) }}">编辑</a>--}}
-		      {{--&nbsp;|&nbsp;--}}
-		      {{--<a href="{{ route("admin.product.show", $item) }}">详细</a>--}}
-		    {{--</td>--}}
+		    <td style="text-align:center"><input type="checkbox" name="userid" value="{{ $item->id }}"></td>
 		  </tr>
 		@endforeach
 	      </tbody>
@@ -92,6 +101,55 @@
 
       });
   }
+  //全选全不选
+  function user_check(){
+      var collid = document.getElementById("user_check");
+      var coll = document.getElementsByName("userid");
+      if (collid.checked){
+          for (var i = 0; i < coll.length; i++)
+              coll[i].checked = true;
+      } else {
+          for (var i = 0; i < coll.length; i++)
+              coll[i].checked = false;
+      }
+  }
+  function userall(url){
+      pobj = document.getElementsByName("userid");
+      checkg_val = [];
+      for (f in pobj){
+          if(pobj[f].checked)
+              checkg_val.push(pobj[f].value);
+      }
+      //过滤批量数据中特殊字符
+      for(var i = 0 ;i<checkg_val.length;i++)
+      {
+          if(checkg_val[i] == "on" || typeof(checkg_val[i]) == "undefined")
+          {
+              checkg_val.splice(i,1);
+              i= i-1;
+          }
+      }
+      var group = checkg_val;
+      if(group == ''){
+          return layer.msg("请选择要修改的用户！");
+	  }
+	  return;
+      var url = url+"?id="+group;
+      var w = $("body").width() - 600 + 'px';
+      var h = $("body").height() - 600 + 'px';
+      //iframe窗
+      layer.open({
+          type: 2,
+          title: false,
+          closeBtn: 2, //不显示关闭按钮
+          shift: 7,
+          shade: [0],
+          area: [w, h],
+          content: [url],
+
+      });
+  }
+
 
   </script>
 @endsection

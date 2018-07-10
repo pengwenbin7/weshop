@@ -96,6 +96,30 @@
 <script src="https://cdn.bootcss.com/select2/4.0.6-rc.1/js/select2.min.js"></script>
 <script src="https://cdn.bootcss.com/select2/4.0.6-rc.1/js/i18n/zh-CN.js"></script>
   <script>
+      {{--function check(obj) {--}}
+          {{--var id = $("#userid").val();--}}
+          {{--var name = $("#name_id" + obj).text();--}}
+          {{--//判断当前是否选中--}}
+          {{--if ($("#checkid" + obj).is(':checked')) {--}}
+              {{--var onurl = "{{ route('admin.shopuser.modifying') }}";--}}
+              {{--var data = {id: id, admin_id: obj};--}}
+              {{--axios.post(onurl, data)--}}
+                  {{--.then(function (res) {--}}
+                      {{--if (res.status == 200) {--}}
+                          {{--var p = res.data;--}}
+                          {{--if (p.status == 'ok') {--}}
+                              {{--parent.document.getElementById("user_id"+id).innerHTML = name;--}}
+                              {{--var index = parent.layer.getFrameIndex(window.name); //获取窗口索引--}}
+                              {{--parent.layer.close(index);--}}
+                          {{--} else {--}}
+                              {{--return layer.msg("操作失败，请重新选择！");--}}
+                          {{--}--}}
+                      {{--} else {--}}
+                          {{--return layer.msg("操作失败，请重新选择！");--}}
+                      {{--}--}}
+                  {{--})--}}
+          {{--}--}}
+      {{--}--}}
       function check(obj) {
           var id = $("#userid").val();
           var name = $("#name_id" + obj).text();

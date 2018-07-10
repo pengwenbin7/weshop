@@ -40,6 +40,9 @@
 		<tr>
 		  <th>序号</th>
 		  <th>用户名称</th>
+		  <th>用户姓名</th>
+		  <th>用户电话</th>
+		  <th>用户地址</th>
 		  <th>积分</th>
 		  <th>业务员</th>
 		  <th>关注时间</th>
@@ -51,6 +54,9 @@
 		  <tr role="row">
 		    <td>{{ $serial++ }}</td>
 		    <td>{{ $item->name }}</td>
+		    <td>{{ isset($item->lastAddress->contact_name) ? $item->lastAddress->contact_name:''}}</td>
+		    <td>{{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}</td>
+		    <td>{{ isset($item->lastAddress->province) ? $item->lastAddress->province:''}}</td>
 		    <td>{{ $item->integral }}</td>
 		    <td>{{ $item->admin->name }}</td>
 		    <td>{{ date("Y-m-d H:i:s",$item->subscribe_time) }}</td>
