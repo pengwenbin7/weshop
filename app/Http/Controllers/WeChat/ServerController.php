@@ -32,7 +32,7 @@ class ServerController extends Controller
                 }
                 $user = User::subRegister($openid, $from);
             } else {
-                $user = $users->where("openid", "=", $openid)->first();
+                $user = $users->first();
             }
             switch ($message["MsgType"]) {
             case "text":
