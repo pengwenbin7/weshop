@@ -56,7 +56,7 @@
 		      {{ $order->user->name }}
 		    </td>
 		    <td>
-			  {{ $order->address->contact_name }}
+			  {{ isset($order->address->contact_name) ? $order->address->contact_name:''}}
 		    </td>
 		    <td>
 		      @if ($order->payment)
