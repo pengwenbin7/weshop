@@ -55,7 +55,7 @@ class ProductPriceChangedListener
             $color = '#E80000';
         }else{
             $mypeice = "价格下跌".round($price_max - $price,2)."元/吨";
-            $color = '#039B4A';
+            $color = '#00BF00';
         }
         $app = EasyWeChat::officialAccount();
          //查询分组推送用户openid
