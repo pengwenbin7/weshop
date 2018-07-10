@@ -43,14 +43,7 @@ class LoginController extends Controller
      */
     public function showLoginForm(Request $request)
     {
-        $appid = env("WECHAT_WORK_CORP_ID");
-        $redirect = urlencode(route("admin.auth.callback"));
-        $state = urlencode($request->state);
-        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$redirect}&response_type=code&scope=snsapi_base&state={$state}#wechat_redirect";
-        return view("admin.auth.login", [
-            "url" => $url,
-            "error" => "",
-        ]);
+        return view("admin.auth.login");
     }
 
     /**
@@ -75,7 +68,6 @@ class LoginController extends Controller
 
     public function callback(Request $request)
     {
-        dd(session("auth.target.url", "NOT FOUND"));
         $code = $request->code;
         $app = EasyWeChat::work();
         $accessToken = $app->access_token;
