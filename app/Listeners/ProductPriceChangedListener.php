@@ -57,7 +57,7 @@ class ProductPriceChangedListener
                     'template_id' => 'PNgBiNoPOvZvQSnU5vl984bRKo08oAhDV24ftnssbzo',
                     'url' => route("wechat.product.show",$event->product->id),
                     'data' => [
-                        'first' => $event->product->model."+".$event->product->name."价格调整。",  //蓝色
+                        'first' => $event->product->name.$event->product->model."价格调整。",  //蓝色
                         'keyword1' => [
                             "value" => $Brand->name,
                             "color" => "#2030A0",
