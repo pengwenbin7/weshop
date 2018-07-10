@@ -174,18 +174,12 @@ class ProductController extends Controller
             if(!empty($user) && $user->unit_price != $request->price){
                 $variable->product_id=$cust->id;
                 $variable->unit_price=$user->unit_price;
-                DB::beginTransaction();
-                try{
-                    $variable->save();
-                    $user->update(['unit_price'=>$content]);
-                    DB::commit();
+                $variable->save();
+                $span = $user->update(['unit_price'=>$content]);
+                if(!empty($span)){
                     event(new ProductPriceChangedEvent($cust));
                     return ['status' => 'ok', 'info' => "修改成功！", 'un_price' => $content];
-                    //中间逻辑代码
-                    DB::commit();
-                }catch (\Exception $e) {
-                    //接收异常处理并回滚
-                    DB::rollBack();
+                }else{
                     return ['status'=>'error','msg'=>"修改失败！"];
                 }
             }else{

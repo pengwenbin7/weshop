@@ -10,6 +10,7 @@ use EasyWeChat;
 use App\Models\User;
 use App\WeChat\SpreadQR;
 use App\Models\ProductVariable;
+use App\Models\ProductPrice;
 use App\Models\Brand;
 
 class ProductPriceChangedListener
@@ -34,13 +35,13 @@ class ProductPriceChangedListener
         $Variable = ProductVariable::where(['product_id' => $event->product->id])
             ->orderBy("id", "desc")
             ->first();
-        $Variable_max = ProductVariable::where(['product_id' => $event->product->id])
-            ->where('id', '<>', $Variable->id)
+        $Variable_max = ProductPrice::where(['product_id' => $event->product->id])
             ->orderBy("id", "desc")
             ->first();
         $Brand = Brand::find($event->product->brand_id);
-        $price = round($Variable->unit_price * 1000 / $event->content,2);
-        $price_max = round($Variable_max->unit_price * 1000 / $event->content,2);
+        $price = round($Variable->unit_price * 1000 / $event->product->content,2);
+        $price_max = round($Variable_max->unit_price * 1000 / $event->product->content,2);
+//        log::error($price.",,,,,".$price_max);
         $mypeice = '';
         if($price > $price_max){
             $mypeice = "价格上调".round($price - $price_max,2)."元/吨";
@@ -67,6 +68,7 @@ class ProductPriceChangedListener
                 ]);
             }
         }
+        return;
     }
 
 }
