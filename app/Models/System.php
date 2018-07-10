@@ -12,4 +12,7 @@ class System extends Model
      * @var string
      */
     protected $table = 'system';
+    protected $fillable = [
+        "setup", "setup_id", "status",
+    ];
 }

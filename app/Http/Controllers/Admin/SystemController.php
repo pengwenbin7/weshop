@@ -25,13 +25,19 @@ class SystemController extends Controller
      */
     public function create(Request $request)
     {
-        $data["limit"] = $request->input("limit", '');
-        $data["name"] = $request->input("name", '');
-        $data["categories"] = Category::all();
-        $data["brands"] = Brand::all();
-        $data["commonStorages"] = Storage::select("id", "name")
-            ->where("is_common", "=", 1)->get();
-        return view("admin.product.create", $data);
+        $system_id = $request->input("system_id", '');
+        $status = $request->input("status", '');
+        $system = System::find(1);;
+        if (!empty($system_id)) {
+            $system->setup_id = $system_id;
+        } else if (!empty($status)) {
+            $system->status = $status;
+        }
+        if ($system->save()) {
+            return ['status' => 'ok'];
+        }else{
+            return ['status' => 'error'];
+        }
     }
 
 
