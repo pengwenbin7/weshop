@@ -24,8 +24,7 @@ class Admin
             $agent = new Agent();
             if ($agent->isDesktop()) {
                 // 桌面设备登录
-                return view("admin.auth.login");
-                //return redirect()->route("admin.login");
+                return redirect()->route("admin.login");
             } else {
                 // 移动设备登录
                 $scopes = ['snsapi_userinfo'];

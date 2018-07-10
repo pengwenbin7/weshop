@@ -30,7 +30,7 @@
             </div>
 
 	    <div class="form-group">
-	      <div class="col-sm-10 alert alert-warning" role="alert">
+	      <div class="col-sm-10 col-sm-offset-2 alert alert-warning" role="alert">
 		{{ $error ?? "" }}
               </div>
             </div>
