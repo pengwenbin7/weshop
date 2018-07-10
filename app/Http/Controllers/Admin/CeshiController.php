@@ -21,37 +21,12 @@ class CeshiController extends Controller
 {
     public function index(Request $request)
     {
-//        $Variable = ProductVariable::where(['product_id' => 100])
-//            ->orderBy("id", "desc")
-//            ->first();
-//        $Variable_max = ProductVariable::where(['product_id' => 100])
-//            ->where('id', '<>', $Variable->id)
-//            ->orderBy("id", "desc")
-//            ->first();
-//        $Brand = Brand::find(1);
-//        $price = round($Variable->unit_price * 1000 / 25,2);
-//        $price_max = round($Variable_max->unit_price * 1000 / 25,2);
-//        $mypeice = '';
-//        if($price > $price_max){
-//            $mypeice = "价格上调".round($price - $price_max,2)."元/吨";
-//        }else{
-//            $mypeice = "价格下跌".round($price_max - $price,2)."元/吨";
-//        }
-//        echo $mypeice;
-//        exit;
-//        $Brand = Brand::find(1);
-//        echo $Brand->name;
-//        print_r($Brand);
-//        exit;
-        $users = User::where("openid", "=", "obOoJwWpxqeAPWmN5UNjQOgZZlJM")->get();
-        $user = $users->first();
-//        echo "<pre>";
-//        print_r($user);
-        $span = $user->sendMessage(new Image($user->getShareImg()));
-        print_r($span);
-//        $app = EasyWeChat::officialAccount();
-//        //群发消息
-//        $tags = $app->user_tag->list();//降价消息推送    109
+        $app = EasyWeChat::officialAccount();
+        //群发消息
+        $tags = $app->user_tag->list();//降价消息推送    109
+        echo "<pre>";
+        print_r($tags);
+
 //        $myuser = $app->user_tag->usersOfTag(109, $nextOpenId = '');
 //        if (isset($myuser['data']['openid'])) {
 //            foreach ($myuser['data']['openid'] as $item) {

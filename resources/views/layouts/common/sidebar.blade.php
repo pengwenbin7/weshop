@@ -105,7 +105,7 @@
 	  <a href="#">权限</a>
 	</li>
 	<li>
-	  <a href="#">系统参数</a>
+	  <a href="{{ route("admin.system.index") }}">系统参数</a>
 	</li>
       @endif
 
