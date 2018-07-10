@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\RegionUpdate::class,
         Commands\AdminUserInit::class,
         Commands\DemoData::class,
+        Commands\UserShareQRUpdate::class,
     ];
 
     /**
