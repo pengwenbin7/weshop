@@ -14,16 +14,14 @@ class MessageHandler
 
     public function run()
     {
-        $msgType = strtolower($this->message["MsgType"]);
-        $event = strtolower($this->message["Event"]) ?? null;
-        $eventKey = strtolower($this->message["EventKey"]) ?? null;
-        $str = $msgType;
-        if ($event) {
-            $str = "{$str}.{$event}";
-            if ($eventKey) {
-                $str = "{$str}.{$eventKey}";
-            }
+        $arr[] = $this->message["MsgType"];
+        $arr[] = $this->message["Event"] ?? null;
+        $arr[] = $this->message["EventKey"] ?? null;
+        $str = "message";
+        foreach ($arr as $i) {
+            $str = sprintf("%s.%s", $str, strtolower($i));
         }
+
         try {
             $cls = app()->make(config($str));
             return $cls->run($this->message);
