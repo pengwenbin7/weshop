@@ -40,7 +40,7 @@ class ProductPirce implements ShouldQueue
         $Variable = ProductVariable::where(['product_id' => $this->product->id])
             ->orderBy("id", "desc")
             ->first();
-        $Variable_max = ProductPrice::where(['product_id' => 117])
+        $Variable_max = ProductPrice::where(['product_id' => $this->product->id])
             ->orderBy("id", "desc")->offset(1)
             ->limit(1)->get();
         $Variable_max = $Variable_max->first();
