@@ -73,11 +73,11 @@ class ProductPirce implements ShouldQueue
                     'data' => [
                         'first' => $this->product->name.$this->product->model."价格调整。",
                         'keyword1' => [
-                            "value" => $this->product->id,
+                            "value" => $Brand->name,
                             "color" => "#2030A0",
                         ],
                         'keyword2' => [
-                            "value" => $this->product->content,
+                            "value" => $mypeice,
                             "color" => $color,
                         ],
                         'keyword3' => [
