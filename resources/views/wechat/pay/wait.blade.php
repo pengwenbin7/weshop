@@ -15,7 +15,7 @@
     }
     html,body{padding:0;margin:0;font-size:50px;}
     body{position: relative;}
-    .pay{font-size:.32rem;margin-top:.4rem; }
+    .pay{font-size:.32rem;}
     .pay .item{width: 100%; background-color: #fff;padding: .3rem .4rem;display: flex;display: -webkit-flex;}
     .pay .item .pay-t{width: 2rem;line-height: .5rem;}
     .pay .item .pay-t i{font-size: .4rem;font-weight: bold;}
@@ -34,7 +34,7 @@
     .icon-huipiao{color: #c273ff;}
     .icon-xuanzhong-on{color: #3db858;}
     .icon-huodaofukuan{color: #16c2c2;}
-    
+
     </style>
     <script type="text/javascript">
     //调用微信JS api 支付
