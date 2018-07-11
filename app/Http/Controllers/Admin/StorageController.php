@@ -97,6 +97,7 @@ class StorageController extends Controller
             "address_id" => $address->id,
             "func" => $func,
             "description" => $request->input("description", null),
+            "is_common" => $request->is_common,
         ]);
         $storage->save();
         return redirect()->route("admin.storage.index");
@@ -161,6 +162,7 @@ class StorageController extends Controller
         $address->save();
 
         $storage->name = $request->name;
+        $storage->is_common = $request->is_common;
         $storage->brand_id = $request->brand_id;
         $storage->active = $request->input("active", true);
         $storage->description = $request->input("description", null);
