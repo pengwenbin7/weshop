@@ -1,10 +1,6 @@
 @extends( "layouts.wechat2")
-
 @section( "content")
-
-<div class="container" id="app" v-cloak>
-  <div class="cart-info">
-
+<div class="container cart-info" v-cloak>
     <div class="cart-info-header">
       <div class="txt">
         <span>选购单<small>(已添加{{ count($cart->cartItems) }}件商品)</small></span>
@@ -64,31 +60,27 @@
       <p><a class="gray" href="{{ route("wechat.product.index") }}">您的选购单还没有商品,尽快去 <a href="{{route("wechat.product.index")}}" class="green">选购</a>吧～</a></p>
     </div>
      @endif
-  </div>
 </div>
 <div class="goBuy">
   <div class="check-all">
     <div class="p-check">
-      <input type="checkbox" id="ck-all" onchange="checkAllBtn()">
-      <label for="ck-all">全选</label>
+      <input type="checkbox"  v-bind:checked="domAll">
+      <label for="ck-all" @click="checkAllBtn">全选</label>
     </div>
   </div>
   <div class="goods-price">
-    <p><span class="fee gray">零售附加：<i  id="fee">0</i></span>
-    <span><i class="font-co">¥</i><i class="font-co" id="totalprice" >0</i></span>
+    <p><span class="fee gray">零售附加：<i  id="fee">@{{ fee }}</i></span>
+    <span><i class="font-co">¥</i><i class="font-co" id="totalprice" >@{{ total }}</i></span>
   </p>
 
   </div>
-  <div class="btn-submit" onclick="buyAll()">
+  <div class="btn-submit" @click="buyAll">
     <a>结算</a>
   </div>
 </div>
 @endsection
 @section( "script")
 <script>
-  var totalDom = document.getElementById("totalprice");
-  var domAll = document.getElementById("ck-all");
-  var domFee = document.getElementById("fee");
   var app = new Vue({
     el: '#app',
     data: {
@@ -96,6 +88,9 @@
       cart_id: {{ $cart->id }},
       PayChannel: 1,
       price:0,
+      total:0,
+      fee:0,
+      domAll:false,
     },
     //总价
     beforeMount: function() { //加载页面前计算价格
@@ -111,9 +106,55 @@
       }
     },
     methods: {
-      buyAll: function() {
-        location.assign("{{ route("wechat.cart.buyall") }}" +
-          "?cart_id=" + this.cart_id );
+      buyAll :function() {
+        var param = [];
+        var products = this.products;
+        for (var k in products) {
+          for (var l in products[k]) {
+            if (products[k][l].checked) {
+              param.push({
+                "id": products[k][l].product.id,
+                "number": products[k][l].number,
+              })
+            }
+          }
+        }
+        if (param.length) {
+          if({{ auth()->user()->is_subscribe }}){
+            location.assign("{{ route("wechat.cart.buyall") }}" + "?cart_id=" + this.cart_id + "&&products=" + JSON.stringify(param));
+          }else{
+            document.querySelector("#subscribe_box").style.display = "block";
+          }
+
+        }
+      },
+      checkall: function(_this) {
+        var products = _this.products;
+        var check = true;
+        for(var x in products){
+          if(!check){
+            break;
+          }
+          for (var y in products[x]){
+            if(!products[x][y].checked){
+              check = false;
+              break;
+            }else{
+              check = true;
+            }
+          }
+        }
+        if(check){
+          this.domAll = true;
+        }else{
+          this.domAll = false;
+        }
+      },
+      checkAllBtn: function(){
+        console.log(this.domAll);
+        var status = !this.domAll;
+        this.domAll = status;
+        this.setCheckAll(status);
       },
       reduceCartNubmer: function(i, a) {
         var _this = this;
@@ -153,7 +194,7 @@
           this.products[i][a].checked=!this.products[i][a].checked;
         }
         count(this);
-        checkall(this);
+        this.checkall(this);
       },
       checkipu(event){
         var dom = event.currentTarget
@@ -226,8 +267,8 @@
       }
     }
     //赋值
-    totalDom.innerText = price + fee;
-    domFee.innerText = fee;
+    app.total = price + fee;
+    app.fee = fee;
   }
   //计算费用
   function freight(func, weight, distance) {
@@ -240,53 +281,7 @@
     });
     return fee ? fee : Math.round((func.other.factor * distance * weight + Number(func.other.const)) / 100) * 100;
   }
-  function checkall(_this) {
-    var products = _this.products;
-    var check = true;
-    for(var x in products){
-      if(!check){
-        break;
-      }
-      for (var y in products[x]){
-        if(!products[x][y].checked){
-          check = false;
-          break;
-        }else{
-          check = true;
-        }
-      }
-    }
-    if(check){
-      domAll.checked = true;
-    }else{
-      domAll.checked = false;
-    }
-  }
-  function checkAllBtn(){
-    var status   = domAll.checked;
-    app.setCheckAll(status);
-  }
-  function buyAll() {
-    var param = [];
-    var products = app.products;
-    for (var k in products) {
-      for (var l in products[k]) {
-        if (products[k][l].checked) {
-          param.push({
-            "id": products[k][l].product.id,
-            "number": products[k][l].number,
-          })
-        }
-      }
-    }
-    if (param.length) {
-      if({{ auth()->user()->is_subscribe }}){
-        location.assign("{{ route("wechat.cart.buyall") }}" + "?cart_id=" + app.cart_id + "&&products=" + JSON.stringify(param));
-      }else{
-        document.querySelector("#subscribe_box").style.display = "block";
-      }
 
-    }
-  }
+
 </script>
 @endsection

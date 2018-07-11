@@ -34,11 +34,7 @@
     .icon-huipiao{color: #c273ff;}
     .icon-xuanzhong-on{color: #3db858;}
     .icon-huodaofukuan{color: #16c2c2;}
-    .share{position: fixed;bottom: 1.4rem; left: 50%; margin-left: -0.3rem; width: 100%;z-index: 11;font-size: .3rem;}
-    .share .mask {position: fixed;top: 0;bottom: 0;left: 0;right: 0;background: rgba(0, 0, 0, .6);}
-    .share .close i{font-size: .6rem;color: #fff;position: relative;z-index: 2; transform:rotate(45deg);display: inline-block;}
-    .share .s-info{position: fixed; right: 3%;top: .4rem;font-size: .4rem; margin-left: .5rem; text-align: right;;color: #fff;}
-    .share .s-info i{font-size: .6rem;display: block;}
+    
     </style>
     <script type="text/javascript">
     //调用微信JS api 支付
@@ -126,15 +122,7 @@
 	  @endforeach
 	</div>
       </div>
-      <div class="share"  v-show="share&&out_time">
-        <div class="mask" @click="share=false">
-        </div>
-        <div class="s-info">
-          <i class="iconfont icon-shouzhi"></i><br/>
-           <span>点击此处分享</span>
-        </div>
-        <div class="close"  @click="share=false"><i class="iconfont icon-tianjia"></i></div>
-      </div>
+
       <div class="footer" v-if="out_time">
 	<span v-if="active == 1"  onclick="callpay()">确认支付</span>
 	<span v-if="active == 2">
@@ -202,35 +190,7 @@
       var seconds = mss % 60;
       return days + hours + minutes + "分 " + seconds + "秒 ";
     }
-    wx.ready(function () {
-      wx.onMenuShareTimeline({
-      	title: "{{ $share_title }}",
-        link: "{{ route("wechat.product.show", ["id" => $order->orderItems->first()->product_id, "rec_code" => auth()->user()->rec_code]) }}",
-      	imgUrl: "{{ asset("assets/img/logo.png") }}",
-      	success: function () {
-          axios.post("{{ route("wechat.order.share", $order) }}")
-    	    .then(function (res) {
-    	      location.reload();
-    	    });
-	       },
-      	cancel: function () {
-                alert("取消了");
-      	}
-      });
 
-      wx.onMenuShareAppMessage({
-        title: "{{ $share_title }}",
-        desc : "我正在使用太好买化工品原料商城购买商品",
-        link: "{{ route("wechat.product.show", ["id" => $order->orderItems->first()->product_id, "rec_code" => auth()->user()->rec_code]) }}",
-        imgUrl: "{{ asset("assets/img/logo.png") }}",
-          success: function () {
-              // 用户确认分享后执行的回调函数
-          },
-          cancel: function () {
-              // 用户取消分享后执行的回调函数
-          }
-      });
-    });
     </script>
   </body>
 </html>

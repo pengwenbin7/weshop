@@ -1,9 +1,7 @@
 @extends( "layouts.wechat2")
 
 @section( "content")
-<div class="container">
-  <div class="contact" id="app">
-
+<div class="container contact">
     <div class="tel-list">
       @if ($user->admin)
         <div class="private-tel">
@@ -31,6 +29,5 @@
         </a>
       </div>
     </div>
-  </div>
 </div>
 @endsection

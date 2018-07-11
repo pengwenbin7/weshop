@@ -12,14 +12,14 @@
         display: none;
       }
     </style>
-    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script type="text/javascript">
     var fSize=(document.documentElement.clientWidth/7.5)>100?100:(document.documentElement.clientWidth/7.5);document.documentElement.style.fontSize = fSize + "px";window.addEventListener("orientationchange", function() { location.reload(); }, false);
     </script>
 
     @yield("style")
   </head>
-  <body style="background-color:#f0f1f0">
+  <body>
+    <div class="page-container-2" id = "app">
     @yield("content")
     @if(!auth()->user()->is_subscribe)
     <div class="subscribe" onclick="showSubscribeBox()">
@@ -40,10 +40,12 @@
       </div>
     </div>
   @endif
+   </div>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script>
-    wx.config({!! app("wechat.official_account")->jssdk->buildConfig($interfaces ?? [], false) !!});
+    wx.config({!! app("wechat.official_account")->jssdk->buildConfig($interfaces ?? ["onMenuShareTimeline", "onMenuShareAppMessage"], false) !!});
     wx.ready(function () {
       wx.onMenuShareTimeline({
 	title: "{{ $page_title ?? "分享title" }}",

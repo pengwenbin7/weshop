@@ -1,7 +1,6 @@
 @extends( "layouts.wechat2")
 @section( "content")
-<div class="container">
-  <div class="order-detail" id="app" v-cloak>
+<div class="container order-detail"  v-cloak>
     <div class="order-header">
       <div class="order-number">
         <span>订单号： {{ $order->no }}</span>
@@ -309,7 +308,6 @@
           </div>
       	</div>
       </div>
-    </div>
   </div>
   <div class="footer order-detail">
     <div class="item price y"><span>实付金额：{{ $order->payment->pay }}</span></div>

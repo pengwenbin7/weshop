@@ -17,10 +17,8 @@
     </style>
     @yield("style")
   </head>
-  <body style="background:#f0f1f0;">
-    <!-- <nav>
-    <a href="{{ route("wechat.logout") }}">logout</a>
-    </nav> -->
+  <body>
+    <div class="page-container" id = "app">
     @yield("content")
     @if(!auth()->user()->is_subscribe)
     <div class="subscribe" onclick="showSubscribeBox()">
@@ -64,6 +62,7 @@
         </span><br>我的</a>
       </div>
     </div>
+     </div>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>

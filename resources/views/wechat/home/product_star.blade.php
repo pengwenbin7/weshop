@@ -2,9 +2,8 @@
 
 @section("content")
 @if (count($stars))
-
-  <div class="container">
-<div class="collect" id="app">
+<div class="container collect">
+  <div class="list-view">
 
     <div class="products" >
       @foreach ($stars as  $star)
@@ -32,8 +31,6 @@
               @endif
             </p>
           </div>
-
-
           </a>
           </div>
           <div class="p-edit"  @click="remove('{{route("wechat.unstar",$star->id)}}')">
@@ -47,14 +44,14 @@
       @endforeach
     </div>
   </div>
+    
 </div>
 @else
-  <div class="no-content">
-    <span><i class="iconfont icon-dingdan1"></i></span>
-
-    <br>
-    <p><a class="gray" href="{{ route("wechat.product.index") }}">您还没有收藏商品,去看看～</a></p>
-     </div>
+<div class="no-content">
+  <span><i class="iconfont icon-dingdan1"></i></span>
+  <br>
+  <p><a class="gray" href="{{ route("wechat.product.index") }}">您还没有收藏商品,去看看～</a></p>
+ </div>
 @endif
 @endsection
 @section("script")

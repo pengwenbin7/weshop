@@ -1,17 +1,16 @@
 @extends( "layouts.wechat2")
 @section( "content")
-  <div class="container" id="app" v-cloak>
-    <div class="order">
+  <div class="container create" v-cloak>
       <div class="address"  v-on:click="selectAddress">
         <div class="a-info">
           <p v-if="!address_id">点击选择地址</p>
           <div class="name" v-if="address_id">
-            <span class="user-name">@{{ name }}</span>
+            <span class="user-name">收货人： @{{ name }}</span>
             <span>@{{ tel }}</span>
           </div>
           <div class="a-dist" v-if="address_id">
             <span>
-                    @{{ dist }}</span>
+                收货地址：@{{ dist }}</span>
           </div>
         </div>
         <div class="right-arrow">
@@ -22,17 +21,17 @@
         <div class="product">
           <div class="p-info">
             <div class="num clearfix">
-              <span>品名：<i class="black"> {{ $products->name }}</i></span>
+              <span>品名：<i class="black"> {{ $product->name }}</i></span>
             </div>
             <div class="num clearfix">
-              <span>型号：<i class="black">  {{ $products->model }}</i></span>
+              <span>型号：<i class="black">  {{ $product->model }}</i></span>
             </div>
             <div class="num clearfix">
-              <span>厂商：<i class="black">  {{ $products->brand->name }}</i></span>
+              <span>厂商：<i class="black">  {{ $product->brand->name }}</i></span>
             </div>
 
             <div class="num clearfix">
-              <span>价格：<i class="black y" >￥{{ $products->price }}</i></span>
+              <span>价格：<i class="black y" >￥{{ $product->price }}</i></span>
             </div>
             <div class="num clearfix">
               <span>重量：<i class="black">@{{ weight }}</i></span>
@@ -62,6 +61,10 @@
           <i class="iconfont icon-zhankai"></i>
         </span>
     	</div>
+      <div class="item" v-if="share">
+        <span> 分享减免</span>
+        <span class="value"  >-￥<i id="fee">@{{ share_discount }}</i></span>
+      </div>
       <div class="item">
         <span> 零售附加</span>
         <span class="value"  >+￥<i id="fee">@{{ freight }}</i></span>
@@ -69,11 +72,26 @@
        <div class="item">
         <span> 实付金额</span>
         <span class="value disable"  v-if="!address_id">选择地址后显示价格</span>
-        <span class="value y" v-if="address_id">@{{ number*unit_price+freight-coupon_discount }}</span>
+        <span class="value y" v-if="address_id">@{{ number*unit_price+freight-coupon_discount-share_discount }}</span>
        </div>
       </div>
+      <div class="gird">
+        <div class="item" @click="share_box = true">
+          <span style="color:#fff;background:red;padding:.1rem .2rem; font-size:.26rem;margin-left:.4rem;">分享至朋友圈：此单立减100元</span>
+        </div>
+      </div>
     </div>
-    <div class="flexbox" v-if="coupon_box">
+
+    <div class="share"  v-show="share_box"  v-cloak>
+      <div class="mask" @click="share_box = false">
+      </div>
+      <div class="s-info">
+        <i class="iconfont icon-shouzhi"></i><br/>
+         <span>点击此处分享</span>
+      </div>
+      <div class="close"  @click="share_box = false"><i class="iconfont icon-tianjia"></i></div>
+    </div>
+    <div class="flexbox" v-if="coupon_box"  v-cloak>
       <div class="mask" @click="hideBox()"></div>
       <div class="coupon-list">
          <div class="tit">优惠券<small>(@{{ coupons.length }}张)</small></div>
@@ -105,8 +123,7 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="footer order-footer" onclick="pay()">
+  <div class="footer order-footer" @click="pay">
     <div class="item">
       <span>提交订单</span>
     </div>
@@ -118,23 +135,26 @@
   var app = new Vue({
     el: "#app",
     data: {
-      number: {{ $products->number }},
-      address_id:  null,
-      p_address_id:{{ $products->storage->address_id  }},
+      number: {{ $product->number }},
+      address_id:  {{ $address->id ?? "null" }},
+      p_address_id:{{ $product->storage->address_id  }},
       freight: 0,
       coupon_id: null,
       coupon_discount:0,
       coupon_amount:0,
       coupon_text:"选择优惠券",
-      unit_price:{{$products->variable->unit_price }},
+      unit_price:{{$product->variable->unit_price }},
       coupons: {!! $coupons !!},
-      stock:{{ $products->variable->stock }},
-      distance:0,
+      stock:{{ $product->variable->stock }},
+      distance:{{ $distance ?? 'null' }},
       coupon_box: false,
-      content: {{ $products->content }},
-      name: '',
-      tel: '',
-      dist: ''
+      content: {{ $product->content }},
+      name: {{ $address->contact_name ?? "null" }},
+      tel: {{ $address->contact_tel ?? "null" }},
+      dist: {{ $address ? $address->getText() : "null" }},
+      share_box:false,
+      share:false,
+      share_discount:0,
     },
     computed: {
       weight: function() {
@@ -143,16 +163,15 @@
           this.number * this.content + "KG"
       },
       number:function(){
-        return this.number<this.stock?this.number:this.stock
+        return this.number < this.stock ? this.number:this.stock
       }
     },
-    beforeCreate: function() {
-      var _this = this;
-      if (!this.address_id) {
-        //选择地址
-        console.log(this.address_id);
-
-      }
+    mounted: function () {
+      this.$nextTick(function () {
+        if(this.address_id){
+          this.countFreight();
+        }
+      })
     },
     methods: {
       show: function(mode) {
@@ -160,7 +179,7 @@
       },
       hideBox: function(m) {
         this.coupon_box = false;
-        if(m=="coupon"){
+        if(m == "coupon"){
           this.coupon_discount = 0;
           this.coupon_text = "选择优惠券";
           this.coupon_id = null;
@@ -168,7 +187,7 @@
       },
       // storage default freight function
       storageFunc: function() {
-        var func = JSON.parse('{!! $products->storage->func !!}');
+        var func = JSON.parse('{!! $product->storage->func !!}');
       },
       chooseCoupon: function(index){
         var coupon = this.coupons[index];
@@ -184,23 +203,21 @@
         }else{
           alert("此红包不可用");
         }
-
       },
       selectAddress: function() {
         oAddress();
-
       },
       reduceCartNubmer: function(i, a) {
         var _this = this;
         if (_this.number <= 1) {
           return
         } else {
-          _this.number--;
+          _this.number --;
           if(!this.address_id){
             return
           }
           _this.countFreight();
-          if(_this.coupon_amount<=(_this.number*_this.unit_price+_this.freight)){
+          if(_this.coupon_amount <= (_this.number * _this.unit_price + _this.freight)){
             return
           }else{
             _this.coupon_discount = 0;
@@ -217,8 +234,7 @@
         }
       },
       check: function(){
-        console.log(this.number);
-        if(this.number>this.stock){
+        if(this.number > this.stock){
           alert("超出库存");
           this.number =  this.stock;
         }
@@ -240,10 +256,10 @@
       },
       addCartNumber:function(){
         var _this = this;
-        if(this.number>=this.stock){
+        if(this.number >= this.stock){
           return;
         }else{
-          _this.number++;
+          _this.number ++;
           if(!this.address_id){
             return
           }
@@ -253,17 +269,34 @@
       countFreight: function() {
         var weight = this.number * this.content;
         var distance = this.distance;
-        var func = JSON.parse('{!! $products->storage->func !!}');
+        var func = JSON.parse('{!! $product->storage->func !!}');
         this.freight =freight(func,weight,distance);
+      },
+      pay: function() {
+         if(!this.address_id){
+           alert("请先选择收货地址");
+         }else{
+          var data = {
+            address_id: this.address_id,
+            coupon_id: this.coupon_id,
+            share : this.share,
+            products: [{
+              number: this.number,
+              id: {{ $product->id }}
+            }]
+          };
+          axios.post("{{ route("wechat.order.store") }}", data)
+            .then(function(res) {
+              location.assign("{{ route("wechat.pay") }}" +
+                "/?order_id=" + res.data.store);
+            });
+          }
       }
-    },
-    mounted: function() {
     }
   });
 
   function freight(func, weight, distance) {
     var freight = 0;
-    console.log(func, weight, distance);
     func.area.forEach(function(e, index, array) {
       if (e.low <= weight && weight < e.up) {
         freight = Math.round((e.factor * distance * weight + Number(e.const)) / 100) * 100;
@@ -272,9 +305,36 @@
     });
     return freight ? freight : Math.round((func.other.factor * distance * weight + Number(func.other.const)) / 100) * 100;
   }
-
   wx.ready(function() {
-    oAddress();
+    var _this = app;
+    var last_address = _this.address_id;
+    if(!last_address){
+      oAddress();
+    }
+    wx.onMenuShareTimeline({
+      title: "太好买化工品原料商城",
+      link: "{{ route("wechat.product.show", ["id" => $product->id, "rec_code" => auth()->user()->rec_code]) }}",
+      imgUrl: "{{ asset("assets/img/logo.png") }}",
+      success: function () {
+        _this.share = true;
+        _this.share_discount = (_this.number * _this.unit_price + _this.freight) < 20000 ? 50 : 100;
+       },
+      cancel: function () {
+      }
+    });
+
+    wx.onMenuShareAppMessage({
+      title: "太好买化工品原料商城",
+      desc : "我正在使用太好买化工品原料商城购买商品",
+      link: "{{ route("wechat.product.show", ["id" => $product->id, "rec_code" => auth()->user()->rec_code]) }}",
+      imgUrl: "{{ asset("assets/img/logo.png") }}",
+        success: function () {
+            // 用户确认分享后执行的回调函数
+        },
+        cancel: function () {
+            // 用户取消分享后执行的回调函数
+        }
+    });
   });
   function oAddress(){
     wx.openAddress({
@@ -300,36 +360,15 @@
                   _this.address_id = address_id;
                   _this.countFreight();
                 }
-
               });
-
           });
-
       },
       cancel: function() {
         //
       }
     });
   }
-  function pay() {
-    var data = {
-      address_id: app.address_id,
-      coupon_id: app.coupon_id,
-      products: [{
-        number: app.number,
-        id: {{ $products->id }}
-      }]
-    };
-    if(app.address_id){
-      axios.post("{{ route("wechat.order.store") }}", data)
-        .then(function(res) {
-          location.assign("{{ route("wechat.pay") }}" +
-            "/?order_id=" + res.data.store);
-        });
-    }else{
-      alert("请先选择收货地址");
-    }
 
-  }
+
   </script>
 @endsection

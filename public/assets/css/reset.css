@@ -162,8 +162,8 @@ i{
 html,body{
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  background:#f0f1f0;
 }
-.container>div{
-  -webkit-overflow-scrolling: touch;
+*::-webkit-scrollbar {
+  display: none;
 }

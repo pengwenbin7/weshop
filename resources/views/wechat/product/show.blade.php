@@ -1,8 +1,7 @@
 @extends( "layouts.wechat2")
 @section( "content")
-<div class="container">
-  <div class="product">
-    <div class="info" id="info"  v-cloak>
+<div class="container product-show" v-cloak>
+    <div class="info">
       <div class="title">
         <div class="name">
           <h1><span>{{ $product->name }}&nbsp;&nbsp;{{ $product->model }}</span></h1>
@@ -38,39 +37,36 @@
     <div class="tips" onclick="serverShow()">
       <p>
         <span class="t-left">
-                    <i class="iconfont icon-gou"></i><i class="t-t">原厂原包</i>
-                    <i class="iconfont icon-gou"></i><i class="t-t">假一赔十</i>
-                    <i class="iconfont icon-gou"></i><i class="t-t">包退包换</i>
-                    <i class="iconfont icon-gou"></i><i class="t-t">极速发货</i>
-                </span>
+          <i class="iconfont icon-gou"></i><i class="t-t">原厂原包</i>
+          <i class="iconfont icon-gou"></i><i class="t-t">假一赔十</i>
+          <i class="iconfont icon-gou"></i><i class="t-t">包退包换</i>
+          <i class="iconfont icon-gou"></i><i class="t-t">极速发货</i>
+        </span>
         <span class="t-right">
-                    <i class="iconfont icon-jinru"></i>
-                </span>
+          <i class="iconfont icon-jinru"></i>
+        </span>
       </p>
     </div>
-
     <div class="p-desc">
       <div class="tit">
         <span>产品说明</span>
       </div>
-      <p>{{ $product->detail?$product->detail->content:"暂无描述" }}
+      <p>{{ $product->detail->content ? $product->detail->content : "暂无描述" }}
       </p>
     </div>
-  </div>
 </div>
-<div class="buy-box" id="app" v-cloak>
+<div class="buy-box"  v-cloak>
   <!-- footer -->
   <div class="footer product-footer" v-on:click="showBox()">
     <span>选购</span>
   </div>
 
   <!-- //cart -->
-  <div class="container" v-show="addr_box">
+  <div class="container" v-show="addr_box" >
     <div class="cart">
       <div class="create" v-on:click="createCart">
         <div class="txt">
-          <span class="black">新建选购单<small>(已创建{{ count(auth()->user()->carts) }}个选购单)</small>
-                </span>
+          <span class="black">新建选购单<small>(已创建{{ count(auth()->user()->carts) }}个选购单)</small></span>
         </div>
         <div class="icon">
           <i class="iconfont icon-tianjia"></i>
@@ -200,9 +196,6 @@
             </p>
           </div>
         </div>
-
-
-
       </div>
       <div class="product" v-if="tonTap==1">
         <div class="title">
@@ -269,6 +262,11 @@
       is_ton:{{ $product->is_ton }},
       unit_price:{{ $product->variable->unit_price }},
       top : '',
+      star:"{{ $product->star }}",
+      prices:{!! $product->prices !!},
+      old_price:"",
+      time:[],
+      pri:[],
     },
     computed: {
       weight: function() {
@@ -280,6 +278,25 @@
     mounted:function(){
      var func = JSON.parse('{!! $product->storage->func !!}');
      this.top = func.area.pop().up / 1000 + "吨";
+     var prices = this.prices;
+     var time = [],pri = [];
+     for (var i = 0; i < prices.length; i++) {
+       time.push(prices[i].updated)
+       if(this.is_ton){
+         pri.push(Number(prices[i].unit_price) * 1000 / Number(this.content))
+       }else{
+         pri.push(prices[i].unit_price)
+       }
+
+     }
+     if(prices.length>1){
+        this.old_price = pri[pri.length-2];
+     }else{
+       this.old_price = pri[pri.length-1];
+     }
+
+      this.time = time;
+      this.pri = pri;
    },
     methods: {
       createCart: function() {
@@ -412,47 +429,7 @@
           this.ton_num = num*this.content/1000;
           dom.value = num;
         }
-      }
-    }
-  });
-
-  function serverShow() {
-    var _this = app;
-    _this.server_box = true;
-  }
-  var app2 = new Vue({
-    el: "#info",
-    data: {
-      star:"{{ $product->star }}",
-      prices:{!! $product->prices !!},
-      is_ton:{{ $product->is_ton }},
-      content:{{ $product->content }},
-      old_price:"",
-      time:[],
-      pri:[],
-    },
-    mounted:function(){
-      var prices = this.prices;
-      var time = [],pri = [];
-      for (var i = 0; i < prices.length; i++) {
-        time.push(prices[i].updated)
-        if(this.is_ton){
-          pri.push(Number(prices[i].unit_price) * 1000 / Number(this.content))
-        }else{
-          pri.push(prices[i].unit_price)
-        }
-
-      }
-      if(prices.length>1){
-         this.old_price = pri[pri.length-2];
-      }else{
-        this.old_price = pri[pri.length-1];
-      }
-
-       this.time = time;
-       this.pri = pri;
-    },
-    methods: {
+      },
       collect: function(mode) {
         var _this = this;
         if(mode){
@@ -469,7 +446,13 @@
         // 收藏
       }
     }
-  })
+  });
+
+  function serverShow() {
+    var _this = app;
+    _this.server_box = true;
+  }
+
 
   onload = function() {
     var ctx = document.getElementById("myChart");
@@ -521,12 +504,12 @@
     });
 
     function generateLabels() {
-      var arr = app2.time;
+      var arr = app.time;
       return arr;
     }
 
     function generateDate() {
-      var arr = app2.pri;
+      var arr = app.pri;
       return arr;
     }
   }
