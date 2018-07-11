@@ -4,15 +4,7 @@ namespace App\Http\Controllers\WeChat;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Log;
 use EasyWeChat;
-use EasyWeChat\Kernel\Messages\Text;
-use EasyWeChat\Kernel\Messages\News;
-use EasyWeChat\Kernel\Messages\NewsItem;
-use EasyWeChat\Kernel\Messages\Voice;
-use App\Models\User;
-use App\WeChat\SpreadQR;
-use EasyWeChat\Kernel\Messages\Image;
 use App\WeChat\MessageHandler;
 
 class ServerController extends Controller

@@ -9,10 +9,11 @@ class Text implements HandlerInterface
 {
     public function run(array $message)
     {
-        $url = route("wechat.search", ["keyword" => $message['Content']]);
+        $key = $message['Content'];
+        $url = route("wechat.search", ["keyword" => $key]);
         $items = [
             new NewsItem([
-                'title'       => "搜索结果-太好买",
+                'title'       => "【$key】搜索结果-太好买",
                 'description' => "点击查看搜索结果",
                 'url'         => $url,
                 'image'       => '',
