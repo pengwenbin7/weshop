@@ -109,6 +109,28 @@
                 <input class="form-control" id="detail" name="detail" type="text" value="{{ $address->detail }}" required>
               </div>
             </div>
+            <div class="form-group">
+              <label for="detail" class="col-sm-2 control-label">是否公共</label>
+              <div class="checkbox">
+                @if ($storage->is_common)
+                  <label>
+                    <input type="radio" name="is_common" value="1" checked>是
+                  </label>
+                  <label>
+                    <input type="radio" name="is_common" value="0" >否
+                  </label>
+                  @else
+                  <label>
+                    <input type="radio" name="is_common" value="1">是
+                  </label>
+                  <label>
+                    <input type="radio" name="is_common" value="0" checked>否
+                  </label>
+                @endif
+
+             </div>
+
+            </div>
           </div>
 	</div>
 

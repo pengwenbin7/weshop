@@ -105,6 +105,18 @@
               <input class="form-control" id="detail" name="detail" type="text" required>
             </div>
           </div>
+          <div class="form-group">
+            <label for="detail" class="col-sm-2 control-label">是否公共</label>
+            <div class="checkbox">
+             <label>
+               <input type="radio" name="is_common" value="1">是
+             </label>
+             <label>
+               <input type="radio" name="is_common" value="0" checked>否
+             </label>
+           </div>
+
+          </div>
         </div>
       </div>
 
