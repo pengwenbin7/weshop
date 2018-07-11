@@ -63,8 +63,8 @@
             </a>
             <div class="order-footer">
               <div class="order-price">
-                <span>附加:￥{{ intval($order->payment->freight) }}</span>
-                <span>优惠:￥{{ intval($order->payment->coupon_discount + $order->payment->share_discount) }}</span>
+                <span>附加:￥{{ intval(isset($order->payment->freight) ? $order->payment->freight:0) }}</span>
+                <span>优惠:￥{{ intval(isset($order->payment->coupon_discount) ? $order->payment->coupon_discount:0 + isset($order->payment->share_discount) ? $order->payment->share_discount:0) }}</span>
                 <span>金额:￥{{ intval($order->payment->pay) }}</span>
               </div>
               <div class="order-edit">

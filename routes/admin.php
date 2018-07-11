@@ -139,7 +139,7 @@ Route::resource("marketing", "Admin\MarketingController", [
         "show" => "admin.marketing.show",
     ],
 ]);
-
+Route::any("/marketing/update", "Admin\MarketingController@update")->name("admin.marketing.update");
 //测试
 Route::get("/ceshi", "Admin\CeshiController@index")->name("admin.ceshi.index");
 

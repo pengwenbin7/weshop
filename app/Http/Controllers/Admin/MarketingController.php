@@ -64,12 +64,31 @@ class MarketingController extends Controller
         }
         return redirect()->route("admin.marketing.index");
     }
-    public function edit(Product $product)
+    public function edit(Marketing $marketing)
     {
-       echo "<pre>";
-       print_r($product);
-       exit;
-        return view("wechat.product.show", ["product" => $product, "title" => $product->name,]);
+        return view("admin.marketing.edit", ["marketing" => $marketing]);
+    }
+    public function show(Product $product)
+    {
+        echo "<pre>";
+        print_r($product);
+        exit;
+        return view("admin.product.show", ["product" => $product, "title" => $product->name,]);
+    }
+
+    public function update(Request $request, Marketing $marketing)
+    {
+
+        $marketing->title = $request->title;
+        $marketing->text_type = $request->text_type;
+        $marketing->result = $request->result;
+        $marketing->ending = $request->ending;
+        $marketing->link = $request->link;
+        $marketing->user_type = $request->user_type;
+        if (!$marketing->save()) {
+            return ["err" => "save product error"];
+        }
+        return redirect()->route("admin.marketing.index");
     }
 
 }

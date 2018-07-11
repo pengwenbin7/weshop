@@ -13,7 +13,7 @@ class Marketing extends Model
      */
     protected $table = 'marketing';
     protected $fillable = [
-        "title", "text_type", "result",
+        "id","title", "text_type", "result",
         "ending", "link", "user_type"
     ];
     public function products()

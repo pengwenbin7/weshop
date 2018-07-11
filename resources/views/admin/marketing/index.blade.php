@@ -62,7 +62,7 @@
 		    <td>{{ $item->link }}</td>
 		    <td>{{ $item->user_type }}</td>
 		    <td>
-		      <a href="{{ route("admin.marketing.edit", ['item' => $item]) }}">编辑</a>
+		      <a href="{{ route("admin.marketing.edit", $item) }}">编辑</a>
 		      &nbsp;|&nbsp;
 		      <a href="{{ route("admin.marketing.show", $item) }}">详细</a>
 		    </td>
