@@ -12,6 +12,8 @@ use App\Models\coupon;
 use App\Models\UserAction;
 use App\Models\ProductCategory;
 use App\Models\ProductStar;
+use App\Models\Address;
+use App\Utils\Count;
 
 class ProductController extends Controller
 {
@@ -100,23 +102,27 @@ class ProductController extends Controller
 
     public function buyMe(Request $request)
     {
-        $data["products"] = Product::find($request->product_id);
-        $data["products"]->number = $request->num;
-        if($data["products"]->is_ton ){
-            $data["products"]->price = $data["products"]->variable->unit_price * 1000 / $data["products"]->content . "/吨";
+        $product = Product::find($request->product_id);
+        $product->number = $request->num;
+        if($product->is_ton ){
+            $product->price = $product->variable->unit_price * 1000 / $product->content . "/吨";
         }else{
-            $data["products"]->price = $data["products"]->variable->unit_price . "/" . $data["products"]->packing_unit;
+            $product->price = $product->variable->unit_price . "/" . $product->packing_unit;
         }
-        $data["payChannels"] = PayChannel::get();
-        $data["user"] = auth()->user();
-        $data["price"] = Product::find($request->product_id)
-                ->variable
-                ->unit_price * $request->num;
         $coupons = auth()->user()->coupons;
+        $address = null;
+        $distance = null;
+        if(auth()->user()->last_address){
+            $address = Address::find(auth()->user()->last_address);
+            $distance = Count::distance(auth()->user()->last_address,$product->storage->address_id);
+        }
         foreach ($coupons as $key => $coupon) {
             $coupon->expire_time = $coupon->expire->toDateString();
         }
+        $data["product"] = $product;
+        $data["distance"] = $distance;
         $data["coupons"] = json_encode($coupons);
+        $data["address"] = $address;
         $data["interfaces"] = ["getLocation"];
         $data["title"] = "创建订单";
         return view("wechat.order.create", $data);

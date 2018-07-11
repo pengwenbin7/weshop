@@ -2,8 +2,7 @@
 
 @section("content")
   @if (count($coupons))
-<div class="container" id="app" id="coupons">
-    <div class="coupon">
+<div class="container coupon" id="coupons">
         <div class="coupons">
           @foreach($coupons as $coupon)
           <div class="item">
@@ -30,9 +29,8 @@
           <span>没有更多的优惠券了</span>
           <hr />
         </div>
-      </div>
     </div>
-      
+
   @else
     <div class="no-content">
       <span><i class="iconfont icon-kongbaiyouhuiquan"></i></span>

@@ -1,10 +1,7 @@
 @extends( "layouts.wechat")
-
 @section( "content")
-<div class="container" id="app" v-cloak>
-  <div class="cart">
-
-    <div class="create" v-on:click="createCart">
+<div class="container cart" v-cloak>
+    <div class="create" @click="createCart">
       <div class="txt">
         <span class="black">新建选购单<small>(已创建{{ count($carts) }}个选购单)</small></span>
       </div>
@@ -19,7 +16,7 @@
           <div class="title">
             <a href="{{ route("wechat.cart.show",["id " => $cartlist->id ]) }}">选购单{{ $index+1 }} <small>(已添加{{ count($cartlist->cartItems) }}件商品)</small> </a>
           </div>
-          <div class="cart-del" v-on:click="deleteCart({{ $cartlist->id }})">
+          <div class="cart-del" @click="deleteCart({{ $cartlist->id }})">
             <span><i class="iconfont icon-shanchu"></i></span>
           </div>
         </div>
@@ -39,13 +36,11 @@
       @if (!count($carts))
         <div class="no-content">
           <span><i class="iconfont icon-dingdan1"></i></span>
-
           <br>
           <p><a class="gray" href="{{ route("wechat.product.index") }}">您还没有选购单,点击上面添加按钮新建～</a></p>
            </div>
       @endif
     </div>
-  </div>
 </div>
 
 @endsection
@@ -53,9 +48,6 @@
 <script type="text/javascript">
   var app = new Vue({
     el: "#app",
-    data: {
-
-    },
     methods: {
       deleteCart: function(id){
         var _this = this;
@@ -65,10 +57,8 @@
             _this.$refs["cart_"+id].remove();
           }
         })
-
       },
       createCart: function() {
-        console.log(1);
         var $this = this;
         wx.openAddress({
           success: function(res) {
@@ -83,9 +73,6 @@
                 location.reload();
               });
             });
-          },
-          cancel: function() {
-            //
           }
         });
       }
