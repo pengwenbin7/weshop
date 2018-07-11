@@ -5,9 +5,9 @@ namespace App\WeChat\MessageHandlers;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 
-class Text
+class Text implements HandlerInterface
 {
-    public function handle(array $message)
+    public function run(array $message)
     {
         $url = route("wechat.search", ["keyword" => $message['Content']]);
         $items = [

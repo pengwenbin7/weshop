@@ -12,17 +12,27 @@ class MessageHandler
         $this->message = $message;
     }
 
-    public function handle()
+    public function run()
     {
-        $cname = __NAMESPACE__ . "\\MessageHandlers\\" . ucfirst(strtolower($this->message["MsgType"]));
-        if (class_exists($cname)) {
-            return (new $cname())->handle($this->message);
+        $msgType = strtolower($this->message["MsgType"]);
+        $event = strtolower($this->message["Event"]) ?? null;
+        $eventKey = strtolower($this->message["EventKey"]) ?? null;
+        $str = $msgType;
+        if ($event) {
+            $str = "{$str}.{$event}";
+            if ($eventKey) {
+                $str = "{$str}.{$eventKey}";
+            }
         }
-        
-        // 默认消息
-        // $str = "您可在此直接输入文字搜索产品，也可以发送图片和声音给客服";
-        $str = "您可在此直接输入文字搜索产品，也可以发送图片给客服";
-        return new Text($str);
+        try {
+            $cls = app()->make(config($str));
+            return $cls->run($this->message);
+        } catch (\ReflectionException $e) {
+            // 默认消息
+            // $str = "您可在此直接输入文字搜索产品，也可以发送图片和声音给客服";
+            $str = "您可在此直接输入文字搜索产品，也可以发送图片给客服";
+            return new Text($str);
+        }
     }
 }
 

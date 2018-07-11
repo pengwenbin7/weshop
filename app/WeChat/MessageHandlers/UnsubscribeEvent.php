@@ -7,9 +7,9 @@ use App\Models\User;
 /**
  * 处理'取消关注'事件
  */
-class UnSubscribe
+class UnSubscribeEvent implements HandlerInterface
 {
-    public function handle(array $message)
+    public function run(array $message)
     {
         $openid = $message["FromUserName"];
         $users = User::where("openid", "=", $openid)->get();

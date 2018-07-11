@@ -1,10 +1,12 @@
 <?php
 
+namespace App\WeChat\MessageHandlers;
+
 use App\Models\User;
 
-class Image
+class Image implements HandlerInterface
 {
-    public function handle($message)
+    public function run(array $message)
     {
         $user = User::where("openid", $message["FromUserName"])->get()->first();
         $msg = "你的用户【{$user->name}】给你发了一张<a href=\"{$message["PicUrl"]}\">图片</a>";

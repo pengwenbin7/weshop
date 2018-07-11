@@ -22,7 +22,7 @@ class ServerController extends Controller
         $app = EasyWeChat::officialAccount();
         $app->server->push(function ($message) {
             $handler = new MessageHandler($message);
-            $handler->handle();
+            return $handler->run();
         });
         return $app->server->serve();
     }

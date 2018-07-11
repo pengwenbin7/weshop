@@ -1,16 +1,16 @@
 <?php
 
-namespace App\WeChat\MessageHandlers\EventHandlers;
+namespace App\WeChat\MessageHandlers;
 
-use EasyWeChat\Kernel\Messages\NewsItem;
+use EasyWeChat\Kernel\Messages\Text;
 use App\Models\User;
 
 /**
  * 处理关注事件
  */
-class Subscribe
+class SubscribeEvent implements HandlerInterface
 {
-    public function handle(array $message)
+    public function run(array $message)
     {
         $openid = $message["FromUserName"];
         
@@ -31,6 +31,7 @@ class Subscribe
             $user->is_subscribe = 1;
             $user->subscribe_count += 1;
             $user->save();
+            return new Text("感谢您再次关注");
         }
     }
 }
