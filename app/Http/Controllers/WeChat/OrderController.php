@@ -135,7 +135,7 @@ class OrderController extends Controller
             ]);
             $totalPrice += $item->price * $item->number;
         }
-        echo $totalPrice.",,,,,".$order->countFreight();
+        return $order->countFreight();
 
 //        // create payment
 //        $payment = Payment::create([
