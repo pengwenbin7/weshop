@@ -2,9 +2,6 @@
 
 @section("style")
   <style>
-  #app: {
-
-  }
   </style>
 @endsection
 
@@ -31,6 +28,13 @@
 		<input class="form-control" id="password" name="password" type="password" value="" required/>
               </div>
             </div>
+
+	    <div class="form-group">
+	      <div class="col-sm-10 col-sm-offset-2 alert alert-warning" role="alert">
+		{{ $error ?? "" }}
+              </div>
+            </div>
+	    
 	  </div>
           <div class="box-footer">
             <button type="submit" class="btn btn-info btn-block">登录</button>
@@ -44,16 +48,4 @@
 @endsection
 
 @section("script")
-  <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-  <script>
-  wx.config({!! app("wechat.work")->jssdk->buildConfig(["scanQRCode"], false) !!});
-  wx.ready(function () {
-    wx.checkJsApi({
-      jsApiList: ["scanQRCode"],
-      success: function(res) {
-	location.assign("{!! $url !!}");
-      }
-    });
-  });
-  </script>
 @endsection

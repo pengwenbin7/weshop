@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Models\AdminUser;
+use Jenssegers\Agent\Agent;
 
 class Admin
 {
@@ -18,11 +19,22 @@ class Admin
     {
         if (auth($guard)->check()) {
             return $next($request);
-        } elseif ($request->has("uid")) {
-            auth("admin")->loginUsingId($request->uid);
-            return $next($request);
         } else {
-            return redirect()->route("admin.login");
+            session(["auth.target.url" => $request->fullUrl()]);
+            $agent = new Agent();
+            if ($agent->isDesktop()) {
+                // 桌面设备登录
+                return redirect()->route("admin.login");
+            } else {
+                // 移动设备登录
+                $scopes = ['snsapi_userinfo'];
+                $app = \EasyWeChat::work();
+                $response = $app->oauth->scopes($scopes)
+                          ->setAgentId(config("wechat.work.default.agent_id"))
+                          ->setRequest($request)
+                          ->redirect(route("admin.auth.callback"));
+                return $response;
+            }
         }
     }
 }
