@@ -13,7 +13,7 @@ class Text implements HandlerInterface
         $url = route("wechat.search", ["keyword" => $key]);
         $items = [
             new NewsItem([
-                'title'       => "【$key】搜索结果-太好买",
+                'title'       => "【{$key}】搜索结果-太好买",
                 'description' => "点击查看搜索结果",
                 'url'         => $url,
                 'image'       => '',
