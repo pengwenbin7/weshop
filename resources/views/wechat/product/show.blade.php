@@ -51,7 +51,7 @@
       <div class="tit">
         <span>产品说明</span>
       </div>
-      <p>{{ $product->detail->content ? $product->detail->content : "暂无描述" }}
+      <p>{{ $product->detail ? $product->detail->content : "暂无描述" }}
       </p>
     </div>
 </div>
