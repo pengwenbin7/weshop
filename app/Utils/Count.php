@@ -76,12 +76,12 @@ class Count
         $func = json_decode($storage->func);
 
         echo $distance.",,,,".$weight;
-        exit;
-        foreach ($func->area as $a) {
-            if ($a->low  <= $weight && $weight < $a->up) {
-                return round(($distance * $weight * $a->factor + $a->const) / 100) * 100;
-            }
-        }
-        return round(($distance * $weight * $func->other->factor + $func->other->const) / 100) * 100;
+//        exit;
+//        foreach ($func->area as $a) {
+//            if ($a->low  <= $weight && $weight < $a->up) {
+//                return round(($distance * $weight * $a->factor + $a->const) / 100) * 100;
+//            }
+//        }
+//        return round(($distance * $weight * $func->other->factor + $func->other->const) / 100) * 100;
     }
 }
