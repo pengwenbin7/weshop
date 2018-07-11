@@ -135,6 +135,8 @@ Route::resource("marketing", "Admin\MarketingController", [
         "index" => "admin.marketing.index",
         "create" => "admin.marketing.create",
         "store" => "admin.marketing.store",
+        "edit" => "admin.marketing.edit",
+        "show" => "admin.marketing.show",
     ],
 ]);
 

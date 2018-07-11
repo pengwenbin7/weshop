@@ -57,14 +57,14 @@
 		    <td>{{ $item->title }}</td>
 		    <td>{{ $item->text_type }}</td>
 		    <td>{{ $item->result }}</td>
-		    <td>{{ $item->ending }}</td>
 		    <td>{{ $item->created_at }}</td>
+		    <td>{{ $item->ending }}</td>
 		    <td>{{ $item->link }}</td>
 		    <td>{{ $item->user_type }}</td>
 		    <td>
-		      <a href="{{ route("admin.product.edit", ['item' => $item, 'limit' => $limit, 'name' => $name]) }}">编辑</a>
+		      <a href="{{ route("admin.marketing.edit", ['item' => $item]) }}">编辑</a>
 		      &nbsp;|&nbsp;
-		      <a href="{{ route("admin.product.show", $item) }}">详细</a>
+		      <a href="{{ route("admin.marketing.show", $item) }}">详细</a>
 		    </td>
 		  </tr>
 		@endforeach

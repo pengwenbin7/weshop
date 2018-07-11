@@ -64,6 +64,12 @@ class MarketingController extends Controller
         }
         return redirect()->route("admin.marketing.index");
     }
-
+    public function edit(Product $product)
+    {
+       echo "<pre>";
+       print_r($product);
+       exit;
+        return view("wechat.product.show", ["product" => $product, "title" => $product->name,]);
+    }
 
 }

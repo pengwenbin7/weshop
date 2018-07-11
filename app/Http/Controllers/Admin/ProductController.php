@@ -173,7 +173,7 @@ class ProductController extends Controller
             $user = ProductVariable::where('product_id',$cust->id)->first();
             if(!empty($user) && $user->unit_price != $request->price){
                 $variable->product_id=$cust->id;
-                $variable->unit_price=$user->unit_price;
+                $variable->unit_price=$content;
                 $variable->save();
                 $span = $user->update(['unit_price'=>$content]);
                 if(!empty($span)){
