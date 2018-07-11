@@ -25,6 +25,32 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+//        $Variable = ProductVariable::where(['product_id' => 117])
+//            ->first();
+//        $Variable_max = ProductPrice::where(['product_id' => 117])
+//            ->orderBy("id", "desc")->offset(1)
+//            ->limit(1)->get();
+//        $Variable_max = $Variable_max->first();
+//
+//
+//        echo "现在".$Variable->unit_price."...历史".$Variable_max->unit_price;
+//
+//
+//        $price = round($Variable->unit_price * 1000 / 25,2);
+//        $price_max = round($Variable_max->unit_price * 1000 / 25,2);
+//        $mypeice = '';
+//        $color = '';
+//        if($price > $price_max){
+//            $mypeice = "价格上调".round($price - $price_max,2)."元/吨";
+//            $color = '#E80000';
+//        }else{
+//            $mypeice = "价格下跌".round($price_max - $price,2)."元/吨";
+//            $color = '#00BF00';
+//        }
+//        echo $mypeice;
+//        exit;
+
+
         $limit = $request->input("limit", 25);
         $name = $request->input("name", '');
         $page = $request->input("page", '');

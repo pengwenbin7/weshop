@@ -38,7 +38,6 @@ class ProductPirce implements ShouldQueue
     public function handle()
     {
         $Variable = ProductVariable::where(['product_id' => $this->product->id])
-            ->orderBy("id", "desc")
             ->first();
         $Variable_max = ProductPrice::where(['product_id' => $this->product->id])
             ->orderBy("id", "desc")->offset(1)
@@ -74,11 +73,11 @@ class ProductPirce implements ShouldQueue
                     'data' => [
                         'first' => $this->product->name.$this->product->model."价格调整。",
                         'keyword1' => [
-                            "value" => $Brand->name,
+                            "value" => $this->product->id,
                             "color" => "#2030A0",
                         ],
                         'keyword2' => [
-                            "value" => $mypeice,
+                            "value" => $this->product->content,
                             "color" => $color,
                         ],
                         'keyword3' => [
