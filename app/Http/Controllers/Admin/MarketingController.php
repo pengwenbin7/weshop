@@ -90,5 +90,14 @@ class MarketingController extends Controller
         }
         return redirect()->route("admin.marketing.index");
     }
-
+    public function delete(Request $request)
+    {
+        echo $request->id;
+        exit;
+        $span = \DB::table('marketing')->where('id', '=', $request->id)->delete();
+        if (!$span) {
+            return ["err" => "save product error"];
+        }
+        return redirect()->route("admin.marketing.index");
+    }
 }
