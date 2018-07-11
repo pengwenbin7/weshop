@@ -135,25 +135,23 @@ class OrderController extends Controller
             ]);
             $totalPrice += $item->price * $item->number;
         }
-        return $order->countFreight();
-
-//        // create payment
-//        $payment = Payment::create([
-//            "order_id" => $order->id,
-//            "channel_id" => PayChannel::all()->first()->id,
-//            "total" => $totalPrice,
-//            "freight" => $order->countFreight(),
-//        ]);
-//        if ($request->input("coupon_id", false)) {
-//            $coupon = Coupon::find($request->coupon_id);
-//            if ($coupon && $coupon->valid($user, $payment)) {
-//                $payment->coupon_discount = $coupon->discount;
-//            } else {
-//                Log::info("payment: {$payment->id}, fail coupon: {$coupon->id}");
-//            }
-//        }
-//        $payment->save();
-//        return ["store" => $order->id];
+        // create payment
+        $payment = Payment::create([
+            "order_id" => $order->id,
+            "channel_id" => PayChannel::all()->first()->id,
+            "total" => $totalPrice,
+            "freight" => $order->countFreight(),
+        ]);
+        if ($request->input("coupon_id", false)) {
+            $coupon = Coupon::find($request->coupon_id);
+            if ($coupon && $coupon->valid($user, $payment)) {
+                $payment->coupon_discount = $coupon->discount;
+            } else {
+                Log::info("payment: {$payment->id}, fail coupon: {$coupon->id}");
+            }
+        }
+        $payment->save();
+        return ["store" => $order->id];
     }
 
     /**

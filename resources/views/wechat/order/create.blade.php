@@ -287,7 +287,8 @@
           };
           axios.post("{{ route("wechat.order.store") }}", data)
             .then(function(res) {
-             
+              location.assign("{{ route("wechat.pay") }}" +
+                "/?order_id=" + res.data.store);
             });
           }
       }

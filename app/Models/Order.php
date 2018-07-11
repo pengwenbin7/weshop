@@ -198,7 +198,7 @@ class Order extends Model
                 $storages[$product->storage->id] = $product->content * $item->number;
             }
         }
-        return $storages;
+
         // 分组计算运费
         foreach ($storages as $storage_id => $weight) {
             $storage = Storage::with("address")->find($storage_id);
@@ -206,7 +206,7 @@ class Order extends Model
             $total += Count::freight($storage_id, $weight, $distance);
         }
         
-        return $storages;
+        return $total;
     }
 
     /**
