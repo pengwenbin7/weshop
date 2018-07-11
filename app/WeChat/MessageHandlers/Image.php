@@ -3,6 +3,7 @@
 namespace App\WeChat\MessageHandlers;
 
 use App\Models\User;
+use EasyWeChat\Kernel\Messages\Text;
 
 class Image implements HandlerInterface
 {

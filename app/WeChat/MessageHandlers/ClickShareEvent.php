@@ -15,7 +15,7 @@ class ClickShareEvent implements HandlerInterface
     public function run(array $message)
     {
         $openId = $message["FromUserName"];
-        $users = User::where("openid", "=", $openid)->get();
+        $users = User::where("openid", "=", $openId)->get();
         // 如果用户不存在，则注册之
         if ($users->isEmpty()) {
             $user = User::subRegister($openId, null);

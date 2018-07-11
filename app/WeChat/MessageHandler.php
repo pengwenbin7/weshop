@@ -19,7 +19,9 @@ class MessageHandler
         $arr[] = $this->message["EventKey"] ?? null;
         $str = "message";
         foreach ($arr as $i) {
-            $str = sprintf("%s.%s", $str, strtolower($i));
+            if ($i) {
+                $str = sprintf("%s.%s", $str, strtolower($i));
+            }
         }
 
         try {
