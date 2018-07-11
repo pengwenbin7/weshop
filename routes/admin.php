@@ -127,15 +127,16 @@ Route::match(["get", "post"], "shopuser/modifying",
     "Admin\ShopuserController@modifying")
     ->name("admin.shopuser.modifying");
 //系统设置
-//Route::resource("system", "Admin\SystemController", [
-//    "names" => [
-//        "index" => "admin.system.index",
-//        "create" => "admin.system.create",
-//    ],
-//]);
 Route::get("/system", "Admin\SystemController@index")->name("admin.system.index");
 Route::POST("/system/create", "Admin\SystemController@create")->name("admin.system.create");
-
+//营销设置
+Route::resource("marketing", "Admin\MarketingController", [
+    "names" => [
+        "index" => "admin.marketing.index",
+        "create" => "admin.marketing.create",
+        "store" => "admin.marketing.store",
+    ],
+]);
 
 //测试
 Route::get("/ceshi", "Admin\CeshiController@index")->name("admin.ceshi.index");

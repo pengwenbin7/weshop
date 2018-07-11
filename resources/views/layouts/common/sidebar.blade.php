@@ -59,7 +59,12 @@
 	  </a>
 	</li>
       @endif
-
+	  <li class="header">营销</li>
+	  <li>
+		  <a href="{{ route("admin.marketing.index") }}">
+			  消息推送
+		  </a>
+	  </li>
       <li class="header">用户</li>
       <li>
 	<a href="{{ route("admin.meuser.index") }}">

@@ -27,6 +27,11 @@
 		  <th>id</th>
 		  <th>发货地</th>
 		  <th>收货地</th>
+		  <th>采购状态</th>
+		  <th>发货状态</th>
+		  <th>采购成本</th>
+		  <th>物流成本</th>
+		  <th>发货时间</th>
 		  <th>操作</th>
 		</tr>
 	      </thead>
@@ -36,6 +41,12 @@
 		    <td>{{ $item->id }}</td>
 		    <td>{{ $item->from_address }}</td>
 		    <td>{{ $item->to_address }}</td>
+
+		    <td>{{ $item->purchase ? "已采购": "未采购" }}</td>
+		    <td>{{ $item->status ? "已发货": "未发货" }}</td>
+		    <td>{{ $item->cost }}</td>
+		    <td>{{ $item->freight }}</td>
+		    <td>{{ $item->created_at }}</td>
 		    <td><a href="{{ route("admin.shipment.edit", $item) }}">编辑</a></td>
 		  </tr>
 		@endforeach
