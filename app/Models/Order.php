@@ -206,7 +206,7 @@ class Order extends Model
             $total += Count::freight($storage_id, $weight, $distance);
         }
         
-        return $total;
+        return $storages;
     }
 
     /**
