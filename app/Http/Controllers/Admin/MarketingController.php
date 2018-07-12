@@ -21,7 +21,8 @@ class MarketingController extends Controller
         $name = $request->input("name", '');
         $page = $request->input("page", '');
         $active = $request->input("active", '');
-        $Marketing = Marketing::orderBy("id", "desc")
+        $Marketing = Marketing::where('title','like','%' . $name . '%')
+            ->orderBy("id", "desc")
             ->paginate($limit);
         $serial = 1;
         if(!empty($page) && $page != 1){
