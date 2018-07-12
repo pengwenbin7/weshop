@@ -48,7 +48,7 @@ class NewsController implements ShouldQueue
                         ],
                         'keyword2' => $this->Marketing->result,
                         'keyword3' => [
-                            "value" => time(),
+                            "value" => date('Y-m-d',time()),
                             "color" => "#2030A0",
                         ],
                         'remark' => $this->Marketing->ending,
