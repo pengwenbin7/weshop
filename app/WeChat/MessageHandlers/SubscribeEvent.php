@@ -30,7 +30,7 @@ class SubscribeEvent implements HandlerInterface
 
             $items = [
                 new NewsItem([
-                    'title'       => "想看想购的化工品，尽在太好买，2.0版商城让您采购省钱！分享赚钱，马上体验吧！",
+                    'title'       => "想看想购的化工品，尽在太好买2.0版商城让您采购省钱！分享赚钱，马上体验吧！",
                     'description' => "",
                     'url'         => 'http://weshop.mafkj.com/',
                     'image'       => '',
@@ -49,7 +49,7 @@ class SubscribeEvent implements HandlerInterface
 //            return new Text("感谢您再次关注");
             $items = [
                 new NewsItem([
-                    'title'       => "想看想购的化工品，尽在太好买，2.0版商城让您采购省钱！分享赚钱，马上体验吧！",
+                    'title'       => "想看想购的化工品，尽在太好买2.0版商城让您采购省钱！分享赚钱，马上体验吧！",
                     'description' => "",
                     'url'         => 'http://weshop.mafkj.com/',
                     'image'       => '',
