@@ -59,7 +59,11 @@
   <script>
 wx.ready(function() {
   wx.onMenuShareTimeline({
+<<<<<<< HEAD
     title: "正品保障，化工品选购就上太好买！  乳液树脂,颜料填料轻松选购",
+=======
+    title: "正品保障，化工品选购就上太好买！",
+>>>>>>> 56d46521a4472a046ddff1e769526bd23ead5c4f
     link: "{{ route("wechat.index", [ "rec_code" => auth()->user()->rec_code]) }}",
     imgUrl: "{{ asset("assets/img/logo.png") }}",
     success: function () {
