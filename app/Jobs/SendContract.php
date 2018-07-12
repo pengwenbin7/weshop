@@ -70,7 +70,7 @@ class SendContract implements ShouldQueue
         $save = $pdf->Output($file, \Mpdf\Output\Destination::FILE);
         $pdf = new \Spatie\PdfToImage\Pdf($file);
         $imgs = $pdf
-              ->setOutputFormat('png')
+              ->setOutputFormat('jpg')
               ->setCompressionQuality(100)
               ->saveAllPagesAsImages($dir);
         // 图片上传到微信临时素材

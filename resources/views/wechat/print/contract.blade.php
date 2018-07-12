@@ -5,7 +5,7 @@
     <title>{{ $order->no }}</title>
     <style>
     body {
-      font-family: simhei;
+      font-family: msyh;
       font-size: 14px;
     }
 
