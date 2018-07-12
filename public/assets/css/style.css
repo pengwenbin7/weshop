@@ -847,7 +847,26 @@
 /*
   商品详情
   */
-
+.back-index{
+  height: 1rem;
+  line-height: 1rem;
+  background-color: #fff;
+  font-size: .3rem;
+  margin-bottom: .4rem;
+  text-align: right;
+  padding: 0 .4rem;
+  color: #888;
+}
+.back-index >a {
+  color: #888;
+}
+.back-index i{
+  display: inline-block;
+  transform: rotate(180deg);
+}
+.back-index .link-back{
+  float: left;
+}
 .container.product-show{
   padding-bottom: 1.6rem;
 }

@@ -1,6 +1,26 @@
 @extends( "layouts.wechat2")
 @section( "content")
+@if(auth()->user()->is_subscribe)
+  <div class="subscribe-box" id="subscribe_box">
+    <div class="item">
+      <p class="tit">需关注后才能选购</p>
+      <img src="{{ asset("assets/img/qrcode.png") }}" alt="">
+      <p>[长按二维码，关注公众号]</p>
+    </div>
+    <div class="item">
+      <p class="other">其他方式</p>
+      <p class="desc">打开微信，搜索“太好买”公众号关注即可。</p>
+    </div>
+    <div class="subscribe-close" onclick="closeSubscribeBox()">
+      <i class="iconfont icon-tianjia"></i>
+    </div>
+  </div>
+@endif
 <div class="container product-show" v-cloak>
+    <div class="back-index">
+      <a href="{{ route("wechat.index") }}" class="link-back"><i class="iconfont icon-jinru"></i>商城首页</a>
+      <a   onclick="showSubscribeBox()">关注</a>
+    </div>
     <div class="info">
       <div class="title">
         <div class="name">
@@ -345,13 +365,18 @@
           product_id: "{{ $product->id }}",
           num : _this.number
         };
-        axios.post("{{ route("wechat.cart.add_product") }}", params)
-          .then(function(res) {
-            alert("添加成功");
-            location.assign("{{ route("wechat.cart.index") }}" + "/" + params.cart_id);
-            _this.addr_box = false;
-            _this.buy_box = false;
-          });
+        if({{ auth()->user()->is_subscribe }}){
+          axios.post("{{ route("wechat.cart.add_product") }}", params)
+            .then(function(res) {
+              alert("添加成功");
+              location.assign("{{ route("wechat.cart.index") }}" + "/" + params.cart_id);
+              _this.addr_box = false;
+              _this.buy_box = false;
+            });
+        }else{
+          document.querySelector("#subscribe_box").style.display = "block";
+        }
+
       },
       buyMe: function() {
         if({{ auth()->user()->is_subscribe }}){
