@@ -61,8 +61,6 @@ class ProductPirce implements ShouldQueue
             $mypeice = "价格下跌".round($price_max - $price,2)."元/吨";
             $color = '#00BF00';
         }
-//        \DB::table('marketing')->insert(['text_type'=>$this->product->id,'result'=>$this->product->content,'link'=>$mypeice,'user_type'=>109]);
-//        return;
         $app = EasyWeChat::officialAccount();
          //查询分组推送用户openid
         $myuser = $app->user_tag->usersOfTag($system->setup_id, $nextOpenId = '');

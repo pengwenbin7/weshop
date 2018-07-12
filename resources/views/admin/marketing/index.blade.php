@@ -64,10 +64,11 @@
 		    <td>
 		      <a href="{{ route("admin.marketing.edit", $item) }}">编辑</a>
 		      &nbsp;|&nbsp;
-		      <a href="{{ route("admin.marketing.show", $item) }}">详细</a>
+		      <a onclick="show({{ $item->id }})">发送</a>
+{{--		      <a href="{{ route("admin.marketing.show", $item) }}">发送</a>--}}
                 &nbsp;|&nbsp;
-              <a href="{{ route("admin.marketing.delete", ['id' => $item->id]) }}">删除</a>
-		    </td>
+              <a style="cursor:pointer;" onclick="del({{ $item->id }})">删除</a>
+			</td>
 		  </tr>
 		@endforeach
 	      </tbody>
@@ -86,68 +87,52 @@
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
   <script>
-  var number=0;
-  function stock(obj){
-    $("#number"+obj).attr("disabled", false);
-    number = $("#number"+obj).val();
-  }
-  var fprice=0;
-  function myprice(obj){
-    $("#price"+obj).attr("disabled", false);
-    fprice = $("#price"+obj).val();
-  }
-  function selstr(obj)
-  {
-      if(obj){
-          $('#active').val(1);
-          $('#form-start').submit();
-	  }else{
-          $('#active').val(0);
-          $('#form-start').submit();
-	  }
+      //删除
+      function del(id){
+          layer.confirm('是否删除？', {
+              btn: ['是','否'] //按钮
+          }, function(){
+              layer.closeAll();
+              var onurl = "{{ route('admin.marketing.delete') }}";
+              var data = {id:id};
+              axios.post(onurl,data)
+                  .then(function (res) {
+                      if (res.status == 200) {
+                          var p = res.data;
+                          if (p.status == 'ok') {
+                              layer.msg('删除成功！', {time:500},function (index) {
+                                  layer.close(index);
+                                  window.location.href='{{ route('admin.marketing.index') }}';
+                              });
+                          } else {
+                              return layer.msg('删除失败！');
+                          }
+                      } else {
+                          return layer.msg('删除失败！');
+                      }
+                  })
+          });
+      }
+      //发送
+      function show(id){
+          layer.confirm('是否发送？', {
+              btn: ['是','否'] //按钮
+          }, function(){
+              layer.closeAll();
+              var data = {id:id};
+              var onurl = "{{ route('admin.marketing.show') }}";
+              axios.post(onurl,data)
+                  .then(function (res) {
+                      if (res.status == 200) {
+                          var p = res.data;
+                          if (p.status == 'ok') {
+                              layer.msg('发送成功！');
+                          }
+                      }
+                  })
+          });
+      }
 
-  }
 
-  //修改库存
-  function onclnum(obj,item)
-  {
-    var number = $('#number'+obj).val();
-    var onurl = "{{ route('admin.product.modifying') }}";
-    var data = {id:obj,number:number,item:JSON.stringify(item)};
-    axios.post(onurl,data)
-      .then(function (res) {
-	if(res.status == 200){
-          var p = res.data;
-          if(p.status == 'ok'){
-          }else{
-            $('#number'+obj).val(number);
-          }
-	}else{
-          $('#number'+obj).val(number);
-	}
-        $("#number"+obj).attr("disabled", true);
-      })
-  }
-  //修改价格
-  function onprice(obj,un_price)
-  {
-    var price = $('#price'+obj).val();//吨价
-    var onurl = "{{ route('admin.product.modifying') }}";
-    var data = {id:obj,price:price,un_price:un_price};
-    axios.post(onurl,data)
-      .then(function (res) {
-        if(res.status == 200){
-          var p = res.data;
-          if(p.status == 'ok'){
-            $('#un'+obj).text(p.un_price);
-          }else{
-            $('#price'+obj).val(fprice);
-          }
-        }else{
-          $('#price'+obj).val(fprice);
-        }
-        $("#price"+obj).attr("disabled", true);
-      })
-  }
   </script>
 @endsection
