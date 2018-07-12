@@ -66,11 +66,11 @@
       <span class="value y" id="total">@{{ product_total+fee-coupon_discount-share_discount }}</span>
     </div>
   </div>
-  {{-- <div class="gird">
-    <div class="item" @click="share_box = true">
-      <span style="color:#fff;background:red;padding:.1rem .2rem; font-size:.26rem;margin-left:.4rem;">分享至朋友圈：此单立减100元</span>
+  <div class="gird"  v-if="!share">
+    <div class="item  share-item" @click="share_box = true">
+      <span >分享至朋友圈：此单立减@{{ (product_total+fee)<20000?50:100 }}元</span>
     </div>
-  </div> --}}
+  </div>
 <div class="flexbox" v-if="coupon_box"   v-cloak>
   <div class="mask" @click="coupon_box=false"></div>
   <div class="coupon-list">
@@ -159,7 +159,7 @@
       pay: function(){
         var data = {
           address_id: {{ $cart->address->id }},
-          share: share,
+          share: this.share,
           coupon_id: this.coupon_id,
           products: {!! $varia !!}
         };

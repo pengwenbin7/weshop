@@ -1371,7 +1371,7 @@
   color: #aaa;
   font-size: .3rem;
 }
-
+.share-item span{color:#fff;background:red;padding:.1rem .2rem; font-size:.26rem;margin-left:.4rem;}
 .share{position: fixed;bottom: 1.4rem; left: 50%; margin-left: -0.3rem; width: 100%;z-index: 11;font-size: .3rem;}
 .share .mask {position: fixed;top: 0;bottom: 0;left: 0;right: 0;background: rgba(0, 0, 0, .6);}
 .share .close i{font-size: .6rem;color: #fff;position: relative;z-index: 2; transform:rotate(45deg);display: inline-block;}
