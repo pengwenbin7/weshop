@@ -198,7 +198,7 @@ class Order extends Model
                 $storages[$product->storage->id] = $product->content * $item->number;
             }
         }
-        
+
         // 分组计算运费
         foreach ($storages as $storage_id => $weight) {
             $storage = Storage::with("address")->find($storage_id);

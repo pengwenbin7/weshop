@@ -140,6 +140,7 @@ Route::resource("marketing", "Admin\MarketingController", [
     ],
 ]);
 Route::any("/marketing/update", "Admin\MarketingController@update")->name("admin.marketing.update");
+Route::get("/marketing/delete", "Admin\MarketingController@delete")->name("admin.marketing.delete");
 //测试
 Route::get("/ceshi", "Admin\CeshiController@index")->name("admin.ceshi.index");
 

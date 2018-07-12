@@ -60,11 +60,13 @@
 		    <td>{{ $item->created_at }}</td>
 		    <td>{{ $item->ending }}</td>
 		    <td>{{ $item->link }}</td>
-		    <td>{{ $item->user_type }}</td>
+		    <td>{{ $item->products($item->user_type) }}</td>
 		    <td>
 		      <a href="{{ route("admin.marketing.edit", $item) }}">编辑</a>
 		      &nbsp;|&nbsp;
 		      <a href="{{ route("admin.marketing.show", $item) }}">详细</a>
+                &nbsp;|&nbsp;
+              <a href="{{ route("admin.marketing.delete", ['id' => $item->id]) }}">删除</a>
 		    </td>
 		  </tr>
 		@endforeach

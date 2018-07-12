@@ -16,9 +16,15 @@ class Marketing extends Model
         "id","title", "text_type", "result",
         "ending", "link", "user_type"
     ];
-    public function products()
+    public function products($type)
     {
+        $span = [
+                '10086' => "暂无",'2' => "星标客户",
+                '102' => "下游客户",'105' => "同行及其他",
+                '107' => "供应商",'108' => "未知可发",
+                '109' => "调价消息推送",'100' => "马峰"
+                ];
+        return $span[$type];
 
-//        return ;
     }
 }
