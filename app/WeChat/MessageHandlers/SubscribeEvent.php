@@ -32,7 +32,7 @@ class SubscribeEvent implements HandlerInterface
                 new NewsItem([
                     'title'       => "想看想购的化工品，尽在太好买，2.0版商城让您采购省钱！分享赚钱，马上体验吧！",
                     'description' => "",
-                    'url'         => 'http://admin.mafkj.com',
+                    'url'         => 'http://weshop.mafkj.com/',
                     'image'       => '',
                     'image' => 'https://mmbiz.qpic.cn/mmbiz_jpg/5JF6zkib8Qfq6M0XibHrACZFR4ymoDmwqsKreJA15Rh9MefEoMVDCDFtWIbLsB5omXSwgqic4WibIyp2H4oUPQHUtA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1',
                 ]),
@@ -51,7 +51,7 @@ class SubscribeEvent implements HandlerInterface
                 new NewsItem([
                     'title'       => "想看想购的化工品，尽在太好买，2.0版商城让您采购省钱！分享赚钱，马上体验吧！",
                     'description' => "",
-                    'url'         => 'http://admin.mafkj.com',
+                    'url'         => 'http://weshop.mafkj.com/',
                     'image'       => '',
                     'image' => 'https://mmbiz.qpic.cn/mmbiz_jpg/5JF6zkib8Qfq6M0XibHrACZFR4ymoDmwqsKreJA15Rh9MefEoMVDCDFtWIbLsB5omXSwgqic4WibIyp2H4oUPQHUtA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1',
                 ]),
