@@ -8,6 +8,9 @@
       font-family: msyh;
       font-size: 14px;
     }
+    h4, b {
+      font-family: simhei;
+    }
 
     @page {
     margin: 140px 62px 60px;

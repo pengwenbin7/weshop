@@ -56,6 +56,9 @@ class SendContract implements ShouldQueue
                 "msyhbd" => [
                     "R" => "msyhbd.ttf",
                 ],
+                "simhei" => [
+                    "R" => "simhei.ttf",
+                ],
             ],
             "default_font" => "msyh",
         ]);
