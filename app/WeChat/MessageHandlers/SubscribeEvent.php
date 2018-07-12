@@ -30,11 +30,11 @@ class SubscribeEvent implements HandlerInterface
 
             $items = [
                 new NewsItem([
-                    'title'       => "太好买2.0版本已正式上线，您有了解过吗?",
+                    'title'       => "想看想购的化工品，尽在太好买，2.0版商城让您采购省钱！分享赚钱，马上体验吧！",
                     'description' => "",
                     'url'         => '',
                     'image'       => '',
-                    'image' => 'https://mmbiz.qpic.cn/mmbiz_jpg/5JF6zkib8QfqIcOHicJL3pN4lGZez82ofpGUDxwibPAicUfDdZeDPwNyMGecUIf2bmavWGb7Mb0Ipf9ibEv4SXhO7yA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1',
+                    'image' => 'https://mmbiz.qpic.cn/mmbiz_jpg/5JF6zkib8Qfq6M0XibHrACZFR4ymoDmwqsKreJA15Rh9MefEoMVDCDFtWIbLsB5omXSwgqic4WibIyp2H4oUPQHUtA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1',
                 ]),
             ];
             $news = new News($items);
@@ -49,11 +49,11 @@ class SubscribeEvent implements HandlerInterface
 //            return new Text("感谢您再次关注");
             $items = [
                 new NewsItem([
-                    'title'       => "太好买2.0版本已正式上线，您有了解过吗?",
+                    'title'       => "想看想购的化工品，尽在太好买，2.0版商城让您采购省钱！分享赚钱，马上体验吧！",
                     'description' => "",
                     'url'         => '',
                     'image'       => '',
-                    'image' => 'https://mmbiz.qpic.cn/mmbiz_jpg/5JF6zkib8QfqIcOHicJL3pN4lGZez82ofpGUDxwibPAicUfDdZeDPwNyMGecUIf2bmavWGb7Mb0Ipf9ibEv4SXhO7yA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1',
+                    'image' => 'https://mmbiz.qpic.cn/mmbiz_jpg/5JF6zkib8Qfq6M0XibHrACZFR4ymoDmwqsKreJA15Rh9MefEoMVDCDFtWIbLsB5omXSwgqic4WibIyp2H4oUPQHUtA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1',
                 ]),
             ];
             $news = new News($items);
