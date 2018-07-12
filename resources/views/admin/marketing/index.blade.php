@@ -64,7 +64,7 @@
 		    <td>
 		      <a href="{{ route("admin.marketing.edit", $item) }}">编辑</a>
 		      &nbsp;|&nbsp;
-		      <a onclick="show({{ $item->id }})">发送</a>
+		      <a style="cursor:pointer;" onclick="show({{ $item->id }})">发送</a>
 {{--		      <a href="{{ route("admin.marketing.show", $item) }}">发送</a>--}}
                 &nbsp;|&nbsp;
               <a style="cursor:pointer;" onclick="del({{ $item->id }})">删除</a>
