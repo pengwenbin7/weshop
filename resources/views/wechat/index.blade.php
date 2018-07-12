@@ -55,3 +55,32 @@
     </div>
 </div>
 @endsection
+@section( "script")
+  <script>
+wx.ready(function() {
+  wx.onMenuShareTimeline({
+    title: "正品保障，化工品选购就上太好买！  乳液树脂,颜料填料轻松选购",
+    link: "{{ route("wechat.index", [ "rec_code" => auth()->user()->rec_code]) }}",
+    imgUrl: "{{ asset("assets/img/logo.png") }}",
+    success: function () {
+     },
+    cancel: function () {
+    }
+  });
+
+  wx.onMenuShareAppMessage({
+    title: "正品保障，化工品选购就上太好买！",
+    desc : "我正在使用太好买化工品原料商城购买商品",
+    link: "{{ route("wechat.index", ["rec_code" => auth()->user()->rec_code]) }}",
+    imgUrl: "{{ asset("assets/img/logo.png") }}",
+      success: function () {
+          // 用户确认分享后执行的回调函数
+      },
+      cancel: function () {
+          // 用户取消分享后执行的回调函数
+      }
+  });
+});
+
+  </script>
+@endsection
