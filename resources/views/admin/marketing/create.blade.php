@@ -13,33 +13,33 @@
           <div class="form-group">
 	    <label for="name" class="col-sm-2 control-label">标题</label>
 	    <div class="col-sm-10">
-	      <input class="form-control" id="title" name="title" type="text">
+	      <input class="form-control" placeholder="长度限制20以内" id="title" name="title" type="text" maxlength="20">
             </div>
 	  </div>
 
 		<div class="form-group">
 			<label for="name" class="col-sm-2 control-label">业务类型</label>
 			<div class="col-sm-10">
-				<input class="form-control" id="text_type" name="text_type" type="text" required>
+				<input class="form-control" placeholder="长度限制15以内" id="text_type" name="text_type" type="text" required maxlength="15">
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label for="name" class="col-sm-2 control-label">变更结果</label>
 			<div class="col-sm-10">
-				<input class="form-control" id="result" name="result" type="text" required>
+				<input class="form-control" placeholder="长度限制15以内" id="result" name="result" type="text" required maxlength="15">
 		    </div>
 		</div>
 		<div class="form-group">
 			<label for="name" class="col-sm-2 control-label">结尾说明</label>
 			<div class="col-sm-10">
-				<input class="form-control" id="ending" name="ending" type="text">
+				<input class="form-control" placeholder="长度限制20以内" id="ending" name="ending" type="text" maxlength="20">
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="name" class="col-sm-2 control-label">链接</label>
 			<div class="col-sm-10">
-				<input class="form-control" id="link" name="link" type="text" required>
+				<input class="form-control" placeholder="请输入有效的链接" id="link" name="link" type="text" required>
 			</div>
 		</div>
 		<div class="form-group">

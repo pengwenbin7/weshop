@@ -11,39 +11,39 @@
 				<h3 class="box-title"><a href="{{ route("admin.marketing.index") }}">推送消息列表</a></h3>
 				<h3 class="box-title">编辑</h3>
 			</div>
-			<form class="form-horizontal" action="{{ route("admin.marketing.update", $marketing) }}" method="POST">
+			<form class="form-horizontal" action="{{ route("admin.marketing.update", ['id' => $marketing->id]) }}" method="POST">
 				<div class="box-body">
 					{{ csrf_field() }}
 					<div class="form-group">
 						<label for="name" class="col-sm-2 control-label">标题</label>
 						<div class="col-sm-10">
-							<input class="form-control" id="title" name="title" type="text" value="{{ $marketing->title }}">
+							<input class="form-control" placeholder="长度限制20以内" id="title" name="title" type="text" value="{{ $marketing->title }}">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="name" class="col-sm-2 control-label">业务类型</label>
 						<div class="col-sm-10">
-							<input class="form-control" id="text_type" name="text_type" type="text" required value="{{ $marketing->text_type }}">
+							<input class="form-control" placeholder="长度限制15以内" id="text_type" name="text_type" type="text" required value="{{ $marketing->text_type }}">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="name" class="col-sm-2 control-label">变更结果</label>
 						<div class="col-sm-10">
-							<input class="form-control" id="result" name="result" type="text" required value="{{ $marketing->result }}">
+							<input class="form-control" placeholder="长度限制15以内" id="result" name="result" type="text" required value="{{ $marketing->result }}">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="name" class="col-sm-2 control-label">结尾说明</label>
 						<div class="col-sm-10">
-							<input class="form-control" id="ending" name="ending" type="text" value="{{ $marketing->ending }}">
+							<input class="form-control" placeholder="长度限制20以内" id="ending" name="ending" type="text" value="{{ $marketing->ending }}">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="name" class="col-sm-2 control-label">链接</label>
 						<div class="col-sm-10">
-							<input class="form-control" id="link" name="link" type="text" required value="{{ $marketing->link }}">
+							<input class="form-control" placeholder="请输入有效的链接" id="link" name="link" type="text" required value="{{ $marketing->link }}">
 						</div>
 					</div>
 					<div class="form-group">

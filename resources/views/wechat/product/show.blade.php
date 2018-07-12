@@ -233,12 +233,17 @@
         </div>
 
       </div>
-      <div class="gb-footer">
+      <div class="gb-footer" v-if="stock>0">
         <div class="addtocart" v-on:click="choseAddr">
           <span class="green">加入选购单</span>
         </div>
         <div class="buy-commit" v-on:click="buyMe">
           <span>立即购买</span>
+        </div>
+      </div>
+      <div class="gb-footer" v-else>
+        <div class="addtocart">
+          <span class="green">库存不足，无法购买</span>
         </div>
       </div>
     </div>
@@ -259,6 +264,7 @@
       buy_box: false,  //购买按钮弹窗
       addr_box:false, //购物单弹窗
       server_box:false, //
+      stock:"{{ $product->variable->stock }}",
       is_ton:{{ $product->is_ton }},
       unit_price:{{ $product->variable->unit_price }},
       top : '',
@@ -276,6 +282,13 @@
       }
     },
     mounted:function(){
+      var t_stock = this.stock*this.content;
+      if(t_stock < 1000 && this.is_ton){
+        if(this.is_ton){
+          this.ton_num = t_stock / 1000;
+        }
+        this.number = this.stock;
+      }
      var func = JSON.parse('{!! $product->storage->func !!}');
      this.top = func.area.pop().up / 1000 + "吨";
      var prices = this.prices;

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Marketing;
+use App\Jobs\NewsController;
+use Log;
 
 class MarketingController extends Controller
 {
@@ -64,21 +66,23 @@ class MarketingController extends Controller
         }
         return redirect()->route("admin.marketing.index");
     }
+    //修改
     public function edit(Marketing $marketing)
     {
         return view("admin.marketing.edit", ["marketing" => $marketing]);
     }
-    public function show(Product $product)
+    //模板推送
+    public function show(Request $request)
     {
-        echo "<pre>";
-        print_r($product);
-        exit;
-        return view("admin.product.show", ["product" => $product, "title" => $product->name,]);
+        $span = Marketing::find($request->id);
+        NewsController::dispatch($span);
+        Log::info(auth("admin")->user()->name."进行--".$span->title."--消息推送！");
+        return ['status' => "ok"];
     }
 
-    public function update(Request $request, Marketing $marketing)
+    public function update(Request $request)
     {
-
+        $marketing = Marketing::find($request->id);
         $marketing->title = $request->title;
         $marketing->text_type = $request->text_type;
         $marketing->result = $request->result;
@@ -92,11 +96,11 @@ class MarketingController extends Controller
     }
     public function delete(Request $request)
     {
-        echo $request->id;
-        exit;
-        $span = \DB::table('marketing')->where('id', '=', $request->id)->delete();
+        $span = Marketing::where("id", '=', $request->id)->delete();
         if (!$span) {
-            return ["err" => "save product error"];
+            return ["status" => "error"];
+        }else{
+            return ["status" => "ok"];
         }
         return redirect()->route("admin.marketing.index");
     }

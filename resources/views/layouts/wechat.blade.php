@@ -67,32 +67,7 @@
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
     <script>
-    wx.config({!! app("wechat.official_account")->jssdk->buildConfig($interfaces ?? ["onMenuShareTimeline", "onMenuShareAppMessage"], false) !!});
-    wx.ready(function () {
-      wx.onMenuShareTimeline({
-      	title: "{{ $page_title ?? "太好买化工品交易平台" }}",
-      	link: "{{ url()->current() . "?rec=" . auth()->user()->rec_code }}",
-	imgUrl: "{{ asset("assets/img/logo.png") }}",
-      	success: function () {
-	  // 用户分享数　+1 ...
-      	},
-      	cancel: function () {
-      	}
-      });
-
-      wx.onMenuShareAppMessage({
-      	title: "{{ $page_title ?? "太好买化工品交易平台" }}",
-      	link: "{{ url()->current() . "?rec=" . auth()->user()->rec_code }}",
-	imgUrl: "{{ asset("assets/img/logo.png") }}",
-	desc: "太好买化工品交易平台",
-      	success: function () {
-      	  alert("分享成功");
-      	},
-      	cancel: function () {
-      	  alert("取消了");
-      	}
-      });
-    });
+    wx.config({!! app("wechat.official_account")->jssdk->buildConfig(["getLocation", "onMenuShareTimeline", "onMenuShareAppMessage"], false) !!});
     function showSubscribeBox (){
       var box = document.querySelector("#subscribe_box");
       box.style.display = "block";

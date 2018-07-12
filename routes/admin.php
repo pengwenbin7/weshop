@@ -136,11 +136,11 @@ Route::resource("marketing", "Admin\MarketingController", [
         "create" => "admin.marketing.create",
         "store" => "admin.marketing.store",
         "edit" => "admin.marketing.edit",
-        "show" => "admin.marketing.show",
     ],
 ]);
 Route::any("/marketing/update", "Admin\MarketingController@update")->name("admin.marketing.update");
-Route::get("/marketing/delete", "Admin\MarketingController@delete")->name("admin.marketing.delete");
+Route::post("/marketing/delete", "Admin\MarketingController@delete")->name("admin.marketing.delete");
+Route::post("/marketing/show", "Admin\MarketingController@show")->name("admin.marketing.show");
 //测试
 Route::get("/ceshi", "Admin\CeshiController@index")->name("admin.ceshi.index");
 
