@@ -45,20 +45,7 @@
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <script>
-    wx.config({!! app("wechat.official_account")->jssdk->buildConfig($interfaces ?? ["onMenuShareTimeline", "onMenuShareAppMessage"], false) !!});
-    wx.ready(function () {
-      wx.onMenuShareTimeline({
-	title: "{{ $page_title ?? "分享title" }}",
-	link: "{{ url()->current() . "?rec=" . auth()->user()->rec_code }}",
-	imgUrl: "https://pic1.zhimg.com/v2-c320644d354158004e6fc91d539d0529_im.jpg",
-	success: function () {
-	  alert("分享成功");
-	},
-	cancel: function () {
-	  alert("取消了");
-	}
-      });
-    });
+    wx.config({!! app("wechat.official_account")->jssdk->buildConfig(["getLocation", "onMenuShareTimeline", "onMenuShareAppMessage"], false) !!});
     function showSubscribeBox (){
       var box = document.querySelector("#subscribe_box");
       box.style.display = "block";

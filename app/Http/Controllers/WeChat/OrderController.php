@@ -114,6 +114,7 @@ class OrderController extends Controller
         $order->payment_status = Order::PAY_STATUS_WAIT;
         $order->refund_status = Order::REFUND_STATUS_NULL;
         $order->admin_id = $user->admin_id;
+        $order->shared = $request->share;
         // save order
         $order->save();
         $order = Order::find($order->id);
@@ -135,12 +136,19 @@ class OrderController extends Controller
             ]);
             $totalPrice += $item->price * $item->number;
         }
+        $freight = $order->countFreight();
+        if($request->share){
+          $share_discount = ($freight + $totalPrice) < 20000 ? 50 : 100;
+        }else{
+          $share_discount = 0;
+        }
         // create payment
         $payment = Payment::create([
             "order_id" => $order->id,
             "channel_id" => PayChannel::all()->first()->id,
             "total" => $totalPrice,
-            "freight" => $order->countFreight(),
+            "freight" => $freight,
+            "share_discount" => $share_discount,
         ]);
         if ($request->input("coupon_id", false)) {
             $coupon = Coupon::find($request->coupon_id);

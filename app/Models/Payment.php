@@ -11,7 +11,7 @@ class Payment extends Model
         "order_id", "channel_id", "total",
         "tax", "freight", "coupon_discount",
         "share_discount", "pay_discount", "pay",
-        "paid", "pay_time",
+        "paid", "pay_time", "share_discount",
     ];
 
     public function getStartAttribute($value)
@@ -23,7 +23,7 @@ class Payment extends Model
     {
 	    return Carbon::parse($value);
     }
-    
+
     public function coupon()
     {
         return $this->belongsTo("App\Models\Coupon");

@@ -75,11 +75,11 @@
         <span class="value y" v-if="address_id">@{{ number*unit_price+freight-coupon_discount-share_discount }}</span>
        </div>
       </div>
-      {{-- <div class="gird">
-        <div class="item" @click="share_box = true">
-          <span style="color:#fff;background:red;padding:.1rem .2rem; font-size:.26rem;margin-left:.4rem;">分享至朋友圈：此单立减100元</span>
+      <div class="gird" v-if="!share">
+        <div class="item share-item" @click="share_box = true">
+          <span>分享至朋友圈：此单立减@{{ (number*unit_price+freight)<20000?50:100 }}元</span>
         </div>
-      </div> --}}
+      </div>
     </div>
 
     <div class="share"  v-show="share_box"  v-cloak>
