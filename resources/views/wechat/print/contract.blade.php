@@ -5,11 +5,8 @@
     <title>{{ $order->no }}</title>
     <style>
     body {
-      font-family: msyh;
-      font-size: 14px;
-    }
-    h4, b {
       font-family: simhei;
+      font-size: 14px;
     }
 
     @page {
