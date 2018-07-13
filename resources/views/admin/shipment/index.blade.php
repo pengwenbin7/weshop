@@ -28,7 +28,6 @@
 		  {{--<th>发货地</th>--}}
 		  <th>订单号</th>
 		  <th>收货地</th>
-		  <th>公司名称</th>
 		  <th>采购状态</th>
 		  <th>发货状态</th>
 		  <th>采购成本</th>
@@ -43,9 +42,7 @@
 		    <td>{{ $item->id }}</td>
 {{--		    <td>{{ $item->from_address }}</td>--}}
 		    <td id="gz{{ $item->order_id }}" onmousemove="tran({{ $item->order_id }})">{{ $item->order_list($item->order_id) }}</td>
-		    <td>{{ $item->to_address }}</td>
-		    <td>{{ $item->compent($item->order_id) }}</td>
-
+			  <td><div>{{ $item->compent($item->order_id) }}</div>{{ $item->to_address }}</td>
 		    <td>{{ $item->purchase ? "已采购": "未采购" }}</td>
 		    <td>{{ $item->status ? "已发货": "未发货" }}</td>
 		    <td>{{ $item->cost }}</td>

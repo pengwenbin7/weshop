@@ -37,8 +37,7 @@
 		<tr>
 		  <th>序号</th>
 		  <th>订单号</th>
-		  <th>昵称</th>
-		  <th>姓名</th>
+		  <th>地址</th>
 		  <th>金额</th>
 		  <th>业务</th>
 		  <th>下单时间</th>
@@ -54,12 +53,11 @@
 		  <tr role="row">
 		    <td>{{ $serial++ }}</td>
 		    <td>{{ $order->no }}</td>
-		    <td>
-		      {{ $order->user->name }}
-		    </td>
-		    <td>
-			  {{ isset($order->address->contact_name) ? $order->address->contact_name:''}}
-		    </td>
+			<td><div>{{ $order->user->company->name ?? ''}}</div>
+				 {{ isset($order->address->contact_name) ? $order->address->contact_name.":":'' }}
+				<a href="tel:{{ isset($order->address->contact_tel) ? $order->address->contact_tel:'' }}">{{ isset($order->address->contact_tel) ? $order->address->contact_tel:'' }}</a><br>
+				{{ isset($order->address) ? $order->address->getText():''}}
+			</td>
 		    <td>
 		      @if ($order->payment)
 			{{ $order->payment->pay }}

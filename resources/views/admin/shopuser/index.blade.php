@@ -52,7 +52,9 @@
 		  <th>地址</th>
 		  <th>积分</th>
 		  <th>业务员</th>
+          @if (auth("admin")->user()->can("vip"))
           <th style="text-align:center">VIP状态</th>
+          @endif
 		  <th>关注时间</th>
 		  <th style="text-align:center">全部<input type="checkbox" id="user_check" onclick="user_check()"></th>
 		</tr>
@@ -63,17 +65,19 @@
 		    <td>{{ $serial++ }}</td>
 		    <td>{{ $item->name }}</td>
 		    <td>{{ isset($item->lastAddress->contact_name) ? $item->lastAddress->contact_name:''}}</td>
-		    <td>{{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}</td>
+              <td><a href="tel:{{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}">{{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}</a></td>
 		    <td>{{ isset($item->lastAddress->province) ? $item->lastAddress->province:''}}</td>
 		    <td>{{ $item->integral }}</td>
 			<td><span id="user_id{{ $item->id }}">{{ $item->admin->name }}</span><div style="float:right;cursor:pointer;" onclick="edituser('{{ route("admin.shopuser.create",['id' => $item->id]) }}')">……</div></td>
+            @if (auth("admin")->user()->can("vip"))
             <td style="text-align:center;">
-                  @if($item->is_vip == false)
-                      <a style="cursor:pointer;color:#636B6F;" onclick="vipreset({{ $item->id }},1)" id="str{{ $item->id }}">否</a>
-                  @else
-                      <a style="cursor:pointer;color:#636B6F" onclick="vipreset({{ $item->id }},2)" id="str_str{{ $item->id }}">是</a>
-                  @endif
-            </td>
+              @if($item->is_vip == false)
+                  <a style="cursor:pointer;color:#636B6F;" onclick="vipreset({{ $item->id }},1)" id="str{{ $item->id }}">否</a>
+              @else
+                  <a style="cursor:pointer;color:#636B6F" onclick="vipreset({{ $item->id }},2)" id="str_str{{ $item->id }}">是</a>
+              @endif
+           </td>
+            @endif
             <td>{{ date("Y-m-d H:i:s",$item->subscribe_time) }}</td>
 		    <td style="text-align:center"><input type="checkbox" name="userid" value="{{ $item->id }}"></td>
 		  </tr>
