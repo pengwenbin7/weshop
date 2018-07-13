@@ -19,7 +19,9 @@
 <div class="container product-show" v-cloak>
     <div class="back-index">
       <a href="{{ route("wechat.index") }}" class="link-back"><i class="iconfont icon-jinru"></i>商城首页</a>
-      <a   onclick="showSubscribeBox()">关注</a>
+      <span  :class="star?'collect on':'collect'" v-on:click="collect(star)"> 收藏</span>
+      <a onclick="showSubscribeBox()">关注</a>
+
     </div>
     <div class="info">
       <div class="title">
@@ -27,9 +29,7 @@
           <h1><span>{{ $product->name }}&nbsp;&nbsp;{{ $product->model }}</span></h1>
           <h2>{{ $product->brand->name }}</h2>
         </div>
-        <div :class="star?'collect on':'collect'" v-on:click="collect(star)"  >
-          <span class="icons" > <i class="iconfont icon-shoucang"></i><br/>收藏</span>
-        </div>
+
       </div>
       <div class="i-info clearfix" >
         <p>
