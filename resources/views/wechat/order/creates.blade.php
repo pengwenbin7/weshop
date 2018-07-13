@@ -175,7 +175,7 @@
   wx.ready(function() {
     var _this = app;
     wx.onMenuShareTimeline({
-      title: "太好买化工品原料商城",
+      title: "我在太好买采购的{{ $product->brand->name }} {{ $product->model }} {{ $product->name }}只要{{ $product->price }}，你也来看看吧。",
       link: "{{ route("wechat.product.show", ["id" => $product->id, "rec_code" => auth()->user()->rec_code]) }}",
       imgUrl: "{{ asset("assets/img/logo.png") }}",
       success: function () {
@@ -187,7 +187,7 @@
     });
 
     wx.onMenuShareAppMessage({
-      title: "太好买化工品原料商城",
+      title: "我在太好买采购的{{ $product->brand->name }} {{ $product->model }} {{ $product->name }}只要{{ $product->price }}，你也来看看吧。",
       desc : "我正在使用太好买化工品原料商城购买商品",
       link: "{{ route("wechat.product.show", ["id" => $product->id, "rec_code" => auth()->user()->rec_code]) }}",
       imgUrl: "{{ asset("assets/img/logo.png") }}",
