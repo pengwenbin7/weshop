@@ -12,7 +12,7 @@
       <span>公司名称：马蜂科技（上海）有限公司</span>
     </div>
     <div class="pay-accout">
-      <span>账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：0382 78000 40059753</span>
+      <span>账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：0382 7500 0400 59723</span>
     </div>
     <div class="accout-name">
       <span>开户银行: 农行江桥支行</span>

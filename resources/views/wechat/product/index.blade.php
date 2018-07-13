@@ -137,5 +137,29 @@
     }
   }
   element.addEventListener("touchmove", me.touchmoveCall)
+  wx.ready(function() {
+    wx.onMenuShareTimeline({
+      title: "化工品行情实时掌握，尽在太好买！  乳液树脂,填料颜料，轻松选购！",
+      link: "{{ route("wechat.index", [ "rec_code" => auth()->user()->rec_code]) }}",
+      imgUrl: "{{ asset("assets/img/logo.png") }}",
+      success: function () {
+       },
+      cancel: function () {
+      }
+    });
+
+    wx.onMenuShareAppMessage({
+      title: "化工品行情实时掌握，尽在太好买！  乳液树脂,填料颜料，轻松选购！",
+      desc : "我正在使用太好买化工品原料商城购买商品",
+      link: "{{ route("wechat.index", ["rec_code" => auth()->user()->rec_code]) }}",
+      imgUrl: "{{ asset("assets/img/logo.png") }}",
+        success: function () {
+            // 用户确认分享后执行的回调函数
+        },
+        cancel: function () {
+            // 用户取消分享后执行的回调函数
+        }
+    });
+  });
 </script>
 @endsection
