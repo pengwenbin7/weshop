@@ -25,8 +25,15 @@
 		  </select>
 		  条
 		</label>
+          <label>
+              公司认证
+              <select name="company" class="form-control input-sm">
+                  <option value="1" {{ $company == 1 ? 'selected':'' }}>全部</option>
+                  <option value="2" {{ $company == 2 ? 'selected':'' }}>已认证</option>
+              </select>
+          </label>
 		<label>
-		  <input class="form-control input-sm" name="name" value="{{ $name }}" placeholder="" type="search">
+		  <input class="form-control input-sm" name="name" value="{{ $name }}" placeholder="用户昵称/业务员" type="search">
 		  <button>搜索</button>
 		</label>
 	      </form>
@@ -47,9 +54,8 @@
 		<tr>
 		  <th>序号</th>
 		  <th>昵称</th>
-		  <th>姓名</th>
-		  <th>电话</th>
-		  <th>地址</th>
+
+		  <th>个人信息</th>
 		  <th>积分</th>
 		  <th>业务员</th>
           @if (auth("admin")->user()->can("vip"))
@@ -64,9 +70,15 @@
 		  <tr role="row">
 		    <td>{{ $serial++ }}</td>
 		    <td>{{ $item->name }}</td>
-		    <td>{{ isset($item->lastAddress->contact_name) ? $item->lastAddress->contact_name:''}}</td>
-              <td><a href="tel:{{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}">{{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}</a></td>
-		    <td>{{ isset($item->lastAddress->province) ? $item->lastAddress->province:''}}</td>
+            <td><div>{{ isset($item->company->name) ? $item->company->name:'' }}</div>
+                {{ isset($item->lastAddress->contact_name) ? $item->lastAddress->contact_name:''}}
+                <a href="tel:{{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}">
+                {{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}</a><br>
+                @if(isset($item->lastAddress))
+                {{ isset($item->lastAddress->province) ? $item->lastAddress->province:''}}
+                {{ isset($item->lastAddress->district) ? $item->lastAddress->district:''}}<br>
+                @endif
+            </td>
 		    <td>{{ $item->integral }}</td>
 			<td><span id="user_id{{ $item->id }}">{{ $item->admin->name }}</span><div style="float:right;cursor:pointer;" onclick="edituser('{{ route("admin.shopuser.create",['id' => $item->id]) }}')">……</div></td>
             @if (auth("admin")->user()->can("vip"))
@@ -91,7 +103,7 @@
     </div>
     <div class="box-footer">
       <div class="row">
-		  <div class="col-sm-6">{{ $user->appends(["limit" => $limit, "name" => $name])->links() }}<div style="height:100%;lone-height:100%"> 总共：{{ $line_num }}</div></div>
+		  <div class="col-sm-6">{{ $user->appends(["limit" => $limit, "name" => $name, 'company'=>$company])->links() }}<div style="height:100%;lone-height:100%"> 总共：{{ $line_num }}</div></div>
       </div>
     </div>
   </div>

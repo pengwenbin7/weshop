@@ -59,7 +59,7 @@
 		    <td>{{ $item->result }}</td>
 		    <td>{{ $item->created_at }}</td>
 		    <td>{{ $item->ending }}</td>
-		    <td>{{ $item->link }}</td>
+		    <td>{{ substr($item->link,0,6) }}</td>
 		    <td>{{ $item->products($item->user_type) }}</td>
 		    <td>
 		      <a href="{{ route("admin.marketing.edit", $item) }}">编辑</a>

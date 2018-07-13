@@ -18,20 +18,32 @@ class MeuserController extends Controller
     {
         $limit = $request->input("limit", 25);
         $name = $request->input("name", '');
+        $company = $request->input("company", 1);
         $page = $request->input("page", '');
         //获取业务员id
         $admin_user = auth("admin")->user()->id;
-        $user = User::with(["admin","lastAddress"])
-            ->where("name", "like", "%$name%")
-            ->where("admin_id", "=", $admin_user)
-            ->orderBy("id", "desc")
-            ->paginate($limit);
+        $user = '';
+        if ($company == 1) {
+            $user = User::with(["admin","lastAddress"])
+                ->where("name", "like", "%$name%")
+                ->where("admin_id", "=", $admin_user)
+                ->orderBy("id", "desc")
+                ->paginate($limit);
+        } else {
+            $user = User::with(["admin","lastAddress"])
+                ->where("name", "like", "%$name%")
+                ->where("admin_id", "=", $admin_user)
+                ->whereNotNull("company_id")
+                ->orderBy("id", "desc")
+                ->paginate($limit);
+        }
         $serial = 1;
         if(!empty($page) && $page != 1){
             $serial = $page * $limit - $limit + 1;
         }
         $line_num = $user -> total();
         return view("admin.meuser.index", [
+            "company" => $company,
             "serial" => $serial,
             "line_num" => $line_num,
             "user" => $user,

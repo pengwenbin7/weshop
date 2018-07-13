@@ -17,12 +17,28 @@ class ShopuserController extends Controller
     public function index(Request $request)
     {
         $limit = $request->input("limit", 25);
+        $company = $request->input("company", 1);
         $name = $request->input("name", '');
         $page = $request->input("page", '');
-        $user = User::with(["admin","lastAddress"])
-            ->where("name", "like", "%$name%")
-            ->orderBy("id", "desc")
-            ->paginate($limit);
+        $admin_id = '0';
+        if ($name) {
+           $admin = Adminuser::where('name', '=' ,$name)->first();
+           $admin_id = isset($admin->id) ? $admin->id:'';
+        }
+        $user = '';
+        if ($company == 1) {
+            $user = User::with(["admin","lastAddress"])
+                ->where("name", "like", "%$name%")
+                ->orWhere('admin_id', $admin_id)
+                ->orderBy("id", "desc")
+                ->paginate($limit);
+        } else {
+            $user = User::with(["admin","lastAddress"])
+                ->where("name", "like", "%$name%")
+                ->whereNotNull("company_id")
+                ->orderBy("id", "desc")
+                ->paginate($limit);
+        }
         $serial = 1;
         if(!empty($page) && $page != 1){
             $serial = $page * $limit - $limit + 1;
@@ -30,6 +46,7 @@ class ShopuserController extends Controller
         $line_num = $user -> total();
         return view("admin.shopuser.index", [
             "serial" => $serial,
+            "company" => $company,
             "line_num" => $line_num,
             "user" => $user,
             'name' => $name,

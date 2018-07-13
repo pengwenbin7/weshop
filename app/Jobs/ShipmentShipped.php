@@ -34,7 +34,7 @@ class ShipmentShipped implements ShouldQueue
         $order = $this->shipment->order;
         $user = $order->user;
         $url = route("wechat.order.show", $order);
-        $msg = "<a href=\"{$url}\">您的订单已发货，点击查看详情</a>";
+        $msg = "您的订单已发货<a href=\"{$url}\">点击查看详情</a>";
         $user->sendMessage($msg);
     }
 }
