@@ -6,7 +6,6 @@
     <div class="box-header">
       <h3 class="box-title">我的用户</h3>
       <h3 class="box-title">
-	{{--<a href="{{ route("admin.product.create",['limit' => $limit, 'name' => $name]) }}">添加</a>--}}
       </h3>
     </div>
     <div class="box-body">
@@ -39,14 +38,14 @@
 	      <thead>
 		<tr>
 		  <th>序号</th>
-		  <th>用户名称</th>
-		  <th>用户姓名</th>
-		  <th>用户电话</th>
-		  <th>用户地址</th>
+		  <th>昵称</th>
+		  <th>姓名</th>
+		  <th>电话</th>
+		  <th>地址</th>
 		  <th>积分</th>
 		  <th>业务员</th>
+          <th style="text-align:center">VIP状态</th>
 		  <th>关注时间</th>
-		  {{--<th>操作</th>--}}
 		</tr>
 	      </thead>
 	      <tbody>
@@ -59,12 +58,14 @@
 		    <td>{{ isset($item->lastAddress->province) ? $item->lastAddress->province:''}}</td>
 		    <td>{{ $item->integral }}</td>
 		    <td>{{ $item->admin->name }}</td>
+            <td style="text-align:center;">
+                @if($item->is_vip == false)
+                <a style="cursor:pointer;color:#636B6F;" onclick="vipreset({{ $item->id }},1)" id="str{{ $item->id }}">否</a>
+                @else
+                <a style="cursor:pointer;color:#636B6F" onclick="vipreset({{ $item->id }},2)" id="str_str{{ $item->id }}">是</a>
+                @endif
+            </td>
 		    <td>{{ date("Y-m-d H:i:s",$item->subscribe_time) }}</td>
-		    {{--<td>--}}
-		      {{--<a href="{{ route("admin.product.edit", ['item' => $item, 'limit' => $limit, 'name' => $name]) }}">编辑</a>--}}
-		      {{--&nbsp;|&nbsp;--}}
-		      {{--<a href="{{ route("admin.product.show", $item) }}">详细</a>--}}
-		    {{--</td>--}}
 		  </tr>
 		@endforeach
 	      </tbody>
@@ -83,68 +84,39 @@
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
   <script>
-  var number=0;
-  function stock(obj){
-    $("#number"+obj).attr("disabled", false);
-    number = $("#number"+obj).val();
-  }
-  var fprice=0;
-  function myprice(obj){
-    $("#price"+obj).attr("disabled", false);
-    fprice = $("#price"+obj).val();
-  }
-  function selstr(obj)
+  //修改vip状态
+  function vipreset(obj,status)
   {
-      if(obj){
-          $('#active').val(1);
-          $('#form-start').submit();
-	  }else{
-          $('#active').val(0);
-          $('#form-start').submit();
-	  }
+      var str = '';
+      if (status == 1) {
+          str = "确认设置vip?";
+      } else {
+          str = "确认取消vip?";
+      }
+      layer.confirm(str, {
+          btn: ['是','否'] //按钮
+      }, function(){
+          layer.closeAll();
+          var data = {id:obj,status:status};
+          var onurl = "{{ route('admin.meuser.create') }}";
+          axios.post(onurl,data)
+              .then(function (res) {
+                  if (res.status == 200) {
+                      var p = res.data;
+                      if (p.status == 'ok') {
+                          layer.msg('修改成功！', {time:500},function (index) {
+                              layer.close(index);
+                              window.location.href='{{ route('admin.meuser.index') }}';
+                          });
+                      }else{
+                          layer.msg('修改失败！');
+                      }
+                  } else {
+                      layer.msg('修改失败！');
+                  }
+              })
+      });
+  }
 
-  }
-
-  //修改库存
-  function onclnum(obj,item)
-  {
-    var number = $('#number'+obj).val();
-    var onurl = "{{ route('admin.product.modifying') }}";
-    var data = {id:obj,number:number,item:JSON.stringify(item)};
-    axios.post(onurl,data)
-      .then(function (res) {
-	if(res.status == 200){
-          var p = res.data;
-          if(p.status == 'ok'){
-          }else{
-            $('#number'+obj).val(number);
-          }
-	}else{
-          $('#number'+obj).val(number);
-	}
-        $("#number"+obj).attr("disabled", true);
-      })
-  }
-  //修改价格
-  function onprice(obj,un_price)
-  {
-    var price = $('#price'+obj).val();//吨价
-    var onurl = "{{ route('admin.product.modifying') }}";
-    var data = {id:obj,price:price,un_price:un_price};
-    axios.post(onurl,data)
-      .then(function (res) {
-        if(res.status == 200){
-          var p = res.data;
-          if(p.status == 'ok'){
-            $('#un'+obj).text(p.un_price);
-          }else{
-            $('#price'+obj).val(fprice);
-          }
-        }else{
-          $('#price'+obj).val(fprice);
-        }
-        $("#price"+obj).attr("disabled", true);
-      })
-  }
   </script>
 @endsection

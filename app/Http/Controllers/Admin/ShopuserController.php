@@ -92,6 +92,21 @@ class ShopuserController extends Controller
             return ['status' => "error"];
         }
     }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->is_vip = $request->status == 1 ? 1:0;
+        if ($user->save()) {
+            return ['status' => 'ok'];
+        }else{
+            return ['status' => 'error'];
+        }
+    }
 
 
 

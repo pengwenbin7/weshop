@@ -6,6 +6,8 @@ use App\Models\Shipment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderItem;
+use Cache;
 
 class ShipmentController extends Controller
 {
@@ -103,5 +105,25 @@ class ShipmentController extends Controller
     {
         $shipment->shipped($request->freight);
         return redirect()->route("admin.shipment.edit", $shipment);
+    }
+
+    public function trian(Request $request)
+    {
+        if(Cache::has($request->id)){
+            $span = '';
+            foreach (Cache::get($request->id) as $item) {
+                $span.= $item->product_name."-".$item->model."<br>";
+            }
+            return ['status' => 'ok', 'info' => $span];
+        }else{
+            $spitem = OrderItem::where('order_id', '=' ,$request->id)->get();
+            Cache::put($request->id,$spitem,10);
+            $span = '';
+            foreach ($spitem as $item) {
+                $span.= $item->product_name."-".$item->model."<br>";
+            }
+            return ['status' => 'ok', 'info' => $span];
+        }
+
     }
 }

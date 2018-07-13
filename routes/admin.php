@@ -90,6 +90,8 @@ Route::post("shipment/shipped/{shipment}",
             "Admin\ShipmentController@shipped")
     ->name("admin.shipment.shipped");
 
+Route::post("/shipment/trian", "Admin\ShipmentController@trian")->name("admin.shipment.trian");
+
 Route::resource("shipment", "Admin\ShipmentController", [
     "names" => [
         "index" => "admin.shipment.index",
@@ -115,7 +117,7 @@ Route::resource("invoice", "Admin\InvoiceController", [
 ]);
 //我的用户
 Route::get('/meuser', 'Admin\MeuserController@index')->name("admin.meuser.index");
-
+Route::post("/meuser/create", "Admin\MeuserController@create")->name("admin.meuser.create");
 //所有用户资源路由
 Route::resource("shopuser", "Admin\ShopuserController", [
     "names" => [
@@ -123,6 +125,7 @@ Route::resource("shopuser", "Admin\ShopuserController", [
         "create" => "admin.shopuser.create",
     ],
 ]);
+Route::post("/shopuser/store", "Admin\ShopuserController@store")->name("admin.shopuser.store");
 Route::match(["get", "post"], "shopuser/modifying",
     "Admin\ShopuserController@modifying")
     ->name("admin.shopuser.modifying");

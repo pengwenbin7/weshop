@@ -46,12 +46,13 @@
 	      <thead>
 		<tr>
 		  <th>序号</th>
-		  <th>用户名称</th>
-		  <th>用户姓名</th>
-		  <th>用户电话</th>
-		  <th>用户地址</th>
+		  <th>昵称</th>
+		  <th>姓名</th>
+		  <th>电话</th>
+		  <th>地址</th>
 		  <th>积分</th>
 		  <th>业务员</th>
+          <th style="text-align:center">VIP状态</th>
 		  <th>关注时间</th>
 		  <th style="text-align:center">全部<input type="checkbox" id="user_check" onclick="user_check()"></th>
 		</tr>
@@ -65,8 +66,15 @@
 		    <td>{{ isset($item->lastAddress->contact_tel) ? $item->lastAddress->contact_tel:''}}</td>
 		    <td>{{ isset($item->lastAddress->province) ? $item->lastAddress->province:''}}</td>
 		    <td>{{ $item->integral }}</td>
-			  <td><span id="user_id{{ $item->id }}">{{ $item->admin->name }}</span><div style="float:right;cursor:pointer;" onclick="edituser('{{ route("admin.shopuser.create",['id' => $item->id]) }}')">……</div></td>
-		    <td>{{ date("Y-m-d H:i:s",$item->subscribe_time) }}</td>
+			<td><span id="user_id{{ $item->id }}">{{ $item->admin->name }}</span><div style="float:right;cursor:pointer;" onclick="edituser('{{ route("admin.shopuser.create",['id' => $item->id]) }}')">……</div></td>
+            <td style="text-align:center;">
+                  @if($item->is_vip == false)
+                      <a style="cursor:pointer;color:#636B6F;" onclick="vipreset({{ $item->id }},1)" id="str{{ $item->id }}">否</a>
+                  @else
+                      <a style="cursor:pointer;color:#636B6F" onclick="vipreset({{ $item->id }},2)" id="str_str{{ $item->id }}">是</a>
+                  @endif
+            </td>
+            <td>{{ date("Y-m-d H:i:s",$item->subscribe_time) }}</td>
 		    <td style="text-align:center"><input type="checkbox" name="userid" value="{{ $item->id }}"></td>
 		  </tr>
 		@endforeach
@@ -153,7 +161,39 @@
           });
       });
   }
-
+  //修改vip状态
+  function vipreset(obj,status)
+  {
+      var str = '';
+      if (status == 1) {
+          str = "确认设置vip?";
+      } else {
+          str = "确认取消vip?";
+      }
+      layer.confirm(str, {
+          btn: ['是','否'] //按钮
+      }, function(){
+          layer.closeAll();
+          var data = {id:obj,status:status};
+          var onurl = "{{ route('admin.shopuser.store') }}";
+          axios.post(onurl,data)
+              .then(function (res) {
+                  if (res.status == 200) {
+                      var p = res.data;
+                      if (p.status == 'ok') {
+                          layer.msg('修改成功！', {time:500},function (index) {
+                              layer.close(index);
+                              window.location.href='{{ route('admin.shopuser.index') }}';
+                          });
+                      }else{
+                          layer.msg('修改失败！');
+                      }
+                  } else {
+                      layer.msg('修改失败！');
+                  }
+              })
+      });
+  }
 
   </script>
 @endsection

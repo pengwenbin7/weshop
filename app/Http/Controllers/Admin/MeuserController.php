@@ -45,9 +45,15 @@ class MeuserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $user = User::find($request->id);
+        $user->is_vip = $request->status == 1 ? 1:0;
+        if ($user->save()) {
+            return ['status' => 'ok'];
+        }else{
+            return ['status' => 'error'];
+        }
     }
 
     /**

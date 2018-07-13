@@ -7,6 +7,9 @@ use Illuminate\Notifications\Notifiable;
 use Carbon\Carbon;
 use App\Jobs\ShipmentPurchased;
 use App\Jobs\ShipmentShipped;
+use App\Models\Order;
+use App\Models\User;
+use App\Models\company;
 
 class Shipment extends Model
 {
@@ -50,5 +53,23 @@ class Shipment extends Model
         $this->status = true;
         dispatch(new ShipmentShipped($this));
         return $this->save();
+    }
+    //获取企业名称
+    public function compent($order)
+    {
+        $Order = Order::find($order);
+        $User = User::find($Order->user_id);
+        if (isset($User->company_id)) {
+            $company = company::find($User->company_id);
+            if (isset($company->name)) {
+              return $company->name;
+            }
+        }
+    }
+    //获取订单号
+    public function order_list($order)
+    {
+        $Order = Order::find($order);
+        return $Order->no;
     }
 }

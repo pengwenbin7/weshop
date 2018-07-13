@@ -37,7 +37,7 @@
 	    <td>
         <table>
           <tr>
-            <td><h4>马蜂科技（上海）有限公司</h4></td>
+            <td><h4 style="color:black">马蜂科技（上海）有限公司</h4></td>
           </tr>
           <tr style="font-size:11px;line-height: 12px;color:#222;">
       	    <td>上海市嘉定区江桥镇嘉怡路279弄147号</td>
@@ -60,7 +60,7 @@
     </htmlpagefooter>
 
     <div class="main">
-      <h1><b>化工品购销合同</b></h1>
+      <h1 style="color:black"><b>化工品购销合同</b></h1>
 
       <table style="width: 670px; " align="center">
 	<tr >
